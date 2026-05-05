@@ -52,16 +52,21 @@ fire_tables = {
 }
 
 # -------------------------
-# INPUT
+# SESSION STATE INIT
 # -------------------------
-
-st.subheader("Vælg profilkategori")
 
 if "category" not in st.session_state:
     st.session_state.category = None
 
-def card(label, image):
-    selected = st.session_state.category == label
+if "montage" not in st.session_state:
+    st.session_state.montage = None
+
+# -------------------------
+# CARD COMPONENT
+# -------------------------
+
+def card(label, image, state_key):
+    selected = st.session_state[state_key] == label
     border = "3px solid #00c853" if selected else "1px solid #ccc"
 
     st.markdown(f"""
@@ -71,63 +76,86 @@ def card(label, image):
             padding: 10px;
             text-align: center;
         ">
-            <img src="{image}" style="width:100%; max-width:200px;"><br>
+            <img src="{image}" style="width:100%; max-width:180px;"><br>
             <b>{label}</b>
         </div>
     """, unsafe_allow_html=True)
 
-    if st.button(f"Vælg {label}", key=label):
-        st.session_state.category = label
+    if st.button(f"Vælg {label}", key=f"{state_key}_{label}"):
+        st.session_state[state_key] = label
 
+
+# -------------------------
+# KATEGORI VALG (CARDS)
+# -------------------------
+
+st.subheader("Vælg profilkategori")
 
 col1, col2, col3 = st.columns(3)
 
 with col1:
-    card("H-profiler", "images/h_profiles.png")
+    card("H-profiler", "images/h_profiles.png", "category")
 
 with col2:
-    card("I-profiler", "images/i_profiles.png")
+    card("I-profiler", "images/i_profiles.png", "category")
 
 with col3:
-    card("U-profiler", "images/u_profiles.png")
+    card("U-profiler", "images/u_profiles.png", "category")
 
-category = st.session_state.get("category")
+category = st.session_state.category
 
-# 🔹 Profiltype (kun hvis kategori valgt)
-if category:
-    allowed_types = category_map.get(category, [])
-
-    profile_types = sorted(
-        apv_df[apv_df["profile_type"].isin(allowed_types)]["profile_type"].unique()
-    )
-
-    profile_type = st.selectbox("Profiltype", profile_types)
-
-    # 🔹 Filtrer profiler
-    filtered_profiles = apv_df[
-        (apv_df["profile_type"] == profile_type) &
-        (apv_df["profile"].str.contains(r"\d"))
-    ]["profile"].unique()
-
-    # 🔹 Sortér korrekt
-    def sort_profiles(profiles):
-        def extract_number(x):
-            num = ''.join(filter(str.isdigit, str(x)))
-            return int(num) if num != "" else 0
-        
-        return sorted(profiles, key=extract_number)
-
-    profile = st.selectbox("Profil", sort_profiles(filtered_profiles))
-
-else:
+if not category:
     st.info("Vælg en profilkategori")
     st.stop()
 
-# 🔹 Resten som før
-montage = st.selectbox(
-    "Montagetype",
-    ["Klammeløsning", "Bjælkeprofil eller PDP profil"]
+# -------------------------
+# PROFILTYPE + PROFIL
+# -------------------------
+
+allowed_types = category_map.get(category, [])
+
+profile_types = sorted(
+    apv_df[apv_df["profile_type"].isin(allowed_types)]["profile_type"].unique()
 )
+
+profile_type = st.selectbox("Profiltype", profile_types)
+
+filtered_profiles = apv_df[
+    (apv_df["profile_type"] == profile_type) &
+    (apv_df["profile"].str.contains(r"\d"))
+]["profile"].unique()
+
+def sort_profiles(profiles):
+    def extract_number(x):
+        num = ''.join(filter(str.isdigit, str(x)))
+        return int(num) if num != "" else 0
+    return sorted(profiles, key=extract_number)
+
+profile = st.selectbox("Profil", sort_profiles(filtered_profiles))
+
+# -------------------------
+# MONTAGE VALG (CARDS)
+# -------------------------
+
+st.subheader("Vælg montage")
+
+col1, col2 = st.columns(2)
+
+with col1:
+    card("Klammeløsning", "images/klamme.png", "montage")
+
+with col2:
+    card("Bjælkeprofil eller PDP profil", "images/bjaelke.png", "montage")
+
+montage = st.session_state.montage
+
+if not montage:
+    st.info("Vælg montage")
+    st.stop()
+
+# -------------------------
+# ØVRIGE INPUT
+# -------------------------
 
 sides = st.selectbox("Antal sider", [1, 2, 3, 4])
 fire_time = st.selectbox("Brandtid (min)", [30, 60, 90, 120])
