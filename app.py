@@ -8,7 +8,6 @@ st.title("Brandbeskyttelse af stålkonstruktioner")
 # -------------------------
 
 apv_df = pd.read_csv("data/apv.csv")
-
 apv_df["profile_type"] = apv_df["profile"].str.extract(r"([A-Z]+)")
 
 # -------------------------
@@ -22,7 +21,7 @@ category_map = {
 }
 
 # -------------------------
-# FIREBOARD DATA (ROBUST)
+# FIREBOARD DATA
 # -------------------------
 
 def load_fireboard(path):
@@ -63,7 +62,7 @@ for key in ["category", "montage", "sides"]:
         st.session_state[key] = None
 
 # -------------------------
-# CARD COMPONENT
+# CARD COMPONENT (FIXED)
 # -------------------------
 
 def card(label, image, state_key):
@@ -84,6 +83,7 @@ def card(label, image, state_key):
 
     if st.button(f"Vælg {label}", key=f"{state_key}_{label}"):
         st.session_state[state_key] = label
+        st.rerun()   # 🔥 FIX
 
 # -------------------------
 # KATEGORI
@@ -235,11 +235,8 @@ if pd.isna(thickness):
     st.stop()
 
 # -------------------------
-# RESULTAT (FORBEDRET)
+# RESULTAT
 # -------------------------
 
 st.success(f"AP/V: {apv}")
-
-st.success(
-    f"Profil skal inddækkes med {int(thickness)} mm Knauf Fireboard"
-)
+st.success(f"Profil skal inddækkes med {int(thickness)} mm Knauf Fireboard")
