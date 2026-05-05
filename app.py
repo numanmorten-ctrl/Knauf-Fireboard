@@ -57,15 +57,39 @@ fire_tables = {
 
 st.subheader("Vælg profilkategori")
 
-col1, col2 = st.columns(2)
+if "category" not in st.session_state:
+    st.session_state.category = None
+
+def card(label, image):
+    selected = st.session_state.category == label
+    border = "3px solid #00c853" if selected else "1px solid #ccc"
+
+    st.markdown(f"""
+        <div style="
+            border: {border};
+            border-radius: 12px;
+            padding: 10px;
+            text-align: center;
+        ">
+            <img src="{image}" style="width:100%; max-width:200px;"><br>
+            <b>{label}</b>
+        </div>
+    """, unsafe_allow_html=True)
+
+    if st.button(f"Vælg {label}", key=label):
+        st.session_state.category = label
+
+
+col1, col2, col3 = st.columns(3)
 
 with col1:
-    if st.button("I-profiler"):
-        st.session_state.category = "I-profiler"
+    card("H-profiler", "images/h_profiles.png")
 
 with col2:
-    if st.button("U-profiler"):
-        st.session_state.category = "U-profiler"
+    card("I-profiler", "images/i_profiles.png")
+
+with col3:
+    card("U-profiler", "images/u_profiles.png")
 
 category = st.session_state.get("category")
 
