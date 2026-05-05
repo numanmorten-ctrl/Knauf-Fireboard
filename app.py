@@ -9,27 +9,22 @@ st.title("Brandbeskyttelse af stålkonstruktioner")
 
 apv_df = pd.read_csv("data/apv.csv")
 
+# 🔥 Split profiltype (HEA, HEB osv.)
+apv_df["profile_type"] = apv_df["profile"].str.extract(r"([A-Z]+)")
+
 def load_fireboard(path):
     df = pd.read_csv(path, sep=";")
 
-    # Fjern evt. tomme rækker
     df = df.dropna(how="all")
 
-    # Sørg for første kolonne hedder temperature
     df = df.rename(columns={df.columns[0]: "temperature"})
 
-    # Konverter temperatur
     df["temperature"] = pd.to_numeric(df["temperature"], errors="coerce")
-
-    # Fjern rækker der ikke er tal
     df = df.dropna(subset=["temperature"])
-
     df["temperature"] = df["temperature"].astype(int)
 
-    # Sæt index
     df = df.set_index("temperature")
 
-    # Konverter kolonner (AP/V)
     df.columns = pd.to_numeric(df.columns, errors="coerce")
     df = df.dropna(axis=1)
     df.columns = df.columns.astype(int)
@@ -47,9 +42,20 @@ fire_tables = {
 # INPUT
 # -------------------------
 
-profiles = sorted(apv_df["profile"].unique())
-profile = st.selectbox("Profil", profiles)
+# 🔹 1. Profiltype
+profile_types = sorted(apv_df["profile_type"].dropna().unique())
+profile_type = st.selectbox("Profiltype", profile_types)
 
+# 🔹 2. Filtrer profiler
+filtered_profiles = apv_df[apv_df["profile_type"] == profile_type]["profile"].unique()
+
+# 🔹 Sortér korrekt (numerisk)
+def sort_profiles(profiles):
+    return sorted(profiles, key=lambda x: int(''.join(filter(str.isdigit, x))))
+
+profile = st.selectbox("Profil", sort_profiles(filtered_profiles))
+
+# 🔹 Resten som før
 montage = st.selectbox(
     "Montagetype",
     ["Klammeløsning", "Bjælkeprofil eller PDP profil"]
