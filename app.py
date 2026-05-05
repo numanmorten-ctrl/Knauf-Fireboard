@@ -17,7 +17,8 @@ apv_df["profile_type"] = apv_df["profile"].str.extract(r"([A-Z]+)")
 # -------------------------
 
 category_map = {
-    "I-profiler": ["HEA", "HEB", "HEM", "IPE", "INP"],
+    "H-profiler": ["HEA", "HEB", "HEM"],
+    "I-profiler": ["IPE", "INP"],
     "U-profiler": ["UNP"],
 }
 
