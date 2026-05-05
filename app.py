@@ -10,11 +10,29 @@ st.title("Brandbeskyttelse af stålkonstruktioner")
 apv_df = pd.read_csv("data/apv.csv")
 
 def load_fireboard(path):
-    df = pd.read_csv(path, index_col=0)
+    df = pd.read_csv(path)
 
-    # 🔥 VIGTIGT FIX
-    df.index = df.index.astype(int)      # temperatur
-    df.columns = df.columns.astype(int)  # AP/V
+    # Fjern evt. tomme rækker
+    df = df.dropna(how="all")
+
+    # Sørg for første kolonne hedder temperature
+    df = df.rename(columns={df.columns[0]: "temperature"})
+
+    # Konverter temperatur
+    df["temperature"] = pd.to_numeric(df["temperature"], errors="coerce")
+
+    # Fjern rækker der ikke er tal
+    df = df.dropna(subset=["temperature"])
+
+    df["temperature"] = df["temperature"].astype(int)
+
+    # Sæt index
+    df = df.set_index("temperature")
+
+    # Konverter kolonner (AP/V)
+    df.columns = pd.to_numeric(df.columns, errors="coerce")
+    df = df.dropna(axis=1)
+    df.columns = df.columns.astype(int)
 
     return df
 
