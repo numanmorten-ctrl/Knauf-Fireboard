@@ -10,7 +10,7 @@ st.title("Brandbeskyttelse af stålkonstruktioner")
 apv_df = pd.read_csv("data/apv.csv")
 
 def load_fireboard(path):
-    df = pd.read_csv(path)
+    df = pd.read_csv(path, sep=";")
 
     # Fjern evt. tomme rækker
     df = df.dropna(how="all")
