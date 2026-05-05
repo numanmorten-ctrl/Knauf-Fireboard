@@ -47,7 +47,10 @@ profile_types = sorted(apv_df["profile_type"].dropna().unique())
 profile_type = st.selectbox("Profiltype", profile_types)
 
 # 🔹 2. Filtrer profiler
-filtered_profiles = apv_df[apv_df["profile_type"] == profile_type]["profile"].unique()
+filtered_profiles = apv_df[
+    (apv_df["profile_type"] == profile_type) &
+    (apv_df["profile"].str.contains(r"\d"))
+]["profile"].unique()
 
 # 🔹 Sortér korrekt (numerisk)
 def sort_profiles(profiles):
