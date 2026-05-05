@@ -9,7 +9,6 @@ st.title("Brandbeskyttelse af stålkonstruktioner")
 
 apv_df = pd.read_csv("data/apv.csv")
 
-# Split profiltype (HEA, HEB osv.)
 apv_df["profile_type"] = apv_df["profile"].str.extract(r"([A-Z]+)")
 
 # -------------------------
@@ -52,14 +51,12 @@ fire_tables = {
 }
 
 # -------------------------
-# SESSION STATE INIT
+# SESSION STATE
 # -------------------------
 
-if "category" not in st.session_state:
-    st.session_state.category = None
-
-if "montage" not in st.session_state:
-    st.session_state.montage = None
+for key in ["category", "montage", "sides"]:
+    if key not in st.session_state:
+        st.session_state[key] = None
 
 # -------------------------
 # CARD COMPONENT
@@ -76,7 +73,7 @@ def card(label, image, state_key):
             padding: 10px;
             text-align: center;
         ">
-            <img src="{image}" style="width:100%; max-width:180px;"><br>
+            <img src="{image}" style="width:100%; max-width:160px;"><br>
             <b>{label}</b>
         </div>
     """, unsafe_allow_html=True)
@@ -84,9 +81,8 @@ def card(label, image, state_key):
     if st.button(f"Vælg {label}", key=f"{state_key}_{label}"):
         st.session_state[state_key] = label
 
-
 # -------------------------
-# KATEGORI VALG (CARDS)
+# KATEGORI
 # -------------------------
 
 st.subheader("Vælg profilkategori")
@@ -105,11 +101,10 @@ with col3:
 category = st.session_state.category
 
 if not category:
-    st.info("Vælg en profilkategori")
     st.stop()
 
 # -------------------------
-# PROFILTYPE + PROFIL
+# PROFIL
 # -------------------------
 
 allowed_types = category_map.get(category, [])
@@ -128,13 +123,13 @@ filtered_profiles = apv_df[
 def sort_profiles(profiles):
     def extract_number(x):
         num = ''.join(filter(str.isdigit, str(x)))
-        return int(num) if num != "" else 0
+        return int(num) if num else 0
     return sorted(profiles, key=extract_number)
 
 profile = st.selectbox("Profil", sort_profiles(filtered_profiles))
 
 # -------------------------
-# MONTAGE VALG (CARDS)
+# MONTAGE
 # -------------------------
 
 st.subheader("Vælg montage")
@@ -150,21 +145,41 @@ with col2:
 montage = st.session_state.montage
 
 if not montage:
-    st.info("Vælg montage")
     st.stop()
+
+# -------------------------
+# SIDES
+# -------------------------
+
+st.subheader("Antal sider")
+
+col1, col2, col3, col4 = st.columns(4)
+
+with col1:
+    card("1", "images/side1.png", "sides")
+
+with col2:
+    card("2", "images/side2.png", "sides")
+
+with col3:
+    card("3", "images/side3.png", "sides")
+
+with col4:
+    card("4", "images/side4.png", "sides")
+
+sides = st.session_state.sides
+
+if not sides:
+    st.stop()
+
+sides = int(sides)
 
 # -------------------------
 # ØVRIGE INPUT
 # -------------------------
 
-sides = st.selectbox("Antal sider", [1, 2, 3, 4])
 fire_time = st.selectbox("Brandtid (min)", [30, 60, 90, 120])
-
 temperature = st.number_input("Temperatur (°C)", value=450, step=1)
-
-# -------------------------
-# VALIDERING
-# -------------------------
 
 if temperature < 350 or temperature > 750:
     st.error("Temperaturen skal være mellem 350 og 750 °C")
@@ -173,7 +188,7 @@ if temperature < 350 or temperature > 750:
 temperature = int(temperature)
 
 # -------------------------
-# FIND AP/V
+# BEREGNING
 # -------------------------
 
 row = apv_df[
@@ -188,10 +203,6 @@ if row.empty:
 
 apv = int(row.iloc[0]["apv"])
 
-# -------------------------
-# FIND TYKKELSE
-# -------------------------
-
 table = fire_tables[fire_time]
 
 try:
@@ -202,8 +213,5 @@ try:
 
 except KeyError:
     st.error("Opslag fejlede")
-    st.write("Debug info:")
     st.write("Temperatur:", temperature)
     st.write("APV:", apv)
-    st.write("Tilgængelige temperaturer:", list(table.index)[:10])
-    st.write("Tilgængelige APV:", list(table.columns)[:10])
