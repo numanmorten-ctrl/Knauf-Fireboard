@@ -9,14 +9,26 @@ st.title("Brandbeskyttelse af stålkonstruktioner")
 
 apv_df = pd.read_csv("data/apv.csv")
 
-# 🔥 Split profiltype (HEA, HEB osv.)
+# Split profiltype (HEA, HEB osv.)
 apv_df["profile_type"] = apv_df["profile"].str.extract(r"([A-Z]+)")
+
+# -------------------------
+# KATEGORI MAPPING
+# -------------------------
+
+category_map = {
+    "I-profiler": ["HEA", "HEB", "HEM", "IPE", "INP"],
+    "U-profiler": ["UNP"],
+}
+
+# -------------------------
+# FIREBOARD DATA
+# -------------------------
 
 def load_fireboard(path):
     df = pd.read_csv(path, sep=";")
 
     df = df.dropna(how="all")
-
     df = df.rename(columns={df.columns[0]: "temperature"})
 
     df["temperature"] = pd.to_numeric(df["temperature"], errors="coerce")
@@ -42,25 +54,49 @@ fire_tables = {
 # INPUT
 # -------------------------
 
-# 🔹 1. Profiltype
-profile_types = sorted(apv_df["profile_type"].dropna().unique())
-profile_type = st.selectbox("Profiltype", profile_types)
+st.subheader("Vælg profilkategori")
 
-# 🔹 2. Filtrer profiler
-filtered_profiles = apv_df[
-    (apv_df["profile_type"] == profile_type) &
-    (apv_df["profile"].str.contains(r"\d"))
-]["profile"].unique()
+col1, col2 = st.columns(2)
 
-# 🔹 Sortér korrekt (numerisk)
-def sort_profiles(profiles):
-    def extract_number(x):
-        num = ''.join(filter(str.isdigit, str(x)))
-        return int(num) if num != "" else 0
-    
-    return sorted(profiles, key=extract_number)
+with col1:
+    if st.button("I-profiler"):
+        st.session_state.category = "I-profiler"
 
-profile = st.selectbox("Profil", sort_profiles(filtered_profiles))
+with col2:
+    if st.button("U-profiler"):
+        st.session_state.category = "U-profiler"
+
+category = st.session_state.get("category")
+
+# 🔹 Profiltype (kun hvis kategori valgt)
+if category:
+    allowed_types = category_map.get(category, [])
+
+    profile_types = sorted(
+        apv_df[apv_df["profile_type"].isin(allowed_types)]["profile_type"].unique()
+    )
+
+    profile_type = st.selectbox("Profiltype", profile_types)
+
+    # 🔹 Filtrer profiler
+    filtered_profiles = apv_df[
+        (apv_df["profile_type"] == profile_type) &
+        (apv_df["profile"].str.contains(r"\d"))
+    ]["profile"].unique()
+
+    # 🔹 Sortér korrekt
+    def sort_profiles(profiles):
+        def extract_number(x):
+            num = ''.join(filter(str.isdigit, str(x)))
+            return int(num) if num != "" else 0
+        
+        return sorted(profiles, key=extract_number)
+
+    profile = st.selectbox("Profil", sort_profiles(filtered_profiles))
+
+else:
+    st.info("Vælg en profilkategori")
+    st.stop()
 
 # 🔹 Resten som før
 montage = st.selectbox(
