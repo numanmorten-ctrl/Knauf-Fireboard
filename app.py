@@ -9,6 +9,7 @@ st.title("Brandbeskyttelse af stålkonstruktioner")
 
 apv_df = pd.read_csv("data/apv.csv")
 
+# Split profiltype
 apv_df["profile_type"] = apv_df["profile"].str.extract(r"([A-Z]+)")
 
 # -------------------------
@@ -22,23 +23,39 @@ category_map = {
 }
 
 # -------------------------
-# FIREBOARD DATA
+# FIREBOARD DATA (ROBUST!)
 # -------------------------
 
 def load_fireboard(path):
     df = pd.read_csv(path, sep=";")
 
     df = df.dropna(how="all")
-    df = df.rename(columns={df.columns[0]: "temperature"})
 
+    # Rename første kolonne
+    df.rename(columns={df.columns[0]: "temperature"}, inplace=True)
+
+    # Rens temperatur
+    df["temperature"] = (
+        df["temperature"]
+        .astype(str)
+        .str.strip()
+    )
     df["temperature"] = pd.to_numeric(df["temperature"], errors="coerce")
+
     df = df.dropna(subset=["temperature"])
     df["temperature"] = df["temperature"].astype(int)
 
-    df = df.set_index("temperature")
+    df.set_index("temperature", inplace=True)
 
+    # Rens kolonner (AP/V)
+    df.columns = (
+        pd.Series(df.columns)
+        .astype(str)
+        .str.strip()
+    )
     df.columns = pd.to_numeric(df.columns, errors="coerce")
-    df = df.dropna(axis=1)
+
+    df = df.loc[:, df.columns.notna()]
     df.columns = df.columns.astype(int)
 
     return df
@@ -64,7 +81,7 @@ for key in ["category", "montage", "sides"]:
 
 def card(label, image, state_key):
     selected = st.session_state[state_key] == label
-    border = "3px solid #00c853" if selected else "1px solid #ccc"
+    border = "3px solid #00c853" if selected else "1px solid #444"
 
     st.markdown(f"""
         <div style="
@@ -148,7 +165,7 @@ if not montage:
     st.stop()
 
 # -------------------------
-# SIDES
+# SIDER
 # -------------------------
 
 st.subheader("Antal sider")
@@ -188,7 +205,7 @@ if temperature < 350 or temperature > 750:
 temperature = int(temperature)
 
 # -------------------------
-# BEREGNING
+# FIND AP/V
 # -------------------------
 
 row = apv_df[
@@ -198,20 +215,34 @@ row = apv_df[
 ]
 
 if row.empty:
-    st.error("Kombination findes ikke")
+    st.error("Denne kombination er ikke mulig for det valgte profil")
     st.stop()
 
 apv = int(row.iloc[0]["apv"])
 
+# -------------------------
+# FIND TYKKELSE (KORREKT MATCH)
+# -------------------------
+
 table = fire_tables[fire_time]
 
-try:
-    thickness = table.loc[temperature, apv]
+if temperature not in table.index:
+    st.error("Temperaturen findes ikke i databasen")
+    st.stop()
 
-    st.success(f"AP/V: {apv}")
-    st.success(f"Fireboard tykkelse: {thickness} mm")
+if apv not in table.columns:
+    st.error("Der findes ingen Fireboard løsning for denne kombination")
+    st.stop()
 
-except KeyError:
-    st.error("Opslag fejlede")
-    st.write("Temperatur:", temperature)
-    st.write("APV:", apv)
+thickness = table.loc[temperature, apv]
+
+if pd.isna(thickness):
+    st.error("Denne kombination er ikke mulig")
+    st.stop()
+
+# -------------------------
+# RESULTAT
+# -------------------------
+
+st.success(f"AP/V: {apv}")
+st.success(f"Fireboard tykkelse: {int(thickness)} mm")
