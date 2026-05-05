@@ -9,7 +9,6 @@ st.title("Brandbeskyttelse af stålkonstruktioner")
 
 apv_df = pd.read_csv("data/apv.csv")
 
-# Split profiltype
 apv_df["profile_type"] = apv_df["profile"].str.extract(r"([A-Z]+)")
 
 # -------------------------
@@ -23,23 +22,16 @@ category_map = {
 }
 
 # -------------------------
-# FIREBOARD DATA (ROBUST!)
+# FIREBOARD DATA (ROBUST)
 # -------------------------
 
 def load_fireboard(path):
     df = pd.read_csv(path, sep=";")
 
     df = df.dropna(how="all")
-
-    # Rename første kolonne
     df.rename(columns={df.columns[0]: "temperature"}, inplace=True)
 
-    # Rens temperatur
-    df["temperature"] = (
-        df["temperature"]
-        .astype(str)
-        .str.strip()
-    )
+    df["temperature"] = df["temperature"].astype(str).str.strip()
     df["temperature"] = pd.to_numeric(df["temperature"], errors="coerce")
 
     df = df.dropna(subset=["temperature"])
@@ -47,12 +39,7 @@ def load_fireboard(path):
 
     df.set_index("temperature", inplace=True)
 
-    # Rens kolonner (AP/V)
-    df.columns = (
-        pd.Series(df.columns)
-        .astype(str)
-        .str.strip()
-    )
+    df.columns = pd.Series(df.columns).astype(str).str.strip()
     df.columns = pd.to_numeric(df.columns, errors="coerce")
 
     df = df.loc[:, df.columns.notna()]
@@ -130,7 +117,7 @@ profile_types = sorted(
     apv_df[apv_df["profile_type"].isin(allowed_types)]["profile_type"].unique()
 )
 
-profile_type = st.selectbox("Profiltype", profile_types)
+profile_type = st.selectbox("Vælg profiltype", profile_types)
 
 filtered_profiles = apv_df[
     (apv_df["profile_type"] == profile_type) &
@@ -143,13 +130,13 @@ def sort_profiles(profiles):
         return int(num) if num else 0
     return sorted(profiles, key=extract_number)
 
-profile = st.selectbox("Profil", sort_profiles(filtered_profiles))
+profile = st.selectbox("Vælg profilstørrelse", sort_profiles(filtered_profiles))
 
 # -------------------------
 # MONTAGE
 # -------------------------
 
-st.subheader("Vælg montage")
+st.subheader("Vælg inddækningstype")
 
 col1, col2 = st.columns(2)
 
@@ -168,7 +155,7 @@ if not montage:
 # SIDER
 # -------------------------
 
-st.subheader("Antal sider")
+st.subheader("Vælg antal sider med inddækning")
 
 col1, col2, col3, col4 = st.columns(4)
 
@@ -195,8 +182,15 @@ sides = int(sides)
 # ØVRIGE INPUT
 # -------------------------
 
-fire_time = st.selectbox("Brandtid (min)", [30, 60, 90, 120])
-temperature = st.number_input("Temperatur (°C)", value=450, step=1)
+fire_time = st.selectbox("Vælg brandbeskyttelsestid", [30, 60, 90, 120])
+
+temperature = st.number_input(
+    "Indtast dimensionerende ståltemperatur (°C)",
+    value=450,
+    step=1
+)
+
+st.caption("Gyldigt interval: 350–750 °C")
 
 if temperature < 350 or temperature > 750:
     st.error("Temperaturen skal være mellem 350 og 750 °C")
@@ -221,7 +215,7 @@ if row.empty:
 apv = int(row.iloc[0]["apv"])
 
 # -------------------------
-# FIND TYKKELSE (KORREKT MATCH)
+# FIND TYKKELSE
 # -------------------------
 
 table = fire_tables[fire_time]
@@ -241,8 +235,11 @@ if pd.isna(thickness):
     st.stop()
 
 # -------------------------
-# RESULTAT
+# RESULTAT (FORBEDRET)
 # -------------------------
 
 st.success(f"AP/V: {apv}")
-st.success(f"Fireboard tykkelse: {int(thickness)} mm")
+
+st.success(
+    f"Profil skal inddækkes med {int(thickness)} mm Knauf Fireboard"
+)
