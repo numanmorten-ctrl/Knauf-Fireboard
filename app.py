@@ -51,7 +51,11 @@ filtered_profiles = apv_df[apv_df["profile_type"] == profile_type]["profile"].un
 
 # 🔹 Sortér korrekt (numerisk)
 def sort_profiles(profiles):
-    return sorted(profiles, key=lambda x: int(''.join(filter(str.isdigit, x))))
+    def extract_number(x):
+        num = ''.join(filter(str.isdigit, str(x)))
+        return int(num) if num != "" else 0
+    
+    return sorted(profiles, key=extract_number)
 
 profile = st.selectbox("Profil", sort_profiles(filtered_profiles))
 
