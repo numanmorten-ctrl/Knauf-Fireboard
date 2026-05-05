@@ -9,11 +9,20 @@ st.title("Brandbeskyttelse af stålkonstruktioner")
 
 apv_df = pd.read_csv("data/apv.csv")
 
+def load_fireboard(path):
+    df = pd.read_csv(path, index_col=0)
+
+    # 🔥 VIGTIGT FIX
+    df.index = df.index.astype(int)      # temperatur
+    df.columns = df.columns.astype(int)  # AP/V
+
+    return df
+
 fire_tables = {
-    30: pd.read_csv("data/fireboard_30.csv", index_col=0),
-    60: pd.read_csv("data/fireboard_60.csv", index_col=0),
-    90: pd.read_csv("data/fireboard_90.csv", index_col=0),
-    120: pd.read_csv("data/fireboard_120.csv", index_col=0),
+    30: load_fireboard("data/fireboard_30.csv"),
+    60: load_fireboard("data/fireboard_60.csv"),
+    90: load_fireboard("data/fireboard_90.csv"),
+    120: load_fireboard("data/fireboard_120.csv"),
 }
 
 # -------------------------
@@ -29,7 +38,6 @@ montage = st.selectbox(
 )
 
 sides = st.selectbox("Antal sider", [1, 2, 3, 4])
-
 fire_time = st.selectbox("Brandtid (min)", [30, 60, 90, 120])
 
 temperature = st.number_input("Temperatur (°C)", value=450, step=1)
@@ -67,10 +75,15 @@ apv = int(row.iloc[0]["apv"])
 table = fire_tables[fire_time]
 
 try:
-    thickness = table.loc[temperature, str(apv)]
+    thickness = table.loc[temperature, apv]
 
     st.success(f"AP/V: {apv}")
     st.success(f"Fireboard tykkelse: {thickness} mm")
 
-except:
+except KeyError:
     st.error("Opslag fejlede")
+    st.write("Debug info:")
+    st.write("Temperatur:", temperature)
+    st.write("APV:", apv)
+    st.write("Tilgængelige temperaturer:", list(table.index)[:10])
+    st.write("Tilgængelige APV:", list(table.columns)[:10])
