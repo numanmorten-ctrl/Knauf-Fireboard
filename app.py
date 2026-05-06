@@ -26,21 +26,34 @@ st.markdown("""
     margin: auto;
 }
 
-/* CARD BUTTON */
+/* KNAP UNDER CARD */
 
 div.stButton > button {
     width: 100%;
-    margin-top: -18px;
-    border-radius: 0 0 16px 16px;
-    background-color: #0b1220;
-    border: 1px solid #333;
-    color: white;
-    height: 42px;
+    height: 0px;
+    padding: 0;
+    margin-top: -260px;
+    margin-bottom: 260px;
+
+    background: transparent;
+    border: none;
+
+    color: transparent;
+    font-size: 0;
 }
 
+/* HOVER */
+
 div.stButton > button:hover {
-    border: 1px solid #00c853;
-    color: #00c853;
+    border: none;
+    background: transparent;
+}
+
+/* FJERN FOCUS */
+
+div.stButton > button:focus {
+    outline: none;
+    box-shadow: none;
 }
 
 </style>
