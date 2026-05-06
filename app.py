@@ -54,7 +54,10 @@ with col2:
 # LOAD DATA
 # -------------------------
 
-apv_df = pd.read_csv("data/apv.csv")
+apv_df = pd.read_csv(
+    "data/apv.csv",
+    sep=";"
+)
 
 # -------------------------
 # FIREBOARD DATA
