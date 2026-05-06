@@ -1,7 +1,6 @@
 import base64
 import streamlit as st
 import pandas as pd
-from PIL import Image
 
 # -------------------------
 # PAGE CONFIG
@@ -20,7 +19,7 @@ st.markdown("""
 <style>
 
 .block-container {
-    max-width: 1300px;
+    max-width: 1400px;
     padding-top: 2rem;
     padding-left: 2rem;
     padding-right: 2rem;
@@ -56,21 +55,6 @@ with col2:
 # -------------------------
 
 apv_df = pd.read_csv("data/apv.csv")
-
-apv_df["profile_type"] = (
-    apv_df["profile"]
-    .str.extract(r"([A-Z]+)")
-)
-
-# -------------------------
-# KATEGORI MAPPING
-# -------------------------
-
-category_map = {
-    "H-profiler": ["HEA", "HEB", "HEM"],
-    "I-profiler": ["IPE", "INP"],
-    "U-profiler": ["UNP"],
-}
 
 # -------------------------
 # FIREBOARD DATA
@@ -155,10 +139,10 @@ for key in [
 def get_base64_image(image_path):
 
     with open(image_path, "rb") as img_file:
+
         return base64.b64encode(
             img_file.read()
         ).decode()
-
 
 def card(label, image_path, state_key):
 
@@ -204,7 +188,7 @@ def card(label, image_path, state_key):
         "/>
 
         <div style="
-            font-size:28px;
+            font-size:24px;
             font-weight:700;
             color:white;
         ">
@@ -226,8 +210,9 @@ def card(label, image_path, state_key):
     ):
         st.session_state[state_key] = label
         st.rerun()
+
 # -------------------------
-# KATEGORI
+# PROFILKATEGORI
 # -------------------------
 
 st.subheader("Vælg profilkategori")
@@ -255,58 +240,81 @@ with col3:
         "category"
     )
 
+col4, col5, col6 = st.columns(3)
+
+with col4:
+    card(
+        "Kvadratiske rør varmvalsede",
+        "images/shs_hot.png",
+        "category"
+    )
+
+with col5:
+    card(
+        "Kvadratiske rør koldvalsede",
+        "images/shs_cold.png",
+        "category"
+    )
+
+with col6:
+    card(
+        "Rektangulære rør varmvalsede",
+        "images/rhs_hot.png",
+        "category"
+    )
+
+col7, col8, col9 = st.columns(3)
+
+with col7:
+    card(
+        "Rektangulære rør koldvalsede",
+        "images/rhs_cold.png",
+        "category"
+    )
+
+with col8:
+    card(
+        "Cirkulære rør middelsvære",
+        "images/chs_medium.png",
+        "category"
+    )
+
+with col9:
+    card(
+        "Cirkulære rør svære",
+        "images/chs_heavy.png",
+        "category"
+    )
+
 category = st.session_state.category
 
 if not category:
     st.stop()
 
 # -------------------------
-# PROFIL
+# PROFILER
 # -------------------------
 
 st.divider()
 
-allowed_types = (
-    category_map.get(category, [])
-)
+filtered_df = apv_df[
+    apv_df["profile_category"] == category
+]
 
-profile_types = sorted(
-    apv_df[
-        apv_df["profile_type"]
-        .isin(allowed_types)
-    ]["profile_type"]
-    .unique()
-)
-
-profile_type = st.selectbox(
-    "Vælg profiltype",
-    profile_types
-)
-
-filtered_profiles = apv_df[
-    (
-        apv_df["profile_type"]
-        == profile_type
-    )
-    &
-    (
-        apv_df["profile"]
-        .str.contains(r"\d")
-    )
-]["profile"].unique()
+profiles = filtered_df["profile"].unique()
 
 def sort_profiles(profiles):
 
     def extract_number(x):
 
-        num = ''.join(
+        nums = ''.join(
             filter(
                 str.isdigit,
                 str(x)
             )
         )
 
-        return int(num) if num else 0
+        return int(nums) if nums else 0
 
     return sorted(
         profiles,
@@ -315,7 +323,7 @@ def sort_profiles(profiles):
 
 profile = st.selectbox(
     "Vælg profilstørrelse",
-    sort_profiles(filtered_profiles)
+    sort_profiles(profiles)
 )
 
 # -------------------------
@@ -426,10 +434,6 @@ temperature = st.number_input(
     step=1
 )
 
-st.caption(
-    "Gyldigt interval: 350–750 °C"
-)
-
 temperature = int(temperature)
 
 # -------------------------
@@ -438,18 +442,15 @@ temperature = int(temperature)
 
 row = apv_df[
     (
-        apv_df["profile"]
-        == profile
+        apv_df["profile"] == profile
     )
     &
     (
-        apv_df["montage"]
-        == montage
+        apv_df["montage"] == montage
     )
     &
     (
-        apv_df["sides"]
-        == sides
+        apv_df["sides"] == sides
     )
 ]
 
