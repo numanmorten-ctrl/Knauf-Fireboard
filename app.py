@@ -244,14 +244,14 @@ with col1:
 with col2:
     card(
         "I-profiler",
-        "images/i_profiles.jpg",
+        "images/i_profiles.png",
         "category"
     )
 
 with col3:
     card(
         "U-profiler",
-        "images/u_profiles.jpg",
+        "images/u_profiles.png",
         "category"
     )
 
