@@ -1,5 +1,6 @@
 import streamlit as st
 import pandas as pd
+from PIL import Image
 
 # -------------------------
 # PAGE CONFIG
@@ -38,10 +39,14 @@ with col1:
     st.title("Brandbeskyttelse af stålkonstruktioner")
 
 with col2:
+
     st.write("")
     st.write("")
 
-    if st.button("🔄 Start ny beregning", use_container_width=True):
+    if st.button(
+        "🔄 Start ny beregning",
+        use_container_width=True
+    ):
         st.session_state.clear()
         st.rerun()
 
@@ -50,7 +55,11 @@ with col2:
 # -------------------------
 
 apv_df = pd.read_csv("data/apv.csv")
-apv_df["profile_type"] = apv_df["profile"].str.extract(r"([A-Z]+)")
+
+apv_df["profile_type"] = (
+    apv_df["profile"]
+    .str.extract(r"([A-Z]+)")
+)
 
 # -------------------------
 # KATEGORI MAPPING
@@ -90,9 +99,15 @@ def load_fireboard(path):
 
     df = df.dropna(subset=["temperature"])
 
-    df["temperature"] = df["temperature"].astype(int)
+    df["temperature"] = (
+        df["temperature"]
+        .astype(int)
+    )
 
-    df.set_index("temperature", inplace=True)
+    df.set_index(
+        "temperature",
+        inplace=True
+    )
 
     df.columns = (
         pd.Series(df.columns)
@@ -106,7 +121,10 @@ def load_fireboard(path):
     )
 
     df = df.loc[:, df.columns.notna()]
-    df.columns = df.columns.astype(int)
+
+    df.columns = (
+        df.columns.astype(int)
+    )
 
     return df
 
@@ -121,7 +139,11 @@ fire_tables = {
 # SESSION STATE
 # -------------------------
 
-for key in ["category", "montage", "sides"]:
+for key in [
+    "category",
+    "montage",
+    "sides"
+]:
     if key not in st.session_state:
         st.session_state[key] = None
 
@@ -129,44 +151,61 @@ for key in ["category", "montage", "sides"]:
 # CARD COMPONENT
 # -------------------------
 
-def card(label, image, state_key):
+def card(label, image_path, state_key):
 
-    selected = st.session_state[state_key] == label
+    selected = (
+        st.session_state[state_key] == label
+    )
 
-    border = "3px solid #00c853" if selected else "1px solid #444"
-    background = "#111827" if selected else "#0b1220"
+    border = (
+        "3px solid #00c853"
+        if selected
+        else "1px solid #444"
+    )
 
-    html = f"""
-    <div style="
-        border:{border};
-        background-color:{background};
-        border-radius:16px;
-        padding:20px;
-        text-align:center;
-        min-height:220px;
-        display:flex;
-        flex-direction:column;
-        justify-content:center;
-    ">
+    background = (
+        "#111827"
+        if selected
+        else "#0b1220"
+    )
 
-        <img src="{image}" style="
-            width:100%;
-            max-width:160px;
-            margin:auto;
-            margin-bottom:20px;
+    st.markdown(
+        f"""
+        <div style="
+            border:{border};
+            background-color:{background};
+            border-radius:16px;
+            padding:20px;
+            text-align:center;
+            min-height:260px;
         ">
+        """,
+        unsafe_allow_html=True
+    )
 
+    image = Image.open(image_path)
+
+    st.image(
+        image,
+        width=160
+    )
+
+    st.markdown(
+        f"""
         <div style="
             font-size:28px;
             font-weight:700;
+            text-align:center;
+            padding-top:10px;
+            padding-bottom:10px;
         ">
             {label}
         </div>
 
-    </div>
-    """
-
-    st.markdown(html, unsafe_allow_html=True)
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
 
     if st.button(
         f"Vælg {label}",
@@ -185,13 +224,25 @@ st.subheader("Vælg profilkategori")
 col1, col2, col3 = st.columns(3)
 
 with col1:
-    card("H-profiler", "images/h_profiles.png", "category")
+    card(
+        "H-profiler",
+        "images/h_profiles.png",
+        "category"
+    )
 
 with col2:
-    card("I-profiler", "images/i_profiles.png", "category")
+    card(
+        "I-profiler",
+        "images/i_profiles.jpg",
+        "category"
+    )
 
 with col3:
-    card("U-profiler", "images/u_profiles.png", "category")
+    card(
+        "U-profiler",
+        "images/u_profiles.jpg",
+        "category"
+    )
 
 category = st.session_state.category
 
@@ -204,12 +255,16 @@ if not category:
 
 st.divider()
 
-allowed_types = category_map.get(category, [])
+allowed_types = (
+    category_map.get(category, [])
+)
 
 profile_types = sorted(
     apv_df[
-        apv_df["profile_type"].isin(allowed_types)
-    ]["profile_type"].unique()
+        apv_df["profile_type"]
+        .isin(allowed_types)
+    ]["profile_type"]
+    .unique()
 )
 
 profile_type = st.selectbox(
@@ -218,17 +273,34 @@ profile_type = st.selectbox(
 )
 
 filtered_profiles = apv_df[
-    (apv_df["profile_type"] == profile_type) &
-    (apv_df["profile"].str.contains(r"\d"))
+    (
+        apv_df["profile_type"]
+        == profile_type
+    )
+    &
+    (
+        apv_df["profile"]
+        .str.contains(r"\d")
+    )
 ]["profile"].unique()
 
 def sort_profiles(profiles):
 
     def extract_number(x):
-        num = ''.join(filter(str.isdigit, str(x)))
+
+        num = ''.join(
+            filter(
+                str.isdigit,
+                str(x)
+            )
+        )
+
         return int(num) if num else 0
 
-    return sorted(profiles, key=extract_number)
+    return sorted(
+        profiles,
+        key=extract_number
+    )
 
 profile = st.selectbox(
     "Vælg profilstørrelse",
@@ -241,12 +313,18 @@ profile = st.selectbox(
 
 st.divider()
 
-st.subheader("Vælg inddækningstype")
+st.subheader(
+    "Vælg inddækningstype"
+)
 
 col1, col2 = st.columns(2)
 
 with col1:
-    card("Klammeløsning", "images/klamme.png", "montage")
+    card(
+        "Klammeløsning",
+        "images/klamme.png",
+        "montage"
+    )
 
 with col2:
     card(
@@ -266,21 +344,39 @@ if not montage:
 
 st.divider()
 
-st.subheader("Vælg antal sider med inddækning")
+st.subheader(
+    "Vælg antal sider med inddækning"
+)
 
 col1, col2, col3, col4 = st.columns(4)
 
 with col1:
-    card("1", "images/side1.png", "sides")
+    card(
+        "1",
+        "images/side1.png",
+        "sides"
+    )
 
 with col2:
-    card("2", "images/side2.png", "sides")
+    card(
+        "2",
+        "images/side2.png",
+        "sides"
+    )
 
 with col3:
-    card("3", "images/side3.png", "sides")
+    card(
+        "3",
+        "images/side3.png",
+        "sides"
+    )
 
 with col4:
-    card("4", "images/side4.png", "sides")
+    card(
+        "4",
+        "images/side4.png",
+        "sides"
+    )
 
 sides = st.session_state.sides
 
@@ -319,7 +415,9 @@ temperature = st.number_input(
     step=1
 )
 
-st.caption("Gyldigt interval: 350–750 °C")
+st.caption(
+    "Gyldigt interval: 350–750 °C"
+)
 
 temperature = int(temperature)
 
@@ -328,18 +426,34 @@ temperature = int(temperature)
 # -------------------------
 
 row = apv_df[
-    (apv_df["profile"] == profile) &
-    (apv_df["montage"] == montage) &
-    (apv_df["sides"] == sides)
+    (
+        apv_df["profile"]
+        == profile
+    )
+    &
+    (
+        apv_df["montage"]
+        == montage
+    )
+    &
+    (
+        apv_df["sides"]
+        == sides
+    )
 ]
 
 if row.empty:
+
     st.error(
-        "Denne kombination er ikke mulig for det valgte profil"
+        "Denne kombination er ikke mulig "
+        "for det valgte profil"
     )
+
     st.stop()
 
-apv = int(row.iloc[0]["apv"])
+apv = int(
+    row.iloc[0]["apv"]
+)
 
 # -------------------------
 # FIND TYKKELSE
@@ -348,19 +462,33 @@ apv = int(row.iloc[0]["apv"])
 table = fire_tables[fire_time]
 
 if temperature not in table.index:
-    st.error("Temperaturen findes ikke i databasen")
+
+    st.error(
+        "Temperaturen findes ikke i databasen"
+    )
+
     st.stop()
 
 if apv not in table.columns:
+
     st.error(
-        "Der findes ingen Fireboard løsning for denne kombination"
+        "Der findes ingen Fireboard løsning "
+        "for denne kombination"
     )
+
     st.stop()
 
-thickness = table.loc[temperature, apv]
+thickness = table.loc[
+    temperature,
+    apv
+]
 
 if pd.isna(thickness):
-    st.error("Denne kombination er ikke mulig")
+
+    st.error(
+        "Denne kombination er ikke mulig"
+    )
+
     st.stop()
 
 # -------------------------
@@ -369,9 +497,12 @@ if pd.isna(thickness):
 
 st.divider()
 
-st.success(f"AP/V: {apv}")
+st.success(
+    f"AP/V: {apv}"
+)
 
 st.success(
     f"Profil skal inddækkes med "
-    f"{int(thickness)} mm Knauf Fireboard"
+    f"{int(thickness)} mm "
+    f"Knauf Fireboard"
 )
