@@ -26,30 +26,25 @@ st.markdown("""
     margin: auto;
 }
 
-/* Fjerner standard Streamlit button styling */
+/* CARD BUTTON */
 
-button[kind="secondary"] {
-    padding: 0 !important;
-    border: none !important;
-    background: transparent !important;
+div.stButton > button {
+    width: 100%;
+    margin-top: -18px;
+    border-radius: 0 0 16px 16px;
+    background-color: #0b1220;
+    border: 1px solid #333;
+    color: white;
+    height: 42px;
 }
 
-/* Fjerner tekst-formatering fra button */
-
-button[kind="secondary"] p {
-    margin: 0 !important;
-}
-
-/* Hover effekt */
-
-button[kind="secondary"]:hover {
-    transform: scale(1.01);
-    transition: 0.2s;
+div.stButton > button:hover {
+    border: 1px solid #00c853;
+    color: #00c853;
 }
 
 </style>
 """, unsafe_allow_html=True)
-
 # -------------------------
 # HEADER + RESET BUTTON
 # -------------------------
@@ -189,12 +184,13 @@ def card(label, image_path, state_key):
 
     image_base64 = get_base64_image(image_path)
 
-    button_html = f"""
+    html = f"""
     <div style="
         border:{border};
         background-color:{background};
         border-radius:16px;
         padding:20px;
+        text-align:center;
         min-height:240px;
         display:flex;
         flex-direction:column;
@@ -222,8 +218,13 @@ def card(label, image_path, state_key):
     </div>
     """
 
+    st.components.v1.html(
+        html,
+        height=260
+    )
+
     if st.button(
-        button_html,
+        label,
         key=f"{state_key}_{label}",
         use_container_width=True
     ):
