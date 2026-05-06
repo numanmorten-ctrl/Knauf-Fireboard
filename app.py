@@ -12,7 +12,7 @@ st.set_page_config(
 )
 
 # -------------------------
-# CUSTOM WIDTH
+# CUSTOM WIDTH + STYLE
 # -------------------------
 
 st.markdown("""
@@ -61,6 +61,29 @@ div.stButton > button:hover {
 
 </style>
 """, unsafe_allow_html=True)
+
+# -------------------------
+# HEADER
+# -------------------------
+
+col1, col2 = st.columns([8, 2])
+
+with col1:
+    st.title("Brandbeskyttelse af stålkonstruktioner")
+
+with col2:
+
+    st.write("")
+    st.write("")
+
+    if st.button(
+        "🔄 Start ny beregning",
+        use_container_width=True
+    ):
+
+        st.session_state.clear()
+        st.rerun()
+
 # -------------------------
 # LOAD DATA
 # -------------------------
@@ -147,7 +170,7 @@ for key in [
         st.session_state[key] = None
 
 # -------------------------
-# CARD COMPONENT
+# CARD FUNCTIONS
 # -------------------------
 
 def get_base64_image(image_path):
@@ -226,7 +249,6 @@ def card(label, image_path, state_key):
 
         st.session_state[state_key] = label
 
-        # Automatisk reset af sides
         if (
             label == "Cirkulære rør middelsvære"
             or
@@ -236,80 +258,84 @@ def card(label, image_path, state_key):
 
         st.rerun()
 
+
+def disabled_card(label, image_path):
+
+    image_base64 = get_base64_image(image_path)
+
+    html = f"""
+    <div style="
+        border:1px solid #31333F;
+        background-color:#161616;
+        opacity:0.45;
+        border-radius:16px;
+        padding:20px;
+        text-align:center;
+        min-height:240px;
+        display:flex;
+        flex-direction:column;
+        justify-content:center;
+        align-items:center;
+    ">
+
+        <img src="data:image/png;base64,{image_base64}"
+        style="
+            width:160px;
+            height:160px;
+            object-fit:contain;
+            margin-bottom:20px;
+        "/>
+
+        <div style="
+            font-size:22px;
+            font-weight:700;
+            color:#999999;
+            text-align:center;
+        ">
+            {label}
+        </div>
+
+    </div>
+    """
+
+    st.components.v1.html(
+        html,
+        height=260
+    )
+
 # -------------------------
 # PROFILKATEGORI
 # -------------------------
 
 st.subheader("Vælg profilkategori")
 
-col1, col2, col3 = st.columns(3)
+categories = [
+    ("H-profiler", "images/h_profiles.png"),
+    ("I-profiler", "images/i_profiles.png"),
+    ("U-profiler", "images/u_profiles.png"),
 
-with col1:
-    card(
-        "H-profiler",
-        "images/h_profiles.png",
-        "category"
-    )
+    ("Kvadratiske rør varmvalsede", "images/shs_hot.png"),
+    ("Kvadratiske rør koldvalsede", "images/shs_cold.png"),
+    ("Rektangulære rør varmvalsede", "images/rhs_hot.png"),
 
-with col2:
-    card(
-        "I-profiler",
-        "images/i_profiles.png",
-        "category"
-    )
+    ("Rektangulære rør koldvalsede", "images/rhs_cold.png"),
+    ("Cirkulære rør middelsvære", "images/chs_medium.png"),
+    ("Cirkulære rør svære", "images/chs_heavy.png"),
+]
 
-with col3:
-    card(
-        "U-profiler",
-        "images/u_profiles.png",
-        "category"
-    )
+for i in range(0, len(categories), 3):
 
-col4, col5, col6 = st.columns(3)
+    cols = st.columns(3)
 
-with col4:
-    card(
-        "Kvadratiske rør varmvalsede",
-        "images/shs_hot.png",
-        "category"
-    )
+    for col, (label, image) in zip(cols, categories[i:i+3]):
 
-with col5:
-    card(
-        "Kvadratiske rør koldvalsede",
-        "images/shs_cold.png",
-        "category"
-    )
+        with col:
 
-with col6:
-    card(
-        "Rektangulære rør varmvalsede",
-        "images/rhs_hot.png",
-        "category"
-    )
-
-col7, col8, col9 = st.columns(3)
-
-with col7:
-    card(
-        "Rektangulære rør koldvalsede",
-        "images/rhs_cold.png",
-        "category"
-    )
-
-with col8:
-    card(
-        "Cirkulære rør middelsvære",
-        "images/chs_medium.png",
-        "category"
-    )
-
-with col9:
-    card(
-        "Cirkulære rør svære",
-        "images/chs_heavy.png",
-        "category"
-    )
+            card(
+                label,
+                image,
+                "category"
+            )
 
 category = st.session_state.category
 
@@ -350,7 +376,6 @@ def format_profile(profile, category):
 
     profile = str(profile)
 
-    # Kvadratiske + rektangulære rør
     if (
         "Kvadratiske" in category
         or
@@ -359,7 +384,6 @@ def format_profile(profile, category):
 
         return f"{profile} mm"
 
-    # Cirkulære rør
     if "Cirkulære" in category:
 
         if "x" in profile.lower():
@@ -402,6 +426,7 @@ st.subheader(
 col1, col2 = st.columns(2)
 
 with col1:
+
     card(
         "Klammeløsning",
         "images/klamme.png",
@@ -409,6 +434,7 @@ with col1:
     )
 
 with col2:
+
     card(
         "Bjælkeprofil eller PDP profil",
         "images/bjaelke.png",
@@ -424,6 +450,12 @@ if not montage:
 # SIDER
 # -------------------------
 
+st.divider()
+
+st.subheader(
+    "Vælg antal sider med inddækning"
+)
+
 is_circular = (
     category == "Cirkulære rør middelsvære"
     or
@@ -435,27 +467,28 @@ col1, col2, col3, col4 = st.columns(4)
 if is_circular:
 
     with col1:
-        st.image(
-            "images/side1.png",
-            use_container_width=True
+
+        disabled_card(
+            "1 side ikke muligt",
+            "images/side1.png"
         )
-        st.caption("Ikke muligt")
 
     with col2:
-        st.image(
-            "images/side2.png",
-            use_container_width=True
+
+        disabled_card(
+            "2 sider ikke muligt",
+            "images/side2.png"
         )
-        st.caption("Ikke muligt")
 
     with col3:
-        st.image(
-            "images/side3.png",
-            use_container_width=True
+
+        disabled_card(
+            "3 sider ikke muligt",
+            "images/side3.png"
         )
-        st.caption("Ikke muligt")
 
     with col4:
+
         card(
             "4",
             "images/side4.png",
@@ -465,6 +498,7 @@ if is_circular:
 else:
 
     with col1:
+
         card(
             "1",
             "images/side1.png",
@@ -472,6 +506,7 @@ else:
         )
 
     with col2:
+
         card(
             "2",
             "images/side2.png",
@@ -479,6 +514,7 @@ else:
         )
 
     with col3:
+
         card(
             "3",
             "images/side3.png",
@@ -486,11 +522,19 @@ else:
         )
 
     with col4:
+
         card(
             "4",
             "images/side4.png",
             "sides"
         )
+
+sides = st.session_state.sides
+
+if not sides:
+    st.stop()
+
+sides = int(sides)
 
 # -------------------------
 # BRANDTID
