@@ -1,7 +1,31 @@
 import streamlit as st
 import pandas as pd
 
-st.title("Brandbeskyttelse af stålkonstruktioner")
+# -------------------------
+# PAGE CONFIG
+# -------------------------
+
+st.set_page_config(
+    page_title="Brandbeskyttelse af stålkonstruktioner",
+    layout="wide"
+)
+
+# -------------------------
+# HEADER + RESET BUTTON
+# -------------------------
+
+col1, col2 = st.columns([8, 2])
+
+with col1:
+    st.title("Brandbeskyttelse af stålkonstruktioner")
+
+with col2:
+    st.write("")
+    st.write("")
+
+    if st.button("🔄 Start ny beregning", use_container_width=True):
+        st.session_state.clear()
+        st.rerun()
 
 # -------------------------
 # LOAD DATA
@@ -62,28 +86,47 @@ for key in ["category", "montage", "sides"]:
         st.session_state[key] = None
 
 # -------------------------
-# CARD COMPONENT (FIXED)
+# CARD COMPONENT
 # -------------------------
 
 def card(label, image, state_key):
+
     selected = st.session_state[state_key] == label
+
     border = "3px solid #00c853" if selected else "1px solid #444"
+    background = "#111827" if selected else "#0b1220"
 
     st.markdown(f"""
         <div style="
             border: {border};
-            border-radius: 12px;
-            padding: 10px;
+            background-color: {background};
+            border-radius: 16px;
+            padding: 20px;
             text-align: center;
+            min-height: 220px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            transition: 0.2s;
         ">
-            <img src="{image}" style="width:100%; max-width:160px;"><br>
-            <b>{label}</b>
+            <img src="{image}" style="
+                width:100%;
+                max-width:160px;
+                margin:auto;
+                margin-bottom:20px;
+            ">
+            <div style="
+                font-size:28px;
+                font-weight:700;
+            ">
+                {label}
+            </div>
         </div>
     """, unsafe_allow_html=True)
 
-    if st.button(f"Vælg {label}", key=f"{state_key}_{label}"):
+    if st.button(f"Vælg {label}", key=f"{state_key}_{label}", use_container_width=True):
         st.session_state[state_key] = label
-        st.rerun()   # 🔥 FIX
+        st.rerun()
 
 # -------------------------
 # KATEGORI
@@ -111,6 +154,8 @@ if not category:
 # PROFIL
 # -------------------------
 
+st.divider()
+
 allowed_types = category_map.get(category, [])
 
 profile_types = sorted(
@@ -130,11 +175,16 @@ def sort_profiles(profiles):
         return int(num) if num else 0
     return sorted(profiles, key=extract_number)
 
-profile = st.selectbox("Vælg profilstørrelse", sort_profiles(filtered_profiles))
+profile = st.selectbox(
+    "Vælg profilstørrelse",
+    sort_profiles(filtered_profiles)
+)
 
 # -------------------------
 # MONTAGE
 # -------------------------
+
+st.divider()
 
 st.subheader("Vælg inddækningstype")
 
@@ -154,6 +204,8 @@ if not montage:
 # -------------------------
 # SIDER
 # -------------------------
+
+st.divider()
 
 st.subheader("Vælg antal sider med inddækning")
 
@@ -182,7 +234,12 @@ sides = int(sides)
 # ØVRIGE INPUT
 # -------------------------
 
-fire_time = st.selectbox("Vælg brandbeskyttelsestid", [30, 60, 90, 120])
+st.divider()
+
+fire_time = st.selectbox(
+    "Vælg brandbeskyttelsestid",
+    [30, 60, 90, 120]
+)
 
 temperature = st.number_input(
     "Indtast dimensionerende ståltemperatur (°C)",
@@ -238,5 +295,10 @@ if pd.isna(thickness):
 # RESULTAT
 # -------------------------
 
+st.divider()
+
 st.success(f"AP/V: {apv}")
-st.success(f"Profil skal inddækkes med {int(thickness)} mm Knauf Fireboard")
+
+st.success(
+    f"Profil skal inddækkes med {int(thickness)} mm Knauf Fireboard"
+)
