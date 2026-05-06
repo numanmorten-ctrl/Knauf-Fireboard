@@ -11,13 +11,15 @@ st.set_page_config(
 )
 st.markdown("""
 <style>
-section.main > div {
-    max-width: 1200px;
+
+.block-container {
+    max-width: 1300px;
     padding-top: 2rem;
     padding-left: 2rem;
     padding-right: 2rem;
     margin: auto;
 }
+
 </style>
 """, unsafe_allow_html=True)
 
