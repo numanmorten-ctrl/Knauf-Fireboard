@@ -509,7 +509,7 @@ if pd.isna(thickness):
 st.divider()
 
 st.success(
-    f"AP/V: {apv}"
+    f"Beregnet profilforhold Ap/V: {apv}"
 )
 
 st.success(
