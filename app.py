@@ -19,10 +19,15 @@ st.markdown("""
 <style>
 
 .block-container {
+
     max-width: 1300px;
+
     padding-top: 2rem;
+
     padding-left: 2rem;
+
     padding-right: 2rem;
+
     margin: auto;
 }
 
@@ -40,9 +45,11 @@ div.stButton > button {
 
     color: white;
 
-    font-size: 14px;
+    font-size: 15px;
 
-    height: 40px;
+    font-weight: 600;
+
+    height: 46px;
 }
 
 div.stButton > button:hover {
@@ -161,7 +168,7 @@ def card(label, image_path, state_key):
     border = (
         "3px solid #00c853"
         if selected
-        else "1px solid #444"
+        else "1px solid #31333F"
     )
 
     background = (
@@ -212,11 +219,21 @@ def card(label, image_path, state_key):
     )
 
     if st.button(
-        "Vælg",
+        label,
         key=f"{state_key}_{label}",
         use_container_width=True
     ):
+
         st.session_state[state_key] = label
+
+        # Automatisk reset af sides
+        if (
+            label == "Cirkulære rør middelsvære"
+            or
+            label == "Cirkulære rør svære"
+        ):
+            st.session_state["sides"] = "4"
+
         st.rerun()
 
 # -------------------------
@@ -407,48 +424,73 @@ if not montage:
 # SIDER
 # -------------------------
 
-st.divider()
-
-st.subheader(
-    "Vælg antal sider med inddækning"
+is_circular = (
+    category == "Cirkulære rør middelsvære"
+    or
+    category == "Cirkulære rør svære"
 )
 
 col1, col2, col3, col4 = st.columns(4)
 
-with col1:
-    card(
-        "1",
-        "images/side1.png",
-        "sides"
-    )
+if is_circular:
 
-with col2:
-    card(
-        "2",
-        "images/side2.png",
-        "sides"
-    )
+    with col1:
+        st.image(
+            "images/side1.png",
+            use_container_width=True
+        )
+        st.caption("Ikke muligt")
 
-with col3:
-    card(
-        "3",
-        "images/side3.png",
-        "sides"
-    )
+    with col2:
+        st.image(
+            "images/side2.png",
+            use_container_width=True
+        )
+        st.caption("Ikke muligt")
 
-with col4:
-    card(
-        "4",
-        "images/side4.png",
-        "sides"
-    )
+    with col3:
+        st.image(
+            "images/side3.png",
+            use_container_width=True
+        )
+        st.caption("Ikke muligt")
 
-sides = st.session_state.sides
+    with col4:
+        card(
+            "4",
+            "images/side4.png",
+            "sides"
+        )
 
-if not sides:
-    st.stop()
+else:
 
-sides = int(sides)
+    with col1:
+        card(
+            "1",
+            "images/side1.png",
+            "sides"
+        )
+
+    with col2:
+        card(
+            "2",
+            "images/side2.png",
+            "sides"
+        )
+
+    with col3:
+        card(
+            "3",
+            "images/side3.png",
+            "sides"
+        )
+
+    with col4:
+        card(
+            "4",
+            "images/side4.png",
+            "sides"
+        )
 
 # -------------------------
 # BRANDTID
