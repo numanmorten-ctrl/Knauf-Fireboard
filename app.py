@@ -19,11 +19,32 @@ st.markdown("""
 <style>
 
 .block-container {
-    max-width: 1400px;
+    max-width: 1300px;
     padding-top: 2rem;
     padding-left: 2rem;
     padding-right: 2rem;
     margin: auto;
+}
+
+/* Fjerner standard Streamlit button styling */
+
+button[kind="secondary"] {
+    padding: 0 !important;
+    border: none !important;
+    background: transparent !important;
+}
+
+/* Fjerner tekst-formatering fra button */
+
+button[kind="secondary"] p {
+    margin: 0 !important;
+}
+
+/* Hover effekt */
+
+button[kind="secondary"]:hover {
+    transform: scale(1.01);
+    transition: 0.2s;
 }
 
 </style>
@@ -147,6 +168,7 @@ def get_base64_image(image_path):
             img_file.read()
         ).decode()
 
+
 def card(label, image_path, state_key):
 
     selected = (
@@ -167,13 +189,12 @@ def card(label, image_path, state_key):
 
     image_base64 = get_base64_image(image_path)
 
-    html = f"""
+    button_html = f"""
     <div style="
         border:{border};
         background-color:{background};
         border-radius:16px;
         padding:20px;
-        text-align:center;
         min-height:240px;
         display:flex;
         flex-direction:column;
@@ -187,13 +208,13 @@ def card(label, image_path, state_key):
             height:160px;
             object-fit:contain;
             margin-bottom:20px;
-            border-radius:12px;
         "/>
 
         <div style="
             font-size:24px;
             font-weight:700;
             color:white;
+            text-align:center;
         ">
             {label}
         </div>
@@ -201,13 +222,8 @@ def card(label, image_path, state_key):
     </div>
     """
 
-    st.components.v1.html(
-        html,
-        height=260
-    )
-
     if st.button(
-        f"Vælg {label}",
+        button_html,
         key=f"{state_key}_{label}",
         use_container_width=True
     ):
