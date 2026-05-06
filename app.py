@@ -136,7 +136,7 @@ def card(label, image, state_key):
     border = "3px solid #00c853" if selected else "1px solid #444"
     background = "#111827" if selected else "#0b1220"
 
-    st.markdown(f"""
+    html = f"""
     <div style="
         border:{border};
         background-color:{background};
@@ -154,7 +154,7 @@ def card(label, image, state_key):
             max-width:160px;
             margin:auto;
             margin-bottom:20px;
-        " />
+        ">
 
         <div style="
             font-size:28px;
@@ -164,7 +164,9 @@ def card(label, image, state_key):
         </div>
 
     </div>
-    """, unsafe_allow_html=True)
+    """
+
+    st.markdown(html, unsafe_allow_html=True)
 
     if st.button(
         f"Vælg {label}",
