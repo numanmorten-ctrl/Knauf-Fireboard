@@ -26,59 +26,34 @@ st.markdown("""
     margin: auto;
 }
 
-/* KNAP UNDER CARD */
-
 div.stButton > button {
+
     width: 100%;
-    height: 0px;
-    padding: 0;
-    margin-top: -260px;
-    margin-bottom: 260px;
 
-    background: transparent;
-    border: none;
+    margin-top: -14px;
 
-    color: transparent;
-    font-size: 0;
+    border-radius: 0 0 16px 16px;
+
+    background-color: #0b1220;
+
+    border: 1px solid #31333F;
+
+    color: white;
+
+    font-size: 14px;
+
+    height: 40px;
 }
-
-/* HOVER */
 
 div.stButton > button:hover {
-    border: none;
-    background: transparent;
-}
 
-/* FJERN FOCUS */
+    border: 1px solid #00c853;
 
-div.stButton > button:focus {
-    outline: none;
-    box-shadow: none;
+    color: #00c853;
 }
 
 </style>
 """, unsafe_allow_html=True)
-# -------------------------
-# HEADER + RESET BUTTON
-# -------------------------
-
-col1, col2 = st.columns([8, 2])
-
-with col1:
-    st.title("Brandbeskyttelse af stålkonstruktioner")
-
-with col2:
-
-    st.write("")
-    st.write("")
-
-    if st.button(
-        "🔄 Start ny beregning",
-        use_container_width=True
-    ):
-        st.session_state.clear()
-        st.rerun()
-
 # -------------------------
 # LOAD DATA
 # -------------------------
@@ -174,78 +149,66 @@ def card(label, image_path, state_key):
         st.session_state[state_key] == label
     )
 
-    border_color = (
-        "#00c853"
+    border = (
+        "3px solid #00c853"
         if selected
-        else "#31333F"
+        else "1px solid #444"
     )
 
-    with st.container(border=True):
+    background = (
+        "#111827"
+        if selected
+        else "#0b1220"
+    )
 
-        st.markdown(
-            f"""
-            <style>
-            .card-image {{
-                display:flex;
-                justify-content:center;
-                margin-top:10px;
-                margin-bottom:20px;
-            }}
+    image_base64 = get_base64_image(image_path)
 
-            .card-title {{
-                text-align:center;
-                font-size:28px;
-                font-weight:700;
-                margin-bottom:10px;
-            }}
+    html = f"""
+    <div style="
+        border:{border};
+        background-color:{background};
+        border-radius:16px;
+        padding:20px;
+        text-align:center;
+        min-height:240px;
+        display:flex;
+        flex-direction:column;
+        justify-content:center;
+        align-items:center;
+    ">
 
-            div[data-testid="stVerticalBlock"] > div:has(.selected-{label}) {{
-                border:3px solid {border_color};
-                border-radius:16px;
-                background-color:#0b1220;
-                padding:10px;
-            }}
-            </style>
-            """,
-            unsafe_allow_html=True
-        )
+        <img src="data:image/png;base64,{image_base64}"
+        style="
+            width:160px;
+            height:160px;
+            object-fit:contain;
+            margin-bottom:20px;
+        "/>
 
-        st.markdown(
-            f'<div class="selected-{label}"></div>',
-            unsafe_allow_html=True
-        )
+        <div style="
+            font-size:24px;
+            font-weight:700;
+            color:white;
+            text-align:center;
+        ">
+            {label}
+        </div>
 
-        st.markdown(
-            '<div class="card-image">',
-            unsafe_allow_html=True
-        )
+    </div>
+    """
 
-        st.image(
-            image_path,
-            width=160
-        )
+    st.components.v1.html(
+        html,
+        height=260
+    )
 
-        st.markdown(
-            '</div>',
-            unsafe_allow_html=True
-        )
-
-        st.markdown(
-            f"""
-            <div class="card-title">
-                {label}
-            </div>
-            """,
-            unsafe_allow_html=True
-        )
-
-        if st.button(
-            f"Vælg {label}",
-            key=f"{state_key}_{label}",
-            use_container_width=True
-        ):
-            st.session_state[state_key] = label
-            st.rerun()
+    if st.button(
+        "Vælg",
+        key=f"{state_key}_{label}",
+        use_container_width=True
+    ):
+        st.session_state[state_key] = label
+        st.rerun()
 
 # -------------------------
 # PROFILKATEGORI
