@@ -11,7 +11,7 @@ st.set_page_config(
 )
 st.markdown("""
 <style>
-.main .block-container {
+section.main > div {
     max-width: 1200px;
     padding-top: 2rem;
     padding-left: 2rem;
