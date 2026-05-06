@@ -168,81 +168,84 @@ for key in [
 # CARD COMPONENT
 # -------------------------
 
-def get_base64_image(image_path):
-
-    with open(image_path, "rb") as img_file:
-
-        return base64.b64encode(
-            img_file.read()
-        ).decode()
-
-
 def card(label, image_path, state_key):
 
     selected = (
         st.session_state[state_key] == label
     )
 
-    border = (
-        "3px solid #00c853"
+    border_color = (
+        "#00c853"
         if selected
-        else "1px solid #444"
+        else "#31333F"
     )
 
-    background = (
-        "#111827"
-        if selected
-        else "#0b1220"
-    )
+    with st.container(border=True):
 
-    image_base64 = get_base64_image(image_path)
+        st.markdown(
+            f"""
+            <style>
+            .card-image {{
+                display:flex;
+                justify-content:center;
+                margin-top:10px;
+                margin-bottom:20px;
+            }}
 
-    html = f"""
-    <div style="
-        border:{border};
-        background-color:{background};
-        border-radius:16px;
-        padding:20px;
-        text-align:center;
-        min-height:240px;
-        display:flex;
-        flex-direction:column;
-        justify-content:center;
-        align-items:center;
-    ">
+            .card-title {{
+                text-align:center;
+                font-size:28px;
+                font-weight:700;
+                margin-bottom:10px;
+            }}
 
-        <img src="data:image/png;base64,{image_base64}"
-        style="
-            width:160px;
-            height:160px;
-            object-fit:contain;
-            margin-bottom:20px;
-        "/>
+            div[data-testid="stVerticalBlock"] > div:has(.selected-{label}) {{
+                border:3px solid {border_color};
+                border-radius:16px;
+                background-color:#0b1220;
+                padding:10px;
+            }}
+            </style>
+            """,
+            unsafe_allow_html=True
+        )
 
-        <div style="
-            font-size:24px;
-            font-weight:700;
-            color:white;
-            text-align:center;
-        ">
-            {label}
-        </div>
+        st.markdown(
+            f'<div class="selected-{label}"></div>',
+            unsafe_allow_html=True
+        )
 
-    </div>
-    """
+        st.markdown(
+            '<div class="card-image">',
+            unsafe_allow_html=True
+        )
 
-    st.components.v1.html(
-        html,
-        height=260
-    )
+        st.image(
+            image_path,
+            width=160
+        )
 
-    if st.button(
-        label,
-        key=f"{state_key}_{label}",
-        use_container_width=True
-    ):
-        st.session_state[state_key] = label
-        st.rerun()
+        st.markdown(
+            '</div>',
+            unsafe_allow_html=True
+        )
+
+        st.markdown(
+            f"""
+            <div class="card-title">
+                {label}
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
+
+        if st.button(
+            f"Vælg {label}",
+            key=f"{state_key}_{label}",
+            use_container_width=True
+        ):
+            st.session_state[state_key] = label
+            st.rerun()
 
 # -------------------------
 # PROFILKATEGORI
