@@ -136,35 +136,35 @@ def card(label, image, state_key):
     border = "3px solid #00c853" if selected else "1px solid #444"
     background = "#111827" if selected else "#0b1220"
 
-    st.markdown(f"""
+   st.markdown(f"""
+<div style="
+    border:{border};
+    background-color:{background};
+    border-radius:16px;
+    padding:20px;
+    text-align:center;
+    min-height:220px;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+">
+
+    <img src="{image}" style="
+        width:100%;
+        max-width:160px;
+        margin:auto;
+        margin-bottom:20px;
+    " />
+
     <div style="
-        border:{border};
-        background-color:{background};
-        border-radius:16px;
-        padding:20px;
-        text-align:center;
-        min-height:220px;
-        display:flex;
-        flex-direction:column;
-        justify-content:center;
+        font-size:28px;
+        font-weight:700;
     ">
-
-        <img src="{image}" style="
-            width:100%;
-            max-width:160px;
-            margin:auto;
-            margin-bottom:20px;
-        "/>
-
-        <div style="
-            font-size:28px;
-            font-weight:700;
-        ">
-            {label}
-        </div>
-
+        {label}
     </div>
-    """, unsafe_allow_html=True)
+
+</div>
+""", unsafe_allow_html=True)
 
     if st.button(
         f"Vælg {label}",
