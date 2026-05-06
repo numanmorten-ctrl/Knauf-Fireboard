@@ -241,11 +241,11 @@ def card(label, image_path, state_key):
         height=260
     )
 
-    if st.button(
-        label,
-        key=f"{state_key}_{label}",
-        use_container_width=True
-    ):
+   if st.button(
+    "Vælg",
+    key=f"{state_key}_{label}",
+    use_container_width=True
+):
 
         st.session_state[state_key] = label
 
