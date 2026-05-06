@@ -152,13 +152,6 @@ for key in [
 # CARD COMPONENT
 # -------------------------
 
-def get_base64_image(image_path):
-
-    with open(image_path, "rb") as img_file:
-        return base64.b64encode(
-            img_file.read()
-        ).decode()
-
 def card(label, image_path, state_key):
 
     selected = (
@@ -213,9 +206,9 @@ def card(label, image_path, state_key):
     </div>
     """
 
-    st.markdown(
+    st.components.v1.html(
         html,
-        unsafe_allow_html=True
+        height=260
     )
 
     if st.button(
@@ -225,7 +218,6 @@ def card(label, image_path, state_key):
     ):
         st.session_state[state_key] = label
         st.rerun()
-
 # -------------------------
 # KATEGORI
 # -------------------------
