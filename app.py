@@ -200,7 +200,7 @@ def card(label, image_path, state_key):
             object-fit:contain;
             margin-bottom:20px;
             border-radius:12px;
-        ">
+        "/>
 
         <div style="
             font-size:28px;
