@@ -1,3 +1,4 @@
+import base64
 import streamlit as st
 import pandas as pd
 from PIL import Image
@@ -151,6 +152,13 @@ for key in [
 # CARD COMPONENT
 # -------------------------
 
+def get_base64_image(image_path):
+
+    with open(image_path, "rb") as img_file:
+        return base64.b64encode(
+            img_file.read()
+        ).decode()
+
 def card(label, image_path, state_key):
 
     selected = (
@@ -169,41 +177,44 @@ def card(label, image_path, state_key):
         else "#0b1220"
     )
 
-    st.markdown(
-        f"""
-        <div style="
-            border:{border};
-            background-color:{background};
-            border-radius:16px;
-            padding:20px;
-            text-align:center;
-            min-height:260px;
+    image_base64 = get_base64_image(image_path)
+
+    html = f"""
+    <div style="
+        border:{border};
+        background-color:{background};
+        border-radius:16px;
+        padding:20px;
+        text-align:center;
+        min-height:240px;
+        display:flex;
+        flex-direction:column;
+        justify-content:center;
+        align-items:center;
+    ">
+
+        <img src="data:image/png;base64,{image_base64}"
+        style="
+            width:160px;
+            height:160px;
+            object-fit:contain;
+            margin-bottom:20px;
+            border-radius:12px;
         ">
-        """,
-        unsafe_allow_html=True
-    )
 
-    image = Image.open(image_path)
-
-    st.image(
-        image,
-        width=160
-    )
-
-    st.markdown(
-        f"""
         <div style="
             font-size:28px;
             font-weight:700;
-            text-align:center;
-            padding-top:10px;
-            padding-bottom:10px;
+            color:white;
         ">
             {label}
         </div>
 
-        </div>
-        """,
+    </div>
+    """
+
+    st.markdown(
+        html,
         unsafe_allow_html=True
     )
 
