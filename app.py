@@ -154,7 +154,7 @@ def card(label, image, state_key):
             max-width:160px;
             margin:auto;
             margin-bottom:20px;
-        ">
+        "/>
 
         <div style="
             font-size:28px;
