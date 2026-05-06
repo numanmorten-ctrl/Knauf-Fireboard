@@ -324,10 +324,48 @@ def sort_profiles(profiles):
         key=extract_number
     )
 
-profile = st.selectbox(
+def format_profile(profile, category):
+
+    profile = str(profile)
+
+    # Kvadratiske + rektangulære rør
+    if (
+        "Kvadratiske" in category
+        or
+        "Rektangulære" in category
+    ):
+
+        return f"{profile} mm"
+
+    # Cirkulære rør
+    if "Cirkulære" in category:
+
+        if "x" in profile.lower():
+
+            diameter = (
+                profile
+                .split("x")[0]
+                .replace("CHS", "")
+                .strip()
+            )
+
+            return f"Ø{diameter} mm"
+
+        return f"Ø{profile} mm"
+
+    return profile
+
+formatted_profiles = {
+    format_profile(p, category): p
+    for p in sort_profiles(profiles)
+}
+
+selected_profile_label = st.selectbox(
     "Vælg profilstørrelse",
-    sort_profiles(profiles)
+    list(formatted_profiles.keys())
 )
+
+profile = formatted_profiles[selected_profile_label]
 
 # -------------------------
 # MONTAGE
