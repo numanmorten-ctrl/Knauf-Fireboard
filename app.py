@@ -7,7 +7,7 @@ import pandas as pd
 
 st.set_page_config(
     page_title="Brandbeskyttelse af stålkonstruktioner",
-    layout="centered"
+    layout="wide"
 )
 
 # -------------------------
