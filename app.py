@@ -9,6 +9,11 @@ st.set_page_config(
     page_title="Brandbeskyttelse af stålkonstruktioner",
     layout="wide"
 )
+
+# -------------------------
+# CUSTOM WIDTH
+# -------------------------
+
 st.markdown("""
 <style>
 
@@ -62,21 +67,43 @@ category_map = {
 # -------------------------
 
 def load_fireboard(path):
+
     df = pd.read_csv(path, sep=";")
 
     df = df.dropna(how="all")
-    df.rename(columns={df.columns[0]: "temperature"}, inplace=True)
 
-    df["temperature"] = df["temperature"].astype(str).str.strip()
-    df["temperature"] = pd.to_numeric(df["temperature"], errors="coerce")
+    df.rename(
+        columns={df.columns[0]: "temperature"},
+        inplace=True
+    )
+
+    df["temperature"] = (
+        df["temperature"]
+        .astype(str)
+        .str.strip()
+    )
+
+    df["temperature"] = pd.to_numeric(
+        df["temperature"],
+        errors="coerce"
+    )
 
     df = df.dropna(subset=["temperature"])
+
     df["temperature"] = df["temperature"].astype(int)
 
     df.set_index("temperature", inplace=True)
 
-    df.columns = pd.Series(df.columns).astype(str).str.strip()
-    df.columns = pd.to_numeric(df.columns, errors="coerce")
+    df.columns = (
+        pd.Series(df.columns)
+        .astype(str)
+        .str.strip()
+    )
+
+    df.columns = pd.to_numeric(
+        df.columns,
+        errors="coerce"
+    )
 
     df = df.loc[:, df.columns.notna()]
     df.columns = df.columns.astype(int)
@@ -107,6 +134,7 @@ def card(label, image, state_key):
     selected = st.session_state[state_key] == label
 
     border = "3px solid #00c853" if selected else "1px solid #444"
+
     background = "#111827" if selected else "#0b1220"
 
     st.markdown(f"""
@@ -128,16 +156,22 @@ def card(label, image, state_key):
                 margin:auto;
                 margin-bottom:20px;
             ">
+
             <div style="
                 font-size:28px;
                 font-weight:700;
             ">
                 {label}
             </div>
+
         </div>
     """, unsafe_allow_html=True)
 
-    if st.button(f"Vælg {label}", key=f"{state_key}_{label}", use_container_width=True):
+    if st.button(
+        f"Vælg {label}",
+        key=f"{state_key}_{label}",
+        use_container_width=True
+    ):
         st.session_state[state_key] = label
         st.rerun()
 
@@ -172,10 +206,15 @@ st.divider()
 allowed_types = category_map.get(category, [])
 
 profile_types = sorted(
-    apv_df[apv_df["profile_type"].isin(allowed_types)]["profile_type"].unique()
+    apv_df[
+        apv_df["profile_type"].isin(allowed_types)
+    ]["profile_type"].unique()
 )
 
-profile_type = st.selectbox("Vælg profiltype", profile_types)
+profile_type = st.selectbox(
+    "Vælg profiltype",
+    profile_types
+)
 
 filtered_profiles = apv_df[
     (apv_df["profile_type"] == profile_type) &
@@ -183,9 +222,11 @@ filtered_profiles = apv_df[
 ]["profile"].unique()
 
 def sort_profiles(profiles):
+
     def extract_number(x):
         num = ''.join(filter(str.isdigit, str(x)))
         return int(num) if num else 0
+
     return sorted(profiles, key=extract_number)
 
 profile = st.selectbox(
@@ -207,7 +248,11 @@ with col1:
     card("Klammeløsning", "images/klamme.png", "montage")
 
 with col2:
-    card("Bjælkeprofil eller PDP profil", "images/bjaelke.png", "montage")
+    card(
+        "Bjælkeprofil eller PDP profil",
+        "images/bjaelke.png",
+        "montage"
+    )
 
 montage = st.session_state.montage
 
@@ -244,27 +289,36 @@ if not sides:
 sides = int(sides)
 
 # -------------------------
-# ØVRIGE INPUT
+# BRANDTID
 # -------------------------
 
 st.divider()
 
 fire_time = st.selectbox(
     "Vælg brandbeskyttelsestid",
-    [30, 60, 90, 120]
+    [30, 60, 90, 120],
+    index=None,
+    placeholder="Vælg brandtid"
 )
+
+if fire_time is None:
+    st.stop()
+
+# -------------------------
+# TEMPERATUR
+# -------------------------
+
+st.divider()
 
 temperature = st.number_input(
     "Indtast dimensionerende ståltemperatur (°C)",
+    min_value=350,
+    max_value=750,
     value=450,
     step=1
 )
 
 st.caption("Gyldigt interval: 350–750 °C")
-
-if temperature < 350 or temperature > 750:
-    st.error("Temperaturen skal være mellem 350 og 750 °C")
-    st.stop()
 
 temperature = int(temperature)
 
@@ -279,7 +333,9 @@ row = apv_df[
 ]
 
 if row.empty:
-    st.error("Denne kombination er ikke mulig for det valgte profil")
+    st.error(
+        "Denne kombination er ikke mulig for det valgte profil"
+    )
     st.stop()
 
 apv = int(row.iloc[0]["apv"])
@@ -295,7 +351,9 @@ if temperature not in table.index:
     st.stop()
 
 if apv not in table.columns:
-    st.error("Der findes ingen Fireboard løsning for denne kombination")
+    st.error(
+        "Der findes ingen Fireboard løsning for denne kombination"
+    )
     st.stop()
 
 thickness = table.loc[temperature, apv]
@@ -313,5 +371,6 @@ st.divider()
 st.success(f"AP/V: {apv}")
 
 st.success(
-    f"Profil skal inddækkes med {int(thickness)} mm Knauf Fireboard"
+    f"Profil skal inddækkes med "
+    f"{int(thickness)} mm Knauf Fireboard"
 )
