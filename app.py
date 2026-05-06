@@ -9,6 +9,17 @@ st.set_page_config(
     page_title="Brandbeskyttelse af stålkonstruktioner",
     layout="wide"
 )
+st.markdown("""
+<style>
+.main .block-container {
+    max-width: 1200px;
+    padding-top: 2rem;
+    padding-left: 2rem;
+    padding-right: 2rem;
+    margin: auto;
+}
+</style>
+""", unsafe_allow_html=True)
 
 # -------------------------
 # HEADER + RESET BUTTON
