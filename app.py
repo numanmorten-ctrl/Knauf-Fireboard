@@ -3,6 +3,7 @@ from io import BytesIO
 
 import streamlit as st
 import pandas as pd
+from datetime import date
 
 from reportlab.platypus import (
     SimpleDocTemplate,
@@ -814,18 +815,26 @@ with col1:
         "Projekt"
     )
 
+with col2:
+
+    company_name = st.text_input(
+        "Firma"
+    )
+
+col3, col4 = st.columns(2)
+
+with col3:
+
     prepared_by = st.text_input(
         "Udarbejdet af"
     )
 
-with col2:
+with col4:
 
-    company = st.text_input(
-        "Firma"
-    )
-
-    reference = st.text_input(
-        "Reference"
+    report_date = st.date_input(
+        "Dato",
+        value=date.today(),
+        format="DD-MM-YYYY"
     )
 
 description = st.text_area(
@@ -869,7 +878,7 @@ def generate_pdf():
         ["Projekt", project_name],
         ["Beregning udført af", prepared_by],
         ["Firma", company],
-        ["Reference", reference],
+        ["Dato", report_date.strftime("%d-%m-%Y")],
         ["Beskrivelse", description],
     ]
 
@@ -952,7 +961,7 @@ def generate_pdf():
     )
 
     note = Paragraph(
-        "Monteres iht. gældende Knauf montagevejledning.",
+        "Monteres i.h.t. Knauf montagevejledning, som findes i gældende Knauf Manual i afsnittet Brandbeskyttelse.",
         styles['BodyText']
     )
 
