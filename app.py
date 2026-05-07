@@ -1007,7 +1007,7 @@ def generate_pdf():
 st.divider()
 
 st.success(
-    f"Beregnet profilforhold Ap/V: {apv}"
+    f"Beregnet profilforhold Ap/V: {apv} m²/m³"
 )
 
 st.success(
