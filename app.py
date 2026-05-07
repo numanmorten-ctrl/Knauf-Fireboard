@@ -209,7 +209,7 @@ def card(label, image_path, state_key):
         border-radius:16px;
         padding:20px;
         text-align:center;
-        min-height:240px;
+        min-height:200px;
         display:flex;
         flex-direction:column;
         justify-content:center;
@@ -218,14 +218,14 @@ def card(label, image_path, state_key):
 
         <img src="data:image/png;base64,{image_base64}"
         style="
-            width:160px;
-            height:160px;
+            width:130px;
+            height:130px;
             object-fit:contain;
             margin-bottom:20px;
         "/>
 
         <div style="
-            font-size:24px;
+            font-size:20px;
             font-weight:700;
             color:white;
             text-align:center;
@@ -325,11 +325,11 @@ categories = [
     ("Andre profiler", "images/other_profiles.png"),
 ]
 
-for i in range(0, len(categories), 3):
+for i in range(0, len(categories), 5):
 
-    cols = st.columns(3)
+    cols = st.columns(5)
 
-    for col, (label, image) in zip(cols, categories[i:i+3]):
+    for col, (label, image) in zip(cols, categories[i:i+5]):
 
         with col:
 
