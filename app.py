@@ -321,6 +321,8 @@ categories = [
     ("Rektangulære rør koldvalsede", "images/rhs_cold.png"),
     ("Cirkulære rør middelsvære", "images/chs_medium.png"),
     ("Cirkulære rør svære", "images/chs_heavy.png"),
+
+    ("Andre profiler", "images/other_profiles.png"),
 ]
 
 for i in range(0, len(categories), 3):
@@ -343,75 +345,137 @@ if not category:
     st.stop()
 
 # -------------------------
-# PROFILER
+# ANDRE PROFILER
 # -------------------------
 
-st.divider()
-
-filtered_df = apv_df[
-    apv_df["profile_category"] == category
-]
-
-profiles = filtered_df["profile"].unique()
-
-def sort_profiles(profiles):
-
-    def extract_number(x):
-
-        nums = ''.join(
-            filter(
-                str.isdigit,
-                str(x)
-            )
-        )
-
-        return int(nums) if nums else 0
-
-    return sorted(
-        profiles,
-        key=extract_number
-    )
-
-def format_profile(profile, category):
-
-    profile = str(profile)
-
-    if (
-        "Kvadratiske" in category
-        or
-        "Rektangulære" in category
-    ):
-
-        return f"{profile} mm"
-
-    if "Cirkulære" in category:
-
-        if "x" in profile.lower():
-
-            diameter = (
-                profile
-                .split("x")[0]
-                .replace("CHS", "")
-                .strip()
-            )
-
-            return f"Ø{diameter} mm"
-
-        return f"Ø{profile} mm"
-
-    return profile
-
-formatted_profiles = {
-    format_profile(p, category): p
-    for p in sort_profiles(profiles)
-}
-
-selected_profile_label = st.selectbox(
-    "Vælg profilstørrelse",
-    list(formatted_profiles.keys())
+custom_profile = (
+    category == "Andre profiler"
 )
 
-profile = formatted_profiles[selected_profile_label]
+if custom_profile:
+
+    st.divider()
+
+    st.subheader(
+        "Valgfrie profiler"
+    )
+
+    apv_mode = st.radio(
+        "Hvordan vil du bestemme Ap/V?",
+        [
+            "Indtast Ap/V direkte",
+            "Beregn Ap/V"
+        ]
+    )
+
+    if apv_mode == "Indtast Ap/V direkte":
+
+        apv = st.number_input(
+            "Indtast Ap/V forhold",
+            min_value=10,
+            max_value=500,
+            value=150
+        )
+
+    else:
+
+        st.info(
+            "Ap/V = indvendig omkreds divideret "
+            "med stålets tværsnitsareal × 1000"
+        )
+
+        perimeter = st.number_input(
+            "Indvendig omkreds (mm)",
+            min_value=1.0,
+            value=300.0
+        )
+
+        area = st.number_input(
+            "Stålets tværsnitsareal (mm²)",
+            min_value=1.0,
+            value=2000.0
+        )
+
+        apv = round(
+            (perimeter / area) * 1000
+        )
+
+        st.success(
+            f"Beregnet Ap/V: {apv}"
+        )
+
+else:
+
+    # -------------------------
+    # PROFILER
+    # -------------------------
+
+    st.divider()
+
+    filtered_df = apv_df[
+        apv_df["profile_category"] == category
+    ]
+
+    profiles = filtered_df["profile"].unique()
+
+    def sort_profiles(profiles):
+
+        def extract_number(x):
+
+            nums = ''.join(
+                filter(
+                    str.isdigit,
+                    str(x)
+                )
+            )
+
+            return int(nums) if nums else 0
+
+        return sorted(
+            profiles,
+            key=extract_number
+        )
+
+    def format_profile(profile, category):
+
+        profile = str(profile)
+
+        if (
+            "Kvadratiske" in category
+            or
+            "Rektangulære" in category
+        ):
+
+            return f"{profile} mm"
+
+        if "Cirkulære" in category:
+
+            if "x" in profile.lower():
+
+                diameter = (
+                    profile
+                    .split("x")[0]
+                    .replace("CHS", "")
+                    .strip()
+                )
+
+                return f"Ø{diameter} mm"
+
+            return f"Ø{profile} mm"
+
+        return profile
+
+    formatted_profiles = {
+        format_profile(p, category): p
+        for p in sort_profiles(profiles)
+    }
+
+    selected_profile_label = st.selectbox(
+        "Vælg profilstørrelse",
+        list(formatted_profiles.keys())
+    )
+
+    profile = formatted_profiles[selected_profile_label]
 
 # -------------------------
 # MONTAGE
@@ -572,32 +636,34 @@ temperature = int(temperature)
 # FIND AP/V
 # -------------------------
 
-row = apv_df[
-    (
-        apv_df["profile"] == profile
-    )
-    &
-    (
-        apv_df["montage"] == montage
-    )
-    &
-    (
-        apv_df["sides"] == sides
-    )
-]
+if not custom_profile:
 
-if row.empty:
+    row = apv_df[
+        (
+            apv_df["profile"] == profile
+        )
+        &
+        (
+            apv_df["montage"] == montage
+        )
+        &
+        (
+            apv_df["sides"] == sides
+        )
+    ]
 
-    st.error(
-        "Denne kombination er ikke mulig "
-        "for det valgte profil"
+    if row.empty:
+
+        st.error(
+            "Denne kombination er ikke mulig "
+            "for det valgte profil"
+        )
+
+        st.stop()
+
+    apv = int(
+        row.iloc[0]["apv"]
     )
-
-    st.stop()
-
-apv = int(
-    row.iloc[0]["apv"]
-)
 
 # -------------------------
 # FIND TYKKELSE
@@ -605,19 +671,19 @@ apv = int(
 
 table = fire_tables[fire_time]
 
-if temperature not in table.index:
-
-    st.error(
-        "Temperaturen findes ikke i databasen"
-    )
-
-    st.stop()
-
 if apv not in table.columns:
 
     st.error(
         "Der findes ingen Fireboard løsning "
         "for denne kombination"
+    )
+
+    st.stop()
+
+if temperature not in table.index:
+
+    st.error(
+        "Temperaturen findes ikke i databasen"
     )
 
     st.stop()
