@@ -442,25 +442,25 @@ if custom_profile:
     else:
 
         st.markdown("""
-        ### Beregning af profilforhold
+### Beregning af profilforhold
 
-        Beregning udføres iht. **EN 13381-4** og  
-        **DS/EN 1993-1-2 (Eurocode 3)**.
-        """)
+Beregning udføres iht. **EN 13381-4** og  
+**DS/EN 1993-1-2 (Eurocode 3)**.
+""")
 
-        st.latex(
-            r'''
-            \frac{A_p}{V}
-            =
-            \frac{\text{Indvendig omkreds [mm]}}
-            {\text{Tværsnitsareal [mm^2]}}
-            \times 1000
-            '''
-        )
+st.latex(
+    r'''
+    \frac{A_p}{V}
+    =
+    \frac{\text{Indvendig omkreds [mm]}}
+    {\text{Tværsnitsareal [mm^2]}}
+    \times 1000
+    '''
+)
 
-        st.caption(
-            "Resultat angives i m²/m³"
-        )
+st.caption(
+    "Resultat angives i m²/m³"
+)
 
         perimeter = st.number_input(
             "Indvendig omkreds (mm)",
