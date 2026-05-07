@@ -450,23 +450,26 @@ if custom_profile:
         og **DS/EN 1993-1-2 (Eurocode 3)**.
         """)
 
-        st.info("""
-        Ap/V beregnes ud fra profilens indvendige omkreds
-        divideret med stålets tværsnitsareal.
-        """)
+        st.markdown("""
+        <div style="
+        font-size:28px;
+        margin-top:20px;
+        margin-bottom:10px;
+        ">
 
-        st.latex(
-            r'''
-            \frac{A_p}{V}
-            =
-            \frac{
-                \mathrm{Indvendig\ omkreds\ [mm]}
-            }{
-                \mathrm{Tværsnitsareal\ [mm^2]}
-            }
-            \times 1000
-            '''
-        )
+        \\[
+        \\frac{A_p}{V}
+        =
+        \\frac{
+        \\mathrm{Indvendig\\ omkreds\\ [mm]}
+        }{
+        \\mathrm{Tværsnitsareal\\ [mm^2]}
+        }
+        \\times 1000
+        \\]
+
+        </div>
+        """, unsafe_allow_html=True)
 
         st.caption(
             "Resultat angives i m²/m³"
