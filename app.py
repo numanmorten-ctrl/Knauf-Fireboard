@@ -901,15 +901,15 @@ def generate_pdf():
     )
 
     input_data = [
-
-        ["Profilkategori", category],
-        ["Valgt stålprofil", str(profile)],
-        ["Inddækning", str(sides)],
-        ["Fastgørelsesmetode", montage],
-        ["Brandbeskyttelsestid", f"{fire_time} minutter"],
-        ["Dimensionerende ståltemperatur", f"{temperature} °C"],
-        ["Beregnet profilforhold Ap/V", str(apv)],
-    ]
+        
+    ["Profilkategori", category],
+    ["Valgt stålprofil", str(profile)],
+    ["Inddækning", f"{sides} sider"],
+    ["Fastgørelsesmetode", montage],
+    ["Brandbeskyttelsestid", f"{fire_time} minutter"],
+    ["Dimensionerende ståltemperatur", f"{temperature} °C"],
+    ["Beregnet profilforhold Ap/V", f"{apv} m²/m³"],
+]
 
     input_table = Table(
         input_data,
