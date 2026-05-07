@@ -441,7 +441,7 @@ if custom_profile:
 
     else:
 
-                st.markdown("""
+        st.markdown("""
         ### Beregning af profilforhold
 
         Beregning udføres iht. **EN 13381-4** og  
@@ -452,8 +452,8 @@ if custom_profile:
             r'''
             \frac{A_p}{V}
             =
-            \frac{\text{Indvendig omkreds [mm]}}
-            {\text{Tværsnitsareal [mm^2]}}
+            \frac{\text{Indvendig\ omkreds\ [mm]}}
+            {\text{Tværsnitsareal\ [mm^2]}}
             \times 1000
             '''
         )
