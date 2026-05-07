@@ -948,7 +948,7 @@ def generate_pdf():
     )
 
     result = Paragraph(
-        f"<b>Profil skal inddækkes med "
+        f"<b>Resultat:    Profil skal inddækkes med "
         f"{int(thickness)} mm "
         f"Knauf Fireboard</b>",
         styles['Heading2']
