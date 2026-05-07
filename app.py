@@ -867,7 +867,7 @@ def generate_pdf():
     project_data = [
 
         ["Projekt", project_name],
-        ["Udarbejdet af", prepared_by],
+        ["Beregning udført af", prepared_by],
         ["Firma", company],
         ["Reference", reference],
         ["Beskrivelse", description],
@@ -903,12 +903,12 @@ def generate_pdf():
     input_data = [
 
         ["Profilkategori", category],
-        ["Profil", str(profile)],
+        ["Valgt stålprofil", str(profile)],
         ["Inddækning", str(sides)],
-        ["Fastgørelse", montage],
-        ["Brandtid", f"{fire_time} minutter"],
-        ["Temperatur", f"{temperature} °C"],
-        ["Ap/V", str(apv)],
+        ["Fastgørelsesmetode", montage],
+        ["Brandbeskyttelsestid", f"{fire_time} minutter"],
+        ["Dimensionerende ståltemperatur", f"{temperature} °C"],
+        ["Beregnet profilforhold Ap/V, str(apv)],
     ]
 
     input_table = Table(
