@@ -450,26 +450,18 @@ if custom_profile:
         og **DS/EN 1993-1-2 (Eurocode 3)**.
         """)
 
-        st.markdown("""
-        <div style="
-        font-size:28px;
-        margin-top:20px;
-        margin-bottom:10px;
-        ">
-
-        \\[
-        \\frac{A_p}{V}
-        =
-        \\frac{
-        \\mathrm{Indvendig\\ omkreds\\ [mm]}
-        }{
-        \\mathrm{Tværsnitsareal\\ [mm^2]}
-        }
-        \\times 1000
-        \\]
-
-        </div>
-        """, unsafe_allow_html=True)
+        st.latex(
+            r'''
+            \frac{A_p}{V}
+            =
+            \frac{
+                \mathrm{Indvendig\ omkreds\ [mm]}
+            }{
+                \mathrm{Tværsnitsareal\ [mm^2]}
+            }
+            \times 1000
+            '''
+        )
 
         st.caption(
             "Resultat angives i m²/m³"
