@@ -445,33 +445,32 @@ if custom_profile:
             "### Beregning af profilforhold"
         )
 
-        col1, col2 = st.columns([1, 1])
+        st.markdown("""
+        Beregning udføres iht. **EN 13381-4**  
+        og **DS/EN 1993-1-2 (Eurocode 3)**.
+        """)
 
-        with col1:
+        st.info("""
+        Ap/V beregnes ud fra profilens indvendige omkreds
+        divideret med stålets tværsnitsareal.
+        """)
 
-            st.markdown("""
-            Beregning udføres iht. **EN 13381-4**  
-            og **DS/EN 1993-1-2 (Eurocode 3)**.
-            """)
+        st.latex(
+            r'''
+            \frac{A_p}{V}
+            =
+            \frac{
+                \mathrm{Indvendig\ omkreds\ [mm]}
+            }{
+                \mathrm{Tværsnitsareal\ [mm^2]}
+            }
+            \times 1000
+            '''
+        )
 
-            st.caption(
-                "Resultat angives i m²/m³"
-            )
-
-        with col2:
-
-            st.latex(
-                r'''
-                \frac{A_p}{V}
-                =
-                \frac{
-                    \mathrm{Indvendig\ omkreds\ [mm]}
-                }{
-                    \mathrm{Tværsnitsareal\ [mm^2]}
-                }
-                \times 1000
-                '''
-            )
+        st.caption(
+            "Resultat angives i m²/m³"
+        )
 
         perimeter = st.number_input(
             "Indvendig omkreds (mm)",
