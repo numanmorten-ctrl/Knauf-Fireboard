@@ -452,8 +452,11 @@ if custom_profile:
             r'''
             \frac{A_p}{V}
             =
-            \frac{\text{Indvendig\ omkreds\ [mm]}}
-            {\text{Tværsnitsareal\ [mm^2]}}
+            \frac{
+                \mathrm{Indvendig\ omkreds\ [mm]}
+            }{
+                \mathrm{Tværsnitsareal\ [mm^2]}
+             }
             \times 1000
             '''
         )
