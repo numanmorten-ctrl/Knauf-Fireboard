@@ -482,7 +482,7 @@ if custom_profile:
         )
 
         st.success(
-            f"Beregnet Ap/V: {apv}"
+            f"Beregnet Ap/V: {apv} m²/m³"
         )
 
     profile = "Andet profil"
