@@ -445,39 +445,33 @@ if custom_profile:
             "### Beregning af profilforhold"
         )
 
-        st.markdown("""
-        Beregning udføres iht. **EN 13381-4**  
-        og **DS/EN 1993-1-2 (Eurocode 3)**.
-        """)
+        col1, col2 = st.columns([1, 2])
 
-        st.markdown(
-            r"""
-            <div style="
-                text-align:left;
-                font-size:32px;
-                margin-top:20px;
-                margin-bottom:10px;
-            ">
+        with col1:
 
-            $$
-            \frac{A_p}{V}
-            =
-            \frac{
-                \mathrm{Indvendig\ omkreds\ [mm]}
-            }{
-                \mathrm{Tværsnitsareal\ [mm^2]}
-            }
-            \times 1000
-            $$
+            st.markdown("""
+            Beregning udføres iht. **EN 13381-4**  
+            og **DS/EN 1993-1-2 (Eurocode 3)**.
+            """)
 
-            </div>
-            """,
-            unsafe_allow_html=True
-        )
+            st.caption(
+                "Resultat angives i m²/m³"
+            )
 
-        st.caption(
-            "Resultat angives i m²/m³"
-        )
+        with col2:
+
+            st.latex(
+                r'''
+                \frac{A_p}{V}
+                =
+                \frac{
+                    \mathrm{Indvendig\ omkreds\ [mm]}
+                }{
+                    \mathrm{Tværsnitsareal\ [mm^2]}
+                }
+                \times 1000
+                '''
+            )
 
         perimeter = st.number_input(
             "Indvendig omkreds (mm)",
