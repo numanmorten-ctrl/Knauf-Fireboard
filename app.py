@@ -478,127 +478,129 @@ else:
     profile = formatted_profiles[selected_profile_label]
 
 # -------------------------
-# MONTAGE
+# MONTAGE + SIDER
 # -------------------------
 
-st.divider()
+if not custom_profile:
 
-st.subheader(
-    "Vælg inddækningstype"
-)
+    st.divider()
 
-col1, col2 = st.columns(2)
-
-with col1:
-
-    card(
-        "Klammeløsning",
-        "images/klamme.png",
-        "montage"
+    st.subheader(
+        "Vælg inddækningstype"
     )
 
-with col2:
-
-    card(
-        "Bjælkeprofil eller PDP profil",
-        "images/bjaelke.png",
-        "montage"
-    )
-
-montage = st.session_state.montage
-
-if not montage:
-    st.stop()
-
-# -------------------------
-# SIDER
-# -------------------------
-
-st.divider()
-
-st.subheader(
-    "Vælg antal sider med inddækning"
-)
-
-is_circular = (
-    category == "Cirkulære rør middelsvære"
-    or
-    category == "Cirkulære rør svære"
-)
-
-col1, col2, col3, col4 = st.columns(4)
-
-if is_circular:
-
-    with col1:
-
-        disabled_card(
-            "1 side ikke muligt",
-            "images/side1.png"
-        )
-
-    with col2:
-
-        disabled_card(
-            "2 sider ikke muligt",
-            "images/side2.png"
-        )
-
-    with col3:
-
-        disabled_card(
-            "3 sider ikke muligt",
-            "images/side3.png"
-        )
-
-    with col4:
-
-        card(
-            "4",
-            "images/side4.png",
-            "sides"
-        )
-
-else:
+    col1, col2 = st.columns(2)
 
     with col1:
 
         card(
-            "1",
-            "images/side1.png",
-            "sides"
+            "Klammeløsning",
+            "images/klamme.png",
+            "montage"
         )
 
     with col2:
 
         card(
-            "2",
-            "images/side2.png",
-            "sides"
+            "Bjælkeprofil eller PDP profil",
+            "images/bjaelke.png",
+            "montage"
         )
 
-    with col3:
+    montage = st.session_state.montage
 
-        card(
-            "3",
-            "images/side3.png",
-            "sides"
-        )
+    if not montage:
+        st.stop()
 
-    with col4:
+    # -------------------------
+    # SIDER
+    # -------------------------
 
-        card(
-            "4",
-            "images/side4.png",
-            "sides"
-        )
+    st.divider()
 
-sides = st.session_state.sides
+    st.subheader(
+        "Vælg antal sider med inddækning"
+    )
 
-if not sides:
-    st.stop()
+    is_circular = (
+        category == "Cirkulære rør middelsvære"
+        or
+        category == "Cirkulære rør svære"
+    )
 
-sides = int(sides)
+    col1, col2, col3, col4 = st.columns(4)
+
+    if is_circular:
+
+        with col1:
+
+            disabled_card(
+                "1 side ikke muligt",
+                "images/side1.png"
+            )
+
+        with col2:
+
+            disabled_card(
+                "2 sider ikke muligt",
+                "images/side2.png"
+            )
+
+        with col3:
+
+            disabled_card(
+                "3 sider ikke muligt",
+                "images/side3.png"
+            )
+
+        with col4:
+
+            card(
+                "4",
+                "images/side4.png",
+                "sides"
+            )
+
+    else:
+
+        with col1:
+
+            card(
+                "1",
+                "images/side1.png",
+                "sides"
+            )
+
+        with col2:
+
+            card(
+                "2",
+                "images/side2.png",
+                "sides"
+            )
+
+        with col3:
+
+            card(
+                "3",
+                "images/side3.png",
+                "sides"
+            )
+
+        with col4:
+
+            card(
+                "4",
+                "images/side4.png",
+                "sides"
+            )
+
+    sides = st.session_state.sides
+
+    if not sides:
+        st.stop()
+
+    sides = int(sides)
 
 # -------------------------
 # BRANDTID
