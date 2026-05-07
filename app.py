@@ -1,6 +1,20 @@
 import base64
+from io import BytesIO
+
 import streamlit as st
 import pandas as pd
+
+from reportlab.platypus import (
+    SimpleDocTemplate,
+    Paragraph,
+    Spacer,
+    Table,
+    TableStyle
+)
+
+from reportlab.lib import colors
+from reportlab.lib.styles import getSampleStyleSheet
+from reportlab.lib.pagesizes import A4
 
 # -------------------------
 # PAGE CONFIG
@@ -20,7 +34,7 @@ st.markdown("""
 
 .block-container {
 
-    max-width: 1300px;
+    max-width: 1500px;
 
     padding-top: 2rem;
 
@@ -69,7 +83,10 @@ div.stButton > button:hover {
 col1, col2 = st.columns([8, 2])
 
 with col1:
-    st.title("Brandbeskyttelse af stålkonstruktioner")
+
+    st.title(
+        "Brandbeskyttelse af stålkonstruktioner"
+    )
 
 with col2:
 
@@ -99,12 +116,17 @@ apv_df = pd.read_csv(
 
 def load_fireboard(path):
 
-    df = pd.read_csv(path, sep=";")
+    df = pd.read_csv(
+        path,
+        sep=";"
+    )
 
     df = df.dropna(how="all")
 
     df.rename(
-        columns={df.columns[0]: "temperature"},
+        columns={
+            df.columns[0]: "temperature"
+        },
         inplace=True
     )
 
@@ -119,7 +141,9 @@ def load_fireboard(path):
         errors="coerce"
     )
 
-    df = df.dropna(subset=["temperature"])
+    df = df.dropna(
+        subset=["temperature"]
+    )
 
     df["temperature"] = (
         df["temperature"]
@@ -142,7 +166,10 @@ def load_fireboard(path):
         errors="coerce"
     )
 
-    df = df.loc[:, df.columns.notna()]
+    df = df.loc[
+        :,
+        df.columns.notna()
+    ]
 
     df.columns = (
         df.columns.astype(int)
@@ -151,10 +178,22 @@ def load_fireboard(path):
     return df
 
 fire_tables = {
-    30: load_fireboard("data/fireboard_30.csv"),
-    60: load_fireboard("data/fireboard_60.csv"),
-    90: load_fireboard("data/fireboard_90.csv"),
-    120: load_fireboard("data/fireboard_120.csv"),
+
+    30: load_fireboard(
+        "data/fireboard_30.csv"
+    ),
+
+    60: load_fireboard(
+        "data/fireboard_60.csv"
+    ),
+
+    90: load_fireboard(
+        "data/fireboard_90.csv"
+    ),
+
+    120: load_fireboard(
+        "data/fireboard_120.csv"
+    ),
 }
 
 # -------------------------
@@ -162,11 +201,15 @@ fire_tables = {
 # -------------------------
 
 for key in [
+
     "category",
     "montage",
     "sides"
+
 ]:
+
     if key not in st.session_state:
+
         st.session_state[key] = None
 
 # -------------------------
@@ -181,11 +224,15 @@ def get_base64_image(image_path):
             img_file.read()
         ).decode()
 
-
-def card(label, image_path, state_key):
+def card(
+    label,
+    image_path,
+    state_key
+):
 
     selected = (
-        st.session_state[state_key] == label
+        st.session_state[state_key]
+        == label
     )
 
     border = (
@@ -200,7 +247,9 @@ def card(label, image_path, state_key):
         else "#0b1220"
     )
 
-    image_base64 = get_base64_image(image_path)
+    image_base64 = get_base64_image(
+        image_path
+    )
 
     html = f"""
     <div style="
@@ -218,14 +267,14 @@ def card(label, image_path, state_key):
 
         <img src="data:image/png;base64,{image_base64}"
         style="
-            width:130px;
-            height:130px;
+            width:120px;
+            height:120px;
             object-fit:contain;
             margin-bottom:20px;
         "/>
 
         <div style="
-            font-size:20px;
+            font-size:18px;
             font-weight:700;
             color:white;
             text-align:center;
@@ -238,7 +287,7 @@ def card(label, image_path, state_key):
 
     st.components.v1.html(
         html,
-        height=260
+        height=240
     )
 
     if st.button(
@@ -254,14 +303,19 @@ def card(label, image_path, state_key):
             or
             label == "Cirkulære rør svære"
         ):
+
             st.session_state["sides"] = "4"
 
         st.rerun()
 
+def disabled_card(
+    label,
+    image_path
+):
 
-def disabled_card(label, image_path):
-
-    image_base64 = get_base64_image(image_path)
+    image_base64 = get_base64_image(
+        image_path
+    )
 
     html = f"""
     <div style="
@@ -280,14 +334,14 @@ def disabled_card(label, image_path):
 
         <img src="data:image/png;base64,{image_base64}"
         style="
-            width:160px;
-            height:160px;
+            width:120px;
+            height:120px;
             object-fit:contain;
             margin-bottom:20px;
         "/>
 
         <div style="
-            font-size:22px;
+            font-size:18px;
             font-weight:700;
             color:#999999;
             text-align:center;
@@ -300,25 +354,29 @@ def disabled_card(label, image_path):
 
     st.components.v1.html(
         html,
-        height=260
+        height=240
     )
 
 # -------------------------
 # PROFILKATEGORI
 # -------------------------
 
-st.subheader("Vælg profilkategori")
+st.subheader(
+    "Vælg profilkategori"
+)
 
 categories = [
+
     ("H-profiler", "images/h_profiles.png"),
     ("I-profiler", "images/i_profiles.png"),
     ("U-profiler", "images/u_profiles.png"),
 
     ("Kvadratiske rør varmvalsede", "images/shs_hot.png"),
     ("Kvadratiske rør koldvalsede", "images/shs_cold.png"),
-    ("Rektangulære rør varmvalsede", "images/rhs_hot.png"),
 
+    ("Rektangulære rør varmvalsede", "images/rhs_hot.png"),
     ("Rektangulære rør koldvalsede", "images/rhs_cold.png"),
+
     ("Cirkulære rør middelsvære", "images/chs_medium.png"),
     ("Cirkulære rør svære", "images/chs_heavy.png"),
 
@@ -329,7 +387,10 @@ for i in range(0, len(categories), 5):
 
     cols = st.columns(5)
 
-    for col, (label, image) in zip(cols, categories[i:i+5]):
+    for col, (label, image) in zip(
+        cols,
+        categories[i:i+5]
+    ):
 
         with col:
 
@@ -404,6 +465,12 @@ if custom_profile:
             f"Beregnet Ap/V: {apv}"
         )
 
+    profile = "Andet profil"
+
+    montage = "Ikke relevant"
+
+    sides = "Ikke relevant"
+
 else:
 
     # -------------------------
@@ -413,10 +480,13 @@ else:
     st.divider()
 
     filtered_df = apv_df[
-        apv_df["profile_category"] == category
+        apv_df["profile_category"]
+        == category
     ]
 
-    profiles = filtered_df["profile"].unique()
+    profiles = filtered_df[
+        "profile"
+    ].unique()
 
     def sort_profiles(profiles):
 
@@ -436,7 +506,10 @@ else:
             key=extract_number
         )
 
-    def format_profile(profile, category):
+    def format_profile(
+        profile,
+        category
+    ):
 
         profile = str(profile)
 
@@ -466,7 +539,12 @@ else:
         return profile
 
     formatted_profiles = {
-        format_profile(p, category): p
+
+        format_profile(
+            p,
+            category
+        ): p
+
         for p in sort_profiles(profiles)
     }
 
@@ -475,7 +553,9 @@ else:
         list(formatted_profiles.keys())
     )
 
-    profile = formatted_profiles[selected_profile_label]
+    profile = formatted_profiles[
+        selected_profile_label
+    ]
 
 # -------------------------
 # MONTAGE + SIDER
@@ -523,9 +603,14 @@ if not custom_profile:
     )
 
     is_circular = (
-        category == "Cirkulære rør middelsvære"
+
+        category
+        == "Cirkulære rør middelsvære"
+
         or
-        category == "Cirkulære rør svære"
+
+        category
+        == "Cirkulære rør svære"
     )
 
     col1, col2, col3, col4 = st.columns(4)
@@ -641,16 +726,24 @@ temperature = int(temperature)
 if not custom_profile:
 
     row = apv_df[
+
         (
-            apv_df["profile"] == profile
+            apv_df["profile"]
+            == profile
         )
+
         &
+
         (
-            apv_df["montage"] == montage
+            apv_df["montage"]
+            == montage
         )
+
         &
+
         (
-            apv_df["sides"] == sides
+            apv_df["sides"]
+            == sides
         )
     ]
 
@@ -704,6 +797,174 @@ if pd.isna(thickness):
     st.stop()
 
 # -------------------------
+# PROJEKTOPLYSNINGER
+# -------------------------
+
+st.divider()
+
+st.subheader(
+    "Projektoplysninger"
+)
+
+col1, col2 = st.columns(2)
+
+with col1:
+
+    project_name = st.text_input(
+        "Projekt"
+    )
+
+    prepared_by = st.text_input(
+        "Udarbejdet af"
+    )
+
+with col2:
+
+    company = st.text_input(
+        "Firma"
+    )
+
+    reference = st.text_input(
+        "Reference"
+    )
+
+description = st.text_area(
+    "Beskrivelse"
+)
+
+# -------------------------
+# PDF FUNCTION
+# -------------------------
+
+def generate_pdf():
+
+    buffer = BytesIO()
+
+    doc = SimpleDocTemplate(
+        buffer,
+        pagesize=A4,
+        rightMargin=40,
+        leftMargin=40,
+        topMargin=40,
+        bottomMargin=40
+    )
+
+    styles = getSampleStyleSheet()
+
+    elements = []
+
+    title = Paragraph(
+        "Brandbeskyttelse af stålkonstruktioner med Knauf Fireboard",
+        styles['Title']
+    )
+
+    elements.append(title)
+
+    elements.append(
+        Spacer(1, 25)
+    )
+
+    project_data = [
+
+        ["Projekt", project_name],
+        ["Udarbejdet af", prepared_by],
+        ["Firma", company],
+        ["Reference", reference],
+        ["Beskrivelse", description],
+    ]
+
+    project_table = Table(
+        project_data,
+        colWidths=[180, 300]
+    )
+
+    project_table.setStyle(
+
+        TableStyle([
+
+            ('GRID', (0,0), (-1,-1), 1, colors.black),
+
+            ('BACKGROUND', (0,0), (0,-1), colors.lightgrey),
+
+            ('FONTNAME', (0,0), (-1,-1), 'Helvetica'),
+
+            ('FONTSIZE', (0,0), (-1,-1), 10),
+
+            ('BOTTOMPADDING', (0,0), (-1,-1), 8),
+        ])
+    )
+
+    elements.append(project_table)
+
+    elements.append(
+        Spacer(1, 25)
+    )
+
+    input_data = [
+
+        ["Profilkategori", category],
+        ["Profil", str(profile)],
+        ["Inddækning", str(sides)],
+        ["Fastgørelse", montage],
+        ["Brandtid", f"{fire_time} minutter"],
+        ["Temperatur", f"{temperature} °C"],
+        ["Ap/V", str(apv)],
+    ]
+
+    input_table = Table(
+        input_data,
+        colWidths=[180, 300]
+    )
+
+    input_table.setStyle(
+
+        TableStyle([
+
+            ('GRID', (0,0), (-1,-1), 1, colors.black),
+
+            ('BACKGROUND', (0,0), (0,-1), colors.lightgrey),
+
+            ('FONTNAME', (0,0), (-1,-1), 'Helvetica'),
+
+            ('FONTSIZE', (0,0), (-1,-1), 10),
+
+            ('BOTTOMPADDING', (0,0), (-1,-1), 8),
+        ])
+    )
+
+    elements.append(input_table)
+
+    elements.append(
+        Spacer(1, 30)
+    )
+
+    result = Paragraph(
+        f"<b>Profil skal inddækkes med "
+        f"{int(thickness)} mm "
+        f"Knauf Fireboard</b>",
+        styles['Heading2']
+    )
+
+    elements.append(result)
+
+    elements.append(
+        Spacer(1, 20)
+    )
+
+    note = Paragraph(
+        "Monteres iht. gældende Knauf montagevejledning.",
+        styles['BodyText']
+    )
+
+    elements.append(note)
+
+    doc.build(elements)
+
+    buffer.seek(0)
+
+    return buffer
+
+# -------------------------
 # RESULTAT
 # -------------------------
 
@@ -717,4 +978,17 @@ st.success(
     f"Profil skal inddækkes med "
     f"{int(thickness)} mm "
     f"Knauf Fireboard"
+)
+
+pdf = generate_pdf()
+
+st.download_button(
+    label="📄 Download PDF rapport",
+    data=pdf,
+    file_name=(
+        f"Knauf_Fireboard_"
+        f"{profile}_"
+        f"R{fire_time}.pdf"
+    ),
+    mime="application/pdf"
 )
