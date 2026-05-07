@@ -908,7 +908,7 @@ def generate_pdf():
         ["Fastgørelsesmetode", montage],
         ["Brandbeskyttelsestid", f"{fire_time} minutter"],
         ["Dimensionerende ståltemperatur", f"{temperature} °C"],
-        ["Beregnet profilforhold Ap/V, str(apv)],
+        ["Beregnet profilforhold Ap/V", str(apv)],
     ]
 
     input_table = Table(
