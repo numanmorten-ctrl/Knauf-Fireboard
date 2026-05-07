@@ -462,7 +462,7 @@ if custom_profile:
 
             st.latex(
                 r'''
-                \frac{A_p}{V}
+                A_p/V
                 =
                 \frac{
                     \mathrm{Indvendig\ omkreds\ [mm]}
