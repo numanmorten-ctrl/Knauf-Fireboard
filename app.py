@@ -877,7 +877,7 @@ def generate_pdf():
 
         ["Projekt", project_name],
         ["Beregning udført af", prepared_by],
-        ["Firma", company],
+        ["Firma", company_name],
         ["Dato", report_date.strftime("%d-%m-%Y")],
         ["Beskrivelse", description],
     ]
