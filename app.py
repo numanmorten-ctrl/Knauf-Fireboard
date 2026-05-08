@@ -297,6 +297,10 @@ with st.sidebar:
             st.session_state.calculations
         ):
 
+            is_active = (
+                st.session_state.edit_index == idx
+            )
+
             col1, col2 = st.columns([5,1])
 
             label = (
@@ -304,49 +308,60 @@ with st.sidebar:
                 f"R{calc['fire_time']}"
             )
 
-            # ---------------------------------------------------
-            # LOAD CALCULATION
-            # ---------------------------------------------------
+# ---------------------------------------------------
+# LOAD CALCULATION
+# ---------------------------------------------------
 
-            with col1:
+with col1:
 
-                if st.button(
-                    label,
-                    key=f"sidebar_calc_{idx}",
-                    use_container_width=True
-                ):
+    is_active = (
+        st.session_state.edit_index == idx
+    )
 
-                    st.session_state.category = (
-                        calc["category"]
-                    )
+    button_type = (
+        "primary"
+        if is_active
+        else "secondary"
+    )
 
-                    st.session_state.montage = (
-                        calc["montage"]
-                    )
+    if st.button(
+        label,
+        type=button_type,
+        key=f"sidebar_calc_{idx}",
+        use_container_width=True
+    ):
 
-                    st.session_state.sides = (
-                        calc["sides"]
-                    )
+        st.session_state.category = (
+            calc["category"]
+        )
 
-                    st.session_state.fire_time = (
-                        calc["fire_time"]
-                    )
+        st.session_state.montage = (
+            calc["montage"]
+        )
 
-                    st.session_state.temperature = (
-                        calc["temperature"]
-                    )
+        st.session_state.sides = (
+            calc["sides"]
+        )
 
-                    st.session_state.selected_profile = (
-                        calc["profile"]
-                    )
+        st.session_state.fire_time = (
+            calc["fire_time"]
+        )
 
-                    st.session_state.edit_index = idx
+        st.session_state.temperature = (
+            calc["temperature"]
+        )
 
-                    st.session_state.editing = True
+        st.session_state.selected_profile = (
+            calc["profile"]
+        )
 
-                    st.session_state.current_step = 0
+        st.session_state.edit_index = idx
 
-                    st.rerun()
+        st.session_state.editing = True
+
+        st.session_state.current_step = 0
+
+        st.rerun()
 
             # ---------------------------------------------------
             # DELETE
