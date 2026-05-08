@@ -210,21 +210,24 @@ if st.session_state.get(
     False
 ):
 
-    st.markdown(
+    st.components.v1.html(
         """
         <script>
-            window.scrollTo({
+
+        function scrollTop() {
+
+            window.parent.scrollTo({
                 top: 0,
-                behavior: 'smooth'
+                behavior: "smooth"
             });
 
-            parent.window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-            });
+        }
+
+        setTimeout(scrollTop, 300);
+
         </script>
         """,
-        unsafe_allow_html=True
+        height=0
     )
 
     st.session_state.scroll_to_top = False
