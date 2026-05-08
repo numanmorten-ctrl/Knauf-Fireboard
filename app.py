@@ -307,7 +307,6 @@ with st.sidebar:
                 f"{calc['profile']} · "
                 f"R{calc['fire_time']}"
             )
-
 # ---------------------------------------------------
 # LOAD CALCULATION
 # ---------------------------------------------------
@@ -363,22 +362,34 @@ with col1:
 
         st.rerun()
 
-            # ---------------------------------------------------
-            # DELETE
-            # ---------------------------------------------------
+# ---------------------------------------------------
+# DELETE
+# ---------------------------------------------------
 
-            with col2:
+with col2:
 
-                if st.button(
-                    "🗑️",
-                    key=f"delete_sidebar_{idx}"
-                ):
+    if st.button(
+        "🗑️",
+        key=f"delete_sidebar_{idx}"
+    ):
 
-                    st.session_state.calculations.pop(
-                        idx
-                    )
+        st.session_state.calculations.pop(
+            idx
+        )
 
-                    st.rerun()
+        # Hvis den slettede var aktiv
+        # nulstil edit state
+
+        if (
+            st.session_state.edit_index
+            == idx
+        ):
+
+            st.session_state.edit_index = None
+
+            st.session_state.editing = False
+
+        st.rerun()
 
 # ---------------------------------------------------
 # CARD FUNCTIONS
