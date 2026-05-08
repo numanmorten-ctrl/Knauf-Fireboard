@@ -179,6 +179,37 @@ INPUTS
 }
 
 /* ---------------------------------------------------
+NUMBER INPUT TEXT
+--------------------------------------------------- */
+
+.stNumberInput input {
+
+    color: #2d343c !important;
+
+    background-color: white !important;
+}
+
+/* Plus/minus knapper */
+
+.stNumberInput button {
+
+    background-color: white !important;
+
+    color: #003b7a !important;
+
+    border-left: 1px solid #d9dde3 !important;
+}
+
+/* Hover */
+
+.stNumberInput button:hover {
+
+    background-color: #eef7fd !important;
+
+    color: #009fe3 !important;
+}
+
+/* ---------------------------------------------------
 SELECTBOX
 --------------------------------------------------- */
 
