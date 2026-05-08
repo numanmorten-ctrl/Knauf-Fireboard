@@ -1535,12 +1535,12 @@ if current_step == 3:
 
     if apv is not None and thickness is not None:
 
-        st.success(
+        st.info(
             f"Beregnet profilforhold Ap/V: "
             f"{apv} m²/m³"
         )
 
-        st.success(
+        st.info(
             f"Profil skal inddækkes med "
             f"{int(thickness)} mm "
             f"Knauf Fireboard"
