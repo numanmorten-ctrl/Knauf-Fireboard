@@ -49,7 +49,7 @@ div.stButton > button {
 
     border-radius: 0 0 16px 16px;
 
-    background-color: #0b1220;
+    background-color: #f5f6f8;
 
     border: 1px solid #31333F;
 
@@ -572,10 +572,10 @@ def disabled_card(
 
     html = f"""
     <div style="
-        border:1px solid #31333F;
-        background-color:#161616;
+        border: 1px solid #d9dde3;
+        background: white;
         opacity:0.45;
-        border-radius:16px;
+        border-radius: 4px;
         padding:20px;
         text-align:center;
         min-height:240px;
