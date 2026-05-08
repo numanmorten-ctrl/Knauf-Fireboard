@@ -312,9 +312,10 @@ with st.sidebar:
             col1, col2 = st.columns([5,1])
 
             label = (
-                f"{calc['profile']} · "
-                f"R{calc['fire_time']} • "
-                f"{calc['temperature']}°C"
+                f"{calc['profile']} | "
+                f"R{calc['fire_time']} | "
+                f"{calc['temperature']}°C | "
+                f"{int(calc['thickness'])} mm"
             )
 
             # ---------------------------------------------------
