@@ -1387,23 +1387,30 @@ if st.session_state.calculations:
 
             st.rerun()
 # -------------------------
-# SCROLL TO TOP
+# FORCE SCROLL TO TOP
 # -------------------------
 
-if st.query_params.get("scroll") == "top":
+if st.session_state.get("scroll_to_top"):
 
-    st.components.v1.html(
+    st.markdown(
         """
         <script>
 
-        window.parent.scrollTo(
-            0,
-            0
+        const body = window.parent.document.querySelector(
+            ".main"
         );
+
+        if (body) {
+
+            body.scrollTo({
+                top: 0,
+                behavior: "smooth"
+            });
+        }
 
         </script>
         """,
-        height=0
+        unsafe_allow_html=True
     )
 
-    del st.query_params["scroll"]
+    st.session_state.scroll_to_top = False
