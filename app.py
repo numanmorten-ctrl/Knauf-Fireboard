@@ -458,6 +458,40 @@ div[data-baseweb="calendar"] div[tabindex="0"] {
 
     box-shadow: none !important;
 }
+/* ---------------------------------------------------
+KILL DARK CALENDAR FOCUS
+--------------------------------------------------- */
+
+div[data-baseweb="calendar"] *:focus {
+
+    background-color: #eef7fd !important;
+
+    color: #003b7a !important;
+
+    box-shadow: none !important;
+
+    outline: none !important;
+}
+
+/* Nested focus element */
+
+div[data-baseweb="calendar"] div[tabindex="0"] * {
+
+    background-color: transparent !important;
+
+    color: #003b7a !important;
+}
+
+/* Active day */
+
+div[data-baseweb="calendar"] div[aria-selected="true"] {
+
+    background-color: #009fe3 !important;
+
+    color: white !important;
+
+    border-radius: 50% !important;
+}
 </style>
 """, unsafe_allow_html=True)
 # ---------------------------------------------------
