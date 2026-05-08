@@ -975,16 +975,26 @@ if current_step == 3:
 
     st.divider()
 
-    st.success(
-        f"Beregnet profilforhold Ap/V: "
-        f"{apv} m²/m³"
-    )
+    if apv is not None and thickness is not None:
 
-    st.success(
-        f"Profil skal inddækkes med "
-        f"{int(thickness)} mm "
-        f"Knauf Fireboard"
-    )
+        st.success(
+            f"Beregnet profilforhold Ap/V: "
+            f"{apv} m²/m³"
+        )
+
+        st.success(
+            f"Profil skal inddækkes med "
+            f"{int(thickness)} mm "
+            f"Knauf Fireboard"
+        )
+
+    else:
+
+        st.info(
+            "Udfyld alle trin for at se resultat"
+        )
+
+        st.stop()
 
     # ---------------------------------------------------
     # PROJEKTOPLYSNINGER
