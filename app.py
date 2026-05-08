@@ -360,13 +360,51 @@ div[data-baseweb="calendar"] {
     color: #2d343c !important;
 
     border: 1px solid #d9dde3 !important;
+
+    border-radius: 6px !important;
 }
 
-/* Måned + år */
+/* Alle interne containere */
 
 div[data-baseweb="calendar"] * {
 
+    background-color: white !important;
+
     color: #2d343c !important;
+}
+
+/* Header */
+
+div[data-baseweb="calendar-header"] {
+
+    background-color: white !important;
+}
+
+/* Ugedage */
+
+div[data-baseweb="calendar"] th {
+
+    background-color: white !important;
+
+    color: #5f6b7a !important;
+
+    font-weight: 600 !important;
+}
+
+/* Datoer */
+
+div[data-baseweb="calendar"] td {
+
+    background-color: white !important;
+
+    color: #2d343c !important;
+}
+
+/* Hover */
+
+div[data-baseweb="calendar"] td:hover {
+
+    background-color: #eef7fd !important;
 }
 
 /* Valgt dato */
@@ -378,35 +416,6 @@ div[aria-selected="true"] {
     color: white !important;
 
     border-radius: 4px !important;
-}
-
-/* Hover på dato */
-
-div[data-baseweb="calendar"] td:hover {
-
-    background-color: #eef7fd !important;
-}
-/* ---------------------------------------------------
-DATE PICKER HEADER ROW
---------------------------------------------------- */
-
-div[data-baseweb="calendar"] table {
-
-    background-color: white !important;
-}
-
-div[data-baseweb="calendar"] thead {
-
-    background-color: white !important;
-}
-
-div[data-baseweb="calendar"] th {
-
-    background-color: white !important;
-
-    color: #5f6b7a !important;
-
-    font-weight: 600 !important;
 }
 </style>
 """, unsafe_allow_html=True)
