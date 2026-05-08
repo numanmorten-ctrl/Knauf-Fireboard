@@ -303,7 +303,7 @@ defaults = {
 
     # Beregninger
     "calculations": [],
-    "edit_index": None,
+    "editing": False,
 
     "show_calculations": True,
     
@@ -508,6 +508,12 @@ for i in range(0, len(categories), 5):
             )
 
 category = st.session_state.category
+
+if st.session_state.editing:
+
+    st.info(
+        "✏️ Redigering af eksisterende beregning"
+    )
 
 if not category:
     st.stop()
@@ -1209,6 +1215,7 @@ if st.button(
         ] = calculation_data
 
         st.session_state.edit_index = None
+        st.session_state.editing = False
 
     else:
 
@@ -1327,6 +1334,8 @@ if st.session_state.calculations:
                             "area"
                         )
                     )
+
+                    st.session_state.editing = True
 
                     st.session_state.edit_index = idx
 
