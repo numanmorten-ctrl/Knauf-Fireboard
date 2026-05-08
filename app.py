@@ -234,9 +234,31 @@ with col3:
     st.write("")
 
     if st.button(
-        "🗑️ Nyt projekt",
+        "🔄 Ny beregning",
         use_container_width=True
     ):
+
+        reset_keys = [
+
+            "category",
+            "montage",
+            "sides",
+            "selected_profile",
+            "fire_time",
+            "temperature"
+        ]
+
+        for key in reset_keys:
+
+            st.session_state[key] = None
+
+        st.session_state.editing = False
+
+        st.session_state.edit_index = None
+
+        st.session_state.current_step = 0
+
+        st.rerun()
 
         st.session_state.clear()
 
