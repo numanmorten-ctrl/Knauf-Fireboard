@@ -80,12 +80,9 @@ div.stButton > button:hover {
 # -------------------------
 # HEADER
 # -------------------------
+
 st.markdown("""
 <div id="top"></div>
-
-<script>
-window.scrollTo(0, 0);
-</script>
 """, unsafe_allow_html=True)
 
 from datetime import datetime
@@ -212,18 +209,24 @@ with col3:
         st.rerun()
 
 # -------------------------
-# FORCE SCROLL TO TOP
+# JUMP TO TOP
 # -------------------------
 
-if st.session_state.get("scroll_top"):
+if st.session_state.get("jump_to_top"):
 
     st.markdown("""
     <script>
-    window.scrollTo(0, 0);
+
+    setTimeout(function() {
+
+        window.location.href = "#top";
+
+    }, 50);
+
     </script>
     """, unsafe_allow_html=True)
 
-    st.session_state.scroll_top = False
+    st.session_state.jump_to_top = False
     
 # -------------------------
 # LOAD DATA
@@ -461,7 +464,7 @@ with st.sidebar:
 
                 st.session_state.editing = True
 
-                st.session_state.scroll_top = True
+                st.session_state.jump_to_top = True
 
                 st.rerun()
 
