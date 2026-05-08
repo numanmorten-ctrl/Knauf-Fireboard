@@ -313,7 +313,8 @@ with st.sidebar:
 
             label = (
                 f"{calc['profile']} · "
-                f"R{calc['fire_time']}"
+                f"R{calc['fire_time']} • "
+                f"{calc['temperature']}°C"
             )
 
             # ---------------------------------------------------
