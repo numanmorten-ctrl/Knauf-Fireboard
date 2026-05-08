@@ -305,6 +305,8 @@ defaults = {
     "calculations": [],
     "edit_index": None,
 
+    "show_calculations": True,
+    
     # Projektoplysninger
     "project_name": "",
     "company": "",
@@ -1216,6 +1218,8 @@ if st.button(
 
     st.session_state.last_updated = datetime.now()
 
+    st.session_state.show_calculations = True
+
     st.rerun()
 
 # -------------------------
@@ -1226,7 +1230,7 @@ if st.session_state.calculations:
 
     with st.expander(
         "📚 Samlede beregninger",
-        expanded=True
+        expanded=st.session_state.show_calculations
     ):
 
         st.divider()
@@ -1325,6 +1329,8 @@ if st.session_state.calculations:
                     )
 
                     st.session_state.edit_index = idx
+
+                    st.session_state.show_calculations = False
 
                     st.rerun()
 
