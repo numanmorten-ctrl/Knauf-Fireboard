@@ -27,120 +27,6 @@ st.set_page_config(
 )
 
 # -------------------------
-# SIDEBAR
-# -------------------------
-
-with st.sidebar:
-
-    st.title(
-        "📚 Beregninger"
-    )
-
-    if st.button(
-        "➕ Ny beregning",
-        use_container_width=True
-    ):
-
-        st.session_state.active_calculation = None
-
-        st.session_state.editing = False
-
-        reset_keys = [
-
-            "category",
-            "montage",
-            "sides"
-        ]
-
-        for key in reset_keys:
-
-            st.session_state[key] = None
-
-        st.rerun()
-
-    st.divider()
-
-    if st.session_state.calculations:
-
-        for idx, calc in enumerate(
-            st.session_state.calculations
-        ):
-
-            label = (
-                f"{calc['profile']} · "
-                f"R{calc['fire_time']}"
-            )
-
-            if st.button(
-                label,
-                key=f"sidebar_calc_{idx}",
-                use_container_width=True
-            ):
-
-                selected_calc = (
-                    st.session_state.calculations[idx]
-                )
-
-                # -------------------------
-                # LOAD VALUES BACK
-                # -------------------------
-
-                st.session_state.category = (
-                    selected_calc["category"]
-                )
-
-                st.session_state.montage = (
-                    selected_calc["montage"]
-                )
-
-                st.session_state.sides = (
-                    selected_calc["sides"]
-                )
-
-                st.session_state.fire_time = (
-                    selected_calc["fire_time"]
-                )
-
-                st.session_state.temperature = (
-                    selected_calc["temperature"]
-                )
-
-                st.session_state.profile = (
-                    selected_calc["profile"]
-                )
-
-                st.session_state.selected_profile_label = (
-                    selected_calc.get(
-                        "selected_profile_label"
-                    )
-                )
-
-                st.session_state.apv_mode = (
-                    selected_calc.get(
-                        "apv_mode"
-                    )
-                )
-
-                st.session_state.perimeter = (
-                    selected_calc.get(
-                        "perimeter"
-                    )
-                )
-
-                st.session_state.area = (
-                    selected_calc.get(
-                        "area"
-                    )
-                )
-
-                st.session_state.edit_index = idx
-
-                st.session_state.active_calculation = idx
-
-                st.session_state.editing = True
-
-                st.rerun()
-# -------------------------
 # CUSTOM WIDTH + STYLE
 # -------------------------
 
@@ -436,6 +322,118 @@ for key, value in defaults.items():
     if key not in st.session_state:
 
         st.session_state[key] = value
+
+# -------------------------
+# SIDEBAR
+# -------------------------
+
+with st.sidebar:
+
+    st.title(
+        "📚 Beregninger"
+    )
+
+    if st.button(
+        "➕ Ny beregning",
+        use_container_width=True
+    ):
+
+        st.session_state.active_calculation = None
+
+        st.session_state.editing = False
+
+        reset_keys = [
+
+            "category",
+            "montage",
+            "sides"
+        ]
+
+        for key in reset_keys:
+
+            st.session_state[key] = None
+
+        st.rerun()
+
+    st.divider()
+
+    if st.session_state.calculations:
+
+        for idx, calc in enumerate(
+            st.session_state.calculations
+        ):
+
+            label = (
+                f"{calc['profile']} · "
+                f"R{calc['fire_time']}"
+            )
+
+            if st.button(
+                label,
+                key=f"sidebar_calc_{idx}",
+                use_container_width=True
+            ):
+
+                selected_calc = (
+                    st.session_state.calculations[idx]
+                )
+
+                st.session_state.category = (
+                    selected_calc["category"]
+                )
+
+                st.session_state.montage = (
+                    selected_calc["montage"]
+                )
+
+                st.session_state.sides = (
+                    selected_calc["sides"]
+                )
+
+                st.session_state.fire_time = (
+                    selected_calc["fire_time"]
+                )
+
+                st.session_state.temperature = (
+                    selected_calc["temperature"]
+                )
+
+                st.session_state.profile = (
+                    selected_calc["profile"]
+                )
+
+                st.session_state.selected_profile_label = (
+                    selected_calc.get(
+                        "selected_profile_label"
+                    )
+                )
+
+                st.session_state.apv_mode = (
+                    selected_calc.get(
+                        "apv_mode"
+                    )
+                )
+
+                st.session_state.perimeter = (
+                    selected_calc.get(
+                        "perimeter"
+                    )
+                )
+
+                st.session_state.area = (
+                    selected_calc.get(
+                        "area"
+                    )
+                )
+
+                st.session_state.edit_index = idx
+
+                st.session_state.active_calculation = idx
+
+                st.session_state.editing = True
+
+                st.rerun()
+                
 # -------------------------
 # CARD FUNCTIONS
 # -------------------------
