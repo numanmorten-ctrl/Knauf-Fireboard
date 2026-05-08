@@ -1007,6 +1007,162 @@ if (
     ]
 
 # ---------------------------------------------------
+# PDF FUNCTION
+# ---------------------------------------------------
+
+def generate_pdf():
+
+    buffer = BytesIO()
+
+    doc = SimpleDocTemplate(
+        buffer,
+        pagesize=A4,
+        rightMargin=40,
+        leftMargin=40,
+        topMargin=40,
+        bottomMargin=40
+    )
+
+    styles = getSampleStyleSheet()
+
+    elements = []
+
+    # ---------------------------------------------------
+    # TITLE
+    # ---------------------------------------------------
+
+    title = Paragraph(
+        "Brandbeskyttelse af stålkonstruktioner med Knauf Fireboard",
+        styles['Title']
+    )
+
+    elements.append(title)
+
+    elements.append(
+        Spacer(1, 25)
+    )
+
+    # ---------------------------------------------------
+    # PROJEKTOPLYSNINGER
+    # ---------------------------------------------------
+
+    project_data = [
+
+        ["Projekt", st.session_state.project_name],
+        ["Udarbejdet af", st.session_state.prepared_by],
+        ["Firma", st.session_state.company],
+        ["Dato", datetime.now().strftime("%d-%m-%Y")],
+        ["Beskrivelse", st.session_state.description],
+    ]
+
+    project_table = Table(
+        project_data,
+        colWidths=[180, 300]
+    )
+
+    project_table.setStyle(
+
+        TableStyle([
+
+            ('GRID', (0,0), (-1,-1), 1, colors.black),
+
+            ('BACKGROUND', (0,0), (0,-1), colors.lightgrey),
+
+            ('FONTNAME', (0,0), (-1,-1), 'Helvetica'),
+
+            ('FONTSIZE', (0,0), (-1,-1), 10),
+
+            ('BOTTOMPADDING', (0,0), (-1,-1), 8),
+        ])
+    )
+
+    elements.append(project_table)
+
+    elements.append(
+        Spacer(1, 25)
+    )
+
+    # ---------------------------------------------------
+    # INPUT DATA
+    # ---------------------------------------------------
+
+    input_data = [
+
+        ["Profilkategori", category],
+        ["Profil", str(selected_profile)],
+        ["Inddækning", f"{sides} sider"],
+        ["Montage", montage],
+        ["Brandtid", f"{fire_time} minutter"],
+        ["Temperatur", f"{temperature} °C"],
+        ["Ap/V", f"{apv} m²/m³"],
+    ]
+
+    input_table = Table(
+        input_data,
+        colWidths=[180, 300]
+    )
+
+    input_table.setStyle(
+
+        TableStyle([
+
+            ('GRID', (0,0), (-1,-1), 1, colors.black),
+
+            ('BACKGROUND', (0,0), (0,-1), colors.lightgrey),
+
+            ('FONTNAME', (0,0), (-1,-1), 'Helvetica'),
+
+            ('FONTSIZE', (0,0), (-1,-1), 10),
+
+            ('BOTTOMPADDING', (0,0), (-1,-1), 8),
+        ])
+    )
+
+    elements.append(input_table)
+
+    elements.append(
+        Spacer(1, 30)
+    )
+
+    # ---------------------------------------------------
+    # RESULTAT
+    # ---------------------------------------------------
+
+    result = Paragraph(
+        f"<b>Profil skal inddækkes med "
+        f"{int(thickness)} mm "
+        f"Knauf Fireboard</b>",
+        styles['Heading2']
+    )
+
+    elements.append(result)
+
+    elements.append(
+        Spacer(1, 20)
+    )
+
+    # ---------------------------------------------------
+    # NOTE
+    # ---------------------------------------------------
+
+    note = Paragraph(
+        "Monteres iht. gældende Knauf montagevejledning.",
+        styles['BodyText']
+    )
+
+    elements.append(note)
+
+    # ---------------------------------------------------
+    # BUILD PDF
+    # ---------------------------------------------------
+
+    doc.build(elements)
+
+    buffer.seek(0)
+
+    return buffer
+
+# ---------------------------------------------------
 # TAB 4 - RESULTAT
 # ---------------------------------------------------
 
@@ -1017,6 +1173,10 @@ if current_step == 3:
     )
 
     st.divider()
+
+    # ---------------------------------------------------
+    # RESULTAT
+    # ---------------------------------------------------
 
     if apv is not None and thickness is not None:
 
@@ -1038,6 +1198,23 @@ if current_step == 3:
         )
 
         st.stop()
+
+    # ---------------------------------------------------
+    # PDF DOWNLOAD
+    # ---------------------------------------------------
+
+    pdf_file = generate_pdf()
+
+    st.download_button(
+        label="📄 Download PDF rapport",
+        data=pdf_file,
+        file_name=(
+            f"{selected_profile}_"
+            f"R{fire_time}.pdf"
+        ),
+        mime="application/pdf",
+        use_container_width=True
+    )
 
     # ---------------------------------------------------
     # PROJEKTOPLYSNINGER
@@ -1142,6 +1319,7 @@ if current_step == 3:
                 ] = calculation_data
 
                 st.session_state.edit_index = None
+
                 st.session_state.editing = False
 
             else:
