@@ -336,21 +336,14 @@ with st.sidebar:
 
                 if is_active:
 
-                    st.markdown(f"""
-                    <style>
-
-                    button[kind="secondary"][data-testid="baseButton-secondary"][id*="sidebar_calc_{idx}"] {{
-
-                        border: 2px solid #00c853 !important;
-
-                        background-color: rgba(0,200,83,0.18) !important;
-
-                        color: #7CFC9A !important;
-
-                        font-weight: 700 !important;
-                    }}
-
-                    </style>
+                    st.markdown("""
+                    <div style="
+                        border:2px solid #00c853;
+                        background-color:rgba(0,200,83,0.12);
+                        border-radius:12px;
+                        padding:4px;
+                        margin-bottom:6px;
+                    ">
                     """, unsafe_allow_html=True)
 
                 if st.button(
@@ -390,6 +383,13 @@ with st.sidebar:
                     st.session_state.current_step = 0
 
                     st.rerun()
+
+                if is_active:
+
+                    st.markdown(
+                        "</div>",
+                        unsafe_allow_html=True
+                    )
 
             # ---------------------------------------------------
             # DELETE
