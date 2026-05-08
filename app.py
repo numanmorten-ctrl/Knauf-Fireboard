@@ -27,44 +27,125 @@ st.set_page_config(
 )
 
 # ---------------------------------------------------
-# STYLE
+# KNAUF THEME
 # ---------------------------------------------------
 
 st.markdown("""
 <style>
 
+/* ---------------------------------------------------
+MAIN LAYOUT
+--------------------------------------------------- */
+
+.stApp {
+
+    background-color: #f3f5f7;
+}
+
 .block-container {
 
     max-width: 1500px;
+
     padding-top: 2rem;
-    padding-left: 2rem;
-    padding-right: 2rem;
-    margin: auto;
+    padding-left: 3rem;
+    padding-right: 3rem;
+    padding-bottom: 3rem;
 }
+
+/* ---------------------------------------------------
+TYPOGRAPHY
+--------------------------------------------------- */
+
+h1, h2, h3 {
+
+    color: #2d343c !important;
+
+    font-weight: 700 !important;
+}
+
+p, label, span, div {
+
+    color: #3e4650;
+}
+
+/* ---------------------------------------------------
+SIDEBAR
+--------------------------------------------------- */
+
+section[data-testid="stSidebar"] {
+
+    background-color: #ffffff;
+
+    border-right: 1px solid #d9dde3;
+}
+
+section[data-testid="stSidebar"] h1 {
+
+    color: #003b7a !important;
+}
+
+/* ---------------------------------------------------
+BUTTONS
+--------------------------------------------------- */
 
 div.stButton > button {
 
     width: 100%;
-    margin-top: -14px;
 
-    border-radius: 0 0 16px 16px;
+    border-radius: 4px;
 
-    background-color: #f5f6f8;
+    background-color: white;
 
-    border: 1px solid #31333F;
+    border: 1px solid #c8d0d9;
 
-    color: white;
+    color: #003b7a;
 
-    font-size: 15px;
+    font-size: 14px;
+
     font-weight: 600;
 
-    height: 46px;
+    min-height: 44px;
+
+    transition: all 0.15s ease;
 }
+
+/* ---------------------------------------------------
+BUTTON HOVER
+--------------------------------------------------- */
 
 div.stButton > button:hover {
 
-    border: 1px solid #00c853;
-    color: #00c853;
+    border: 1px solid #009fe3 !important;
+
+    color: #003b7a !important;
+
+    background-color: #f5fbff !important;
+}
+
+/* ---------------------------------------------------
+PRIMARY BUTTON
+--------------------------------------------------- */
+
+button[kind="primary"] {
+
+    background-color: #003b7a !important;
+
+    color: white !important;
+
+    border: 1px solid #003b7a !important;
+}
+
+/* ---------------------------------------------------
+PRIMARY BUTTON HOVER
+--------------------------------------------------- */
+
+button[kind="primary"]:hover {
+
+    background-color: #0055a5 !important;
+
+    border: 1px solid #0055a5 !important;
+
+    color: white !important;
 }
 
 /* ---------------------------------------------------
@@ -73,32 +154,68 @@ ACTIVE SIDEBAR CALCULATION
 
 section[data-testid="stSidebar"] button[kind="primary"] {
 
-    border: 2px solid #00c853 !important;
+    background-color: #009fe3 !important;
 
-    background: linear-gradient(
-        135deg,
-        rgba(0,200,83,0.35),
-        rgba(0,120,50,0.50)
-    ) !important;
+    border: 1px solid #009fe3 !important;
 
     color: white !important;
 
     font-weight: 700 !important;
-
-    box-shadow: 0 0 12px rgba(0,200,83,0.35) !important;
 }
 
-section[data-testid="stSidebar"] button[kind="primary"]:hover {
+/* ---------------------------------------------------
+INPUTS
+--------------------------------------------------- */
 
-    border: 2px solid #00ff88 !important;
+.stTextInput input,
+.stNumberInput input,
+.stTextArea textarea {
 
-    background: linear-gradient(
-        135deg,
-        rgba(0,255,120,0.45),
-        rgba(0,150,60,0.60)
-    ) !important;
+    border-radius: 4px !important;
 
-    color: white !important;
+    border: 1px solid #c8d0d9 !important;
+
+    background-color: white !important;
+}
+
+/* ---------------------------------------------------
+SELECTBOX
+--------------------------------------------------- */
+
+.stSelectbox > div > div {
+
+    border-radius: 4px !important;
+
+    border: 1px solid #c8d0d9 !important;
+
+    background-color: white !important;
+}
+
+/* ---------------------------------------------------
+SUCCESS / INFO
+--------------------------------------------------- */
+
+div[data-baseweb="notification"] {
+
+    border-radius: 4px !important;
+}
+
+/* ---------------------------------------------------
+STEP NAVIGATION
+--------------------------------------------------- */
+
+button[kind="secondary"] {
+
+    background-color: white;
+}
+
+/* ---------------------------------------------------
+DIVIDERS
+--------------------------------------------------- */
+
+hr {
+
+    border-color: #d9dde3 !important;
 }
 
 </style>
@@ -488,16 +605,16 @@ def card(
         == label
     )
 
-    border = (
-        "3px solid #00c853"
+    background = (
+        "#eef7fd"
         if selected
-        else "1px solid #31333F"
+        else "white"
     )
 
     background = (
-        "#111827"
+        "#eef7fd"
         if selected
-        else "#0b1220"
+        else "white"
     )
 
     image_base64 = get_base64_image(
@@ -529,7 +646,7 @@ def card(
         <div style="
             font-size:18px;
             font-weight:700;
-            color:white;
+            color:#2d343c;
             text-align:center;
         ">
             {label}
