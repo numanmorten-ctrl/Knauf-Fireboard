@@ -501,21 +501,55 @@ def disabled_card(
     )
 
 # ---------------------------------------------------
-# TABS
+# STEP NAVIGATION
 # ---------------------------------------------------
 
-tab1, tab2, tab3, tab4 = st.tabs([
+steps = [
     "Profil",
     "Inddækning",
     "Brand",
     "Resultat"
-])
+]
+
+if "current_step" not in st.session_state:
+
+    st.session_state.current_step = 0
+
+current_step = st.session_state.current_step
+
+# ---------------------------------------------------
+# STEP HEADER
+# ---------------------------------------------------
+
+cols = st.columns(len(steps))
+
+for idx, step in enumerate(steps):
+
+    with cols[idx]:
+
+        active = idx == current_step
+
+        if active:
+
+            st.success(f"{idx+1}. {step}")
+
+        else:
+
+            if st.button(
+                f"{idx+1}. {step}",
+                use_container_width=True,
+                key=f"step_{idx}"
+            ):
+
+                st.session_state.current_step = idx
+
+                st.rerun()
 
 # ---------------------------------------------------
 # TAB 1 - PROFIL
 # ---------------------------------------------------
 
-with tab1:
+if current_step == 0:
 
     st.subheader(
         "Vælg profilkategori"
@@ -578,11 +612,29 @@ with tab1:
         profiles
     )
 
+    # ---------------------------------------------------
+    # NAVIGATION
+    # ---------------------------------------------------
+
+    st.divider()
+
+    col1, col2 = st.columns([1,1])
+
+    with col2:
+
+        if st.button(
+            "Næste →",
+            use_container_width=True
+        ):
+
+            st.session_state.current_step = 1
+
+            st.rerun()
 # ---------------------------------------------------
 # TAB 2 - INDDÆKNING
 # ---------------------------------------------------
 
-with tab2:
+if current_step == 1:
 
     st.subheader(
         "Vælg inddækningstype"
@@ -618,39 +670,83 @@ with tab2:
         "Vælg antal sider med inddækning"
     )
 
+    is_circular = (
+
+        category
+        == "Cirkulære rør middelsvære"
+
+        or
+
+        category
+        == "Cirkulære rør svære"
+    )
+
     col1, col2, col3, col4 = st.columns(4)
 
-    with col1:
+    if is_circular:
 
-        card(
-            "1",
-            "images/side1.png",
-            "sides"
-        )
+        with col1:
 
-    with col2:
+            disabled_card(
+                "1 side ikke muligt",
+                "images/side1.png"
+            )
 
-        card(
-            "2",
-            "images/side2.png",
-            "sides"
-        )
+        with col2:
 
-    with col3:
+            disabled_card(
+                "2 sider ikke muligt",
+                "images/side2.png"
+            )
 
-        card(
-            "3",
-            "images/side3.png",
-            "sides"
-        )
+        with col3:
 
-    with col4:
+            disabled_card(
+                "3 sider ikke muligt",
+                "images/side3.png"
+            )
 
-        card(
-            "4",
-            "images/side4.png",
-            "sides"
-        )
+        with col4:
+
+            card(
+                "4",
+                "images/side4.png",
+                "sides"
+            )
+
+    else:
+
+        with col1:
+
+            card(
+                "1",
+                "images/side1.png",
+                "sides"
+            )
+
+        with col2:
+
+            card(
+                "2",
+                "images/side2.png",
+                "sides"
+            )
+
+        with col3:
+
+            card(
+                "3",
+                "images/side3.png",
+                "sides"
+            )
+
+        with col4:
+
+            card(
+                "4",
+                "images/side4.png",
+                "sides"
+            )
 
     sides = st.session_state.sides
 
@@ -658,16 +754,55 @@ with tab2:
 
         st.stop()
 
+    sides = int(sides)
+
+    # ---------------------------------------------------
+    # NAVIGATION
+    # ---------------------------------------------------
+
+    st.divider()
+
+    col1, col2 = st.columns([1,1])
+
+    with col1:
+
+        if st.button(
+            "← Forrige",
+            use_container_width=True
+        ):
+
+            st.session_state.current_step = 0
+
+            st.rerun()
+
+    with col2:
+
+        if st.button(
+            "Næste →",
+            use_container_width=True
+        ):
+
+            st.session_state.current_step = 2
+
+            st.rerun()
 # ---------------------------------------------------
 # TAB 3 - BRAND
 # ---------------------------------------------------
 
-with tab3:
+if current_step == 2:
+
+    st.subheader(
+        "Brandkrav"
+    )
+
+    st.divider()
 
     fire_time = st.selectbox(
         "Vælg brandbeskyttelsestid",
         [30, 60, 90, 120]
     )
+
+    st.divider()
 
     temperature = st.number_input(
         "Indtast dimensionerende ståltemperatur (°C)",
@@ -676,6 +811,38 @@ with tab3:
         value=450,
         step=1
     )
+
+    temperature = int(temperature)
+
+    # ---------------------------------------------------
+    # NAVIGATION
+    # ---------------------------------------------------
+
+    st.divider()
+
+    col1, col2 = st.columns([1,1])
+
+    with col1:
+
+        if st.button(
+            "← Forrige",
+            use_container_width=True
+        ):
+
+            st.session_state.current_step = 1
+
+            st.rerun()
+
+    with col2:
+
+        if st.button(
+            "Næste →",
+            use_container_width=True
+        ):
+
+            st.session_state.current_step = 3
+
+            st.rerun()
 
 # ---------------------------------------------------
 # FIND AP/V
@@ -733,7 +900,13 @@ thickness = table.loc[
 # TAB 4 - RESULTAT
 # ---------------------------------------------------
 
-with tab4:
+if current_step == 3:
+
+    st.subheader(
+        "Resultat"
+    )
+
+    st.divider()
 
     st.success(
         f"Beregnet profilforhold Ap/V: "
@@ -745,6 +918,10 @@ with tab4:
         f"{int(thickness)} mm "
         f"Knauf Fireboard"
     )
+
+    # ---------------------------------------------------
+    # PROJEKTOPLYSNINGER
+    # ---------------------------------------------------
 
     st.divider()
 
@@ -788,6 +965,10 @@ with tab4:
     st.session_state.prepared_by = prepared_by
     st.session_state.description = description
 
+    # ---------------------------------------------------
+    # BEREGNINGSDATA
+    # ---------------------------------------------------
+
     calculation_data = {
 
         "category": category,
@@ -802,32 +983,57 @@ with tab4:
         "thickness": thickness
     }
 
-    button_text = (
-        "🔄 Opdater beregning"
-        if st.session_state.edit_index is not None
-        else "➕ Tilføj beregning"
-    )
+    # ---------------------------------------------------
+    # NAVIGATION
+    # ---------------------------------------------------
 
-    if st.button(
-        button_text,
-        use_container_width=True
-    ):
+    st.divider()
 
-        if st.session_state.edit_index is not None:
+    col1, col2 = st.columns([1,1])
 
-            st.session_state.calculations[
-                st.session_state.edit_index
-            ] = calculation_data
+    with col1:
 
-            st.session_state.edit_index = None
-            st.session_state.editing = False
+        if st.button(
+            "← Forrige",
+            use_container_width=True
+        ):
 
-        else:
+            st.session_state.current_step = 2
 
-            st.session_state.calculations.append(
-                calculation_data
+            st.rerun()
+
+    with col2:
+
+        button_text = (
+            "🔄 Opdater beregning"
+            if st.session_state.edit_index is not None
+            else "➕ Tilføj beregning"
+        )
+
+        if st.button(
+            button_text,
+            use_container_width=True
+        ):
+
+            if st.session_state.edit_index is not None:
+
+                st.session_state.calculations[
+                    st.session_state.edit_index
+                ] = calculation_data
+
+                st.session_state.edit_index = None
+                st.session_state.editing = False
+
+            else:
+
+                st.session_state.calculations.append(
+                    calculation_data
+                )
+
+            st.session_state.last_updated = datetime.now()
+
+            st.success(
+                "Beregning gemt"
             )
 
-        st.session_state.last_updated = datetime.now()
-
-        st.rerun()
+            st.rerun()
