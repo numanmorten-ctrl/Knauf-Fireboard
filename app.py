@@ -386,6 +386,28 @@ div[data-baseweb="calendar"] td:hover {
 
     background-color: #eef7fd !important;
 }
+/* ---------------------------------------------------
+DATE PICKER HEADER ROW
+--------------------------------------------------- */
+
+div[data-baseweb="calendar"] table {
+
+    background-color: white !important;
+}
+
+div[data-baseweb="calendar"] thead {
+
+    background-color: white !important;
+}
+
+div[data-baseweb="calendar"] th {
+
+    background-color: white !important;
+
+    color: #5f6b7a !important;
+
+    font-weight: 600 !important;
+}
 </style>
 """, unsafe_allow_html=True)
 # ---------------------------------------------------
