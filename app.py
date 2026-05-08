@@ -273,23 +273,23 @@ with st.sidebar:
     st.title("📚 Beregninger")
 
     # ---------------------------------------------------
-    # CUSTOM SIDEBAR STYLE
+    # CUSTOM STYLE
     # ---------------------------------------------------
 
     st.markdown("""
     <style>
 
-    .active-calc button {
+    div[data-testid="stSidebar"] button[kind="primary"] {
 
         border: 2px solid #00c853 !important;
 
         background: linear-gradient(
             135deg,
-            rgba(0,200,83,0.30),
-            rgba(0,120,50,0.45)
+            rgba(0,200,83,0.35),
+            rgba(0,120,50,0.50)
         ) !important;
 
-        color: #ffffff !important;
+        color: white !important;
 
         font-weight: 700 !important;
 
@@ -361,16 +361,16 @@ with st.sidebar:
 
             with col1:
 
-                if is_active:
-
-                    st.markdown(
-                        '<div class="active-calc">',
-                        unsafe_allow_html=True
-                    )
+                button_type = (
+                    "primary"
+                    if is_active
+                    else "secondary"
+                )
 
                 if st.button(
                     label,
                     key=f"sidebar_calc_{idx}",
+                    type=button_type,
                     use_container_width=True
                 ):
 
@@ -406,13 +406,6 @@ with st.sidebar:
 
                     st.rerun()
 
-                if is_active:
-
-                    st.markdown(
-                        "</div>",
-                        unsafe_allow_html=True
-                    )
-
             # ---------------------------------------------------
             # DELETE
             # ---------------------------------------------------
@@ -438,7 +431,6 @@ with st.sidebar:
                         st.session_state.editing = False
 
                     st.rerun()
-
 # ---------------------------------------------------
 # CARD FUNCTIONS
 # ---------------------------------------------------
