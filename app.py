@@ -317,6 +317,23 @@ with col1:
         st.session_state.edit_index == idx
     )
 
+    if is_active:
+
+        st.markdown("""
+        <style>
+        div[data-testid="stButton"] button[kind="primary"] {
+
+            border: 2px solid #00c853 !important;
+
+            background-color: #113322 !important;
+
+            color: #7CFC9A !important;
+
+            font-weight: 700 !important;
+        }
+        </style>
+        """, unsafe_allow_html=True)
+
     button_type = (
         "primary"
         if is_active
