@@ -197,28 +197,6 @@ with col3:
         st.rerun()
 
 # -------------------------
-# SCROLL TO TOP
-# -------------------------
-
-if st.query_params.get("scroll") == "top":
-
-    st.components.v1.html(
-        """
-        <script>
-
-        window.parent.scrollTo({
-            top: 0,
-            behavior: "instant"
-        });
-
-        </script>
-        """,
-        height=0
-    )
-
-    del st.query_params["scroll"]
-
-# -------------------------
 # LOAD DATA
 # -------------------------
 
@@ -1408,3 +1386,24 @@ if st.session_state.calculations:
             st.session_state.clear()
 
             st.rerun()
+# -------------------------
+# SCROLL TO TOP
+# -------------------------
+
+if st.query_params.get("scroll") == "top":
+
+    st.components.v1.html(
+        """
+        <script>
+
+        window.parent.scrollTo(
+            0,
+            0
+        );
+
+        </script>
+        """,
+        height=0
+    )
+
+    del st.query_params["scroll"]
