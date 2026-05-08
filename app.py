@@ -1224,33 +1224,38 @@ if st.button(
 
 if st.session_state.calculations:
 
-    st.divider()
-
-    st.subheader(
-        "Samlede beregninger"
-    )
-
-    for idx, calc in enumerate(
-        st.session_state.calculations
+    with st.expander(
+        "📚 Samlede beregninger",
+        expanded=True
     ):
 
-        with st.container():
+        st.divider()
 
-            col1, col2, col3 = st.columns(
-                [8, 1, 1]
-            )
+        st.subheader(
+            "Samlede beregninger"
+        )
 
-            with col1:
+        for idx, calc in enumerate(
+            st.session_state.calculations
+        ):
 
-                st.markdown(f"""
-                ### Beregning {idx + 1}
+            with st.container():
 
-                **Profil:** {calc['profile']}  
-                **Brandtid:** {calc['fire_time']} min  
-                **Temperatur:** {calc['temperature']} °C  
-                **Ap/V:** {calc['apv']} m²/m³  
-                **Fireboard:** {int(calc['thickness'])} mm
-                """)
+                col1, col2, col3 = st.columns(
+                    [8, 1, 1]
+                )
+
+                with col1:
+
+                    st.markdown(f"""
+                    ### Beregning {idx + 1}
+
+                    **Profil:** {calc['profile']}  
+                    **Brandtid:** {calc['fire_time']} min  
+                    **Temperatur:** {calc['temperature']} °C  
+                    **Ap/V:** {calc['apv']} m²/m³  
+                    **Fireboard:** {int(calc['thickness'])} mm
+                    """)
 
             # -------------------------
             # EDIT
@@ -1321,8 +1326,6 @@ if st.session_state.calculations:
 
                     st.session_state.edit_index = idx
 
-                    st.session_state.scroll_to_top = True
-
                     st.rerun()
 
             # -------------------------
@@ -1386,31 +1389,3 @@ if st.session_state.calculations:
             st.session_state.clear()
 
             st.rerun()
-# -------------------------
-# FORCE SCROLL TO TOP
-# -------------------------
-
-if st.session_state.get("scroll_to_top"):
-
-    st.markdown(
-        """
-        <script>
-
-        const body = window.parent.document.querySelector(
-            ".main"
-        );
-
-        if (body) {
-
-            body.scrollTo({
-                top: 0,
-                behavior: "smooth"
-            });
-        }
-
-        </script>
-        """,
-        unsafe_allow_html=True
-    )
-
-    st.session_state.scroll_to_top = False
