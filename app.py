@@ -417,20 +417,6 @@ div[aria-selected="true"] {
 
     border-radius: 4px !important;
 }
-/* ---------------------------------------------------
-TODAY DATE IN CALENDAR
---------------------------------------------------- */
-
-div[data-baseweb="calendar"] div[tabindex="0"] {
-
-    background-color: #eef7fd !important;
-
-    color: #003b7a !important;
-
-    border: 2px solid #009fe3 !important;
-
-    border-radius: 50% !important;
-}
 </style>
 """, unsafe_allow_html=True)
 # ---------------------------------------------------
