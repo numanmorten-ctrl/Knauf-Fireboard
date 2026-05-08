@@ -278,9 +278,13 @@ with st.sidebar:
     ):
 
         reset_keys = [
+
             "category",
             "montage",
-            "sides"
+            "sides",
+            "selected_profile",
+            "fire_time",
+            "temperature"
         ]
 
         for key in reset_keys:
@@ -288,7 +292,7 @@ with st.sidebar:
             st.session_state[key] = None
 
         st.session_state.editing = False
-
+        st.session_state.edit_index = None
         st.session_state.current_step = 0
 
         st.rerun()
@@ -311,106 +315,83 @@ with st.sidebar:
                 f"{calc['profile']} · "
                 f"R{calc['fire_time']}"
             )
-# ---------------------------------------------------
-# LOAD CALCULATION
-# ---------------------------------------------------
 
-with col1:
+            # ---------------------------------------------------
+            # LOAD CALCULATION
+            # ---------------------------------------------------
 
-    is_active = (
-        st.session_state.edit_index == idx
-    )
+            with col1:
 
-    if is_active:
+                button_type = (
+                    "primary"
+                    if is_active
+                    else "secondary"
+                )
 
-        st.markdown("""
-        <style>
-        div[data-testid="stButton"] button[kind="primary"] {
+                if st.button(
+                    label,
+                    type=button_type,
+                    key=f"sidebar_calc_{idx}",
+                    use_container_width=True
+                ):
 
-            border: 2px solid #00c853 !important;
+                    st.session_state.category = (
+                        calc["category"]
+                    )
 
-            background-color: #113322 !important;
+                    st.session_state.montage = (
+                        calc["montage"]
+                    )
 
-            color: #7CFC9A !important;
+                    st.session_state.sides = (
+                        calc["sides"]
+                    )
 
-            font-weight: 700 !important;
-        }
-        </style>
-        """, unsafe_allow_html=True)
+                    st.session_state.fire_time = (
+                        calc["fire_time"]
+                    )
 
-    button_type = (
-        "primary"
-        if is_active
-        else "secondary"
-    )
+                    st.session_state.temperature = (
+                        calc["temperature"]
+                    )
 
-    if st.button(
-        label,
-        type=button_type,
-        key=f"sidebar_calc_{idx}",
-        use_container_width=True
-    ):
+                    st.session_state.selected_profile = (
+                        calc["profile"]
+                    )
 
-        st.session_state.category = (
-            calc["category"]
-        )
+                    st.session_state.edit_index = idx
 
-        st.session_state.montage = (
-            calc["montage"]
-        )
+                    st.session_state.editing = True
 
-        st.session_state.sides = (
-            calc["sides"]
-        )
+                    st.session_state.current_step = 0
 
-        st.session_state.fire_time = (
-            calc["fire_time"]
-        )
+                    st.rerun()
 
-        st.session_state.temperature = (
-            calc["temperature"]
-        )
+            # ---------------------------------------------------
+            # DELETE
+            # ---------------------------------------------------
 
-        st.session_state.selected_profile = (
-            calc["profile"]
-        )
+            with col2:
 
-        st.session_state.edit_index = idx
+                if st.button(
+                    "🗑️",
+                    key=f"delete_sidebar_{idx}"
+                ):
 
-        st.session_state.editing = True
+                    st.session_state.calculations.pop(
+                        idx
+                    )
 
-        st.session_state.current_step = 0
+                    if (
+                        st.session_state.edit_index
+                        == idx
+                    ):
 
-        st.rerun()
+                        st.session_state.edit_index = None
 
-# ---------------------------------------------------
-# DELETE
-# ---------------------------------------------------
+                        st.session_state.editing = False
 
-with col2:
-
-    if st.button(
-        "🗑️",
-        key=f"delete_sidebar_{idx}"
-    ):
-
-        st.session_state.calculations.pop(
-            idx
-        )
-
-        # Hvis den slettede var aktiv
-        # nulstil edit state
-
-        if (
-            st.session_state.edit_index
-            == idx
-        ):
-
-            st.session_state.edit_index = None
-
-            st.session_state.editing = False
-
-        st.rerun()
+                    st.rerun()
 
 # ---------------------------------------------------
 # CARD FUNCTIONS
