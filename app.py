@@ -315,6 +315,15 @@ li:hover {
 
     color: #003b7a !important;
 }
+/* ---------------------------------------------------
+INPUT TEXT COLOR
+--------------------------------------------------- */
+
+.stTextInput input,
+.stTextArea textarea {
+
+    color: #2d343c !important;
+}
 </style>
 """, unsafe_allow_html=True)
 # ---------------------------------------------------
