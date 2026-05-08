@@ -349,6 +349,17 @@ li:hover {
 
     color: #003b7a !important;
 }
+/* Fjern rød ring omkring dagens dato */
+
+div[data-baseweb="calendar"] 
+div[tabindex="0"] {
+
+    border: none !important;
+
+    outline: none !important;
+
+    box-shadow: none !important;
+}
 </style>
 """, unsafe_allow_html=True)
 # ---------------------------------------------------
