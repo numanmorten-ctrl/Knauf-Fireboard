@@ -792,7 +792,19 @@ for idx, step in enumerate(steps):
 
         if active:
 
-            st.success(f"{idx+1}. {step}")
+            st.markdown(f"""
+            <div style="
+                background-color:#009fe3;
+                color:white;
+                padding:14px;
+                border-radius:4px;
+                text-align:center;
+                font-weight:700;
+                border:1px solid #009fe3;
+            ">
+                {idx+1}. {step}
+            </div>
+            """, unsafe_allow_html=True)
 
         else:
 
