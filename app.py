@@ -218,7 +218,31 @@ if st.session_state.get(
         """
         <script>
 
-        window.parent.location.hash = "top";
+        function scrollToTop() {
+
+            const main = window.parent.document.querySelector(
+                '.main'
+            );
+
+            if (main) {
+
+                main.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+
+            }
+
+            window.parent.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+
+        }
+
+        // Vent til Streamlit er HELT færdig
+
+        setTimeout(scrollToTop, 800);
 
         </script>
         """,
