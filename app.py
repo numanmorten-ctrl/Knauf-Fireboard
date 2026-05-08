@@ -324,6 +324,36 @@ INPUT TEXT COLOR
 
     color: #2d343c !important;
 }
+/* ---------------------------------------------------
+INPUT CONTAINERS
+--------------------------------------------------- */
+
+.stTextInput > div > div,
+.stNumberInput > div > div,
+.stTextArea > div > div {
+
+    border: 1px solid #d9dde3 !important;
+
+    border-radius: 4px !important;
+
+    background-color: white !important;
+
+    box-shadow: none !important;
+}
+/* ---------------------------------------------------
+REMOVE STREAMLIT DARK FOCUS
+--------------------------------------------------- */
+
+.stTextInput input:focus,
+.stNumberInput input:focus,
+.stTextArea textarea:focus {
+
+    box-shadow: none !important;
+
+    border: none !important;
+
+    outline: none !important;
+}
 </style>
 """, unsafe_allow_html=True)
 # ---------------------------------------------------
