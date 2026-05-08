@@ -349,16 +349,24 @@ li:hover {
 
     color: #003b7a !important;
 }
-/* Fjern rød ring omkring dagens dato */
+/* Fjern dagens røde cirkel */
 
-div[data-baseweb="calendar"] 
-div[tabindex="0"] {
+div[data-baseweb="calendar"] *[tabindex="0"] {
 
-    border: none !important;
+    box-shadow: none !important;
 
     outline: none !important;
 
+    border: none !important;
+}
+
+/* Fjern focus styling */
+
+div[data-baseweb="calendar"] *:focus {
+
     box-shadow: none !important;
+
+    outline: none !important;
 }
 </style>
 """, unsafe_allow_html=True)
