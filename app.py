@@ -87,6 +87,18 @@ st.markdown(
 
 from datetime import datetime
 
+# -------------------------
+# EARLY SESSION STATE
+# -------------------------
+
+if "calculations" not in st.session_state:
+
+    st.session_state.calculations = []
+
+if "last_updated" not in st.session_state:
+
+    st.session_state.last_updated = datetime.now()
+
 if "last_updated" not in st.session_state:
 
     st.session_state.last_updated = datetime.now()
