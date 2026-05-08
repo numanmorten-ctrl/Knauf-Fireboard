@@ -349,6 +349,43 @@ li:hover {
 
     color: #003b7a !important;
 }
+/* ---------------------------------------------------
+DATE PICKER POPUP
+--------------------------------------------------- */
+
+div[data-baseweb="calendar"] {
+
+    background-color: white !important;
+
+    color: #2d343c !important;
+
+    border: 1px solid #d9dde3 !important;
+}
+
+/* Måned + år */
+
+div[data-baseweb="calendar"] * {
+
+    color: #2d343c !important;
+}
+
+/* Valgt dato */
+
+div[aria-selected="true"] {
+
+    background-color: #009fe3 !important;
+
+    color: white !important;
+
+    border-radius: 4px !important;
+}
+
+/* Hover på dato */
+
+div[data-baseweb="calendar"] td:hover {
+
+    background-color: #eef7fd !important;
+}
 </style>
 """, unsafe_allow_html=True)
 # ---------------------------------------------------
