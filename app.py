@@ -1473,16 +1473,31 @@ if current_step == 3:
 
     if apv is not None and thickness is not None:
 
-        st.info(
-            f"Beregnet profilforhold Ap/V: "
-            f"{apv} m²/m³"
-        )
+        st.markdown(f"""
+        <div style="
+            border:1px solid #d9dde3;
+            background:white;
+            border-radius:6px;
+            padding:18px;
+            margin-bottom:12px;
+        ">
+            <b>Beregnet profilforhold Ap/V:</b>
+            {apv} m²/m³
+        </div>
+        """, unsafe_allow_html=True)
 
-        st.info(
-            f"Profil skal inddækkes med "
-            f"{int(thickness)} mm "
-            f"Knauf Fireboard"
-        )
+        st.markdown(f"""
+        <div style="
+            border:1px solid #d9dde3;
+            background:white;
+            border-radius:6px;
+            padding:18px;
+            margin-bottom:12px;
+        ">
+            <b>Profil skal inddækkes med:</b>
+            {int(thickness)} mm Knauf Fireboard
+        </div>
+        """, unsafe_allow_html=True)
 
     else:
 
@@ -1542,7 +1557,7 @@ if current_step == 3:
 
         report_date = st.text_input(
             "Dato",
-             value=datetime.now().strftime("%d-%m-%Y")
+            value=datetime.now().strftime("%d-%m-%Y")
         )
 
     description = st.text_area(
