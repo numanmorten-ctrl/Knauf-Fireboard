@@ -273,6 +273,33 @@ with st.sidebar:
     st.title("📚 Beregninger")
 
     # ---------------------------------------------------
+    # CUSTOM SIDEBAR STYLE
+    # ---------------------------------------------------
+
+    st.markdown("""
+    <style>
+
+    .active-calc button {
+
+        border: 2px solid #00c853 !important;
+
+        background: linear-gradient(
+            135deg,
+            rgba(0,200,83,0.30),
+            rgba(0,120,50,0.45)
+        ) !important;
+
+        color: #ffffff !important;
+
+        font-weight: 700 !important;
+
+        box-shadow: 0 0 12px rgba(0,200,83,0.35);
+    }
+
+    </style>
+    """, unsafe_allow_html=True)
+
+    # ---------------------------------------------------
     # NY BEREGNING
     # ---------------------------------------------------
 
@@ -336,15 +363,10 @@ with st.sidebar:
 
                 if is_active:
 
-                    st.markdown("""
-                    <div style="
-                        border:2px solid #00c853;
-                        background-color:rgba(0,200,83,0.12);
-                        border-radius:12px;
-                        padding:4px;
-                        margin-bottom:6px;
-                    ">
-                    """, unsafe_allow_html=True)
+                    st.markdown(
+                        '<div class="active-calc">',
+                        unsafe_allow_html=True
+                    )
 
                 if st.button(
                     label,
