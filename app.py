@@ -586,14 +586,6 @@ with st.sidebar:
 # CARD FUNCTIONS
 # ---------------------------------------------------
 
-def get_base64_image(image_path):
-
-    with open(image_path, "rb") as img_file:
-
-        return base64.b64encode(
-            img_file.read()
-        ).decode()
-
 def card(
     label,
     image_path,
@@ -611,10 +603,10 @@ def card(
         else "white"
     )
 
-    background = (
-        "#eef7fd"
+    border = (
+        "2px solid #009fe3"
         if selected
-        else "white"
+        else "1px solid #d9dde3"
     )
 
     image_base64 = get_base64_image(
@@ -625,7 +617,7 @@ def card(
     <div style="
         border:{border};
         background-color:{background};
-        border-radius:16px;
+        border-radius:4px;
         padding:20px;
         text-align:center;
         min-height:200px;
@@ -633,6 +625,7 @@ def card(
         flex-direction:column;
         justify-content:center;
         align-items:center;
+        transition: all 0.15s ease;
     ">
 
         <img src="data:image/png;base64,{image_base64}"
