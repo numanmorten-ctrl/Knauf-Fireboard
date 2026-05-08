@@ -81,6 +81,12 @@ div.stButton > button:hover {
 # HEADER
 # -------------------------
 
+from datetime import datetime
+
+if "last_updated" not in st.session_state:
+
+    st.session_state.last_updated = datetime.now()
+
 col1, col2, col3 = st.columns([6, 2, 2])
 
 with col1:
@@ -89,20 +95,64 @@ with col1:
         "Brandbeskyttelse af stålkonstruktioner"
     )
 
-if st.session_state.calculations:
+    if st.session_state.calculations:
 
-    project_text = (
-        st.session_state.project_name
-        if st.session_state.project_name
-        else "Unavngivet projekt"
-    )
+        project_text = (
+            st.session_state.project_name
+            if st.session_state.project_name
+            else "Unavngivet projekt"
+        )
 
-    st.info(
-        f"📁 Aktivt projekt: "
-        f"{project_text} · "
-        f"{len(st.session_state.calculations)} "
-        f"gemte beregninger"
-    )
+        calculation_count = len(
+            st.session_state.calculations
+        )
+
+        last_updated = (
+            st.session_state.last_updated
+            .strftime("%d-%m-%Y %H:%M")
+        )
+
+        st.markdown(f"""
+        <div style="
+        padding: 14px 18px;
+        border: 1px solid #1f3b2d;
+        border-radius: 10px;
+        background-color: rgba(20,60,35,0.25);
+        margin-top: 10px;
+        margin-bottom: 10px;
+        ">
+
+        <div style="
+        font-size: 18px;
+        font-weight: 600;
+        color: #7CFC9A;
+        margin-bottom: 6px;
+        ">
+        🟢 Aktivt projekt
+        </div>
+
+        <div style="font-size: 15px;">
+        📁 {project_text}
+        </div>
+
+        <div style="
+        font-size: 14px;
+        margin-top: 4px;
+        ">
+        {calculation_count} gemte beregninger
+        </div>
+
+        <div style="
+        font-size: 13px;
+        opacity: 0.7;
+        margin-top: 4px;
+        ">
+        Senest ændret: {last_updated}
+        </div>
+
+        </div>
+        """, unsafe_allow_html=True)
+
 with col2:
 
     st.write("")
@@ -113,7 +163,7 @@ with col2:
         use_container_width=True
     ):
 
-        # Nulstil kun beregningsvalg
+        # Nulstil kun aktive valg
 
         reset_keys = [
 
@@ -141,6 +191,7 @@ with col3:
         st.session_state.clear()
 
         st.rerun()
+
 # -------------------------
 # LOAD DATA
 # -------------------------
