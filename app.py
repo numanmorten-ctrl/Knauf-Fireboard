@@ -80,6 +80,10 @@ div.stButton > button:hover {
 # -------------------------
 # HEADER
 # -------------------------
+st.markdown(
+    '<div id="top"></div>',
+    unsafe_allow_html=True
+)
 
 from datetime import datetime
 
@@ -210,24 +214,24 @@ if st.session_state.get(
     False
 ):
 
-    st.components.v1.html(
+    st.markdown(
         """
         <script>
 
-        function scrollTop() {
+        const topElement =
+            window.parent.document.getElementById("top");
 
-            window.parent.scrollTo({
-                top: 0,
+        if (topElement) {
+
+            topElement.scrollIntoView({
                 behavior: "smooth"
             });
 
         }
 
-        setTimeout(scrollTop, 300);
-
         </script>
         """,
-        height=0
+        unsafe_allow_html=True
     )
 
     st.session_state.scroll_to_top = False
