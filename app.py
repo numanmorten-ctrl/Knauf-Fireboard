@@ -518,6 +518,38 @@ if "current_step" not in st.session_state:
 current_step = st.session_state.current_step
 
 # ---------------------------------------------------
+# DEFAULT VALUES
+# ---------------------------------------------------
+
+category = st.session_state.get(
+    "category"
+)
+
+montage = st.session_state.get(
+    "montage"
+)
+
+sides = st.session_state.get(
+    "sides"
+)
+
+fire_time = st.session_state.get(
+    "fire_time"
+)
+
+temperature = st.session_state.get(
+    "temperature",
+    450
+)
+
+selected_profile = st.session_state.get(
+    "selected_profile"
+)
+
+apv = None
+thickness = None
+
+# ---------------------------------------------------
 # STEP HEADER
 # ---------------------------------------------------
 
@@ -544,7 +576,7 @@ for idx, step in enumerate(steps):
                 st.session_state.current_step = idx
 
                 st.rerun()
-
+                
 # ---------------------------------------------------
 # TAB 1 - PROFIL
 # ---------------------------------------------------
@@ -610,6 +642,10 @@ if current_step == 0:
     selected_profile = st.selectbox(
         "Vælg profilstørrelse",
         profiles
+    )
+
+    st.session_state.selected_profile = (
+    selected_profile
     )
 
     # ---------------------------------------------------
@@ -813,6 +849,8 @@ if current_step == 2:
     )
 
     temperature = int(temperature)
+    st.session_state.fire_time = fire_time
+    st.session_state.temperature = temperature
 
     # ---------------------------------------------------
     # NAVIGATION
