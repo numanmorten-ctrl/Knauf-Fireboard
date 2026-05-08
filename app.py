@@ -336,10 +336,10 @@ with st.sidebar:
 
                 if is_active:
 
-                    st.markdown("""
+                    st.markdown(f"""
                     <style>
 
-                    div[data-testid="stButton"] > button[kind="secondary"] {
+                    button[kind="secondary"][data-testid="baseButton-secondary"][id*="sidebar_calc_{idx}"] {{
 
                         border: 2px solid #00c853 !important;
 
@@ -348,7 +348,7 @@ with st.sidebar:
                         color: #7CFC9A !important;
 
                         font-weight: 700 !important;
-                    }
+                    }}
 
                     </style>
                     """, unsafe_allow_html=True)
