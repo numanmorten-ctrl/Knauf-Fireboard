@@ -618,58 +618,71 @@ def disabled_card(
     )
 
 # -------------------------
-# PROFILKATEGORI
+# TABS
 # -------------------------
 
-st.subheader(
-    "Vælg profilkategori"
-)
+tab1, tab2, tab3, tab4 = st.tabs([
+    "Profil",
+    "Inddækning",
+    "Brand",
+    "Resultat"
+])
 
-categories = [
+with tab1:
 
-    ("H-profiler", "images/h_profiles.png"),
-    ("I-profiler", "images/i_profiles.png"),
-    ("U-profiler", "images/u_profiles.png"),
+    # -------------------------
+    # PROFILKATEGORI
+    # -------------------------
 
-    ("Kvadratiske rør varmvalsede", "images/shs_hot.png"),
-    ("Kvadratiske rør koldvalsede", "images/shs_cold.png"),
-
-    ("Rektangulære rør varmvalsede", "images/rhs_hot.png"),
-    ("Rektangulære rør koldvalsede", "images/rhs_cold.png"),
-
-    ("Cirkulære rør middelsvære", "images/chs_medium.png"),
-    ("Cirkulære rør svære", "images/chs_heavy.png"),
-
-    ("Andre profiler", "images/other_profiles.png"),
-]
-
-for i in range(0, len(categories), 5):
-
-    cols = st.columns(5)
-
-    for col, (label, image) in zip(
-        cols,
-        categories[i:i+5]
-    ):
-
-        with col:
-
-            card(
-                label,
-                image,
-                "category"
-            )
-
-category = st.session_state.category
-
-if st.session_state.editing:
-
-    st.info(
-        "✏️ Redigering af eksisterende beregning"
+    st.subheader(
+        "Vælg profilkategori"
     )
 
-if not category:
-    st.stop()
+    categories = [
+
+        ("H-profiler", "images/h_profiles.png"),
+        ("I-profiler", "images/i_profiles.png"),
+        ("U-profiler", "images/u_profiles.png"),
+
+        ("Kvadratiske rør varmvalsede", "images/shs_hot.png"),
+        ("Kvadratiske rør koldvalsede", "images/shs_cold.png"),
+
+        ("Rektangulære rør varmvalsede", "images/rhs_hot.png"),
+        ("Rektangulære rør koldvalsede", "images/rhs_cold.png"),
+
+        ("Cirkulære rør middelsvære", "images/chs_medium.png"),
+        ("Cirkulære rør svære", "images/chs_heavy.png"),
+
+        ("Andre profiler", "images/other_profiles.png"),
+    ]
+
+    for i in range(0, len(categories), 5):
+
+        cols = st.columns(5)
+
+        for col, (label, image) in zip(
+            cols,
+            categories[i:i+5]
+        ):
+
+            with col:
+
+                card(
+                    label,
+                    image,
+                    "category"
+                )
+
+    category = st.session_state.category
+
+    if st.session_state.editing:
+
+        st.info(
+            "✏️ Redigering af eksisterende beregning"
+        )
+
+    if not category:
+        st.stop()
 # -------------------------
 # DEFAULT VALUES
 # -------------------------
@@ -861,151 +874,155 @@ else:
         selected_profile_label
     ]
 
-# -------------------------
-# MONTAGE + SIDER
-# -------------------------
-
-if not custom_profile:
-
-    st.divider()
-
-    st.subheader(
-        "Vælg inddækningstype"
-    )
-
-    col1, col2 = st.columns(2)
-
-    with col1:
-
-        card(
-            "Klammeløsning",
-            "images/klamme.png",
-            "montage"
-        )
-
-    with col2:
-
-        card(
-            "Bjælkeprofil eller PDP profil",
-            "images/bjaelke.png",
-            "montage"
-        )
-
-    montage = st.session_state.montage
-
-    if not montage:
-        st.stop()
+with tab2:
 
     # -------------------------
-    # SIDER
+    # MONTAGE + SIDER
     # -------------------------
 
-    st.divider()
+    if not custom_profile:
 
-    st.subheader(
-        "Vælg antal sider med inddækning"
-    )
+        st.divider()
 
-    is_circular = (
+        st.subheader(
+            "Vælg inddækningstype"
+        )
 
-        category
-        == "Cirkulære rør middelsvære"
-
-        or
-
-        category
-        == "Cirkulære rør svære"
-    )
-
-    col1, col2, col3, col4 = st.columns(4)
-
-    if is_circular:
-
-        with col1:
-
-            disabled_card(
-                "1 side ikke muligt",
-                "images/side1.png"
-            )
-
-        with col2:
-
-            disabled_card(
-                "2 sider ikke muligt",
-                "images/side2.png"
-            )
-
-        with col3:
-
-            disabled_card(
-                "3 sider ikke muligt",
-                "images/side3.png"
-            )
-
-        with col4:
-
-            card(
-                "4",
-                "images/side4.png",
-                "sides"
-            )
-
-    else:
+        col1, col2 = st.columns(2)
 
         with col1:
 
             card(
-                "1",
-                "images/side1.png",
-                "sides"
+                "Klammeløsning",
+                "images/klamme.png",
+                "montage"
             )
 
         with col2:
 
             card(
-                "2",
-                "images/side2.png",
-                "sides"
+                "Bjælkeprofil eller PDP profil",
+                "images/bjaelke.png",
+                "montage"
             )
 
-        with col3:
+        montage = st.session_state.montage
 
-            card(
-                "3",
-                "images/side3.png",
-                "sides"
-            )
+        if not montage:
+            st.stop()
 
-        with col4:
+        # -------------------------
+        # SIDER
+        # -------------------------
 
-            card(
-                "4",
-                "images/side4.png",
-                "sides"
-            )
+        st.divider()
 
-    sides = st.session_state.sides
+        st.subheader(
+            "Vælg antal sider med inddækning"
+        )
 
-    if not sides:
+        is_circular = (
+
+            category
+            == "Cirkulære rør middelsvære"
+
+            or
+
+            category
+            == "Cirkulære rør svære"
+        )
+
+        col1, col2, col3, col4 = st.columns(4)
+
+        if is_circular:
+
+            with col1:
+
+                disabled_card(
+                    "1 side ikke muligt",
+                    "images/side1.png"
+                )
+
+            with col2:
+
+                disabled_card(
+                    "2 sider ikke muligt",
+                    "images/side2.png"
+                )
+
+            with col3:
+
+                disabled_card(
+                    "3 sider ikke muligt",
+                    "images/side3.png"
+                )
+
+            with col4:
+
+                card(
+                    "4",
+                    "images/side4.png",
+                    "sides"
+                )
+
+        else:
+
+            with col1:
+
+                card(
+                    "1",
+                    "images/side1.png",
+                    "sides"
+                )
+
+            with col2:
+
+                card(
+                    "2",
+                    "images/side2.png",
+                    "sides"
+                )
+
+            with col3:
+
+                card(
+                    "3",
+                    "images/side3.png",
+                    "sides"
+                )
+
+            with col4:
+
+                card(
+                    "4",
+                    "images/side4.png",
+                    "sides"
+                )
+
+        sides = st.session_state.sides
+
+        if not sides:
+            st.stop()
+
+        sides = int(sides)
+        
+with tab3:
+
+    # -------------------------
+    # BRANDTID
+    # -------------------------
+
+    st.divider()
+
+    fire_time = st.selectbox(
+        "Vælg brandbeskyttelsestid",
+        [30, 60, 90, 120],
+        index=None,
+        placeholder="Vælg brandtid"
+    )
+
+    if fire_time is None:
         st.stop()
-
-    sides = int(sides)
-
-# -------------------------
-# BRANDTID
-# -------------------------
-
-st.divider()
-
-fire_time = st.selectbox(
-    "Vælg brandbeskyttelsestid",
-    [30, 60, 90, 120],
-    index=None,
-    placeholder="Vælg brandtid"
-)
-
-if fire_time is None:
-    st.stop()
 
 # -------------------------
 # TEMPERATUR
@@ -1279,22 +1296,24 @@ def generate_pdf():
 
     return buffer
 
-# -------------------------
-# RESULTAT
-# -------------------------
+with tab4:
 
-st.divider()
+    # -------------------------
+    # RESULTAT
+    # -------------------------
 
-st.success(
-    f"Beregnet profilforhold Ap/V: "
-    f"{apv} m²/m³"
-)
+    st.divider()
 
-st.success(
-    f"Profil skal inddækkes med "
-    f"{int(thickness)} mm "
-    f"Knauf Fireboard"
-)
+    st.success(
+        f"Beregnet profilforhold Ap/V: "
+        f"{apv} m²/m³"
+    )
+
+    st.success(
+        f"Profil skal inddækkes med "
+        f"{int(thickness)} mm "
+        f"Knauf Fireboard"
+    )
 
 # -------------------------
 # GEM BEREGNING
