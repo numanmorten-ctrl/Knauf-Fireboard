@@ -173,7 +173,7 @@ INPUTS
 
     border-radius: 4px !important;
 
-    border: 1px solid #c8d0d9 !important;
+    border: 1px solid #d9dde3 !important;
 
     background-color: white !important;
 }
