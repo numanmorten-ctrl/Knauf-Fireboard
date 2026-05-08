@@ -206,64 +206,6 @@ with col1:
         "Brandbeskyttelse af stålkonstruktioner"
     )
 
-    if st.session_state.calculations:
-
-        project_text = (
-            st.session_state.project_name
-            if st.session_state.project_name
-            else "Unavngivet projekt"
-        )
-
-        calc_count = len(
-            st.session_state.calculations
-        )
-
-        updated = (
-            st.session_state.last_updated
-            .strftime("%d-%m-%Y %H:%M")
-        )
-
-        st.markdown(f"""
-        <div style="
-        padding:14px 18px;
-        border:1px solid #1f3b2d;
-        border-radius:10px;
-        background-color:rgba(20,60,35,0.25);
-        margin-top:10px;
-        margin-bottom:10px;
-        ">
-
-        <div style="
-        font-size:18px;
-        font-weight:600;
-        color:#7CFC9A;
-        margin-bottom:6px;
-        ">
-        🟢 Aktivt projekt
-        </div>
-
-        <div style="font-size:15px;">
-        📁 {project_text}
-        </div>
-
-        <div style="
-        font-size:14px;
-        margin-top:4px;
-        ">
-        {calc_count} gemte beregninger
-        </div>
-
-        <div style="
-        font-size:13px;
-        opacity:0.7;
-        margin-top:4px;
-        ">
-        Senest ændret: {updated}
-        </div>
-
-        </div>
-        """, unsafe_allow_html=True)
-
 with col2:
 
     st.write("")
