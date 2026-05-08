@@ -201,24 +201,28 @@ fire_tables = {
 # SESSION STATE
 # -------------------------
 
-for key in [
-    "category",
-    "montage",
-    "sides"
-]:
+defaults = {
+
+    "category": None,
+    "montage": None,
+    "sides": None,
+
+    # Beregninger
+    "calculations": [],
+    "edit_index": None,
+
+    # Projektoplysninger
+    "project_name": "",
+    "company": "",
+    "prepared_by": "",
+    "description": ""
+}
+
+for key, value in defaults.items():
+
     if key not in st.session_state:
-        st.session_state[key] = None
 
-# Gemte beregninger
-
-if "calculations" not in st.session_state:
-    st.session_state.calculations = []
-
-# Redigering
-
-if "edit_index" not in st.session_state:
-    st.session_state.edit_index = None
-
+        st.session_state[key] = value
 # -------------------------
 # CARD FUNCTIONS
 # -------------------------
@@ -836,7 +840,7 @@ if pd.isna(thickness):
 
 st.divider()
 
-st.subheader(
+st.header(
     "Projektoplysninger"
 )
 
@@ -845,35 +849,38 @@ col1, col2 = st.columns(2)
 with col1:
 
     project_name = st.text_input(
-        "Projekt"
+        "Projekt",
+        value=st.session_state.project_name
+    )
+
+    prepared_by = st.text_input(
+        "Udarbejdet af",
+        value=st.session_state.prepared_by
     )
 
 with col2:
 
-    company_name = st.text_input(
-        "Firma"
+    company = st.text_input(
+        "Firma",
+        value=st.session_state.company
     )
-
-col3, col4 = st.columns(2)
-
-with col3:
-
-    prepared_by = st.text_input(
-        "Udarbejdet af"
-    )
-
-with col4:
 
     report_date = st.date_input(
-        "Dato",
-        value=date.today(),
-        format="DD-MM-YYYY"
+        "Dato"
     )
 
 description = st.text_area(
-    "Beskrivelse"
+    "Beskrivelse",
+    value=st.session_state.description,
+    height=120
 )
 
+# Gem i session_state
+
+st.session_state.project_name = project_name
+st.session_state.company = company
+st.session_state.prepared_by = prepared_by
+st.session_state.description = description
 # -------------------------
 # PDF FUNCTION
 # -------------------------
