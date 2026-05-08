@@ -1126,14 +1126,52 @@ st.success(
 
 calculation_data = {
 
+    # -------------------------
+    # INPUTS
+    # -------------------------
+
     "category": category,
     "profile": profile,
     "montage": montage,
     "sides": sides,
+
     "fire_time": fire_time,
     "temperature": temperature,
+
     "apv": apv,
-    "thickness": thickness
+    "thickness": thickness,
+
+    # -------------------------
+    # CUSTOM PROFILE DATA
+    # -------------------------
+
+    "apv_mode": (
+        apv_mode
+        if custom_profile
+        else None
+    ),
+
+    "perimeter": (
+        perimeter
+        if custom_profile
+        else None
+    ),
+
+    "area": (
+        area
+        if custom_profile
+        else None
+    ),
+
+    # -------------------------
+    # PROFILE SELECTION
+    # -------------------------
+
+    "selected_profile_label": (
+        selected_profile_label
+        if not custom_profile
+        else None
+    )
 }
 
 button_text = (
@@ -1160,6 +1198,8 @@ if st.button(
         st.session_state.calculations.append(
             calculation_data
         )
+
+    st.session_state.last_updated = datetime.now()
 
     st.rerun()
 
@@ -1197,6 +1237,10 @@ if st.session_state.calculations:
                 **Fireboard:** {int(calc['thickness'])} mm
                 """)
 
+            # -------------------------
+            # EDIT
+            # -------------------------
+
             with col2:
 
                 if st.button(
@@ -1204,9 +1248,63 @@ if st.session_state.calculations:
                     key=f"edit_{idx}"
                 ):
 
+                    selected_calc = (
+                        st.session_state.calculations[idx]
+                    )
+
+                    # -------------------------
+                    # LOAD VALUES BACK
+                    # -------------------------
+
+                    st.session_state.category = (
+                        selected_calc["category"]
+                    )
+
+                    st.session_state.montage = (
+                        selected_calc["montage"]
+                    )
+
+                    st.session_state.sides = (
+                        selected_calc["sides"]
+                    )
+
+                    st.session_state.fire_time = (
+                        selected_calc["fire_time"]
+                    )
+
+                    st.session_state.temperature = (
+                        selected_calc["temperature"]
+                    )
+
+                    st.session_state.profile = (
+                        selected_calc["profile"]
+                    )
+
+                    st.session_state.selected_profile_label = (
+                        selected_calc[
+                            "selected_profile_label"
+                        ]
+                    )
+
+                    st.session_state.apv_mode = (
+                        selected_calc["apv_mode"]
+                    )
+
+                    st.session_state.perimeter = (
+                        selected_calc["perimeter"]
+                    )
+
+                    st.session_state.area = (
+                        selected_calc["area"]
+                    )
+
                     st.session_state.edit_index = idx
 
                     st.rerun()
+
+            # -------------------------
+            # DELETE
+            # -------------------------
 
             with col3:
 
@@ -1217,6 +1315,10 @@ if st.session_state.calculations:
 
                     st.session_state.calculations.pop(
                         idx
+                    )
+
+                    st.session_state.last_updated = (
+                        datetime.now()
                     )
 
                     st.rerun()
