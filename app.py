@@ -202,16 +202,22 @@ fire_tables = {
 # -------------------------
 
 for key in [
-
     "category",
     "montage",
     "sides"
-
 ]:
-
     if key not in st.session_state:
-
         st.session_state[key] = None
+
+# Gemte beregninger
+
+if "calculations" not in st.session_state:
+    st.session_state.calculations = []
+
+# Redigering
+
+if "edit_index" not in st.session_state:
+    st.session_state.edit_index = None
 
 # -------------------------
 # CARD FUNCTIONS
@@ -1007,7 +1013,8 @@ def generate_pdf():
 st.divider()
 
 st.success(
-    f"Beregnet profilforhold Ap/V: {apv} m²/m³"
+    f"Beregnet profilforhold Ap/V: "
+    f"{apv} m²/m³"
 )
 
 st.success(
@@ -1016,15 +1023,105 @@ st.success(
     f"Knauf Fireboard"
 )
 
-pdf = generate_pdf()
+# -------------------------
+# GEM BEREGNING
+# -------------------------
 
-st.download_button(
-    label="📄 Download PDF rapport",
-    data=pdf,
-    file_name=(
-        f"Knauf_Fireboard_"
-        f"{profile}_"
-        f"R{fire_time}.pdf"
-    ),
-    mime="application/pdf"
+calculation_data = {
+
+    "category": category,
+    "profile": profile,
+    "montage": montage,
+    "sides": sides,
+    "fire_time": fire_time,
+    "temperature": temperature,
+    "apv": apv,
+    "thickness": thickness
+}
+
+button_text = (
+    "🔄 Opdater beregning"
+    if st.session_state.edit_index is not None
+    else "➕ Tilføj beregning"
 )
+
+if st.button(
+    button_text,
+    use_container_width=True
+):
+
+    if st.session_state.edit_index is not None:
+
+        st.session_state.calculations[
+            st.session_state.edit_index
+        ] = calculation_data
+
+        st.session_state.edit_index = None
+
+    else:
+
+        st.session_state.calculations.append(
+            calculation_data
+        )
+
+    st.rerun()
+
+# -------------------------
+# GEMTE BEREGNINGER
+# -------------------------
+
+if st.session_state.calculations:
+
+    st.divider()
+
+    st.subheader(
+        "Samlede beregninger"
+    )
+
+    for idx, calc in enumerate(
+        st.session_state.calculations
+    ):
+
+        with st.container():
+
+            col1, col2, col3 = st.columns(
+                [8, 1, 1]
+            )
+
+            with col1:
+
+                st.markdown(f"""
+                ### Beregning {idx + 1}
+
+                **Profil:** {calc['profile']}  
+                **Brandtid:** {calc['fire_time']} min  
+                **Temperatur:** {calc['temperature']} °C  
+                **Ap/V:** {calc['apv']} m²/m³  
+                **Fireboard:** {calc['thickness']} mm
+                """)
+
+            with col2:
+
+                if st.button(
+                    "✏️",
+                    key=f"edit_{idx}"
+                ):
+
+                    st.session_state.edit_index = idx
+
+                    st.rerun()
+
+            with col3:
+
+                if st.button(
+                    "🗑️",
+                    key=f"delete_{idx}"
+                ):
+
+                    st.session_state.calculations.pop(
+                        idx
+                    )
+
+                    st.rerun()
+
+            st.divider()
