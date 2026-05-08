@@ -529,6 +529,26 @@ div[data-baseweb="calendar"] button:focus {
 
     box-shadow: none !important;
 }
+/* ---------------------------------------------------
+ABSOLUTE NUCLEAR OPTION
+--------------------------------------------------- */
+
+div[data-baseweb="calendar"] button:focus-visible,
+div[data-baseweb="calendar"] button[tabindex="0"],
+div[data-baseweb="calendar"] button[tabindex="0"] * {
+
+    background: white !important;
+
+    background-color: white !important;
+
+    color: #003b7a !important;
+
+    box-shadow: none !important;
+
+    outline: none !important;
+
+    border: none !important;
+}
 </style>
 """, unsafe_allow_html=True)
 # ---------------------------------------------------
