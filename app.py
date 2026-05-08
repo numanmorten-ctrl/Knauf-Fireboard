@@ -89,6 +89,20 @@ with col1:
         "Brandbeskyttelse af stålkonstruktioner"
     )
 
+if st.session_state.calculations:
+
+    project_text = (
+        st.session_state.project_name
+        if st.session_state.project_name
+        else "Unavngivet projekt"
+    )
+
+    st.info(
+        f"📁 Aktivt projekt: "
+        f"{project_text} · "
+        f"{len(st.session_state.calculations)} "
+        f"gemte beregninger"
+    )
 with col2:
 
     st.write("")
