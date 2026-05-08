@@ -206,29 +206,11 @@ with col1:
         "Brandbeskyttelse af stålkonstruktioner"
     )
 
+# ---------------------------------------------------
+# NY BEREGNING
+# ---------------------------------------------------
+
 with col2:
-
-    st.write("")
-    st.write("")
-
-    if st.button(
-        "🔄 Ny beregning",
-        use_container_width=True
-    ):
-
-        reset_keys = [
-            "category",
-            "montage",
-            "sides"
-        ]
-
-        for key in reset_keys:
-
-            st.session_state[key] = None
-
-        st.rerun()
-
-with col3:
 
     st.write("")
     st.write("")
@@ -259,6 +241,20 @@ with col3:
         st.session_state.current_step = 0
 
         st.rerun()
+
+# ---------------------------------------------------
+# NYT PROJEKT
+# ---------------------------------------------------
+
+with col3:
+
+    st.write("")
+    st.write("")
+
+    if st.button(
+        "🗑️ Nyt projekt",
+        use_container_width=True
+    ):
 
         st.session_state.clear()
 
