@@ -272,6 +272,10 @@ with st.sidebar:
 
     st.title("📚 Beregninger")
 
+    # ---------------------------------------------------
+    # NY BEREGNING
+    # ---------------------------------------------------
+
     if st.button(
         "➕ Ny beregning",
         use_container_width=True
@@ -292,12 +296,18 @@ with st.sidebar:
             st.session_state[key] = None
 
         st.session_state.editing = False
+
         st.session_state.edit_index = None
+
         st.session_state.current_step = 0
 
         st.rerun()
 
     st.divider()
+
+    # ---------------------------------------------------
+    # BEREGNINGER
+    # ---------------------------------------------------
 
     if st.session_state.calculations:
 
@@ -324,15 +334,27 @@ with st.sidebar:
 
             with col1:
 
-                button_type = (
-                    "primary"
-                    if is_active
-                    else "secondary"
-                )
+                if is_active:
+
+                    st.markdown("""
+                    <style>
+
+                    div[data-testid="stButton"] > button[kind="secondary"] {
+
+                        border: 2px solid #00c853 !important;
+
+                        background-color: rgba(0,200,83,0.18) !important;
+
+                        color: #7CFC9A !important;
+
+                        font-weight: 700 !important;
+                    }
+
+                    </style>
+                    """, unsafe_allow_html=True)
 
                 if st.button(
                     label,
-                    type=button_type,
                     key=f"sidebar_calc_{idx}",
                     use_container_width=True
                 ):
