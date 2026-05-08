@@ -1321,7 +1321,7 @@ if st.session_state.calculations:
 
                     st.session_state.edit_index = idx
 
-                    st.query_params["scroll"] = "top"
+                    st.session_state.scroll_to_top = True
 
                     st.rerun()
 
