@@ -197,6 +197,28 @@ with col3:
         st.rerun()
 
 # -------------------------
+# SCROLL TO TOP
+# -------------------------
+
+if st.query_params.get("scroll") == "top":
+
+    st.components.v1.html(
+        """
+        <script>
+
+        window.parent.scrollTo({
+            top: 0,
+            behavior: "instant"
+        });
+
+        </script>
+        """,
+        height=0
+    )
+
+    del st.query_params["scroll"]
+
+# -------------------------
 # LOAD DATA
 # -------------------------
 
@@ -205,52 +227,6 @@ apv_df = pd.read_csv(
     sep=";"
 )
 
-# -------------------------
-# AUTO SCROLL TO TOP
-# -------------------------
-
-if st.session_state.get(
-    "scroll_to_top",
-    False
-):
-
-    st.components.v1.html(
-        """
-        <script>
-
-        function scrollToTop() {
-
-            const main = window.parent.document.querySelector(
-                '.main'
-            );
-
-            if (main) {
-
-                main.scrollTo({
-                    top: 0,
-                    behavior: 'smooth'
-                });
-
-            }
-
-            window.parent.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-            });
-
-        }
-
-        // Vent til Streamlit er HELT færdig
-
-        setTimeout(scrollToTop, 800);
-
-        </script>
-        """,
-        height=0
-    )
-
-    st.session_state.scroll_to_top = False
-    
 # -------------------------
 # FIREBOARD DATA
 # -------------------------
@@ -1367,7 +1343,7 @@ if st.session_state.calculations:
 
                     st.session_state.edit_index = idx
 
-                    st.session_state.scroll_to_top = True
+                    st.query_params["scroll"] = "top"
 
                     st.rerun()
 
