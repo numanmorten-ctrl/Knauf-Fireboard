@@ -218,9 +218,26 @@ hr {
     border-color: #d9dde3 !important;
 }
 
+/* ---------------------------------------------------
+STREAMLIT TOPBAR
+--------------------------------------------------- */
+
+header[data-testid="stHeader"] {
+
+    background-color: white !important;
+
+    border-bottom: 1px solid #d9dde3;
+}
+
+/* Toolbar højre side */
+
+div[data-testid="stToolbar"] {
+
+    background-color: white !important;
+}
+
 </style>
 """, unsafe_allow_html=True)
-
 # ---------------------------------------------------
 # SESSION STATE
 # ---------------------------------------------------
