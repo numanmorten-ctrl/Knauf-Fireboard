@@ -533,6 +533,17 @@ category = st.session_state.category
 
 if not category:
     st.stop()
+# -------------------------
+# DEFAULT VALUES
+# -------------------------
+
+apv_mode = None
+
+perimeter = None
+
+area = None
+
+selected_profile_label = None
 
 # -------------------------
 # ANDRE PROFILER
