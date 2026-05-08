@@ -202,6 +202,29 @@ apv_df = pd.read_csv(
 )
 
 # -------------------------
+# AUTO SCROLL TO TOP
+# -------------------------
+
+if st.session_state.get(
+    "scroll_to_top",
+    False
+):
+
+    st.components.v1.html(
+        """
+        <script>
+            window.parent.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        </script>
+        """,
+        height=0
+    )
+
+    st.session_state.scroll_to_top = False
+    
+# -------------------------
 # FIREBOARD DATA
 # -------------------------
 
@@ -1305,6 +1328,8 @@ if st.session_state.calculations:
                     )
 
                     st.session_state.edit_index = idx
+
+                    st.session_state.scroll_to_top = True
 
                     st.rerun()
 
