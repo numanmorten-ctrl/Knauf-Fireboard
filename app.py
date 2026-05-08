@@ -236,39 +236,50 @@ div[data-testid="stToolbar"] {
     background-color: white !important;
 }
 /* ---------------------------------------------------
-SELECTBOX DROPDOWN MENU
+SELECTBOX
 --------------------------------------------------- */
 
 div[data-baseweb="select"] > div {
 
     background-color: white !important;
 
+    border: 1px solid #c8d0d9 !important;
+
     color: #2d343c !important;
 }
 
-/* Dropdown popup */
+/* ---------------------------------------------------
+SELECTBOX DROPDOWN POPUP
+--------------------------------------------------- */
 
-div[role="listbox"] {
+ul {
+
+    background-color: white !important;
+}
+
+/* Dropdown container */
+
+div[data-baseweb="popover"] {
 
     background-color: white !important;
 
     border: 1px solid #d9dde3 !important;
 
-    color: #2d343c !important;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08) !important;
 }
 
 /* Dropdown items */
 
-div[role="option"] {
+li {
 
     background-color: white !important;
 
     color: #2d343c !important;
 }
 
-/* Hover på dropdown items */
+/* Hover */
 
-div[role="option"]:hover {
+li:hover {
 
     background-color: #eef7fd !important;
 
