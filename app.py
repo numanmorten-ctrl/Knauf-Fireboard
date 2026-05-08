@@ -67,6 +67,40 @@ div.stButton > button:hover {
     color: #00c853;
 }
 
+/* ---------------------------------------------------
+ACTIVE SIDEBAR CALCULATION
+--------------------------------------------------- */
+
+section[data-testid="stSidebar"] button[kind="primary"] {
+
+    border: 2px solid #00c853 !important;
+
+    background: linear-gradient(
+        135deg,
+        rgba(0,200,83,0.35),
+        rgba(0,120,50,0.50)
+    ) !important;
+
+    color: white !important;
+
+    font-weight: 700 !important;
+
+    box-shadow: 0 0 12px rgba(0,200,83,0.35) !important;
+}
+
+section[data-testid="stSidebar"] button[kind="primary"]:hover {
+
+    border: 2px solid #00ff88 !important;
+
+    background: linear-gradient(
+        135deg,
+        rgba(0,255,120,0.45),
+        rgba(0,150,60,0.60)
+    ) !important;
+
+    color: white !important;
+}
+
 </style>
 """, unsafe_allow_html=True)
 
