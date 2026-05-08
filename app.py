@@ -234,6 +234,10 @@ with col2:
 
             st.session_state[key] = None
 
+        # ---------------------------------------------------
+        # VIGTIGT
+        # ---------------------------------------------------
+
         st.session_state.editing = False
 
         st.session_state.edit_index = None
