@@ -235,7 +235,45 @@ div[data-testid="stToolbar"] {
 
     background-color: white !important;
 }
+/* ---------------------------------------------------
+SELECTBOX DROPDOWN MENU
+--------------------------------------------------- */
 
+div[data-baseweb="select"] > div {
+
+    background-color: white !important;
+
+    color: #2d343c !important;
+}
+
+/* Dropdown popup */
+
+div[role="listbox"] {
+
+    background-color: white !important;
+
+    border: 1px solid #d9dde3 !important;
+
+    color: #2d343c !important;
+}
+
+/* Dropdown items */
+
+div[role="option"] {
+
+    background-color: white !important;
+
+    color: #2d343c !important;
+}
+
+/* Hover på dropdown items */
+
+div[role="option"]:hover {
+
+    background-color: #eef7fd !important;
+
+    color: #003b7a !important;
+}
 </style>
 """, unsafe_allow_html=True)
 # ---------------------------------------------------
