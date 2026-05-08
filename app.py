@@ -26,6 +26,10 @@ st.set_page_config(
     layout="wide"
 )
 
+st.markdown("""
+<div id="page_top"></div>
+""", unsafe_allow_html=True)
+
 # -------------------------
 # CUSTOM WIDTH + STYLE
 # -------------------------
@@ -219,7 +223,7 @@ if st.session_state.get("jump_to_top"):
 
     setTimeout(function() {
 
-        window.location.href = "#top";
+        window.location.href = "#page_top";
 
     }, 50);
 
