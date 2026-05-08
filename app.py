@@ -267,6 +267,8 @@ with st.sidebar:
 
         st.session_state.editing = False
 
+        st.session_state.current_step = 0
+
         st.rerun()
 
     st.divider()
@@ -277,25 +279,73 @@ with st.sidebar:
             st.session_state.calculations
         ):
 
+            col1, col2 = st.columns([5,1])
+
             label = (
                 f"{calc['profile']} · "
                 f"R{calc['fire_time']}"
             )
 
-            if st.button(
-                label,
-                key=f"sidebar_calc_{idx}",
-                use_container_width=True
-            ):
+            # ---------------------------------------------------
+            # LOAD CALCULATION
+            # ---------------------------------------------------
 
-                st.session_state.category = calc["category"]
-                st.session_state.montage = calc["montage"]
-                st.session_state.sides = calc["sides"]
+            with col1:
 
-                st.session_state.edit_index = idx
-                st.session_state.editing = True
+                if st.button(
+                    label,
+                    key=f"sidebar_calc_{idx}",
+                    use_container_width=True
+                ):
 
-                st.rerun()
+                    st.session_state.category = (
+                        calc["category"]
+                    )
+
+                    st.session_state.montage = (
+                        calc["montage"]
+                    )
+
+                    st.session_state.sides = (
+                        calc["sides"]
+                    )
+
+                    st.session_state.fire_time = (
+                        calc["fire_time"]
+                    )
+
+                    st.session_state.temperature = (
+                        calc["temperature"]
+                    )
+
+                    st.session_state.selected_profile = (
+                        calc["profile"]
+                    )
+
+                    st.session_state.edit_index = idx
+
+                    st.session_state.editing = True
+
+                    st.session_state.current_step = 0
+
+                    st.rerun()
+
+            # ---------------------------------------------------
+            # DELETE
+            # ---------------------------------------------------
+
+            with col2:
+
+                if st.button(
+                    "🗑️",
+                    key=f"delete_sidebar_{idx}"
+                ):
+
+                    st.session_state.calculations.pop(
+                        idx
+                    )
+
+                    st.rerun()
 
 # ---------------------------------------------------
 # CARD FUNCTIONS
