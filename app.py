@@ -80,10 +80,13 @@ div.stButton > button:hover {
 # -------------------------
 # HEADER
 # -------------------------
-st.markdown(
-    '<div id="top"></div>',
-    unsafe_allow_html=True
-)
+st.markdown("""
+<div id="top"></div>
+
+<script>
+window.scrollTo(0, 0);
+</script>
+""", unsafe_allow_html=True)
 
 from datetime import datetime
 
@@ -208,6 +211,20 @@ with col3:
 
         st.rerun()
 
+# -------------------------
+# FORCE SCROLL TO TOP
+# -------------------------
+
+if st.session_state.get("scroll_top"):
+
+    st.markdown("""
+    <script>
+    window.scrollTo(0, 0);
+    </script>
+    """, unsafe_allow_html=True)
+
+    st.session_state.scroll_top = False
+    
 # -------------------------
 # LOAD DATA
 # -------------------------
@@ -443,6 +460,8 @@ with st.sidebar:
                 st.session_state.active_calculation = idx
 
                 st.session_state.editing = True
+
+                st.session_state.scroll_top = True
 
                 st.rerun()
 
