@@ -433,7 +433,7 @@ with st.sidebar:
                 st.session_state.editing = True
 
                 st.rerun()
-                
+
 # -------------------------
 # CARD FUNCTIONS
 # -------------------------
