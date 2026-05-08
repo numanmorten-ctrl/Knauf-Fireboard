@@ -492,6 +492,43 @@ div[data-baseweb="calendar"] div[aria-selected="true"] {
 
     border-radius: 50% !important;
 }
+/* ---------------------------------------------------
+NUCLEAR FIX - BASEWEB CALENDAR
+--------------------------------------------------- */
+
+div[data-baseweb="calendar"] button,
+div[data-baseweb="calendar"] button * {
+
+    background: white !important;
+
+    color: #2d343c !important;
+
+    box-shadow: none !important;
+}
+
+/* Selected day */
+
+div[data-baseweb="calendar"] button[aria-selected="true"] {
+
+    background: #009fe3 !important;
+
+    color: white !important;
+
+    border-radius: 50% !important;
+}
+
+/* Focused day */
+
+div[data-baseweb="calendar"] button:focus {
+
+    background: #eef7fd !important;
+
+    color: #003b7a !important;
+
+    outline: none !important;
+
+    box-shadow: none !important;
+}
 </style>
 """, unsafe_allow_html=True)
 # ---------------------------------------------------
