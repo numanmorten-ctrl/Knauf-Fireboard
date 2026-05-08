@@ -1378,8 +1378,6 @@ if st.button(
 
     st.session_state.last_updated = datetime.now()
 
-    st.session_state.show_calculations = True
-
     st.rerun()
 
     # -------------------------
