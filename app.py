@@ -214,24 +214,15 @@ if st.session_state.get(
     False
 ):
 
-    st.markdown(
+    st.components.v1.html(
         """
         <script>
 
-        const topElement =
-            window.parent.document.getElementById("top");
-
-        if (topElement) {
-
-            topElement.scrollIntoView({
-                behavior: "smooth"
-            });
-
-        }
+        window.parent.location.hash = "top";
 
         </script>
         """,
-        unsafe_allow_html=True
+        height=0
     )
 
     st.session_state.scroll_to_top = False
