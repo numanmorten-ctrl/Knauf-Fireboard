@@ -1143,7 +1143,7 @@ if st.session_state.calculations:
                 **Brandtid:** {calc['fire_time']} min  
                 **Temperatur:** {calc['temperature']} °C  
                 **Ap/V:** {calc['apv']} m²/m³  
-                **Fireboard:** {calc['thickness']} mm
+                **Fireboard:** {int(calc['thickness'])} mm
                 """)
 
             with col2:
