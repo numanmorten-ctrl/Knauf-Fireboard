@@ -303,10 +303,11 @@ defaults = {
 
     # Beregninger
     "calculations": [],
+    "edit_index": None,
     "editing": False,
 
     "show_calculations": True,
-    
+
     # Projektoplysninger
     "project_name": "",
     "company": "",
@@ -1256,6 +1257,10 @@ if st.session_state.calculations:
                     [8, 1, 1]
                 )
 
+                # -------------------------
+                # INFO
+                # -------------------------
+
                 with col1:
 
                     st.markdown(f"""
@@ -1268,103 +1273,103 @@ if st.session_state.calculations:
                     **Fireboard:** {int(calc['thickness'])} mm
                     """)
 
-            # -------------------------
-            # EDIT
-            # -------------------------
+                # -------------------------
+                # EDIT
+                # -------------------------
 
-            with col2:
+                with col2:
 
-                if st.button(
-                    "✏️",
-                    key=f"edit_{idx}"
-                ):
+                    if st.button(
+                        "✏️",
+                        key=f"edit_{idx}"
+                    ):
 
-                    selected_calc = (
-                        st.session_state.calculations[idx]
-                    )
-
-                    # -------------------------
-                    # LOAD VALUES BACK
-                    # -------------------------
-
-                    st.session_state.category = (
-                        selected_calc["category"]
-                    )
-
-                    st.session_state.montage = (
-                        selected_calc["montage"]
-                    )
-
-                    st.session_state.sides = (
-                        selected_calc["sides"]
-                    )
-
-                    st.session_state.fire_time = (
-                        selected_calc["fire_time"]
-                    )
-
-                    st.session_state.temperature = (
-                        selected_calc["temperature"]
-                    )
-
-                    st.session_state.profile = (
-                        selected_calc["profile"]
-                    )
-
-                    st.session_state.selected_profile_label = (
-                        selected_calc.get(
-                            "selected_profile_label"
+                        selected_calc = (
+                            st.session_state.calculations[idx]
                         )
-                    )
 
-                    st.session_state.apv_mode = (
-                        selected_calc.get(
-                            "apv_mode"
+                        # -------------------------
+                        # LOAD VALUES BACK
+                        # -------------------------
+
+                        st.session_state.category = (
+                            selected_calc["category"]
                         )
-                    )
 
-                    st.session_state.perimeter = (
-                        selected_calc.get(
-                            "perimeter"
+                        st.session_state.montage = (
+                            selected_calc["montage"]
                         )
-                    )
 
-                    st.session_state.area = (
-                        selected_calc.get(
-                            "area"
+                        st.session_state.sides = (
+                            selected_calc["sides"]
                         )
-                    )
 
-                    st.session_state.editing = True
+                        st.session_state.fire_time = (
+                            selected_calc["fire_time"]
+                        )
 
-                    st.session_state.edit_index = idx
+                        st.session_state.temperature = (
+                            selected_calc["temperature"]
+                        )
 
-                    st.session_state.show_calculations = False
+                        st.session_state.profile = (
+                            selected_calc["profile"]
+                        )
 
-                    st.rerun()
+                        st.session_state.selected_profile_label = (
+                            selected_calc.get(
+                                "selected_profile_label"
+                            )
+                        )
 
-            # -------------------------
-            # DELETE
-            # -------------------------
+                        st.session_state.apv_mode = (
+                            selected_calc.get(
+                                "apv_mode"
+                            )
+                        )
 
-            with col3:
+                        st.session_state.perimeter = (
+                            selected_calc.get(
+                                "perimeter"
+                            )
+                        )
 
-                if st.button(
-                    "🗑️",
-                    key=f"delete_{idx}"
-                ):
+                        st.session_state.area = (
+                            selected_calc.get(
+                                "area"
+                            )
+                        )
 
-                    st.session_state.calculations.pop(
-                        idx
-                    )
+                        st.session_state.edit_index = idx
 
-                    st.session_state.last_updated = (
-                        datetime.now()
-                    )
+                        st.session_state.editing = True
 
-                    st.rerun()
+                        st.session_state.show_calculations = False
 
-            st.divider()
+                        st.rerun()
+
+                # -------------------------
+                # DELETE
+                # -------------------------
+
+                with col3:
+
+                    if st.button(
+                        "🗑️",
+                        key=f"delete_{idx}"
+                    ):
+
+                        st.session_state.calculations.pop(
+                            idx
+                        )
+
+                        st.session_state.last_updated = (
+                            datetime.now()
+                        )
+
+                        st.rerun()
+
+                st.divider()
 
     # -------------------------
     # HANDLINGER NEDERST
@@ -1390,6 +1395,8 @@ if st.session_state.calculations:
             for key in reset_keys:
 
                 st.session_state[key] = None
+
+            st.session_state.editing = False
 
             st.rerun()
 
