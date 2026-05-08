@@ -1281,21 +1281,27 @@ if st.session_state.calculations:
                     )
 
                     st.session_state.selected_profile_label = (
-                        selected_calc[
+                        selected_calc.get(
                             "selected_profile_label"
-                        ]
+                        )
                     )
 
                     st.session_state.apv_mode = (
-                        selected_calc["apv_mode"]
+                        selected_calc.get(
+                            "apv_mode"
+                        )
                     )
 
                     st.session_state.perimeter = (
-                        selected_calc["perimeter"]
+                        selected_calc.get(
+                            "perimeter"
+                        )
                     )
 
                     st.session_state.area = (
-                        selected_calc["area"]
+                        selected_calc.get(
+                            "area"
+                        )
                     )
 
                     st.session_state.edit_index = idx
