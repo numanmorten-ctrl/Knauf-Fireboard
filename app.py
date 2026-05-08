@@ -96,7 +96,7 @@ div.stButton > button {
 
     background-color: white;
 
-    border: 1px solid #c8d0d9;
+    border: 1px solid #d9dde3;
 
     color: #003b7a;
 
