@@ -883,56 +883,75 @@ if current_step == 2:
             st.rerun()
 
 # ---------------------------------------------------
-# FIND AP/V
+# FIND AP/V + TYKKELSE
 # ---------------------------------------------------
 
-row = apv_df[
-    (
-        apv_df["profile"]
-        == selected_profile
+apv = None
+thickness = None
+
+if (
+    selected_profile
+    and montage
+    and sides
+    and fire_time
+    and temperature
+):
+
+    row = apv_df[
+        (
+            apv_df["profile"]
+            == selected_profile
+        )
+        &
+        (
+            apv_df["montage"]
+            == montage
+        )
+        &
+        (
+            apv_df["sides"]
+            == int(sides)
+        )
+    ]
+
+    if row.empty:
+
+        st.error(
+            "Denne kombination er ikke mulig"
+        )
+
+        st.stop()
+
+    apv = int(
+        row.iloc[0]["apv"]
     )
-    &
-    (
-        apv_df["montage"]
-        == montage
-    )
-    &
-    (
-        apv_df["sides"]
-        == int(sides)
-    )
-]
 
-if row.empty:
+    # ---------------------------------------------------
+    # FIND TYKKELSE
+    # ---------------------------------------------------
 
-    st.error(
-        "Denne kombination er ikke mulig"
-    )
+    table = fire_tables[fire_time]
 
-    st.stop()
+    if apv not in table.columns:
 
-apv = int(
-    row.iloc[0]["apv"]
-)
+        st.error(
+            "Der findes ingen løsning"
+        )
 
-# ---------------------------------------------------
-# FIND TYKKELSE
-# ---------------------------------------------------
+        st.stop()
 
-table = fire_tables[fire_time]
+    if int(temperature) not in table.index:
 
-if apv not in table.columns:
+        st.error(
+            "Temperaturen findes ikke"
+        )
 
-    st.error(
-        "Der findes ingen løsning"
-    )
+        st.stop()
 
-    st.stop()
-
-thickness = table.loc[
-    int(temperature),
-    apv
-]
+    thickness = table.loc[
+        int(temperature),
+        apv
+    ]
 
 # ---------------------------------------------------
 # TAB 4 - RESULTAT
