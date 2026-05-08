@@ -431,33 +431,6 @@ div[data-baseweb="calendar"] div[tabindex="0"] {
 
     border-radius: 50% !important;
 }
-/* ---------------------------------------------------
-CALENDAR FOCUS STATE
---------------------------------------------------- */
-
-div[data-baseweb="calendar"] div:focus {
-
-    background-color: #eef7fd !important;
-
-    color: #003b7a !important;
-
-    box-shadow: none !important;
-
-    outline: 2px solid #009fe3 !important;
-
-    border-radius: 50% !important;
-}
-
-/* Fjern dark active state */
-
-div[data-baseweb="calendar"] div[tabindex="0"] {
-
-    background-color: #eef7fd !important;
-
-    color: #003b7a !important;
-
-    box-shadow: none !important;
-}
 </style>
 """, unsafe_allow_html=True)
 # ---------------------------------------------------
