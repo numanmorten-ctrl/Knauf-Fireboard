@@ -208,7 +208,40 @@ NUMBER INPUT TEXT
 
     color: #009fe3 !important;
 }
+/* ---------------------------------------------------
+DATE INPUT
+--------------------------------------------------- */
 
+.stDateInput input {
+
+    background-color: white !important;
+
+    color: #2d343c !important;
+
+    border: 1px solid #c8d0d9 !important;
+
+    border-radius: 4px !important;
+}
+
+/* Kalender ikon */
+
+.stDateInput button {
+
+    background-color: white !important;
+
+    color: #003b7a !important;
+
+    border-left: 1px solid #d9dde3 !important;
+}
+
+/* Hover */
+
+.stDateInput button:hover {
+
+    background-color: #eef7fd !important;
+
+    color: #009fe3 !important;
+}
 /* ---------------------------------------------------
 SELECTBOX
 --------------------------------------------------- */
