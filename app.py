@@ -1157,3 +1157,42 @@ if st.session_state.calculations:
                     st.rerun()
 
             st.divider()
+
+    # -------------------------
+    # HANDLINGER NEDERST
+    # -------------------------
+
+    col1, col2 = st.columns(2)
+
+    with col1:
+
+        if st.button(
+            "🔄 Ny beregning",
+            key="bottom_new_calc",
+            use_container_width=True
+        ):
+
+            reset_keys = [
+
+                "category",
+                "montage",
+                "sides"
+            ]
+
+            for key in reset_keys:
+
+                st.session_state[key] = None
+
+            st.rerun()
+
+    with col2:
+
+        if st.button(
+            "🗑️ Nyt projekt",
+            key="bottom_new_project",
+            use_container_width=True
+        ):
+
+            st.session_state.clear()
+
+            st.rerun()
