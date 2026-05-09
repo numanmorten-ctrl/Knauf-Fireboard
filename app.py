@@ -413,6 +413,14 @@ NUMBER INPUT BUTTON AREA
 
     box-shadow: none !important;
 }
+/* ---------------------------------------------------
+HIDE NUMBER INPUT SPINNERS
+--------------------------------------------------- */
+
+.stNumberInput button {
+
+    display: none !important;
+}
 </style>
 """, unsafe_allow_html=True)
 # ---------------------------------------------------
@@ -1280,7 +1288,8 @@ if current_step == 2:
         min_value=350,
         max_value=750,
         value=450,
-        step=1
+        step=1,
+        format="%d"
     )
 
     temperature = int(temperature)
