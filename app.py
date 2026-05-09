@@ -354,6 +354,43 @@ REMOVE STREAMLIT DARK FOCUS
 
     outline: none !important;
 }
+/* ---------------------------------------------------
+KILL BASEWEB INPUT SHADOW
+--------------------------------------------------- */
+
+[data-baseweb="input"] {
+
+    border: 1px solid #d9dde3 !important;
+
+    border-radius: 4px !important;
+
+    box-shadow: none !important;
+
+    background: white !important;
+}
+
+[data-baseweb="base-input"] {
+
+    border: 1px solid #d9dde3 !important;
+
+    border-radius: 4px !important;
+
+    box-shadow: none !important;
+
+    background: white !important;
+}
+
+/* Focus */
+
+[data-baseweb="input"]:focus-within,
+[data-baseweb="base-input"]:focus-within {
+
+    border: 1px solid #009fe3 !important;
+
+    box-shadow: none !important;
+
+    outline: none !important;
+}
 </style>
 """, unsafe_allow_html=True)
 # ---------------------------------------------------
