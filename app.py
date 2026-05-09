@@ -391,6 +391,28 @@ KILL BASEWEB INPUT SHADOW
 
     outline: none !important;
 }
+/* ---------------------------------------------------
+NUMBER INPUT SPINNER CONTAINER
+--------------------------------------------------- */
+
+.stNumberInput > div > div > div {
+
+    border: none !important;
+
+    box-shadow: none !important;
+
+    background: white !important;
+}
+/* ---------------------------------------------------
+NUMBER INPUT BUTTON AREA
+--------------------------------------------------- */
+
+.stNumberInput button {
+
+    border: none !important;
+
+    box-shadow: none !important;
+}
 </style>
 """, unsafe_allow_html=True)
 # ---------------------------------------------------
