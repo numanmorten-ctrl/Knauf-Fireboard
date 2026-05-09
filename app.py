@@ -171,11 +171,13 @@ INPUTS
 .stNumberInput input,
 .stTextArea textarea {
 
-    border-radius: 4px !important;
+    border: none !important;
 
-    border: 1px solid #d9dde3 !important;
+    box-shadow: none !important;
 
     background-color: white !important;
+
+    color: #2d343c !important;
 }
 
 /* ---------------------------------------------------
