@@ -176,15 +176,20 @@ INPUTS
 
 .stTextInput > div > div,
 .stTextArea > div > div,
-.stNumberInput > div > div {
+.stNumberInput > div > div,
+[data-baseweb="input"],
+[data-baseweb="base-input"],
+[data-baseweb="textarea"] {
 
     background: white !important;
 
-    border: 1px solid #d9dde3 !important;
+    border: 1px solid #b8c2cc !important;
 
-    border-radius: 4px !important;
+    border-radius: 0 !important;
 
     box-shadow: none !important;
+
+    outline: none !important;
 }
 
 /* ---------------------------------------------------
@@ -208,6 +213,12 @@ INPUT INNER
     outline: none !important;
 
     box-shadow: none !important;
+
+    appearance: none !important;
+
+    -webkit-appearance: none !important;
+
+    -moz-appearance: none !important;
 }
 
 /* ---------------------------------------------------
@@ -216,47 +227,15 @@ INPUT FOCUS
 
 .stTextInput > div > div:focus-within,
 .stTextArea > div > div:focus-within,
-.stNumberInput > div > div:focus-within {
+.stNumberInput > div > div:focus-within,
+[data-baseweb="input"]:focus-within,
+[data-baseweb="base-input"]:focus-within {
 
     border: 1px solid #009fe3 !important;
 
+    box-shadow: none !important;
+
     outline: none !important;
-
-    box-shadow: none !important;
-}
-
-/* ---------------------------------------------------
-REMOVE NATIVE INPUT APPEARANCE
---------------------------------------------------- */
-
-.stTextInput input,
-.stTextArea textarea,
-.stNumberInput input {
-
-    appearance: none !important;
-
-    -webkit-appearance: none !important;
-
-    -moz-appearance: none !important;
-}
-
-/* BaseWeb wrappers */
-
-[data-baseweb="input"],
-[data-baseweb="base-input"],
-[data-baseweb="textarea"] {
-
-    appearance: none !important;
-
-    -webkit-appearance: none !important;
-
-    -moz-appearance: none !important;
-
-    background: white !important;
-
-    box-shadow: none !important;
-
-    border: none !important;
 }
 
 /* ---------------------------------------------------
@@ -267,7 +246,6 @@ HIDE NUMBER BUTTONS
 
     display: none !important;
 }
-
 /* ---------------------------------------------------
 SELECTBOX
 --------------------------------------------------- */
@@ -1218,7 +1196,7 @@ if current_step == 2:
 
     st.divider()
 
-    temperature = st.number_input(
+    temperature = st.text_input(
         "Indtast dimensionerende ståltemperatur (°C)",
         min_value=350,
         max_value=750,
