@@ -231,7 +231,7 @@ INPUT FOCUS
 [data-baseweb="input"]:focus-within,
 [data-baseweb="base-input"]:focus-within {
 
-    border: 1px solid #009fe3 !important;
+    border: 0,5px solid #009fe3 !important;
 
     box-shadow: none !important;
 
