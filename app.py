@@ -220,7 +220,43 @@ INPUT FOCUS
 
     border: 1px solid #009fe3 !important;
 
-    box-shadow: 0 0 0 1px rgba(0,159,227,0.15) !important;
+    outline: none !important;
+
+    box-shadow: none !important;
+}
+
+/* ---------------------------------------------------
+REMOVE NATIVE INPUT APPEARANCE
+--------------------------------------------------- */
+
+.stTextInput input,
+.stTextArea textarea,
+.stNumberInput input {
+
+    appearance: none !important;
+
+    -webkit-appearance: none !important;
+
+    -moz-appearance: none !important;
+}
+
+/* BaseWeb wrappers */
+
+[data-baseweb="input"],
+[data-baseweb="base-input"],
+[data-baseweb="textarea"] {
+
+    appearance: none !important;
+
+    -webkit-appearance: none !important;
+
+    -moz-appearance: none !important;
+
+    background: white !important;
+
+    box-shadow: none !important;
+
+    border: none !important;
 }
 
 /* ---------------------------------------------------
