@@ -204,45 +204,48 @@ TEXT INPUT INNER
 }
 
 /* ---------------------------------------------------
-NUMBER INPUT
+INPUTS
 --------------------------------------------------- */
 
+.stTextInput > div > div,
+.stTextArea > div > div,
 .stNumberInput > div > div {
+
+    background: white !important;
 
     border: 1px solid #d9dde3 !important;
 
     border-radius: 4px !important;
 
-    background: white !important;
-
-    box-shadow: none !important;
-
-    min-height: 44px !important;
-}
-/* Inner wrapper */
-
-.stNumberInput > div {
-
-    border: none !important;
-
-    background: white !important;
-
     box-shadow: none !important;
 }
 
-/* Actual input */
+/* Selve teksten */
 
+.stTextInput input,
+.stTextArea textarea,
 .stNumberInput input {
-
-    border: none !important;
-
-    outline: none !important;
-
-    box-shadow: none !important;
 
     background: white !important;
 
     color: #2d343c !important;
+
+    border: none !important;
+
+    box-shadow: none !important;
+
+    outline: none !important;
+}
+
+/* Focus state */
+
+.stTextInput > div > div:focus-within,
+.stTextArea > div > div:focus-within,
+.stNumberInput > div > div:focus-within {
+
+    border: 1px solid #009fe3 !important;
+
+    box-shadow: 0 0 0 1px #009fe3 !important;
 }
 
 /* Hide +/- buttons */
@@ -1231,11 +1234,11 @@ if current_step == 2:
         min_value=350,
         max_value=750,
         value=450,
-        step=1,
-        format="%d"
+        step=1
     )
 
     temperature = int(temperature)
+
     st.session_state.fire_time = fire_time
     st.session_state.temperature = temperature
 
@@ -1268,7 +1271,6 @@ if current_step == 2:
             st.session_state.current_step = 3
 
             st.rerun()
-
 # ---------------------------------------------------
 # FIND AP/V + TYKKELSE
 # ---------------------------------------------------
