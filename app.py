@@ -98,9 +98,9 @@ div.stDownloadButton > button {
 
     min-height: 44px;
 
-    border-radius: 4px;
+    border-radius: 0 !important;
 
-    border: 1px solid #d9dde3;
+    border: 1px solid #b8c2cc !important;
 
     background-color: white;
 
@@ -253,9 +253,9 @@ SELECTBOX
 .stSelectbox > div > div,
 div[data-baseweb="select"] > div {
 
-    border: 1px solid #d9dde3 !important;
+    border: 1px solid #b8c2cc !important;
 
-    border-radius: 4px !important;
+    border-radius: 0 !important;
 
     background: white !important;
 
@@ -263,7 +263,6 @@ div[data-baseweb="select"] > div {
 
     box-shadow: none !important;
 }
-
 /* ---------------------------------------------------
 SELECTBOX DROPDOWN
 --------------------------------------------------- */
@@ -1513,9 +1512,9 @@ if current_step == 3:
 
         st.markdown(f"""
         <div style="
-            border:1px solid #b7d7f0;
+            border:1px solid #d9dde3;
             background:#eef7fd;
-            border-radius:6px;
+            border-radius:0px;
             padding:18px;
             margin-bottom:12px;
         ">
@@ -1526,9 +1525,9 @@ if current_step == 3:
 
         st.markdown(f"""
         <div style="
-            border:1px solid #b7d7f0;
+            border:1px solid #d9dde3;
             background:#eef7fd;
-            border-radius:6px;
+            border-radius:0px;
             padding:18px;
             margin-bottom:12px;
         ">
