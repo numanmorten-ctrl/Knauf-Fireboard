@@ -355,11 +355,51 @@ div[data-baseweb="select"] > div,
 
     border: 1px solid #b8c2cc !important;
 
-    box-sizing: border-box !important;
+    border-radius: 0 !important;
 
     box-shadow: none !important;
+
+    outline: none !important;
+
+    background: white !important;
+
+    box-sizing: border-box !important;
 }
 
+/* FORCE SAME VISUAL THICKNESS */
+
+.stTextInput,
+.stTextArea,
+.stNumberInput,
+.stSelectbox,
+.stButton,
+.stDownloadButton {
+
+    box-sizing: border-box !important;
+}
+
+/* REMOVE EXTRA INNER BORDERS */
+
+.stTextInput input,
+.stTextArea textarea,
+.stNumberInput input {
+
+    border: none !important;
+
+    box-shadow: none !important;
+
+    background: transparent !important;
+}
+
+/* REMOVE BASEWEB SHADOW LAYERS */
+
+[data-baseweb="input"]::before,
+[data-baseweb="base-input"]::before,
+[data-baseweb="textarea"]::before,
+[data-baseweb="select"]::before {
+
+    display: none !important;
+}
 </style>
 """, unsafe_allow_html=True)
 # ---------------------------------------------------
