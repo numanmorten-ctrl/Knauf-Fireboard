@@ -183,7 +183,7 @@ INPUTS
 
     background: white !important;
 
-    border: 0,5px solid #b8c2cc !important;
+    border: 1px solid #b8c2cc !important;
 
     border-radius: 0 !important;
 
@@ -231,7 +231,7 @@ INPUT FOCUS
 [data-baseweb="input"]:focus-within,
 [data-baseweb="base-input"]:focus-within {
 
-    border: 0,5px solid #009fe3 !important;
+    border: 1px solid #009fe3 !important;
 
     box-shadow: none !important;
 
@@ -345,6 +345,31 @@ div.stDownloadButton > button {
     border: 1px solid #b8c2cc !important;
 
     border-radius: 0 !important;
+
+    box-shadow: none !important;
+}
+/* ---------------------------------------------------
+REMOVE RED ACTIVE BORDER
+--------------------------------------------------- */
+
+textarea:focus,
+input:focus,
+[data-baseweb="input"]:focus-within,
+[data-baseweb="textarea"]:focus-within,
+.stTextInput > div > div:focus-within,
+.stTextArea > div > div:focus-within {
+
+    border: 1px solid #009fe3 !important;
+
+    box-shadow: none !important;
+
+    outline: none !important;
+}
+
+/* Remove invalid state */
+
+input:invalid,
+textarea:invalid {
 
     box-shadow: none !important;
 }
