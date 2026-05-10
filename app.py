@@ -91,7 +91,8 @@ section[data-testid="stSidebar"] h1 {
 BUTTONS
 --------------------------------------------------- */
 
-div.stButton > button {
+div.stButton > button,
+div.stDownloadButton > button {
 
     width: 100%;
 
@@ -206,7 +207,7 @@ TEXT INPUT INNER
 NUMBER INPUT
 --------------------------------------------------- */
 
-.stNumberInput {
+.stNumberInput > div > div {
 
     border: 1px solid #d9dde3 !important;
 
@@ -215,8 +216,9 @@ NUMBER INPUT
     background: white !important;
 
     box-shadow: none !important;
-}
 
+    min-height: 44px !important;
+}
 /* Inner wrapper */
 
 .stNumberInput > div {
@@ -349,6 +351,17 @@ header[data-testid="stHeader"] {
 div[data-testid="stToolbar"] {
 
     background: white !important;
+}
+/* ---------------------------------------------------
+PROJECT INPUT FIX
+--------------------------------------------------- */
+
+.stTextInput > div > div,
+.stTextArea > div > div {
+
+    border: 1px solid #d9dde3 !important;
+
+    box-shadow: none !important;
 }
 
 </style>
@@ -1503,8 +1516,8 @@ if current_step == 3:
 
         st.markdown(f"""
         <div style="
-            border:1px solid #d9dde3;
-            background:white;
+            border:1px solid #b7d7f0;
+            background:#eef7fd;
             border-radius:6px;
             padding:18px;
             margin-bottom:12px;
@@ -1516,8 +1529,8 @@ if current_step == 3:
 
         st.markdown(f"""
         <div style="
-            border:1px solid #d9dde3;
-            background:white;
+            border:1px solid #b7d7f0;
+            background:#eef7fd;
             border-radius:6px;
             padding:18px;
             margin-bottom:12px;
