@@ -512,14 +512,8 @@ header_html = """
 </style>
 
 <div class="knauf-header">
-
-    <img class="knauf-logo"
-         src="https://knauf.com/api/download-center/v1/assets/8355fec5-8cb9-42fe-b5d7-4e7258bf446a?download=true">
-
-    <div class="knauf-fireboard">
-        Fireboard
-    </div>
-
+<img class="knauf-logo" src="https://knauf.com/api/download-center/v1/assets/8355fec5-8cb9-42fe-b5d7-4e7258bf446a?download=true">
+<div class="knauf-fireboard">Fireboard</div>
 </div>
 """
 
