@@ -400,6 +400,36 @@ div[data-baseweb="select"] > div,
 
     display: none !important;
 }
+/* ---------------------------------------------------
+FINAL BASEWEB INPUT FIX
+--------------------------------------------------- */
+
+.stTextInput > div,
+.stNumberInput > div,
+.stTextArea > div {
+
+    border: none !important;
+
+    background: transparent !important;
+
+    box-shadow: none !important;
+}
+
+.stTextInput > div > div,
+.stNumberInput > div > div,
+.stTextArea > div > div {
+
+    margin: 0 !important;
+
+    padding: 0 !important;
+
+    border: 1px solid #b8c2cc !important;
+
+    background: white !important;
+
+    box-shadow: none !important;
+}
+
 </style>
 """, unsafe_allow_html=True)
 # ---------------------------------------------------
