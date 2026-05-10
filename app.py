@@ -338,6 +338,31 @@ div[data-testid="stToolbar"] {
     background: transparent !important;
 }
 
+/* Header shadow layer */
+
+header[data-testid="stHeader"]::after {
+
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+
+    right: 0;
+
+    bottom: -6px;
+
+    height: 6px;
+
+    background: linear-gradient(
+        to bottom,
+        rgba(0,0,0,0.10),
+        rgba(0,0,0,0)
+    );
+
+    pointer-events: none;
+}
+
 /* ---------------------------------------------------
 SIDEBAR
 --------------------------------------------------- */
@@ -350,14 +375,9 @@ section[data-testid="stSidebar"] {
 
     margin-top: 3.75rem !important;
 
-    z-index: 1 !important;
-}
+    z-index: 0 !important;
 
-/* Sidebar title */
-
-section[data-testid="stSidebar"] h1 {
-
-    color: #003b7a !important;
+    position: relative !important;
 }
 
 /* ---------------------------------------------------
