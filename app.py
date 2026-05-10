@@ -47,8 +47,11 @@ MAIN LAYOUT
     max-width: 1500px;
 
     padding-top: 2rem;
+
     padding-left: 3rem;
+
     padding-right: 3rem;
+
     padding-bottom: 3rem;
 }
 
@@ -74,7 +77,7 @@ SIDEBAR
 
 section[data-testid="stSidebar"] {
 
-    background-color: #ffffff;
+    background-color: white;
 
     border-right: 1px solid #d9dde3;
 }
@@ -92,11 +95,13 @@ div.stButton > button {
 
     width: 100%;
 
+    min-height: 44px;
+
     border-radius: 4px;
 
-    background-color: white;
-
     border: 1px solid #d9dde3;
+
+    background-color: white;
 
     color: #003b7a;
 
@@ -104,9 +109,9 @@ div.stButton > button {
 
     font-weight: 600;
 
-    min-height: 44px;
-
     transition: all 0.15s ease;
+
+    box-shadow: none !important;
 }
 
 /* ---------------------------------------------------
@@ -115,11 +120,11 @@ BUTTON HOVER
 
 div.stButton > button:hover {
 
-    border: 1px solid #009fe3 !important;
-
-    color: #003b7a !important;
+    border-color: #009fe3 !important;
 
     background-color: #f5fbff !important;
+
+    color: #003b7a !important;
 }
 
 /* ---------------------------------------------------
@@ -130,9 +135,9 @@ button[kind="primary"] {
 
     background-color: #003b7a !important;
 
-    color: white !important;
-
     border: 1px solid #003b7a !important;
+
+    color: white !important;
 }
 
 /* ---------------------------------------------------
@@ -143,7 +148,7 @@ button[kind="primary"]:hover {
 
     background-color: #0055a5 !important;
 
-    border: 1px solid #0055a5 !important;
+    border-color: #0055a5 !important;
 
     color: white !important;
 }
@@ -156,7 +161,7 @@ section[data-testid="stSidebar"] button[kind="primary"] {
 
     background-color: #009fe3 !important;
 
-    border: 1px solid #009fe3 !important;
+    border-color: #009fe3 !important;
 
     color: white !important;
 
@@ -164,81 +169,161 @@ section[data-testid="stSidebar"] button[kind="primary"] {
 }
 
 /* ---------------------------------------------------
-INPUTS
+TEXT INPUTS
+--------------------------------------------------- */
+
+.stTextInput > div > div,
+.stTextArea > div > div {
+
+    border: 1px solid #d9dde3 !important;
+
+    border-radius: 4px !important;
+
+    background: white !important;
+
+    box-shadow: none !important;
+}
+
+/* ---------------------------------------------------
+TEXT INPUT INNER
 --------------------------------------------------- */
 
 .stTextInput input,
-.stNumberInput input,
 .stTextArea textarea {
 
     border: none !important;
 
+    outline: none !important;
+
     box-shadow: none !important;
 
-    background-color: white !important;
+    background: white !important;
 
     color: #2d343c !important;
 }
 
 /* ---------------------------------------------------
-NUMBER INPUT TEXT
+NUMBER INPUT
 --------------------------------------------------- */
+
+.stNumberInput {
+
+    border: 1px solid #d9dde3 !important;
+
+    border-radius: 4px !important;
+
+    background: white !important;
+
+    box-shadow: none !important;
+}
+
+/* Inner wrapper */
+
+.stNumberInput > div {
+
+    border: none !important;
+
+    background: white !important;
+
+    box-shadow: none !important;
+}
+
+/* Actual input */
 
 .stNumberInput input {
 
-    color: #2d343c !important;
+    border: none !important;
 
-    background-color: white !important;
+    outline: none !important;
+
+    box-shadow: none !important;
+
+    background: white !important;
+
+    color: #2d343c !important;
 }
 
-/* Plus/minus knapper */
+/* Hide +/- buttons */
 
 .stNumberInput button {
 
-    background-color: white !important;
-
-    color: #003b7a !important;
-
-    border-left: 1px solid #d9dde3 !important;
+    display: none !important;
 }
 
-/* Hover */
+/* ---------------------------------------------------
+FOCUS STATES
+--------------------------------------------------- */
 
-.stNumberInput button:hover {
+.stTextInput > div > div:focus-within,
+.stTextArea > div > div:focus-within,
+.stNumberInput:focus-within {
 
-    background-color: #eef7fd !important;
+    border: 1px solid #009fe3 !important;
 
-    color: #009fe3 !important;
+    box-shadow: none !important;
 }
+
 /* ---------------------------------------------------
 SELECTBOX
 --------------------------------------------------- */
 
-.stSelectbox > div > div {
+.stSelectbox > div > div,
+div[data-baseweb="select"] > div {
+
+    border: 1px solid #d9dde3 !important;
 
     border-radius: 4px !important;
 
-    border: 1px solid #c8d0d9 !important;
+    background: white !important;
 
-    background-color: white !important;
+    color: #2d343c !important;
+
+    box-shadow: none !important;
 }
 
 /* ---------------------------------------------------
-SUCCESS / INFO
+SELECTBOX DROPDOWN
+--------------------------------------------------- */
+
+div[data-baseweb="popover"] {
+
+    background: white !important;
+
+    border: 1px solid #d9dde3 !important;
+
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08) !important;
+}
+
+ul {
+
+    background: white !important;
+}
+
+li {
+
+    background: white !important;
+
+    color: #2d343c !important;
+}
+
+li:hover {
+
+    background: #eef7fd !important;
+
+    color: #003b7a !important;
+}
+
+/* ---------------------------------------------------
+INFO / SUCCESS BOXES
 --------------------------------------------------- */
 
 div[data-baseweb="notification"] {
 
     border-radius: 4px !important;
-}
 
-/* ---------------------------------------------------
-STEP NAVIGATION
---------------------------------------------------- */
+    border: 1px solid #d9dde3 !important;
 
-button[kind="secondary"] {
-
-    background-color: white;
+    box-shadow: none !important;
 }
 
 /* ---------------------------------------------------
@@ -251,178 +336,21 @@ hr {
 }
 
 /* ---------------------------------------------------
-STREAMLIT TOPBAR
+STREAMLIT HEADER
 --------------------------------------------------- */
 
 header[data-testid="stHeader"] {
 
-    background-color: white !important;
+    background: white !important;
 
     border-bottom: 1px solid #d9dde3;
 }
 
-/* Toolbar højre side */
-
 div[data-testid="stToolbar"] {
 
-    background-color: white !important;
-}
-/* ---------------------------------------------------
-SELECTBOX
---------------------------------------------------- */
-
-div[data-baseweb="select"] > div {
-
-    background-color: white !important;
-
-    border: 1px solid #c8d0d9 !important;
-
-    color: #2d343c !important;
-}
-
-/* ---------------------------------------------------
-SELECTBOX DROPDOWN POPUP
---------------------------------------------------- */
-
-ul {
-
-    background-color: white !important;
-}
-
-/* Dropdown container */
-
-div[data-baseweb="popover"] {
-
-    background-color: white !important;
-
-    border: 1px solid #d9dde3 !important;
-
-    box-shadow: 0 4px 12px rgba(0,0,0,0.08) !important;
-}
-
-/* Dropdown items */
-
-li {
-
-    background-color: white !important;
-
-    color: #2d343c !important;
-}
-
-/* Hover */
-
-li:hover {
-
-    background-color: #eef7fd !important;
-
-    color: #003b7a !important;
-}
-/* ---------------------------------------------------
-INPUT TEXT COLOR
---------------------------------------------------- */
-
-.stTextInput input,
-.stTextArea textarea {
-
-    color: #2d343c !important;
-}
-/* ---------------------------------------------------
-INPUT CONTAINERS
---------------------------------------------------- */
-
-.stTextInput > div > div,
-.stNumberInput > div > div,
-.stTextArea > div > div {
-
-    border: 1px solid #d9dde3 !important;
-
-    border-radius: 4px !important;
-
-    background-color: white !important;
-
-    box-shadow: none !important;
-}
-/* ---------------------------------------------------
-REMOVE STREAMLIT DARK FOCUS
---------------------------------------------------- */
-
-.stTextInput input:focus,
-.stNumberInput input:focus,
-.stTextArea textarea:focus {
-
-    box-shadow: none !important;
-
-    border: none !important;
-
-    outline: none !important;
-}
-/* ---------------------------------------------------
-KILL BASEWEB INPUT SHADOW
---------------------------------------------------- */
-
-[data-baseweb="input"] {
-
-    border: 1px solid #d9dde3 !important;
-
-    border-radius: 4px !important;
-
-    box-shadow: none !important;
-
     background: white !important;
 }
 
-[data-baseweb="base-input"] {
-
-    border: 1px solid #d9dde3 !important;
-
-    border-radius: 4px !important;
-
-    box-shadow: none !important;
-
-    background: white !important;
-}
-
-/* Focus */
-
-[data-baseweb="input"]:focus-within,
-[data-baseweb="base-input"]:focus-within {
-
-    border: 1px solid #009fe3 !important;
-
-    box-shadow: none !important;
-
-    outline: none !important;
-}
-/* ---------------------------------------------------
-NUMBER INPUT SPINNER CONTAINER
---------------------------------------------------- */
-
-.stNumberInput > div > div > div {
-
-    border: none !important;
-
-    box-shadow: none !important;
-
-    background: white !important;
-}
-/* ---------------------------------------------------
-NUMBER INPUT BUTTON AREA
---------------------------------------------------- */
-
-.stNumberInput button {
-
-    border: none !important;
-
-    box-shadow: none !important;
-}
-/* ---------------------------------------------------
-HIDE NUMBER INPUT SPINNERS
---------------------------------------------------- */
-
-.stNumberInput button {
-
-    display: none !important;
-}
 </style>
 """, unsafe_allow_html=True)
 # ---------------------------------------------------
