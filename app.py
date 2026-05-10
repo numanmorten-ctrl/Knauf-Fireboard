@@ -491,13 +491,6 @@ FINAL BASEWEB INPUT FIX
 st.markdown("""
 <style>
 
-/* Hide default Streamlit decoration */
-
-[data-testid="stHeader"] {
-
-    background: white !important;
-}
-
 /* Custom logo container */
 
 .knauf-header {
