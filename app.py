@@ -195,7 +195,7 @@ INPUT INNER
 .stTextArea textarea,
 .stNumberInput input {
 
-    background: transparent !important;
+    background: white !important;
 
     color: #2d343c !important;
 
