@@ -332,7 +332,22 @@ div[data-testid="stToolbar"] {
 
     background: white !important;
 }
+/* ---------------------------------------------------
+DOWNLOAD BUTTON FIX
+--------------------------------------------------- */
 
+div.stDownloadButton > button {
+
+    background: white !important;
+
+    color: #003b7a !important;
+
+    border: 1px solid #b8c2cc !important;
+
+    border-radius: 0 !important;
+
+    box-shadow: none !important;
+}
 </style>
 """, unsafe_allow_html=True)
 # ---------------------------------------------------
