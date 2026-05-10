@@ -330,12 +330,25 @@ header[data-testid="stHeader"] {
 
     background: white !important;
 
-    border-bottom: 1px solid #d9dde3;
+    border-bottom: 1px solid #cfd6dd !important;
+
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08) !important;
+
+    z-index: 999999 !important;
 }
+
+/* Toolbar */
 
 div[data-testid="stToolbar"] {
 
     background: white !important;
+}
+
+/* Make header overlap sidebar */
+
+section[data-testid="stSidebar"] {
+
+    z-index: 1 !important;
 }
 
 /* ---------------------------------------------------
