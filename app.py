@@ -102,9 +102,9 @@ div.stDownloadButton > button {
 
     border: 1px solid #b8c2cc !important;
 
-    background-color: white;
+    background-color: white !important;
 
-    color: #003b7a;
+    color: #003b7a !important;
 
     font-size: 14px;
 
@@ -113,6 +113,8 @@ div.stDownloadButton > button {
     transition: all 0.15s ease;
 
     box-shadow: none !important;
+
+    outline: none !important;
 }
 
 /* ---------------------------------------------------
@@ -135,9 +137,9 @@ PRIMARY BUTTON
 
 button[kind="primary"] {
 
-    background-color: #003b7a !important;
+    background-color: #009fe3 !important;
 
-    border: 1px solid #003b7a !important;
+    border-color: #009fe3 !important;
 
     color: white !important;
 }
@@ -148,9 +150,9 @@ PRIMARY BUTTON HOVER
 
 button[kind="primary"]:hover {
 
-    background-color: #0055a5 !important;
+    background-color: #0089c7 !important;
 
-    border-color: #0055a5 !important;
+    border-color: #0089c7 !important;
 
     color: white !important;
 }
@@ -177,6 +179,8 @@ INPUTS
 .stTextInput > div > div,
 .stTextArea > div > div,
 .stNumberInput > div > div,
+.stSelectbox > div > div,
+div[data-baseweb="select"] > div,
 [data-baseweb="input"],
 [data-baseweb="base-input"],
 [data-baseweb="textarea"] {
@@ -190,6 +194,8 @@ INPUTS
     box-shadow: none !important;
 
     outline: none !important;
+
+    min-height: 44px !important;
 }
 
 /* ---------------------------------------------------
@@ -228,14 +234,27 @@ INPUT FOCUS
 .stTextInput > div > div:focus-within,
 .stTextArea > div > div:focus-within,
 .stNumberInput > div > div:focus-within,
+.stSelectbox > div > div:focus-within,
+div[data-baseweb="select"] > div:focus-within,
 [data-baseweb="input"]:focus-within,
-[data-baseweb="base-input"]:focus-within {
+[data-baseweb="base-input"]:focus-within,
+[data-baseweb="textarea"]:focus-within {
 
     border: 1px solid #009fe3 !important;
 
     box-shadow: none !important;
 
     outline: none !important;
+}
+
+/* ---------------------------------------------------
+REMOVE RED INVALID STATE
+--------------------------------------------------- */
+
+input:invalid,
+textarea:invalid {
+
+    box-shadow: none !important;
 }
 
 /* ---------------------------------------------------
@@ -246,23 +265,7 @@ HIDE NUMBER BUTTONS
 
     display: none !important;
 }
-/* ---------------------------------------------------
-SELECTBOX
---------------------------------------------------- */
 
-.stSelectbox > div > div,
-div[data-baseweb="select"] > div {
-
-    border: 1px solid #b8c2cc !important;
-
-    border-radius: 0 !important;
-
-    background: white !important;
-
-    color: #2d343c !important;
-
-    box-shadow: none !important;
-}
 /* ---------------------------------------------------
 SELECTBOX DROPDOWN
 --------------------------------------------------- */
@@ -271,7 +274,9 @@ div[data-baseweb="popover"] {
 
     background: white !important;
 
-    border: 1px solid #d9dde3 !important;
+    border: 1px solid #b8c2cc !important;
+
+    border-radius: 0 !important;
 
     box-shadow: 0 4px 12px rgba(0,0,0,0.08) !important;
 }
@@ -301,9 +306,9 @@ INFO / SUCCESS BOXES
 
 div[data-baseweb="notification"] {
 
-    border-radius: 4px !important;
+    border: 1px solid #b8c2cc !important;
 
-    border: 1px solid #d9dde3 !important;
+    border-radius: 0 !important;
 
     box-shadow: none !important;
 }
@@ -332,47 +337,29 @@ div[data-testid="stToolbar"] {
 
     background: white !important;
 }
+
 /* ---------------------------------------------------
-DOWNLOAD BUTTON FIX
+UNIFY ALL BORDERS
 --------------------------------------------------- */
 
-div.stDownloadButton > button {
-
-    background: white !important;
-
-    color: #003b7a !important;
+.stButton > button,
+.stDownloadButton > button,
+.stTextInput > div > div,
+.stTextArea > div > div,
+.stNumberInput > div > div,
+.stSelectbox > div > div,
+div[data-baseweb="select"] > div,
+[data-baseweb="input"],
+[data-baseweb="base-input"],
+[data-baseweb="textarea"] {
 
     border: 1px solid #b8c2cc !important;
 
-    border-radius: 0 !important;
+    box-sizing: border-box !important;
 
     box-shadow: none !important;
 }
-/* ---------------------------------------------------
-REMOVE RED ACTIVE BORDER
---------------------------------------------------- */
 
-textarea:focus,
-input:focus,
-[data-baseweb="input"]:focus-within,
-[data-baseweb="textarea"]:focus-within,
-.stTextInput > div > div:focus-within,
-.stTextArea > div > div:focus-within {
-
-    border: 1px solid #009fe3 !important;
-
-    box-shadow: none !important;
-
-    outline: none !important;
-}
-
-/* Remove invalid state */
-
-input:invalid,
-textarea:invalid {
-
-    box-shadow: none !important;
-}
 </style>
 """, unsafe_allow_html=True)
 # ---------------------------------------------------
