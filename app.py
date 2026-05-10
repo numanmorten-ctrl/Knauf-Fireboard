@@ -66,7 +66,7 @@ h1, h2, h3 {
     font-weight: 700 !important;
 }
 
-p, label, span, {
+p, label, span {
 
     color: #3e4650;
 }
