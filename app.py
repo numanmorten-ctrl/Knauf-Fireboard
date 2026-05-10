@@ -199,9 +199,13 @@ INPUT INNER
 
     color: #2d343c !important;
 
-    border: 0 !important;
+    -webkit-text-fill-color: #2d343c !important;
 
-    outline: 0 !important;
+    caret-color: #003b7a !important;
+
+    border: none !important;
+
+    outline: none !important;
 
     box-shadow: none !important;
 }
@@ -216,7 +220,7 @@ INPUT FOCUS
 
     border: 1px solid #009fe3 !important;
 
-    box-shadow: none !important;
+    box-shadow: 0 0 0 1px rgba(0,159,227,0.15) !important;
 }
 
 /* ---------------------------------------------------
