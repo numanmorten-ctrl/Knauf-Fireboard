@@ -119,7 +119,8 @@ div.stDownloadButton > button {
 BUTTON HOVER
 --------------------------------------------------- */
 
-div.stButton > button:hover {
+div.stButton > button:hover,
+div.stDownloadButton > button:hover {
 
     border-color: #009fe3 !important;
 
@@ -170,40 +171,6 @@ section[data-testid="stSidebar"] button[kind="primary"] {
 }
 
 /* ---------------------------------------------------
-TEXT INPUTS
---------------------------------------------------- */
-
-.stTextInput > div > div,
-.stTextArea > div > div {
-
-    border: 1px solid #d9dde3 !important;
-
-    border-radius: 4px !important;
-
-    background: white !important;
-
-    box-shadow: none !important;
-}
-
-/* ---------------------------------------------------
-TEXT INPUT INNER
---------------------------------------------------- */
-
-.stTextInput input,
-.stTextArea textarea {
-
-    border: none !important;
-
-    outline: none !important;
-
-    box-shadow: none !important;
-
-    background: white !important;
-
-    color: #2d343c !important;
-}
-
-/* ---------------------------------------------------
 INPUTS
 --------------------------------------------------- */
 
@@ -220,24 +187,28 @@ INPUTS
     box-shadow: none !important;
 }
 
-/* Selve teksten */
+/* ---------------------------------------------------
+INPUT INNER
+--------------------------------------------------- */
 
 .stTextInput input,
 .stTextArea textarea,
 .stNumberInput input {
 
-    background: white !important;
+    background: transparent !important;
 
     color: #2d343c !important;
 
-    border: none !important;
+    border: 0 !important;
+
+    outline: 0 !important;
 
     box-shadow: none !important;
-
-    outline: none !important;
 }
 
-/* Focus state */
+/* ---------------------------------------------------
+INPUT FOCUS
+--------------------------------------------------- */
 
 .stTextInput > div > div:focus-within,
 .stTextArea > div > div:focus-within,
@@ -245,27 +216,16 @@ INPUTS
 
     border: 1px solid #009fe3 !important;
 
-    box-shadow: 0 0 0 1px #009fe3 !important;
+    box-shadow: none !important;
 }
 
-/* Hide +/- buttons */
+/* ---------------------------------------------------
+HIDE NUMBER BUTTONS
+--------------------------------------------------- */
 
 .stNumberInput button {
 
     display: none !important;
-}
-
-/* ---------------------------------------------------
-FOCUS STATES
---------------------------------------------------- */
-
-.stTextInput > div > div:focus-within,
-.stTextArea > div > div:focus-within,
-.stNumberInput:focus-within {
-
-    border: 1px solid #009fe3 !important;
-
-    box-shadow: none !important;
 }
 
 /* ---------------------------------------------------
@@ -354,17 +314,6 @@ header[data-testid="stHeader"] {
 div[data-testid="stToolbar"] {
 
     background: white !important;
-}
-/* ---------------------------------------------------
-PROJECT INPUT FIX
---------------------------------------------------- */
-
-.stTextInput > div > div,
-.stTextArea > div > div {
-
-    border: 1px solid #d9dde3 !important;
-
-    box-shadow: none !important;
 }
 
 </style>
