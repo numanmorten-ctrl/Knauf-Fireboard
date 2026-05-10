@@ -46,7 +46,7 @@ MAIN LAYOUT
 
     max-width: 1500px;
 
-    padding-top: 2rem;
+    padding-top: 5rem !important;
 
     padding-left: 3rem;
 
@@ -378,15 +378,6 @@ section[data-testid="stSidebar"] {
     z-index: 0 !important;
 
     position: relative !important;
-}
-
-/* ---------------------------------------------------
-MAIN CONTENT OFFSET
---------------------------------------------------- */
-
-.block-container {
-
-    padding-top: 5rem !important;
 }
 
 /* ---------------------------------------------------
