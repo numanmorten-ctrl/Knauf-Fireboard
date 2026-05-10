@@ -507,11 +507,13 @@ st.markdown("""
 
 /* Knauf logo */
 
-.knauf-header img {
+.knauf-logo {
 
     height: 38px;
 
     width: auto;
+
+    display: block;
 }
 
 /* Fireboard text */
@@ -535,7 +537,7 @@ st.markdown("""
 
 <div class="knauf-header">
 
-    <img src="https://knauf.com/api/download-center/v1/assets/8355fec5-8cb9-42fe-b5d7-4e7258bf446a?download=true">
+    <img class="knauf-logo" src="https://knauf.com/api/download-center/v1/assets/8355fec5-8cb9-42fe-b5d7-4e7258bf446a?download=true">
 
     <div class="knauf-fireboard">
         Fireboard
