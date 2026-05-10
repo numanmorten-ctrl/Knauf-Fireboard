@@ -483,6 +483,83 @@ FINAL BASEWEB INPUT FIX
 
 </style>
 """, unsafe_allow_html=True)
+
+# ---------------------------------------------------
+# CUSTOM HEADER BRANDING
+# ---------------------------------------------------
+
+st.markdown("""
+<style>
+
+/* Hide default Streamlit decoration */
+
+[data-testid="stHeader"] {
+
+    background: white !important;
+}
+
+/* Custom logo container */
+
+.knauf-header {
+
+    position: fixed;
+
+    top: 0;
+
+    left: 4rem;
+
+    height: 3.75rem;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 18px;
+
+    z-index: 9999999;
+
+    pointer-events: none;
+}
+
+/* Knauf logo */
+
+.knauf-header img {
+
+    height: 38px;
+
+    width: auto;
+}
+
+/* Fireboard text */
+
+.knauf-fireboard {
+
+    font-size: 28px;
+
+    font-weight: 600;
+
+    font-style: italic;
+
+    color: #8a8a8a;
+
+    letter-spacing: -0.5px;
+
+    font-family: Arial, sans-serif;
+}
+
+</style>
+
+<div class="knauf-header">
+
+    <img src="https://knauf.com/api/download-center/v1/assets/8355fec5-8cb9-42fe-b5d7-4e7258bf446a?download=true">
+
+    <div class="knauf-fireboard">
+        Fireboard
+    </div>
+
+</div>
+""", unsafe_allow_html=True)
+
 # ---------------------------------------------------
 # SESSION STATE
 # ---------------------------------------------------
