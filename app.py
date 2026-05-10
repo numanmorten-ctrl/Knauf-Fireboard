@@ -72,22 +72,6 @@ p, label, span, div {
 }
 
 /* ---------------------------------------------------
-SIDEBAR
---------------------------------------------------- */
-
-section[data-testid="stSidebar"] {
-
-    background-color: white;
-
-    border-right: 1px solid #d9dde3;
-}
-
-section[data-testid="stSidebar"] h1 {
-
-    color: #003b7a !important;
-}
-
-/* ---------------------------------------------------
 BUTTONS
 --------------------------------------------------- */
 
@@ -328,6 +312,16 @@ STREAMLIT HEADER
 
 header[data-testid="stHeader"] {
 
+    position: fixed !important;
+
+    top: 0 !important;
+
+    left: 0 !important;
+
+    right: 0 !important;
+
+    height: 3.75rem !important;
+
     background: white !important;
 
     border-bottom: 1px solid #cfd6dd !important;
@@ -341,14 +335,38 @@ header[data-testid="stHeader"] {
 
 div[data-testid="stToolbar"] {
 
-    background: white !important;
+    background: transparent !important;
 }
 
-/* Make header overlap sidebar */
+/* ---------------------------------------------------
+SIDEBAR
+--------------------------------------------------- */
 
 section[data-testid="stSidebar"] {
 
+    background-color: white;
+
+    border-right: 1px solid #d9dde3;
+
+    margin-top: 3.75rem !important;
+
     z-index: 1 !important;
+}
+
+/* Sidebar title */
+
+section[data-testid="stSidebar"] h1 {
+
+    color: #003b7a !important;
+}
+
+/* ---------------------------------------------------
+MAIN CONTENT OFFSET
+--------------------------------------------------- */
+
+.block-container {
+
+    padding-top: 5rem !important;
 }
 
 /* ---------------------------------------------------
