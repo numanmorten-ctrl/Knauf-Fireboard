@@ -183,7 +183,7 @@ INPUTS
 
     background: white !important;
 
-    border: 0,5px solid #b8c2cc !important;
+    border: 1px solid #b8c2cc !important;
 
     border-radius: 0 !important;
 
