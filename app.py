@@ -479,51 +479,33 @@ FINAL BASEWEB INPUT FIX
 # CUSTOM HEADER BRANDING
 # ---------------------------------------------------
 
-st.markdown("""
+header_html = """
 <style>
 
 .knauf-header {
-
     position: fixed;
-
     top: 0;
-
     left: 4rem;
-
     height: 3.75rem;
-
     display: flex;
-
     align-items: center;
-
     gap: 18px;
-
     z-index: 9999999;
-
     pointer-events: none;
 }
 
 .knauf-logo {
-
     height: 38px;
-
     width: auto;
-
     display: block;
 }
 
 .knauf-fireboard {
-
     font-size: 28px;
-
     font-weight: 600;
-
     font-style: italic;
-
     color: #8a8a8a;
-
     letter-spacing: -0.5px;
-
     font-family: Arial, sans-serif;
 }
 
@@ -539,8 +521,9 @@ st.markdown("""
     </div>
 
 </div>
-""", unsafe_allow_html=True)
+"""
 
+st.markdown(header_html, unsafe_allow_html=True)
 # ---------------------------------------------------
 # SESSION STATE
 # ---------------------------------------------------
