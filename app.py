@@ -1196,15 +1196,43 @@ if current_step == 2:
 
     st.divider()
 
+    # ---------------------------------------------------
+    # STÅLTEMPERATUR
+    # ---------------------------------------------------
+
     temperature = st.text_input(
         "Indtast dimensionerende ståltemperatur (°C)",
-        min_value=350,
-        max_value=750,
-        value=450,
-        step=1
+        value=str(
+            st.session_state.get(
+                "temperature",
+                450
+            )
+        )
     )
 
-    temperature = int(temperature)
+    # ---------------------------------------------------
+    # VALIDERING
+    # ---------------------------------------------------
+
+    try:
+
+        temperature = int(temperature)
+
+    except:
+
+        st.error(
+            "Temperatur skal være et helt tal"
+        )
+
+        st.stop()
+
+    if temperature < 350 or temperature > 750:
+
+        st.error(
+            "Temperatur skal være mellem 350 og 750 °C"
+        )
+
+        st.stop()
 
     st.session_state.fire_time = fire_time
     st.session_state.temperature = temperature
