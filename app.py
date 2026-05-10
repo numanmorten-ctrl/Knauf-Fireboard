@@ -482,8 +482,6 @@ FINAL BASEWEB INPUT FIX
 st.markdown("""
 <style>
 
-/* Custom logo container */
-
 .knauf-header {
 
     position: fixed;
@@ -505,8 +503,6 @@ st.markdown("""
     pointer-events: none;
 }
 
-/* Knauf logo */
-
 .knauf-logo {
 
     height: 38px;
@@ -515,8 +511,6 @@ st.markdown("""
 
     display: block;
 }
-
-/* Fireboard text */
 
 .knauf-fireboard {
 
@@ -537,7 +531,8 @@ st.markdown("""
 
 <div class="knauf-header">
 
-    <img class="knauf-logo" src="https://knauf.com/api/download-center/v1/assets/8355fec5-8cb9-42fe-b5d7-4e7258bf446a?download=true">
+    <img class="knauf-logo"
+         src="https://knauf.com/api/download-center/v1/assets/8355fec5-8cb9-42fe-b5d7-4e7258bf446a?download=true">
 
     <div class="knauf-fireboard">
         Fireboard
