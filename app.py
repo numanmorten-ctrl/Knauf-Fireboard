@@ -136,7 +136,7 @@ button[kind="primary"]:hover {
 ACTIVE SIDEBAR CALCULATION
 --------------------------------------------------- */
 
-section[data-testid="stSidebar"] button[kind="primary"] {
+{
 
     background-color: #009fe3 !important;
 
@@ -567,24 +567,6 @@ div.stButton {
 
     margin-bottom: 0.5rem !important;
 }
-/* COMPONENT HTML FIX */
-
-div[data-testid="stComponentWrapper"] {
-
-    width:100% !important;
-
-    padding:0 !important;
-
-    margin:0 !important;
-}
-/* FORCE HTML COMPONENT FULL WIDTH */
-
-iframe {
-
-    width: 100% !important;
-
-    display: block !important;
-}
 </style>
 """, unsafe_allow_html=True)
 
@@ -611,7 +593,6 @@ header_html = """
 
     gap: 10px;
 
-    padding-top: 2px;
     padding-top: 1px;
 
     z-index: 9999999;
@@ -641,7 +622,7 @@ header_html = """
 
     color: #979797;
 
-    letter-spacing: 1,5px;
+    letter-spacing: 1.5px;
 
     line-height: 1;
 
@@ -1074,13 +1055,13 @@ def card(
     html = f"""
     <div style="
         width:100%;
-        height:100%;
         box-sizing:border-box;
         border:{border};
         background-color:{background};
-        border-radius:4px;
+        border-radius:0px;
         padding:10px;
         text-align:center;
+        min-height:190px;
         display:flex;
         flex-direction:column;
         justify-content:center;
@@ -1111,7 +1092,7 @@ def card(
 
     st.components.v1.html(
         html,
-        height=190
+        unsafe_allow_html=True
     )
 
     if st.button(
@@ -1180,7 +1161,7 @@ def disabled_card(
 
     st.components.v1.html(
         html,
-        height=190
+        unsafe_allow_html=True
     )
 
 # ---------------------------------------------------
