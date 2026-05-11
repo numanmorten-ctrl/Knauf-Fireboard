@@ -567,6 +567,16 @@ div.stButton {
 
     margin-bottom: 0.5rem !important;
 }
+/* COMPONENT HTML FIX */
+
+div[data-testid="stComponentWrapper"] {
+
+    width:100% !important;
+
+    padding:0 !important;
+
+    margin:0 !important;
+}
 </style>
 """, unsafe_allow_html=True)
 
@@ -1055,7 +1065,8 @@ def card(
 
     html = f"""
     <div style="
-        width:100%;
+        width:calc(100% - 2px);
+        margin:0;
         box-sizing:border-box;
         border:{border};
         background-color:{background};
@@ -1094,6 +1105,7 @@ def card(
     st.components.v1.html(
         html,
         height=190
+        width=None
     )
 
     if st.button(
@@ -1163,6 +1175,7 @@ def disabled_card(
     st.components.v1.html(
         html,
         height=190
+        width=None
     )
 
 # ---------------------------------------------------
