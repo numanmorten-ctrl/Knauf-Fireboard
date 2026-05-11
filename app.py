@@ -577,6 +577,14 @@ div[data-testid="stComponentWrapper"] {
 
     margin:0 !important;
 }
+/* FORCE HTML COMPONENT FULL WIDTH */
+
+iframe {
+
+    width: 100% !important;
+
+    display: block !important;
+}
 </style>
 """, unsafe_allow_html=True)
 
@@ -1065,15 +1073,14 @@ def card(
 
     html = f"""
     <div style="
-        width:calc(100% - 2px);
-        margin:0;
+        width:100%;
+        height:100%;
         box-sizing:border-box;
         border:{border};
         background-color:{background};
         border-radius:4px;
         padding:10px;
         text-align:center;
-        min-height:158px;
         display:flex;
         flex-direction:column;
         justify-content:center;
@@ -1104,8 +1111,7 @@ def card(
 
     st.components.v1.html(
         html,
-        height=190,
-        width=None
+        height=190
     )
 
     if st.button(
@@ -1174,8 +1180,7 @@ def disabled_card(
 
     st.components.v1.html(
         html,
-        height=190,
-        width=None
+        height=190
     )
 
 # ---------------------------------------------------
