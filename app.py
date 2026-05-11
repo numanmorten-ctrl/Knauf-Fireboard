@@ -524,7 +524,7 @@ header_html = """
 
     color: #979797;
 
-    letter-spacing: -1.35px;
+    letter-spacing: -0.9px;
 
     line-height: 1;
 
@@ -536,7 +536,7 @@ header_html = """
         Arial,
         sans-serif;
 
-    transform: scaleX(0.90) skewX(-4deg);
+    transform: scaleX(0.88) skewX(-4deg);
 
     transform-origin: left center;
 
@@ -545,8 +545,7 @@ header_html = """
     text-rendering: geometricPrecision;
 
     text-shadow:
-        0 0 0.01px currentColor,
-        0.15px 0 0 currentColor;
+        0 0 0.01px currentColor;
 }
 </style>
 
