@@ -1166,13 +1166,13 @@ for idx, step in enumerate(steps):
 
             st.markdown(f"""
             <div style="
-                background-color:#009fe3;
+                background-color:#003b7a;
                 color:white;
                 padding:14px;
                 border-radius:4px;
                 text-align:center;
                 font-weight:700;
-                border:1px solid #009fe3;
+                border:1px solid #003b7a;
             ">
                 {idx+1}. {step}
             </div>
@@ -1770,12 +1770,12 @@ if current_step == 3:
 
         st.markdown(f"""
         <div style="
-            border:1px solid #d9dde3;
-            background:#eef7fd;
+            border:1px solid #003b7a;
+            background:#003b7a;
             border-radius:0px;
             padding:18px;
             margin-bottom:12px;
-            color:#2d343c;
+            color:white;
         ">
             <b>Beregnet profilforhold Ap/V:</b>
             {apv} m²/m³
@@ -1784,12 +1784,12 @@ if current_step == 3:
 
         st.markdown(f"""
         <div style="
-            border:1px solid #d9dde3;
-            background:#eef7fd;
+            border:1px solid #003b7a;
+            background:#003b7a;
             border-radius:0px;
             padding:18px;
             margin-bottom:12px;
-            color:#2d343c;
+            color:white;
         ">
             <b>Profil skal inddækkes med:</b>
             {int(thickness)} mm Knauf Fireboard
