@@ -254,6 +254,22 @@ HIDE NUMBER BUTTONS
 SELECTBOX DROPDOWN
 --------------------------------------------------- */
 
+/* Selected value + input text */
+
+div[data-baseweb="select"] span {
+
+    color: #2d343c !important;
+}
+
+div[data-baseweb="select"] input {
+
+    color: #2d343c !important;
+
+    -webkit-text-fill-color: #2d343c !important;
+}
+
+/* Dropdown container */
+
 div[data-baseweb="popover"] {
 
     background: white !important;
@@ -265,10 +281,14 @@ div[data-baseweb="popover"] {
     box-shadow: 0 4px 12px rgba(0,0,0,0.08) !important;
 }
 
+/* Dropdown list */
+
 ul {
 
     background: white !important;
 }
+
+/* Dropdown items */
 
 li {
 
@@ -276,6 +296,8 @@ li {
 
     color: #2d343c !important;
 }
+
+/* Hover */
 
 li:hover {
 
