@@ -473,36 +473,13 @@ FINAL BASEWEB INPUT FIX
     box-shadow: none !important;
 }
 /* ---------------------------------------------------
-FORCE STREAMLIT SIDEBAR TOGGLE VISIBLE
+HIDE STREAMLIT SIDEBAR TOGGLE
 --------------------------------------------------- */
 
 [data-testid="collapsedControl"] {
 
-    opacity: 1 !important;
-
-    visibility: visible !important;
-
-    display: flex !important;
-
-    background: rgba(255,255,255,0.95) !important;
-
-    border-radius: 10px !important;
-
-    transition: none !important;
+    display: none !important;
 }
-
-[data-testid="collapsedControl"]:hover {
-
-    opacity: 1 !important;
-}
-
-/* Streamlit overlay wrapper */
-
-[data-testid="collapsedControl"] * {
-
-    opacity: 1 !important;
-}
-
 </style>
 """, unsafe_allow_html=True)
 
@@ -519,7 +496,7 @@ header_html = """
 
     top: 0;
 
-    left: 5.2rem;
+    left: 2.4rem;
 
     height: 4.05rem;
 
@@ -535,7 +512,24 @@ header_html = """
 
     pointer-events: none;
 }
+.knauf-menu {
 
+    font-size: 28px;
+
+    color: #003b7a;
+
+    margin-right: 10px;
+
+    margin-top: -2px;
+
+    font-weight: 400;
+
+    cursor: pointer;
+
+    user-select: none;
+
+    pointer-events: auto;
+}
 .knauf-logo {
 
     height: 60px;
@@ -584,10 +578,19 @@ header_html = """
 </style>
 
 <div class="knauf-header">
-<img class="knauf-logo" src="https://knauf.com/api/download-center/v1/assets/8355fec5-8cb9-42fe-b5d7-4e7258bf446a?download=true">
-<div class="knauf-fireboard">Fireboard</div>
+
+    <div class="knauf-menu">
+        ☰
+    </div>
+
+    <img class="knauf-logo"
+         src="https://knauf.com/api/download-center/v1/assets/8355fec5-8cb9-42fe-b5d7-4e7258bf446a?download=true">
+
+    <div class="knauf-fireboard">
+        Fireboard
+    </div>
+
 </div>
-"""
 
 st.markdown(header_html, unsafe_allow_html=True)
 # ---------------------------------------------------
