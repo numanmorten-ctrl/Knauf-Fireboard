@@ -1090,7 +1090,7 @@ def card(
     </div>
     """
 
-    st.components.v1.html(
+    st.markdown(
         html,
         unsafe_allow_html=True
     )
@@ -1159,7 +1159,7 @@ def disabled_card(
     </div>
     """
 
-    st.components.v1.html(
+    st.markdown(
         html,
         unsafe_allow_html=True
     )
