@@ -531,7 +531,11 @@ hr {
 
 h1, h2, h3 {
 
-    margin-bottom: 0.4rem !important;
+    margin-top: 0rem !important;
+
+    margin-bottom: 0.2rem !important;
+
+    padding-bottom: 0rem !important;
 }
 
 /* Mindre afstand mellem elementer */
