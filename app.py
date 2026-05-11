@@ -516,7 +516,7 @@ header_html = """
 
     font-size: 28px;
 
-    font-weight: 540;
+    font-weight: 500;
 
     font-style: italic;
 
@@ -543,6 +543,8 @@ header_html = """
     -webkit-font-smoothing: antialiased;
 
     text-rendering: geometricPrecision;
+
+    text-shadow: 0 0 0.01px currentColor;
 }
 </style>
 
