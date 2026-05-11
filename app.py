@@ -409,7 +409,9 @@ div[data-baseweb="select"] > div,
     box-sizing: border-box !important;
 }
 
-/* FORCE SAME VISUAL THICKNESS */
+/* ---------------------------------------------------
+FORCE SAME VISUAL THICKNESS
+--------------------------------------------------- */
 
 .stTextInput,
 .stTextArea,
@@ -421,7 +423,9 @@ div[data-baseweb="select"] > div,
     box-sizing: border-box !important;
 }
 
-/* REMOVE EXTRA INNER BORDERS */
+/* ---------------------------------------------------
+REMOVE EXTRA INNER BORDERS
+--------------------------------------------------- */
 
 .stTextInput input,
 .stTextArea textarea,
@@ -434,7 +438,9 @@ div[data-baseweb="select"] > div,
     background: transparent !important;
 }
 
-/* REMOVE BASEWEB SHADOW LAYERS */
+/* ---------------------------------------------------
+REMOVE BASEWEB SHADOW LAYERS
+--------------------------------------------------- */
 
 [data-baseweb="input"]::before,
 [data-baseweb="base-input"]::before,
@@ -443,6 +449,7 @@ div[data-baseweb="select"] > div,
 
     display: none !important;
 }
+
 /* ---------------------------------------------------
 FINAL BASEWEB INPUT FIX
 --------------------------------------------------- */
@@ -472,6 +479,7 @@ FINAL BASEWEB INPUT FIX
 
     box-shadow: none !important;
 }
+
 /* ---------------------------------------------------
 HIDE STREAMLIT SIDEBAR TOGGLE
 --------------------------------------------------- */
@@ -480,15 +488,10 @@ HIDE STREAMLIT SIDEBAR TOGGLE
 
     display: none !important;
 }
-</style>
-""", unsafe_allow_html=True)
 
-# ---------------------------------------------------
-# CUSTOM HEADER BRANDING
-# ---------------------------------------------------
-
-header_html = """
-<style>
+/* ---------------------------------------------------
+CUSTOM HEADER
+--------------------------------------------------- */
 
 .knauf-header {
 
@@ -509,7 +512,6 @@ header_html = """
     padding-top: 1px;
 
     z-index: 9999999;
-
 }
 
 .knauf-menu {
@@ -524,11 +526,7 @@ header_html = """
 
     font-weight: 400;
 
-    cursor: pointer;
-
     user-select: none;
-
-    pointer-events: auto;
 }
 
 .knauf-logo {
@@ -578,7 +576,13 @@ header_html = """
 }
 
 </style>
+""", unsafe_allow_html=True)
 
+# ---------------------------------------------------
+# CUSTOM HEADER BRANDING
+# ---------------------------------------------------
+
+header_html = """
 <div class="knauf-header">
 
     <div class="knauf-menu">
@@ -595,9 +599,7 @@ header_html = """
 </div>
 """
 
-import streamlit.components.v1 as components
-
-components.html(header_html, height=70)
+st.markdown(header_html, unsafe_allow_html=True)
 # ---------------------------------------------------
 # SESSION STATE
 # ---------------------------------------------------
