@@ -524,7 +524,7 @@ hr {
 
     margin-top: 0rem !important;
 
-    margin-bottom: 0.4rem !important;
+    margin-bottom: 0.9rem !important;
 }
 
 /* Mindre afstand efter headers */
