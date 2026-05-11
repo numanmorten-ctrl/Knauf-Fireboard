@@ -1015,100 +1015,152 @@ with st.sidebar:
 # ---------------------------------------------------
 # CARD FUNCTIONS
 # ---------------------------------------------------
+def get_base64_image(image_path):
 
+    with open(image_path, "rb") as img_file:
+
+        return base64.b64encode(
+            img_file.read()
+        ).decode()
+        
 def card(label, image_path, state_key):
 
     selected = (
         st.session_state[state_key] == label
     )
 
-    with st.container(border=True):
+    background = (
+        "#eef7fd"
+        if selected
+        else "white"
+    )
 
-        if selected:
+    border = (
+        "2px solid #003b7a"
+        if selected
+        else "1px solid #d9dde3"
+    )
 
-            st.markdown("""
-            <style>
-            div[data-testid="stVerticalBlockBorderWrapper"] {
-                border: 2px solid #003b7a !important;
-                background: #eef7fd !important;
-            }
-            </style>
-            """, unsafe_allow_html=True)
+    image_base64 = get_base64_image(
+        image_path
+    )
 
-        col1, col2, col3 = st.columns([1,2,1])
+    html = f"""
+    <div style="
+        width:100%;
+        min-height:220px;
+        box-sizing:border-box;
+        border:{border};
+        background-color:{background};
+        border-radius:4px;
+        padding:14px;
+        text-align:center;
+        display:flex;
+        flex-direction:column;
+        justify-content:center;
+        align-items:center;
+    ">
 
-        with col2:
+        <img src="data:image/png;base64,{image_base64}"
+        style="
+            width:120px;
+            height:120px;
+            object-fit:contain;
+            margin-bottom:10px;
+        "/>
 
-            st.image(
-                image_path,
-                width=120
-            )
-
-        st.markdown(f"""
         <div style="
-            text-align:center;
-            font-weight:700;
             font-size:16px;
-            min-height:50px;
+            font-weight:700;
+            color:#2d343c;
+            text-align:center;
+            line-height:1.25;
+            min-height:42px;
             display:flex;
             align-items:center;
             justify-content:center;
         ">
             {label}
         </div>
-        """, unsafe_allow_html=True)
 
-        if st.button(
-            "Vælg",
-            key=f"{state_key}_{label}",
-            use_container_width=True
+    </div>
+    """
+
+    st.components.v1.html(
+        html,
+        height=240
+    )
+
+    if st.button(
+        "Vælg",
+        key=f"{state_key}_{label}",
+        use_container_width=True
+    ):
+
+        st.session_state[state_key] = label
+
+        if (
+            label == "Cirkulære rør middelsvære"
+            or
+            label == "Cirkulære rør svære"
         ):
 
-            st.session_state[state_key] = label
+            st.session_state["sides"] = "4"
 
-            if (
-                label == "Cirkulære rør middelsvære"
-                or
-                label == "Cirkulære rør svære"
-            ):
-                st.session_state["sides"] = "4"
-
-            st.rerun()
+        st.rerun()
 
 def disabled_card(label, image_path):
 
-    with st.container(border=True):
+    image_base64 = get_base64_image(
+        image_path
+    )
 
-        st.markdown("""
-        <style>
-        div[data-testid="stVerticalBlockBorderWrapper"] {
-            opacity: 0.45;
-        }
-        </style>
-        """, unsafe_allow_html=True)
+    html = f"""
+    <div style="
+        width:100%;
+        min-height:220px;
+        box-sizing:border-box;
+        border:1px solid #d9dde3;
+        background:white;
+        opacity:0.45;
+        border-radius:4px;
+        padding:14px;
+        text-align:center;
+        display:flex;
+        flex-direction:column;
+        justify-content:center;
+        align-items:center;
+    ">
 
-        col1, col2, col3 = st.columns([1,2,1])
+        <img src="data:image/png;base64,{image_base64}"
+        style="
+            width:120px;
+            height:120px;
+            object-fit:contain;
+            margin-bottom:10px;
+        "/>
 
-        with col2:
-
-            st.image(
-                image_path,
-                width=120
-            )
-
-        st.markdown(f"""
         <div style="
-            text-align:center;
-            font-weight:700;
             font-size:16px;
-            min-height:50px;
+            font-weight:700;
+            color:#999999;
+            text-align:center;
+            line-height:1.25;
+            min-height:42px;
             display:flex;
             align-items:center;
             justify-content:center;
         ">
             {label}
         </div>
-        """, unsafe_allow_html=True)
+
+    </div>
+    """
+
+    st.components.v1.html(
+        html,
+        height=240
+    )
 # ---------------------------------------------------
 # STEP NAVIGATION
 # ---------------------------------------------------
