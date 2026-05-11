@@ -524,7 +524,7 @@ header_html = """
 
     color: #979797;
 
-    letter-spacing: -0.9px;
+    letter-spacing: -1,8px;
 
     line-height: 1;
 
@@ -546,7 +546,7 @@ header_html = """
 
     text-shadow:
         0 0 0.01px currentColor,
-        0.65px 0 0 currentColor;
+        0.70px 0 0 currentColor;
 }
 </style>
 
