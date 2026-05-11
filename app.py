@@ -46,7 +46,7 @@ MAIN LAYOUT
 
     max-width: 1500px;
 
-    padding-top: 5rem !important;
+    padding-top: 5.5rem !important;
 
     padding-left: 3rem;
 
@@ -320,7 +320,7 @@ header[data-testid="stHeader"] {
 
     right: 0 !important;
 
-    height: 3.75rem !important;
+    height: 4.25rem !important;
 
     background: white !important;
 
@@ -373,7 +373,7 @@ section[data-testid="stSidebar"] {
 
     border-right: 1px solid #d9dde3;
 
-    margin-top: 3.75rem !important;
+    margin-top: 4.25rem !important;
 
     z-index: 0 !important;
 
