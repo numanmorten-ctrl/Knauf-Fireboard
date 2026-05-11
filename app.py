@@ -522,9 +522,9 @@ hr {
 
     border-color: #d9dde3 !important;
 
-    margin-top: -0.2rem !important;
+    margin-top: -0.5rem !important;
 
-    margin-bottom: 0.7rem !important;
+    margin-bottom: 0.4rem !important;
 }
 
 /* Mindre afstand efter headers */
