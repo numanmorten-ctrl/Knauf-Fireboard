@@ -510,7 +510,6 @@ header_html = """
 
     z-index: 9999999;
 
-    pointer-events: none;
 }
 
 .knauf-menu {
