@@ -519,7 +519,6 @@ CUSTOM HEADER
 
     background: transparent;
 
-    pointer-events: none;
 }
 
 .knauf-menu {
