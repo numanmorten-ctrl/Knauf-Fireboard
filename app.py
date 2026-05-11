@@ -44,15 +44,15 @@ MAIN LAYOUT
 
 .block-container {
 
-    max-width: 1500px;
+    max-width: 1400px;
 
-    padding-top: 5.25rem !important;
+    padding-top: 4.5rem !important;
 
-    padding-left: 3rem;
+    padding-left: 2rem;
 
-    padding-right: 3rem;
+    padding-right: 2rem;
 
-    padding-bottom: 3rem;
+    padding-bottom: 1.5rem;
 }
 
 /* ---------------------------------------------------
@@ -985,7 +985,7 @@ def card(
     )
 
     border = (
-        "2px solid #009fe3"
+        "2px solid #003b7a"
         if selected
         else "1px solid #d9dde3"
     )
@@ -999,9 +999,9 @@ def card(
         border:{border};
         background-color:{background};
         border-radius:4px;
-        padding:20px;
+        padding:14px;
         text-align:center;
-        min-height:200px;
+        min-height:160px;
         display:flex;
         flex-direction:column;
         justify-content:center;
@@ -1011,17 +1011,18 @@ def card(
 
         <img src="data:image/png;base64,{image_base64}"
         style="
-            width:120px;
-            height:120px;
+            width:90px;
+            height:90px;
             object-fit:contain;
-            margin-bottom:20px;
+            margin-bottom:12px;
         "/>
 
         <div style="
-            font-size:18px;
+            font-size:16px;
             font-weight:700;
             color:#2d343c;
             text-align:center;
+            line-height:1.25;
         ">
             {label}
         </div>
@@ -1031,7 +1032,7 @@ def card(
 
     st.components.v1.html(
         html,
-        height=240
+        height=190
     )
 
     if st.button(
@@ -1052,6 +1053,7 @@ def card(
 
         st.rerun()
 
+
 def disabled_card(
     label,
     image_path
@@ -1063,13 +1065,13 @@ def disabled_card(
 
     html = f"""
     <div style="
-        border: 1px solid #d9dde3;
-        background: white;
+        border:1px solid #d9dde3;
+        background:white;
         opacity:0.45;
-        border-radius: 4px;
-        padding:20px;
+        border-radius:4px;
+        padding:14px;
         text-align:center;
-        min-height:240px;
+        min-height:160px;
         display:flex;
         flex-direction:column;
         justify-content:center;
@@ -1078,17 +1080,18 @@ def disabled_card(
 
         <img src="data:image/png;base64,{image_base64}"
         style="
-            width:120px;
-            height:120px;
+            width:90px;
+            height:90px;
             object-fit:contain;
-            margin-bottom:20px;
+            margin-bottom:12px;
         "/>
 
         <div style="
-            font-size:18px;
+            font-size:16px;
             font-weight:700;
             color:#999999;
             text-align:center;
+            line-height:1.25;
         ">
             {label}
         </div>
@@ -1098,7 +1101,7 @@ def disabled_card(
 
     st.components.v1.html(
         html,
-        height=240
+        height=190
     )
 
 # ---------------------------------------------------
@@ -1168,7 +1171,7 @@ for idx, step in enumerate(steps):
             <div style="
                 background-color:#003b7a;
                 color:white;
-                padding:14px;
+                padding:10px;
                 border-radius:4px;
                 text-align:center;
                 font-weight:700;
