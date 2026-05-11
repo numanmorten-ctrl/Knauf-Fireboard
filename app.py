@@ -507,7 +507,7 @@ header_html = """
 
 .knauf-logo {
 
-    height: 62px;
+    height: 52px;
 
     width: auto;
 
