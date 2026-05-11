@@ -743,6 +743,12 @@ fire_tables = {
 
 col1, col2, col3 = st.columns([6, 2, 2])
 
+with col1:
+
+    st.title(
+        "Brandbeskyttelse af stålkonstruktioner"
+    )
+
 # ---------------------------------------------------
 # NY BEREGNING
 # ---------------------------------------------------
