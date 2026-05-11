@@ -1060,7 +1060,9 @@ def card(
         border-radius:4px;
         padding:10px;
         text-align:center;
-        min-height:135px;
+        height:135px;
+        width:100%;
+        box-sizing:border-box;
         display:flex;
         flex-direction:column;
         justify-content:center;
@@ -1070,8 +1072,6 @@ def card(
 
         <img src="data:image/png;base64,{image_base64}"
         style="
-            width:72px;
-            height:72px;
             width:80px;
             height:80px;
             object-fit:contain;
@@ -1093,7 +1093,7 @@ def card(
 
     st.components.v1.html(
         html,
-        height=190
+        height=170
     )
 
     if st.button(
@@ -1132,7 +1132,9 @@ def disabled_card(
         border-radius:4px;
         padding:14px;
         text-align:center;
-        min-height:160px;
+        height:135px;
+        width:100%;
+        box-sizing:border-box;
         display:flex;
         flex-direction:column;
         justify-content:center;
@@ -1162,7 +1164,7 @@ def disabled_card(
 
     st.components.v1.html(
         html,
-        height=190
+        height=170
     )
 
 # ---------------------------------------------------
