@@ -1054,11 +1054,17 @@ def card(
     )
 
     html = f"""
+    <html>
+    <body style="
+        margin:0;
+        padding:0;
+    ">
     <div style="
         border:{border};
         background-color:{background};
         border-radius:4px;
         padding:10px;
+        width:calc(100% - 2px);
         text-align:center;
         height:135px;
         width:100%;
@@ -1089,6 +1095,8 @@ def card(
         </div>
 
     </div>
+    </body>
+    </html>
     """
 
     st.components.v1.html(
@@ -1125,12 +1133,18 @@ def disabled_card(
     )
 
     html = f"""
+    <html>
+    <body style="
+        margin:0;
+        padding:0;
+    ">
     <div style="
         border:1px solid #d9dde3;
         background:white;
         opacity:0.45;
         border-radius:4px;
-        padding:14px;
+        padding:10px;
+        width:calc(100% - 2px);
         text-align:center;
         height:135px;
         width:100%;
@@ -1160,6 +1174,8 @@ def disabled_card(
         </div>
 
     </div>
+    </body>
+    </html>
     """
 
     st.components.v1.html(
