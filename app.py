@@ -486,9 +486,9 @@ header_html = """
 
     position: fixed;
 
-    top: -1px;
+    top: -2px;
 
-    left: 2.8rem;
+    left: 2.6rem;
 
     height: 3.75rem;
 
@@ -496,7 +496,7 @@ header_html = """
 
     align-items: center;
 
-    gap: 10px;
+    gap: 8px;
 
     z-index: 9999999;
 
@@ -505,7 +505,7 @@ header_html = """
 
 .knauf-logo {
 
-    height: 56px;
+    height: 62px;
 
     width: auto;
 
@@ -514,27 +514,31 @@ header_html = """
 
 .knauf-fireboard {
 
-    font-size: 30px;
+    font-size: 31px;
 
-    font-weight: 600;
+    font-weight: 500;
 
     font-style: italic;
 
-    color: #8f8f8f;
+    color: #9a9a9a;
 
-    letter-spacing: -1.2px;
+    letter-spacing: -1.4px;
 
     line-height: 1;
 
+    margin-top: 1px;
+
     font-family:
+        "Arial Narrow",
         "Helvetica Neue",
-        Helvetica,
         Arial,
         sans-serif;
 
-    transform: skewX(-8deg);
+    transform: skewX(-10deg);
 
-    margin-top: 2px;
+    -webkit-font-smoothing: antialiased;
+
+    text-rendering: geometricPrecision;
 }
 
 </style>
