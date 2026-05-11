@@ -472,42 +472,7 @@ FINAL BASEWEB INPUT FIX
 
     box-shadow: none !important;
 }
-/* ---------------------------------------------------
-FORCE SIDEBAR TOGGLE VISIBLE
---------------------------------------------------- */
 
-[data-testid="collapsedControl"] {
-
-    display: flex !important;
-
-    visibility: visible !important;
-
-    opacity: 1 !important;
-
-    position: fixed !important;
-
-    top: 0.95rem !important;
-
-    left: 0.75rem !important;
-
-    z-index: 999999999 !important;
-
-    background: transparent !important;
-
-    color: #6b7280 !important;
-}
-
-[data-testid="collapsedControl"]:hover {
-
-    color: #009fe3 !important;
-}
-
-[data-testid="collapsedControl"] svg {
-
-    width: 1.35rem !important;
-
-    height: 1.35rem !important;
-}
 </style>
 """, unsafe_allow_html=True)
 
