@@ -591,6 +591,7 @@ header_html = """
     </div>
 
 </div>
+"""
 
 st.markdown(header_html, unsafe_allow_html=True)
 # ---------------------------------------------------
