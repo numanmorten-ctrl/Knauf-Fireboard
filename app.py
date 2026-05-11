@@ -1035,32 +1035,41 @@ def card(label, image_path, state_key):
     )
 
     st.markdown(f"""
-    <style>
-    div[data-testid="stVerticalBlock"]:has(button[key="{state_key}_{label}"]) {{
-        border: {border};
-        background: {background};
-        padding: 12px;
-        border-radius: 4px;
-    }}
-    </style>
+    <div style="
+        border:{border};
+        background:{background};
+        border-radius:4px;
+        padding:14px;
+        min-height:260px;
+        display:flex;
+        flex-direction:column;
+        justify-content:space-between;
+    ">
     """, unsafe_allow_html=True)
 
-    st.image(
-        image_path,
-        use_container_width=True
-    )
+    col1, col2, col3 = st.columns([1,2,1])
+
+    with col2:
+
+        st.image(
+            image_path,
+            width=120
+        )
 
     st.markdown(f"""
-    <div style="
-        font-size:16px;
-        font-weight:700;
-        color:#2d343c;
-        text-align:center;
-        padding-top:6px;
-        padding-bottom:6px;
-    ">
-        {label}
-    </div>
+        <div style="
+            font-size:16px;
+            font-weight:700;
+            color:#2d343c;
+            text-align:center;
+            padding-top:10px;
+            min-height:48px;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+        ">
+            {label}
+        </div>
     """, unsafe_allow_html=True)
 
     if st.button(
@@ -1080,38 +1089,50 @@ def card(label, image_path, state_key):
 
         st.rerun()
 
+    st.markdown("</div>", unsafe_allow_html=True)
+
 def disabled_card(label, image_path):
 
     st.markdown("""
-    <style>
-    div[data-testid="stVerticalBlock"]:has(img) {
-        border: 1px solid #d9dde3;
-        background: white;
-        padding: 12px;
-        border-radius: 4px;
-        opacity: 0.45;
-    }
-    </style>
+    <div style="
+        border:1px solid #d9dde3;
+        background:white;
+        opacity:0.45;
+        border-radius:4px;
+        padding:14px;
+        min-height:260px;
+        display:flex;
+        flex-direction:column;
+        justify-content:space-between;
+    ">
     """, unsafe_allow_html=True)
 
-    st.image(
-        image_path,
-        use_container_width=True
-    )
+    col1, col2, col3 = st.columns([1,2,1])
+
+    with col2:
+
+        st.image(
+            image_path,
+            width=120
+        )
 
     st.markdown(f"""
-    <div style="
-        font-size:16px;
-        font-weight:700;
-        color:#999999;
-        text-align:center;
-        padding-top:6px;
-        padding-bottom:6px;
-    ">
-        {label}
-    </div>
+        <div style="
+            font-size:16px;
+            font-weight:700;
+            color:#999999;
+            text-align:center;
+            padding-top:10px;
+            min-height:48px;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+        ">
+            {label}
+        </div>
     """, unsafe_allow_html=True)
 
+    st.markdown("</div>", unsafe_allow_html=True)
 # ---------------------------------------------------
 # STEP NAVIGATION
 # ---------------------------------------------------
