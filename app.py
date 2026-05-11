@@ -1055,6 +1055,8 @@ def card(
 
     html = f"""
     <div style="
+        width:100%;
+        box-sizing:border-box;
         border:{border};
         background-color:{background};
         border-radius:4px;
@@ -1092,6 +1094,7 @@ def card(
     st.components.v1.html(
         html,
         height=190
+        scrolling=False
     )
 
     if st.button(
@@ -1161,6 +1164,7 @@ def disabled_card(
     st.components.v1.html(
         html,
         height=190
+        scrolling=False
     )
 
 # ---------------------------------------------------
