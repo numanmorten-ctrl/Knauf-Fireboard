@@ -512,6 +512,10 @@ CUSTOM HEADER
     padding-top: 1px;
 
     z-index: 9999999;
+
+    background: transparent;
+
+    pointer-events: none;
 }
 
 .knauf-menu {
@@ -527,6 +531,8 @@ CUSTOM HEADER
     font-weight: 400;
 
     user-select: none;
+
+    pointer-events: auto;
 }
 
 .knauf-logo {
