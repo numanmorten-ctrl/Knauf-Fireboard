@@ -583,10 +583,6 @@ header_html = """
     -webkit-font-smoothing: antialiased;
 
     text-rendering: geometricPrecision;
-
-    text-shadow:
-        0 0 0.01px currentColor,
-        1.5px 0 0 currentColor;
 }
 </style>
 
