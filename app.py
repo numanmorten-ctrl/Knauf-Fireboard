@@ -1077,8 +1077,8 @@ def card(
         "/>
 
         <div style="
-            font-size:20px;
-            font-weight:800;
+            font-size:18px;
+            font-weight:750;
             color:#2d343c;
             text-align:center;
             line-height:1.25;
