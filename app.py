@@ -514,7 +514,55 @@ section[data-testid="stSidebar"] button[kind="primary"] {
 
     box-shadow:none !important;
 }
+/* ---------------------------------------------------
+REDUCER VERTICAL SPACING
+--------------------------------------------------- */
 
+/* Mindre afstand omkring divider */
+
+hr {
+
+    margin-top: 0.6rem !important;
+
+    margin-bottom: 0.6rem !important;
+}
+
+/* Mindre afstand efter headers */
+
+h1, h2, h3 {
+
+    margin-bottom: 0.4rem !important;
+}
+
+/* Mindre afstand mellem elementer */
+
+div[data-testid="stVerticalBlock"] {
+
+    gap: 0.45rem !important;
+}
+
+/* Mindre afstand før/efter subheaders */
+
+div[data-testid="stHeading"] {
+
+    margin-bottom: 0.2rem !important;
+}
+
+/* Mindre afstand ved buttons */
+
+div.stButton {
+
+    margin-top: 0rem !important;
+
+    margin-bottom: 0rem !important;
+}
+
+/* Mindre spacing omkring markdown/html blocks */
+
+.element-container {
+
+    margin-bottom: 0.2rem !important;
+}
 </style>
 """, unsafe_allow_html=True)
 
