@@ -1085,7 +1085,7 @@ def card(
         "/>
 
         <div style="
-            font-size:16px;
+            font-size:17px;
             font-weight:700;
             color:#2d343c;
             text-align:center;
@@ -1164,7 +1164,7 @@ def disabled_card(
         "/>
 
         <div style="
-            font-size:16px;
+            font-size:17px;
             font-weight:700;
             color:#999999;
             text-align:center;
