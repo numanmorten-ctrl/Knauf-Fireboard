@@ -1083,8 +1083,8 @@ def card(
 
         <img src="data:image/png;base64,{image_base64}"
         style="
-            width:140px;
-            height:140px;
+            width:160px;
+            height:120px;
             object-fit:contain;
             margin-bottom:8px;
         "/>
