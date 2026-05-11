@@ -489,24 +489,25 @@ header_html = """
     height: 3.75rem;
     display: flex;
     align-items: center;
-    gap: 18px;
+    gap: 14px;
     z-index: 9999999;
     pointer-events: none;
 }
 
 .knauf-logo {
-    height: 38px;
+    height: 46px;
     width: auto;
     display: block;
 }
 
 .knauf-fireboard {
-    font-size: 28px;
+    font-size: 32px;
     font-weight: 600;
     font-style: italic;
-    color: #8a8a8a;
-    letter-spacing: -0.5px;
-    font-family: Arial, sans-serif;
+    color: #8b8b8b;
+    letter-spacing: -1px;
+    line-height: 1;
+    font-family: "Arial Narrow", Arial, sans-serif;
 }
 
 </style>
