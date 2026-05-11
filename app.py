@@ -21,10 +21,14 @@ from reportlab.lib.pagesizes import A4
 # PAGE CONFIG
 # ---------------------------------------------------
 
-st.set_page_config(
-    page_title="Brandbeskyttelse af stålkonstruktioner",
-    layout="wide"
-)
+st.markdown("""
+<h1 style="
+    font-size:52px;
+    margin-bottom:8px;
+">
+Brandbeskyttelse af stålkonstruktioner
+</h1>
+""", unsafe_allow_html=True)
 
 # ---------------------------------------------------
 # KNAUF THEME
@@ -46,7 +50,7 @@ MAIN LAYOUT
 
     max-width: 1400px;
 
-    padding-top: 4.5rem !important;
+    padding-top: 5rem !important;
 
     padding-left: 2rem;
 
@@ -80,7 +84,7 @@ div.stDownloadButton > button {
 
     width: 100%;
 
-    min-height: 44px;
+    min-height: 38px;
 
     border-radius: 0 !important;
 
@@ -506,6 +510,22 @@ FINAL BASEWEB INPUT FIX
     background: white !important;
 
     box-shadow: none !important;
+}
+/* ---------------------------------------------------
+SIDEBAR ACTIVE CALCULATION
+--------------------------------------------------- */
+
+section[data-testid="stSidebar"] button[kind="primary"] {
+
+    background:#009fe3 !important;
+
+    border:1px solid #009fe3 !important;
+
+    color:white !important;
+
+    font-weight:700 !important;
+
+    box-shadow:none !important;
 }
 
 </style>
@@ -999,7 +1019,7 @@ def card(
         border:{border};
         background-color:{background};
         border-radius:4px;
-        padding:14px;
+        padding:10px;
         text-align:center;
         min-height:160px;
         display:flex;
