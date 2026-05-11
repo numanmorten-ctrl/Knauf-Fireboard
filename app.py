@@ -1157,8 +1157,8 @@ def disabled_card(
 
         <img src="data:image/png;base64,{image_base64}"
         style="
-            width:90px;
-            height:90px;
+            width:120px;
+            height:120px;
             object-fit:contain;
             margin-bottom:12px;
         "/>
