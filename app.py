@@ -516,24 +516,24 @@ header_html = """
 
     font-size: 29px;
 
-    font-weight: 450;
+    font-weight: 500;
 
-    font-style: normal;
+    font-style: italic;
 
-    color: #979797;
+    color: #8f8f8f;
 
-    letter-spacing: -0.6px;
+    letter-spacing: -0.7px;
 
     line-height: 1;
 
-    margin-top: 0px;
+    margin-top: -1px;
 
     font-family:
         "Segoe UI",
         Arial,
         sans-serif;
 
-    transform: skewX(-3deg);
+    transform: skewX(-7deg);
 
     -webkit-font-smoothing: antialiased;
 
