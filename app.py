@@ -471,6 +471,37 @@ FINAL BASEWEB INPUT FIX
 
     box-shadow: none !important;
 }
+/* ---------------------------------------------------
+SIDEBAR TOGGLE BUTTON
+--------------------------------------------------- */
+
+button[kind="header"] {
+
+    opacity: 1 !important;
+
+    visibility: visible !important;
+
+    color: #6b7280 !important;
+
+    background: transparent !important;
+
+    border: none !important;
+
+    box-shadow: none !important;
+
+    margin-left: 0.5rem !important;
+
+    margin-top: 2px !important;
+
+    z-index: 99999999 !important;
+}
+
+button[kind="header"]:hover {
+
+    color: #009fe3 !important;
+
+    background: transparent !important;
+}
 
 </style>
 """, unsafe_allow_html=True)
