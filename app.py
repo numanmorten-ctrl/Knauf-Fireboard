@@ -516,31 +516,29 @@ header_html = """
 
     font-size: 31px;
 
-    font-weight: 500;
+    font-weight: 550;
 
     font-style: italic;
 
-    color: #9a9a9a;
+    color: #8d8d8d;
 
-    letter-spacing: -1.4px;
+    letter-spacing: -1.1px;
 
     line-height: 1;
 
     margin-top: 1px;
 
     font-family:
-        "Arial Narrow",
         "Helvetica Neue",
         Arial,
         sans-serif;
 
-    transform: skewX(-10deg);
+    transform: skewX(-7deg);
 
     -webkit-font-smoothing: antialiased;
 
     text-rendering: geometricPrecision;
 }
-
 </style>
 
 <div class="knauf-header">
