@@ -516,13 +516,15 @@ header_html = """
 
     font-size: 29px;
 
-    font-weight: 549;
+    font-weight: 550;
 
     font-style: italic;
 
+    font-stretch: condensed;
+
     color: #8f8f8f;
 
-    letter-spacing: -0.8px;
+    letter-spacing: -1px;
 
     line-height: 1;
 
