@@ -66,11 +66,11 @@ h1, h2, h3 {
     font-weight: 700 !important;
 }
 
-p, label, span {
+p,
+label {
 
     color: #3e4650;
 }
-
 /* ---------------------------------------------------
 BUTTONS
 --------------------------------------------------- */
@@ -1779,6 +1779,7 @@ if current_step == 3:
             border-radius:0px;
             padding:18px;
             margin-bottom:12px;
+            color:#2d343c;
         ">
             <b>Beregnet profilforhold Ap/V:</b>
             {apv} m²/m³
@@ -1792,6 +1793,7 @@ if current_step == 3:
             border-radius:0px;
             padding:18px;
             margin-bottom:12px;
+            color:#2d343c;
         ">
             <b>Profil skal inddækkes med:</b>
             {int(thickness)} mm Knauf Fireboard
