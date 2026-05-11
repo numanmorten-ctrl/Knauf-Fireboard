@@ -546,7 +546,7 @@ header_html = """
 
     text-shadow:
         0 0 0.01px currentColor,
-        0.55px 0 0 currentColor;
+        0.65px 0 0 currentColor;
 }
 </style>
 
