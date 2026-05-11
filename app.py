@@ -1776,6 +1776,7 @@ if current_step == 3:
             padding:18px;
             margin-bottom:12px;
             color:white;
+            font-weight:700;
         ">
             <b>Beregnet profilforhold Ap/V:</b>
             {apv} m²/m³
@@ -1790,6 +1791,7 @@ if current_step == 3:
             padding:18px;
             margin-bottom:12px;
             color:white;
+            font-weight:700;
         ">
             <b>Profil skal inddækkes med:</b>
             {int(thickness)} mm Knauf Fireboard
