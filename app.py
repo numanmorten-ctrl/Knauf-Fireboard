@@ -37,13 +37,13 @@ MAIN LAYOUT
 
     max-width: 1400px;
 
-    padding-top: 5rem !important;
+    padding-top: 4.2rem !important;
 
-    padding-left: 2rem;
+    padding-left: 1.5rem;
 
-    padding-right: 2rem;
+    padding-right: 1.5rem;
 
-    padding-bottom: 1.5rem;
+    padding-bottom: 1rem;
 }
 
 /* ---------------------------------------------------
@@ -71,7 +71,7 @@ div.stDownloadButton > button {
 
     width: 100%;
 
-    min-height: 38px;
+    min-height: 32px;
 
     border-radius: 0 !important;
 
@@ -1008,7 +1008,7 @@ def card(
         border-radius:4px;
         padding:10px;
         text-align:center;
-        min-height:160px;
+        min-height:135px;
         display:flex;
         flex-direction:column;
         justify-content:center;
@@ -1018,10 +1018,10 @@ def card(
 
         <img src="data:image/png;base64,{image_base64}"
         style="
-            width:90px;
-            height:90px;
+            width:72px;
+            height:72px;
             object-fit:contain;
-            margin-bottom:12px;
+            margin-bottom:8px;
         "/>
 
         <div style="
@@ -1178,7 +1178,7 @@ for idx, step in enumerate(steps):
             <div style="
                 background-color:#003b7a;
                 color:white;
-                padding:10px;
+                padding:8px;
                 border-radius:4px;
                 text-align:center;
                 font-weight:700;
