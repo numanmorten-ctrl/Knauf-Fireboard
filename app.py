@@ -564,7 +564,7 @@ header_html = """
 
     color: #979797;
 
-    letter-spacing: 1px;
+    letter-spacing: 1,5px;
 
     line-height: 1;
 
