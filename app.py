@@ -483,31 +483,58 @@ header_html = """
 <style>
 
 .knauf-header {
+
     position: fixed;
-    top: 0;
-    left: 4rem;
+
+    top: -1px;
+
+    left: 2.8rem;
+
     height: 3.75rem;
+
     display: flex;
+
     align-items: center;
-    gap: 14px;
+
+    gap: 10px;
+
     z-index: 9999999;
+
     pointer-events: none;
 }
 
 .knauf-logo {
-    height: 46px;
+
+    height: 56px;
+
     width: auto;
+
     display: block;
 }
 
 .knauf-fireboard {
-    font-size: 32px;
+
+    font-size: 30px;
+
     font-weight: 600;
+
     font-style: italic;
-    color: #8b8b8b;
-    letter-spacing: -1px;
+
+    color: #8f8f8f;
+
+    letter-spacing: -1.2px;
+
     line-height: 1;
-    font-family: "Arial Narrow", Arial, sans-serif;
+
+    font-family:
+        "Helvetica Neue",
+        Helvetica,
+        Arial,
+        sans-serif;
+
+    transform: skewX(-8deg);
+
+    margin-top: 2px;
 }
 
 </style>
