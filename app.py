@@ -1083,7 +1083,7 @@ def card(
 
         <img src="data:image/png;base64,{image_base64}"
         style="
-            width:180px;
+            width:120px;
             height:120px;
             object-fit:contain;
             margin-bottom:8px;
@@ -1141,7 +1141,7 @@ def disabled_card(
         border:1px solid #d9dde3;
         background:white;
         opacity:0.45;
-        border-radius:4px;
+        border-radius:0px;
         padding:14px;
         text-align:center;
         min-height:160px;
