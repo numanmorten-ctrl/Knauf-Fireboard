@@ -1060,7 +1060,7 @@ def card(
         border-radius:4px;
         padding:10px;
         text-align:center;
-        min-height:155px;
+        min-height:165px;
         display:flex;
         flex-direction:column;
         justify-content:center;
