@@ -475,7 +475,9 @@ FINAL BASEWEB INPUT FIX
 SIDEBAR TOGGLE BUTTON
 --------------------------------------------------- */
 
-button[kind="header"] {
+button[data-testid="collapsedControl"] {
+
+    display: flex !important;
 
     opacity: 1 !important;
 
@@ -489,18 +491,25 @@ button[kind="header"] {
 
     box-shadow: none !important;
 
-    margin-left: 0.5rem !important;
-
-    margin-top: 2px !important;
-
     z-index: 99999999 !important;
+
+    margin-left: 0.4rem !important;
+
+    margin-top: 0.2rem !important;
 }
 
-button[kind="header"]:hover {
+button[data-testid="collapsedControl"]:hover {
 
     color: #009fe3 !important;
 
     background: transparent !important;
+}
+
+button[data-testid="collapsedControl"] svg {
+
+    width: 1.4rem !important;
+
+    height: 1.4rem !important;
 }
 
 </style>
