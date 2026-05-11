@@ -1070,8 +1070,8 @@ def card(
 
         <img src="data:image/png;base64,{image_base64}"
         style="
-            width:80px;
-            height:80px;
+            width:90px;
+            height:90px;
             object-fit:contain;
             margin-bottom:8px;
         "/>
