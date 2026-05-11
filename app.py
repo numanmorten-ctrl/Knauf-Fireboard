@@ -1094,7 +1094,6 @@ def card(
     st.components.v1.html(
         html,
         height=190
-        scrolling=False
     )
 
     if st.button(
@@ -1164,6 +1163,7 @@ def disabled_card(
     st.components.v1.html(
         html,
         height=190
+        scrolling=False
     )
 
 # ---------------------------------------------------
