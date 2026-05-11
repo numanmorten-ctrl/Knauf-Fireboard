@@ -514,17 +514,17 @@ header_html = """
 
 .knauf-fireboard {
 
-    font-size: 29px;
+    font-size: 28px;
 
-    font-weight: 550;
+    font-weight: 540;
 
     font-style: italic;
 
     font-stretch: condensed;
 
-    color: #8f8f8f;
+    color: #979797;
 
-    letter-spacing: -1px;
+    letter-spacing: -1.15px;
 
     line-height: 1;
 
@@ -536,7 +536,9 @@ header_html = """
         Arial,
         sans-serif;
 
-    transform: skewX(-4deg);
+    transform: scaleX(0.94) skewX(-4deg);
+
+    transform-origin: left center;
 
     -webkit-font-smoothing: antialiased;
 
