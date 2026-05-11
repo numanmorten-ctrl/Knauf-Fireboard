@@ -1035,14 +1035,14 @@ def card(label, image_path, state_key):
     )
 
     st.markdown(f"""
-    <div style="
-        border:{border};
-        background:{background};
-        padding:12px;
-        border-radius:4px;
-        text-align:center;
-        min-height:220px;
-    ">
+    <style>
+    div[data-testid="stVerticalBlock"]:has(button[key="{state_key}_{label}"]) {{
+        border: {border};
+        background: {background};
+        padding: 12px;
+        border-radius: 4px;
+    }}
+    </style>
     """, unsafe_allow_html=True)
 
     st.image(
@@ -1051,16 +1051,15 @@ def card(label, image_path, state_key):
     )
 
     st.markdown(f"""
-        <div style="
-            font-size:16px;
-            font-weight:700;
-            color:#2d343c;
-            text-align:center;
-            padding-top:6px;
-            padding-bottom:6px;
-        ">
-            {label}
-        </div>
+    <div style="
+        font-size:16px;
+        font-weight:700;
+        color:#2d343c;
+        text-align:center;
+        padding-top:6px;
+        padding-bottom:6px;
+    ">
+        {label}
     </div>
     """, unsafe_allow_html=True)
 
@@ -1081,19 +1080,18 @@ def card(label, image_path, state_key):
 
         st.rerun()
 
-
 def disabled_card(label, image_path):
 
     st.markdown("""
-    <div style="
-        border:1px solid #d9dde3;
-        background:white;
-        opacity:0.45;
-        padding:12px;
-        border-radius:4px;
-        text-align:center;
-        min-height:220px;
-    ">
+    <style>
+    div[data-testid="stVerticalBlock"]:has(img) {
+        border: 1px solid #d9dde3;
+        background: white;
+        padding: 12px;
+        border-radius: 4px;
+        opacity: 0.45;
+    }
+    </style>
     """, unsafe_allow_html=True)
 
     st.image(
@@ -1102,16 +1100,15 @@ def disabled_card(label, image_path):
     )
 
     st.markdown(f"""
-        <div style="
-            font-size:16px;
-            font-weight:700;
-            color:#999999;
-            text-align:center;
-            padding-top:6px;
-            padding-bottom:6px;
-        ">
-            {label}
-        </div>
+    <div style="
+        font-size:16px;
+        font-weight:700;
+        color:#999999;
+        text-align:center;
+        padding-top:6px;
+        padding-bottom:6px;
+    ">
+        {label}
     </div>
     """, unsafe_allow_html=True)
 
