@@ -518,22 +518,23 @@ header_html = """
 
     font-weight: 500;
 
-    font-style: italic;
+    font-style: normal;
 
-    color: #8d8d8d;
+    color: #8c8c8c;
 
-    letter-spacing: -0.8px;
+    letter-spacing: -0.7px;
 
     line-height: 1;
 
     margin-top: 1px;
 
     font-family:
-        "Roboto Condensed",
-        "Arial Narrow",
+        "Segoe UI",
+        "Helvetica Neue",
+        Arial,
         sans-serif;
 
-    transform: skewX(-6deg);
+    transform: skewX(-4deg);
 
     -webkit-font-smoothing: antialiased;
 
