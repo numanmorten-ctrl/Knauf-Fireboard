@@ -536,7 +536,7 @@ header_html = """
         Arial,
         sans-serif;
 
-    transform: scaleX(0.5) skewX(-4deg);
+    transform: scaleX(0.8) skewX(-4deg);
 
     transform-origin: left center;
 
