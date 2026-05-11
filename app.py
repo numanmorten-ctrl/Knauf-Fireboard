@@ -376,7 +376,7 @@ section[data-testid="stSidebar"] {
 
     margin-top: 4.05rem !important;
 
-    z-index: 0 !important;
+    z-index: 999998 !important;
 
     position: relative !important;
 }
@@ -500,6 +500,10 @@ CUSTOM HEADER
     top: 0;
 
     left: 2.4rem;
+
+    width: calc(100% - 2.4rem);
+
+    box-sizing: border-box;
 
     height: 4.05rem;
 
