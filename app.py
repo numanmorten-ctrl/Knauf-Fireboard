@@ -1163,7 +1163,6 @@ def disabled_card(
     st.components.v1.html(
         html,
         height=190
-        scrolling=False
     )
 
 # ---------------------------------------------------
