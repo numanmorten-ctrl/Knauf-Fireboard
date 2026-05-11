@@ -538,7 +538,7 @@ h1, h2, h3 {
 
 div[data-testid="stVerticalBlock"] {
 
-    gap: 0.45rem !important;
+    gap: 0.8rem !important;
 }
 
 /* Mindre afstand før/efter subheaders */
@@ -561,7 +561,7 @@ div.stButton {
 
 .element-container {
 
-    margin-bottom: 0.2rem !important;
+    margin-bottom: 0.5rem !important;
 }
 </style>
 """, unsafe_allow_html=True)
