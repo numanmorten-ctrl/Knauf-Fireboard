@@ -545,7 +545,8 @@ header_html = """
     text-rendering: geometricPrecision;
 
     text-shadow:
-        0 0 0.01px currentColor;
+        0 0 0.01px currentColor,
+        0.18px 0 0 currentColor;
 }
 </style>
 
