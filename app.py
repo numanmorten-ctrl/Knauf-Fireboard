@@ -512,6 +512,7 @@ header_html = """
 
     pointer-events: none;
 }
+
 .knauf-menu {
 
     font-size: 28px;
@@ -530,6 +531,7 @@ header_html = """
 
     pointer-events: auto;
 }
+
 .knauf-logo {
 
     height: 60px;
@@ -575,6 +577,7 @@ header_html = """
         0 0 0.01px currentColor,
         1.5px 0 0 currentColor;
 }
+
 </style>
 
 <div class="knauf-header">
