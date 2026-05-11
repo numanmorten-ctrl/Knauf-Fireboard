@@ -1062,7 +1062,7 @@ def card(
     <div style="
         border:{border};
         background-color:{background};
-        border-radius:4px;
+        border-radius:0px;
         padding:10px;
         width:calc(100% - 2px);
         text-align:center;
@@ -1142,7 +1142,7 @@ def disabled_card(
         border:1px solid #d9dde3;
         background:white;
         opacity:0.45;
-        border-radius:4px;
+        border-radius:0px;
         padding:10px;
         width:calc(100% - 2px);
         text-align:center;
@@ -1251,7 +1251,7 @@ for idx, step in enumerate(steps):
                 background-color:#003b7a;
                 color:white;
                 padding:8px;
-                border-radius:4px;
+                border-radius:0px;
                 text-align:center;
                 font-weight:700;
                 border:1px solid #003b7a;
