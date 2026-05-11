@@ -1104,7 +1104,7 @@ def card(
 
     st.components.v1.html(
         html,
-        height=190
+        height=190,
         width=None
     )
 
@@ -1174,7 +1174,7 @@ def disabled_card(
 
     st.components.v1.html(
         html,
-        height=190
+        height=190,
         width=None
     )
 
