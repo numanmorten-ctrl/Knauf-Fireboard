@@ -23,8 +23,7 @@ from reportlab.lib.pagesizes import A4
 
 st.set_page_config(
     page_title="Brandbeskyttelse af stålkonstruktioner",
-    layout="wide",
-    initial_sidebar_state="expanded"
+    layout="wide"
 )
 
 # ---------------------------------------------------
@@ -376,7 +375,7 @@ section[data-testid="stSidebar"] {
 
     margin-top: 4.05rem !important;
 
-    z-index: 999998 !important;
+    z-index: 0 !important;
 
     position: relative !important;
 }
@@ -409,9 +408,7 @@ div[data-baseweb="select"] > div,
     box-sizing: border-box !important;
 }
 
-/* ---------------------------------------------------
-FORCE SAME VISUAL THICKNESS
---------------------------------------------------- */
+/* FORCE SAME VISUAL THICKNESS */
 
 .stTextInput,
 .stTextArea,
@@ -423,9 +420,7 @@ FORCE SAME VISUAL THICKNESS
     box-sizing: border-box !important;
 }
 
-/* ---------------------------------------------------
-REMOVE EXTRA INNER BORDERS
---------------------------------------------------- */
+/* REMOVE EXTRA INNER BORDERS */
 
 .stTextInput input,
 .stTextArea textarea,
@@ -438,9 +433,7 @@ REMOVE EXTRA INNER BORDERS
     background: transparent !important;
 }
 
-/* ---------------------------------------------------
-REMOVE BASEWEB SHADOW LAYERS
---------------------------------------------------- */
+/* REMOVE BASEWEB SHADOW LAYERS */
 
 [data-baseweb="input"]::before,
 [data-baseweb="base-input"]::before,
@@ -449,7 +442,6 @@ REMOVE BASEWEB SHADOW LAYERS
 
     display: none !important;
 }
-
 /* ---------------------------------------------------
 FINAL BASEWEB INPUT FIX
 --------------------------------------------------- */
@@ -480,18 +472,15 @@ FINAL BASEWEB INPUT FIX
     box-shadow: none !important;
 }
 
-/* ---------------------------------------------------
-HIDE STREAMLIT SIDEBAR TOGGLE
---------------------------------------------------- */
+</style>
+""", unsafe_allow_html=True)
 
-[data-testid="collapsedControl"] {
+# ---------------------------------------------------
+# CUSTOM HEADER BRANDING
+# ---------------------------------------------------
 
-    display: none !important;
-}
-
-/* ---------------------------------------------------
-CUSTOM HEADER
---------------------------------------------------- */
+header_html = """
+<style>
 
 .knauf-header {
 
@@ -499,11 +488,7 @@ CUSTOM HEADER
 
     top: 0;
 
-    left: 2.4rem;
-
-    width: calc(100% - 2.4rem);
-
-    box-sizing: border-box;
+    left: 2.6rem;
 
     height: 4.05rem;
 
@@ -513,33 +498,17 @@ CUSTOM HEADER
 
     gap: 10px;
 
+    padding-top: 2px;
     padding-top: 1px;
 
     z-index: 9999999;
 
-    background: transparent;
-
-}
-
-.knauf-menu {
-
-    font-size: 28px;
-
-    color: #003b7a;
-
-    margin-right: 10px;
-
-    margin-top: -2px;
-
-    font-weight: 400;
-
-    user-select: none;
-
-    pointer-events: auto;
+    pointer-events: none;
 }
 
 .knauf-logo {
 
+    height: 57px;
     height: 60px;
 
     width: auto;
@@ -583,28 +552,11 @@ CUSTOM HEADER
         0 0 0.01px currentColor,
         1.5px 0 0 currentColor;
 }
-
 </style>
-""", unsafe_allow_html=True)
 
-# ---------------------------------------------------
-# CUSTOM HEADER BRANDING
-# ---------------------------------------------------
-
-header_html = """
 <div class="knauf-header">
-
-<div class="knauf-menu">
-☰
-</div>
-
-<img class="knauf-logo"
-src="https://knauf.com/api/download-center/v1/assets/8355fec5-8cb9-42fe-b5d7-4e7258bf446a?download=true">
-
-<div class="knauf-fireboard">
-Fireboard
-</div>
-
+<img class="knauf-logo" src="https://knauf.com/api/download-center/v1/assets/8355fec5-8cb9-42fe-b5d7-4e7258bf446a?download=true">
+<div class="knauf-fireboard">Fireboard</div>
 </div>
 """
 
@@ -1205,7 +1157,7 @@ for idx, step in enumerate(steps):
                 st.session_state.current_step = idx
 
                 st.rerun()
-                
+
 # ---------------------------------------------------
 # TAB 1 - PROFIL
 # ---------------------------------------------------
