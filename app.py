@@ -18,19 +18,6 @@ from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.lib.pagesizes import A4
 
 # ---------------------------------------------------
-# PAGE CONFIG
-# ---------------------------------------------------
-
-st.markdown("""
-<h1 style="
-    font-size:52px;
-    margin-bottom:8px;
-">
-Brandbeskyttelse af stålkonstruktioner
-</h1>
-""", unsafe_allow_html=True)
-
-# ---------------------------------------------------
 # KNAUF THEME
 # ---------------------------------------------------
 
