@@ -498,7 +498,7 @@ header_html = """
 
     gap: 10px;
 
-    padding-top: 3px;
+    padding-top: 2px;
 
     z-index: 9999999;
 
@@ -507,7 +507,7 @@ header_html = """
 
 .knauf-logo {
 
-    height: 52px;
+    height: 57px;
 
     width: auto;
 
