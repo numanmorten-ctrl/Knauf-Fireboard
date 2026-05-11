@@ -524,7 +524,7 @@ header_html = """
 
     top: 0;
 
-    left: 2.6rem;
+    left: 5.2rem;
 
     height: 4.05rem;
 
