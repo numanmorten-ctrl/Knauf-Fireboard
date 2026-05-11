@@ -1066,7 +1066,7 @@ def card(
         padding:10px;
         width:calc(100% - 2px);
         text-align:center;
-        height:135px;
+        height:160px;
         width:100%;
         box-sizing:border-box;
         display:flex;
@@ -1146,7 +1146,7 @@ def disabled_card(
         padding:10px;
         width:calc(100% - 2px);
         text-align:center;
-        height:135px;
+        height:160px;
         width:100%;
         box-sizing:border-box;
         display:flex;
