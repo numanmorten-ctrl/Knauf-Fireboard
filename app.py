@@ -516,7 +516,7 @@ header_html = """
 
     font-size: 29px;
 
-    font-weight: 500;
+    font-weight: 550;
 
     font-style: italic;
 
