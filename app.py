@@ -136,7 +136,7 @@ button[kind="primary"]:hover {
 ACTIVE SIDEBAR CALCULATION
 --------------------------------------------------- */
 
-{
+section[data-testid="stSidebar"] button[kind="primary"] {
 
     background-color: #009fe3 !important;
 
@@ -593,6 +593,7 @@ header_html = """
 
     gap: 10px;
 
+    padding-top: 2px;
     padding-top: 1px;
 
     z-index: 9999999;
@@ -622,7 +623,7 @@ header_html = """
 
     color: #979797;
 
-    letter-spacing: 1.5px;
+    letter-spacing: 1,5px;
 
     line-height: 1;
 
@@ -1015,6 +1016,7 @@ with st.sidebar:
 # ---------------------------------------------------
 # CARD FUNCTIONS
 # ---------------------------------------------------
+
 def get_base64_image(image_path):
 
     with open(image_path, "rb") as img_file:
@@ -1022,11 +1024,17 @@ def get_base64_image(image_path):
         return base64.b64encode(
             img_file.read()
         ).decode()
-        
-def card(label, image_path, state_key):
+
+
+def card(
+    label,
+    image_path,
+    state_key
+):
 
     selected = (
-        st.session_state[state_key] == label
+        st.session_state[state_key]
+        == label
     )
 
     background = (
@@ -1047,26 +1055,27 @@ def card(label, image_path, state_key):
 
     html = f"""
     <div style="
-        width:100%;
-        min-height:220px;
-        box-sizing:border-box;
         border:{border};
         background-color:{background};
         border-radius:4px;
-        padding:14px;
+        padding:10px;
         text-align:center;
+        min-height:135px;
         display:flex;
         flex-direction:column;
         justify-content:center;
         align-items:center;
+        transition: all 0.15s ease;
     ">
 
         <img src="data:image/png;base64,{image_base64}"
         style="
-            width:120px;
-            height:120px;
+            width:72px;
+            height:72px;
+            width:80px;
+            height:80px;
             object-fit:contain;
-            margin-bottom:10px;
+            margin-bottom:8px;
         "/>
 
         <div style="
@@ -1075,10 +1084,6 @@ def card(label, image_path, state_key):
             color:#2d343c;
             text-align:center;
             line-height:1.25;
-            min-height:42px;
-            display:flex;
-            align-items:center;
-            justify-content:center;
         ">
             {label}
         </div>
@@ -1088,7 +1093,7 @@ def card(label, image_path, state_key):
 
     st.components.v1.html(
         html,
-        height=240
+        height=190
     )
 
     if st.button(
@@ -1109,7 +1114,11 @@ def card(label, image_path, state_key):
 
         st.rerun()
 
-def disabled_card(label, image_path):
+
+def disabled_card(
+    label,
+    image_path
+):
 
     image_base64 = get_base64_image(
         image_path
@@ -1117,15 +1126,13 @@ def disabled_card(label, image_path):
 
     html = f"""
     <div style="
-        width:100%;
-        min-height:220px;
-        box-sizing:border-box;
         border:1px solid #d9dde3;
         background:white;
         opacity:0.45;
         border-radius:4px;
         padding:14px;
         text-align:center;
+        min-height:160px;
         display:flex;
         flex-direction:column;
         justify-content:center;
@@ -1134,10 +1141,10 @@ def disabled_card(label, image_path):
 
         <img src="data:image/png;base64,{image_base64}"
         style="
-            width:120px;
-            height:120px;
+            width:90px;
+            height:90px;
             object-fit:contain;
-            margin-bottom:10px;
+            margin-bottom:12px;
         "/>
 
         <div style="
@@ -1146,10 +1153,6 @@ def disabled_card(label, image_path):
             color:#999999;
             text-align:center;
             line-height:1.25;
-            min-height:42px;
-            display:flex;
-            align-items:center;
-            justify-content:center;
         ">
             {label}
         </div>
@@ -1159,8 +1162,9 @@ def disabled_card(label, image_path):
 
     st.components.v1.html(
         html,
-        height=240
+        height=190
     )
+
 # ---------------------------------------------------
 # STEP NAVIGATION
 # ---------------------------------------------------
