@@ -514,27 +514,26 @@ header_html = """
 
 .knauf-fireboard {
 
-    font-size: 31px;
+    font-size: 29px;
 
-    font-weight: 500;
+    font-weight: 450;
 
     font-style: normal;
 
-    color: #8c8c8c;
+    color: #979797;
 
-    letter-spacing: -0.7px;
+    letter-spacing: -0.6px;
 
     line-height: 1;
 
-    margin-top: 1px;
+    margin-top: 0px;
 
     font-family:
         "Segoe UI",
-        "Helvetica Neue",
         Arial,
         sans-serif;
 
-    transform: skewX(-4deg);
+    transform: skewX(-3deg);
 
     -webkit-font-smoothing: antialiased;
 
