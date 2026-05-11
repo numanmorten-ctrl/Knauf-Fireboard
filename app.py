@@ -515,16 +515,16 @@ section[data-testid="stSidebar"] button[kind="primary"] {
     box-shadow:none !important;
 }
 /* ---------------------------------------------------
-REDUCER VERTICAL SPACING
+DIVIDER SPACING
 --------------------------------------------------- */
-
-/* Mindre afstand omkring divider */
 
 hr {
 
-    margin-top: 0.6rem !important;
+    border-color: #d9dde3 !important;
 
-    margin-bottom: 0.6rem !important;
+    margin-top: 1rem !important;
+
+    margin-bottom: 1rem !important;
 }
 
 /* Mindre afstand efter headers */
