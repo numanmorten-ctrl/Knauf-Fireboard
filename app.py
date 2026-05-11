@@ -522,7 +522,7 @@ hr {
 
     border-color: #d9dde3 !important;
 
-    margin-top: 0,5rem !important;
+    margin-top: 1,5rem !important;
 
     margin-bottom: 1rem !important;
 }
