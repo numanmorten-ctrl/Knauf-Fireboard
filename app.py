@@ -23,7 +23,8 @@ from reportlab.lib.pagesizes import A4
 
 st.set_page_config(
     page_title="Brandbeskyttelse af stålkonstruktioner",
-    layout="wide"
+    layout="wide",
+    initial_sidebar_state="expanded"
 )
 
 # ---------------------------------------------------
@@ -472,46 +473,41 @@ FINAL BASEWEB INPUT FIX
     box-shadow: none !important;
 }
 /* ---------------------------------------------------
-SIDEBAR TOGGLE BUTTON
+FORCE SIDEBAR TOGGLE VISIBLE
 --------------------------------------------------- */
 
-button[data-testid="collapsedControl"] {
+[data-testid="collapsedControl"] {
 
     display: flex !important;
 
-    opacity: 1 !important;
-
     visibility: visible !important;
 
-    color: #6b7280 !important;
+    opacity: 1 !important;
+
+    position: fixed !important;
+
+    top: 0.95rem !important;
+
+    left: 0.75rem !important;
+
+    z-index: 999999999 !important;
 
     background: transparent !important;
 
-    border: none !important;
-
-    box-shadow: none !important;
-
-    z-index: 99999999 !important;
-
-    margin-left: 0.4rem !important;
-
-    margin-top: 0.2rem !important;
+    color: #6b7280 !important;
 }
 
-button[data-testid="collapsedControl"]:hover {
+[data-testid="collapsedControl"]:hover {
 
     color: #009fe3 !important;
-
-    background: transparent !important;
 }
 
-button[data-testid="collapsedControl"] svg {
+[data-testid="collapsedControl"] svg {
 
-    width: 1.4rem !important;
+    width: 1.35rem !important;
 
-    height: 1.4rem !important;
+    height: 1.35rem !important;
 }
-
 </style>
 """, unsafe_allow_html=True)
 
