@@ -595,7 +595,9 @@ header_html = """
 </div>
 """
 
-st.markdown(header_html, unsafe_allow_html=True)
+import streamlit.components.v1 as components
+
+components.html(header_html, height=70)
 # ---------------------------------------------------
 # SESSION STATE
 # ---------------------------------------------------
