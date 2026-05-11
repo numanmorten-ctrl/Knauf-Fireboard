@@ -1016,30 +1016,10 @@ with st.sidebar:
 # CARD FUNCTIONS
 # ---------------------------------------------------
 
-def get_base64_image(image_path):
-
-    with open(image_path, "rb") as img_file:
-
-        return base64.b64encode(
-            img_file.read()
-        ).decode()
-
-
-def card(
-    label,
-    image_path,
-    state_key
-):
+def card(label, image_path, state_key):
 
     selected = (
-        st.session_state[state_key]
-        == label
-    )
-
-    background = (
-        "#eef7fd"
-        if selected
-        else "white"
+        st.session_state[state_key] == label
     )
 
     border = (
@@ -1048,52 +1028,41 @@ def card(
         else "1px solid #d9dde3"
     )
 
-    image_base64 = get_base64_image(
-        image_path
+    background = (
+        "#eef7fd"
+        if selected
+        else "white"
     )
 
-    html = f"""
+    st.markdown(f"""
     <div style="
-        width:100%;
-        box-sizing:border-box;
         border:{border};
-        background-color:{background};
-        border-radius:0px;
-        padding:10px;
+        background:{background};
+        padding:12px;
+        border-radius:4px;
         text-align:center;
-        min-height:190px;
-        display:flex;
-        flex-direction:column;
-        justify-content:center;
-        align-items:center;
-        transition: all 0.15s ease;
+        min-height:220px;
     ">
+    """, unsafe_allow_html=True)
 
-        <img src="data:image/png;base64,{image_base64}"
-        style="
-            width:120px;
-            height:120px;
-            object-fit:contain;
-            margin-bottom:8px;
-        "/>
+    st.image(
+        image_path,
+        use_container_width=True
+    )
 
+    st.markdown(f"""
         <div style="
             font-size:16px;
             font-weight:700;
             color:#2d343c;
             text-align:center;
-            line-height:1.25;
+            padding-top:6px;
+            padding-bottom:6px;
         ">
             {label}
         </div>
-
     </div>
-    """
-
-    st.markdown(
-        html,
-        unsafe_allow_html=True
-    )
+    """, unsafe_allow_html=True)
 
     if st.button(
         "Vælg",
@@ -1108,61 +1077,43 @@ def card(
             or
             label == "Cirkulære rør svære"
         ):
-
             st.session_state["sides"] = "4"
 
         st.rerun()
 
 
-def disabled_card(
-    label,
-    image_path
-):
+def disabled_card(label, image_path):
 
-    image_base64 = get_base64_image(
-        image_path
-    )
-
-    html = f"""
+    st.markdown("""
     <div style="
         border:1px solid #d9dde3;
         background:white;
         opacity:0.45;
-        border-radius:0px;
-        padding:14px;
+        padding:12px;
+        border-radius:4px;
         text-align:center;
-        min-height:160px;
-        display:flex;
-        flex-direction:column;
-        justify-content:center;
-        align-items:center;
+        min-height:220px;
     ">
+    """, unsafe_allow_html=True)
 
-        <img src="data:image/png;base64,{image_base64}"
-        style="
-            width:90px;
-            height:90px;
-            object-fit:contain;
-            margin-bottom:12px;
-        "/>
+    st.image(
+        image_path,
+        use_container_width=True
+    )
 
+    st.markdown(f"""
         <div style="
             font-size:16px;
             font-weight:700;
             color:#999999;
             text-align:center;
-            line-height:1.25;
+            padding-top:6px;
+            padding-bottom:6px;
         ">
             {label}
         </div>
-
     </div>
-    """
-
-    st.markdown(
-        html,
-        unsafe_allow_html=True
-    )
+    """, unsafe_allow_html=True)
 
 # ---------------------------------------------------
 # STEP NAVIGATION
