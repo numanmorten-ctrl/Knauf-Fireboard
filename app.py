@@ -1022,117 +1022,93 @@ def card(label, image_path, state_key):
         st.session_state[state_key] == label
     )
 
-    border = (
-        "2px solid #003b7a"
-        if selected
-        else "1px solid #d9dde3"
-    )
+    with st.container(border=True):
 
-    background = (
-        "#eef7fd"
-        if selected
-        else "white"
-    )
+        if selected:
 
-    st.markdown(f"""
-    <div style="
-        border:{border};
-        background:{background};
-        border-radius:4px;
-        padding:14px;
-        min-height:260px;
-        display:flex;
-        flex-direction:column;
-        justify-content:space-between;
-    ">
-    """, unsafe_allow_html=True)
+            st.markdown("""
+            <style>
+            div[data-testid="stVerticalBlockBorderWrapper"] {
+                border: 2px solid #003b7a !important;
+                background: #eef7fd !important;
+            }
+            </style>
+            """, unsafe_allow_html=True)
 
-    col1, col2, col3 = st.columns([1,2,1])
+        col1, col2, col3 = st.columns([1,2,1])
 
-    with col2:
+        with col2:
 
-        st.image(
-            image_path,
-            width=120
-        )
+            st.image(
+                image_path,
+                width=120
+            )
 
-    st.markdown(f"""
+        st.markdown(f"""
         <div style="
-            font-size:16px;
-            font-weight:700;
-            color:#2d343c;
             text-align:center;
-            padding-top:10px;
-            min-height:48px;
+            font-weight:700;
+            font-size:16px;
+            min-height:50px;
             display:flex;
             align-items:center;
             justify-content:center;
         ">
             {label}
         </div>
-    """, unsafe_allow_html=True)
+        """, unsafe_allow_html=True)
 
-    if st.button(
-        "Vælg",
-        key=f"{state_key}_{label}",
-        use_container_width=True
-    ):
-
-        st.session_state[state_key] = label
-
-        if (
-            label == "Cirkulære rør middelsvære"
-            or
-            label == "Cirkulære rør svære"
+        if st.button(
+            "Vælg",
+            key=f"{state_key}_{label}",
+            use_container_width=True
         ):
-            st.session_state["sides"] = "4"
 
-        st.rerun()
+            st.session_state[state_key] = label
 
-    st.markdown("</div>", unsafe_allow_html=True)
+            if (
+                label == "Cirkulære rør middelsvære"
+                or
+                label == "Cirkulære rør svære"
+            ):
+                st.session_state["sides"] = "4"
+
+            st.rerun()
 
 def disabled_card(label, image_path):
 
-    st.markdown("""
-    <div style="
-        border:1px solid #d9dde3;
-        background:white;
-        opacity:0.45;
-        border-radius:4px;
-        padding:14px;
-        min-height:260px;
-        display:flex;
-        flex-direction:column;
-        justify-content:space-between;
-    ">
-    """, unsafe_allow_html=True)
+    with st.container(border=True):
 
-    col1, col2, col3 = st.columns([1,2,1])
+        st.markdown("""
+        <style>
+        div[data-testid="stVerticalBlockBorderWrapper"] {
+            opacity: 0.45;
+        }
+        </style>
+        """, unsafe_allow_html=True)
 
-    with col2:
+        col1, col2, col3 = st.columns([1,2,1])
 
-        st.image(
-            image_path,
-            width=120
-        )
+        with col2:
 
-    st.markdown(f"""
+            st.image(
+                image_path,
+                width=120
+            )
+
+        st.markdown(f"""
         <div style="
-            font-size:16px;
-            font-weight:700;
-            color:#999999;
             text-align:center;
-            padding-top:10px;
-            min-height:48px;
+            font-weight:700;
+            font-size:16px;
+            min-height:50px;
             display:flex;
             align-items:center;
             justify-content:center;
         ">
             {label}
         </div>
-    """, unsafe_allow_html=True)
-
-    st.markdown("</div>", unsafe_allow_html=True)
+        """, unsafe_allow_html=True)
 # ---------------------------------------------------
 # STEP NAVIGATION
 # ---------------------------------------------------
