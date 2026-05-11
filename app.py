@@ -522,18 +522,19 @@ header_html = """
 
     color: #8f8f8f;
 
-    letter-spacing: -0.7px;
+    letter-spacing: -0.8px;
 
     line-height: 1;
 
     margin-top: -1px;
 
     font-family:
-        "Segoe UI",
+        "Arial Narrow",
+        "Helvetica Neue",
         Arial,
         sans-serif;
 
-    transform: skewX(-7deg);
+    transform: skewX(-4deg);
 
     -webkit-font-smoothing: antialiased;
 
