@@ -472,6 +472,36 @@ FINAL BASEWEB INPUT FIX
 
     box-shadow: none !important;
 }
+/* ---------------------------------------------------
+FORCE STREAMLIT SIDEBAR TOGGLE VISIBLE
+--------------------------------------------------- */
+
+[data-testid="collapsedControl"] {
+
+    opacity: 1 !important;
+
+    visibility: visible !important;
+
+    display: flex !important;
+
+    background: rgba(255,255,255,0.95) !important;
+
+    border-radius: 10px !important;
+
+    transition: none !important;
+}
+
+[data-testid="collapsedControl"]:hover {
+
+    opacity: 1 !important;
+}
+
+/* Streamlit overlay wrapper */
+
+[data-testid="collapsedControl"] * {
+
+    opacity: 1 !important;
+}
 
 </style>
 """, unsafe_allow_html=True)
