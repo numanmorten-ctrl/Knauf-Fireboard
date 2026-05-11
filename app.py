@@ -554,9 +554,9 @@ header_html = """
 
 .knauf-fireboard {
 
-    font-size: 40px;
+    font-size: 28px;
 
-    font-weight: 500;
+    font-weight: 600;
 
     font-style: italic;
 
