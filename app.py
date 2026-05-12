@@ -1032,7 +1032,7 @@ def generate_complete_pdf():
         can.drawString(
             CALC_X,
             CALC_Y - (CALC_LINE_HEIGHT * 4),
-            f"R{calc['fire_time']}"
+            f"{calc['fire_time']} minutter"
         )
 
         can.drawString(
@@ -1220,7 +1220,7 @@ def generate_single_pdf(calc):
     can.drawString(
         CALC_X,
         CALC_Y - (CALC_LINE_HEIGHT * 4),
-        f"R{calc['fire_time']}"
+        f"{calc['fire_time']} minutter"
     )
 
     can.drawString(
