@@ -1,6 +1,8 @@
 import base64
 from io import BytesIO
 from datetime import datetime
+from reportlab.pdfgen import canvas
+from PyPDF2 import PdfReader, PdfWriter
 
 import streamlit as st
 import pandas as pd
@@ -1744,340 +1746,150 @@ if (
 
 def generate_pdf():
 
-    buffer = BytesIO()
+    template_path = "PDF_template.pdf"
 
-    doc = SimpleDocTemplate(
-        buffer,
-        pagesize=A4,
-        rightMargin=18 * mm,
-        leftMargin=18 * mm,
-        topMargin=18 * mm,
-        bottomMargin=18 * mm
-    )
+    packet = BytesIO()
 
-    styles = getSampleStyleSheet()
-
-    # ---------------------------------------------------
-    # CUSTOM STYLES
-    # ---------------------------------------------------
-
-    title_style = ParagraphStyle(
-        "KnaufTitle",
-        parent=styles["Heading1"],
-        fontName="Helvetica-Bold",
-        fontSize=24,
-        leading=28,
-        textColor=colors.HexColor("#2d343c"),
-        spaceAfter=18,
-    )
-
-    section_style = ParagraphStyle(
-        "SectionTitle",
-        parent=styles["Heading2"],
-        fontName="Helvetica-Bold",
-        fontSize=16,
-        leading=20,
-        textColor=colors.HexColor("#003b7a"),
-        spaceAfter=10,
-        spaceBefore=10,
-    )
-
-    normal_style = ParagraphStyle(
-        "NormalCustom",
-        parent=styles["BodyText"],
-        fontName="Helvetica",
-        fontSize=10,
-        leading=15,
-        textColor=colors.HexColor("#2d343c"),
-    )
-
-    result_style = ParagraphStyle(
-        "ResultStyle",
-        parent=styles["BodyText"],
-        fontName="Helvetica-Bold",
-        fontSize=13,
-        leading=18,
-        textColor=colors.white,
-        alignment=TA_LEFT,
-    )
-
-    fireboard_style = ParagraphStyle(
-        "FireboardStyle",
-        parent=styles["BodyText"],
-        fontName="Helvetica-Oblique",
-        fontSize=22,
-        leading=22,
-        textColor=colors.HexColor("#7a7a7a"),
-    )
-
-    elements = []
-
-    # ---------------------------------------------------
-    # HEADER LOGO
-    # ---------------------------------------------------
-
-    logo_url = (
-        "https://knauf.com/api/download-center/v1/assets/"
-        "8355fec5-8cb9-42fe-b5d7-4e7258bf446a?download=true"
-    )
-
-    logo_response = requests.get(logo_url)
-
-    logo_buffer = BytesIO(
-        logo_response.content
-    )
-
-    logo = Image(
-        logo_buffer,
-        width=42 * mm,
-        height=12 * mm
-    )
-
-    fireboard = Table(
-        [[
-            Paragraph(
-                "<i><b>Fireboard</b></i>",
-                fireboard_style
-            )
-        ]]
-    )
-
-    fireboard.setStyle(TableStyle([
-
-        ("TOPPADDING", (0,0), (-1,-1), 0),
-
-        ("LEFTPADDING", (0,0), (-1,-1), 0),
-
-        ("RIGHTPADDING", (0,0), (-1,-1), 0),
-
-        ("BOTTOMPADDING", (0,0), (-1,-1), 0),
-    ]))
-
-    header_table = Table(
-        [[logo, fireboard]],
-        colWidths=[44 * mm, 60 * mm]
-    )
-
-    header_table.setStyle(TableStyle([
-
-        ("VALIGN", (0,0), (-1,-1), "MIDDLE"),
-
-        ("LEFTPADDING", (0,0), (-1,-1), 0),
-
-        ("RIGHTPADDING", (0,0), (-1,-1), 0),
-
-        ("TOPPADDING", (0,0), (-1,-1), 0),
-
-        ("BOTTOMPADDING", (0,0), (-1,-1), 0),
-
-        ("TOPPADDING", (0,0), (0,0), 2),
-
-    ]))
-
-    elements.append(header_table)
-
-    elements.append(
-        Spacer(1, 14)
-    )
-
-    # ---------------------------------------------------
-    # TITLE
-    # ---------------------------------------------------
-
-    elements.append(
-        Paragraph(
-            "Brandbeskyttelse af stålkonstruktioner",
-            title_style
-        )
-    )
+    can = canvas.Canvas(packet, pagesize=A4)
 
     # ---------------------------------------------------
     # PROJECT INFO
     # ---------------------------------------------------
 
-    elements.append(
-        Paragraph(
-            "Projektoplysninger",
-            section_style
-        )
+    can.setFont("Helvetica", 10)
+
+    can.drawString(
+        215,
+        555,
+        st.session_state.project_name
     )
 
-    project_data = [
-
-        ["Projekt", st.session_state.project_name],
-
-        ["Udarbejdet af", st.session_state.prepared_by],
-
-        ["Firma", st.session_state.company],
-
-        ["Dato", datetime.now().strftime("%d-%m-%Y")],
-
-        ["Beskrivelse", st.session_state.description],
-    ]
-
-    project_table = Table(
-        project_data,
-        colWidths=[45 * mm, 115 * mm]
+    can.drawString(
+        215,
+        535,
+        st.session_state.prepared_by
     )
 
-    project_table.setStyle(TableStyle([
+    can.drawString(
+        215,
+        515,
+        st.session_state.company
+    )
 
-        ("BACKGROUND", (0,0), (0,-1), colors.HexColor("#eef3f7")),
+    can.drawString(
+        215,
+        495,
+        datetime.now().strftime("%d-%m-%Y")
+    )
 
-        ("TEXTCOLOR", (0,0), (-1,-1), colors.HexColor("#2d343c")),
-
-        ("FONTNAME", (0,0), (0,-1), "Helvetica-Bold"),
-
-        ("FONTNAME", (1,0), (1,-1), "Helvetica"),
-
-        ("FONTSIZE", (0,0), (-1,-1), 10),
-
-        ("GRID", (0,0), (-1,-1), 1, colors.HexColor("#cfd6dd")),
-
-        ("BOTTOMPADDING", (0,0), (-1,-1), 8),
-
-        ("TOPPADDING", (0,0), (-1,-1), 8),
-
-        ("LEFTPADDING", (0,0), (-1,-1), 8),
-
-        ("RIGHTPADDING", (0,0), (-1,-1), 8),
-
-        ("VALIGN", (0,0), (-1,-1), "TOP"),
-
-    ]))
-
-    elements.append(project_table)
-
-    elements.append(
-        Spacer(1, 18)
+    can.drawString(
+        215,
+        475,
+        st.session_state.description
     )
 
     # ---------------------------------------------------
     # CALCULATION
     # ---------------------------------------------------
 
-    elements.append(
-        Paragraph(
-            "Beregning",
-            section_style
+    can.drawString(
+        215,
+        375,
+        str(category)
+    )
+
+    can.drawString(
+        215,
+        355,
+        str(selected_profile)
+    )
+
+    can.drawString(
+        215,
+        335,
+        f"{sides} sider"
+    )
+
+    can.drawString(
+        215,
+        315,
+        montage
+    )
+
+    can.drawString(
+        215,
+        295,
+        f"R{fire_time}"
+    )
+
+    can.drawString(
+        215,
+        275,
+        f"{temperature} °C"
+    )
+
+    can.drawString(
+        215,
+        255,
+        f"{apv} m²/m³"
+    )
+
+    # ---------------------------------------------------
+    # RESULT
+    # ---------------------------------------------------
+
+    can.setFillColorRGB(
+        1,
+        1,
+        1
+    )
+
+    can.setFont(
+        "Helvetica-Bold",
+        13
+    )
+
+    can.drawString(
+        70,
+        180,
+        (
+            f"Profil skal inddækkes med "
+            f"{int(thickness)} mm "
+            f"Knauf Fireboard"
         )
     )
 
-    calc_data = [
+    can.save()
 
-        ["Profilkategori", category],
+    # ---------------------------------------------------
+    # MERGE TEMPLATE + DATA
+    # ---------------------------------------------------
 
-        ["Profil", str(selected_profile)],
+    packet.seek(0)
 
-        ["Inddækning", f"{sides} sider"],
+    overlay_pdf = PdfReader(packet)
 
-        ["Montage", montage],
-
-        ["Brandtid", f"R{fire_time}"],
-
-        ["Temperatur", f"{temperature} °C"],
-
-        ["Ap/V", f"{apv} m²/m³"],
-    ]
-
-    calc_table = Table(
-        calc_data,
-        colWidths=[45 * mm, 115 * mm]
+    template_pdf = PdfReader(
+        open(template_path, "rb")
     )
 
-    calc_table.setStyle(TableStyle([
+    output = PdfWriter()
 
-        ("BACKGROUND", (0,0), (0,-1), colors.HexColor("#eef3f7")),
+    base_page = template_pdf.pages[0]
 
-        ("TEXTCOLOR", (0,0), (-1,-1), colors.HexColor("#2d343c")),
-
-        ("FONTNAME", (0,0), (0,-1), "Helvetica-Bold"),
-
-        ("FONTNAME", (1,0), (1,-1), "Helvetica"),
-
-        ("FONTSIZE", (0,0), (-1,-1), 10),
-
-        ("GRID", (0,0), (-1,-1), 1, colors.HexColor("#cfd6dd")),
-
-        ("BOTTOMPADDING", (0,0), (-1,-1), 8),
-
-        ("TOPPADDING", (0,0), (-1,-1), 8),
-
-        ("LEFTPADDING", (0,0), (-1,-1), 8),
-
-        ("RIGHTPADDING", (0,0), (-1,-1), 8),
-
-    ]))
-
-    elements.append(calc_table)
-
-    elements.append(
-        Spacer(1, 20)
+    base_page.merge_page(
+        overlay_pdf.pages[0]
     )
 
-    # ---------------------------------------------------
-    # RESULT BOX
-    # ---------------------------------------------------
+    output.add_page(base_page)
 
-    result_table = Table(
-        [[
-            Paragraph(
-                (
-                    f"Profil skal inddækkes med "
-                    f"{int(thickness)} mm "
-                    f"Knauf Fireboard"
-                ),
-                result_style
-            )
-        ]],
-        colWidths=[160 * mm]
-    )
+    output_stream = BytesIO()
 
-    result_table.setStyle(TableStyle([
+    output.write(output_stream)
 
-        ("BACKGROUND", (0,0), (-1,-1), colors.HexColor("#003b7a")),
+    output_stream.seek(0)
 
-        ("BOX", (0,0), (-1,-1), 1, colors.HexColor("#003b7a")),
-
-        ("TOPPADDING", (0,0), (-1,-1), 14),
-
-        ("BOTTOMPADDING", (0,0), (-1,-1), 14),
-
-        ("LEFTPADDING", (0,0), (-1,-1), 14),
-
-        ("RIGHTPADDING", (0,0), (-1,-1), 14),
-
-    ]))
-
-    elements.append(result_table)
-
-    elements.append(
-        Spacer(1, 18)
-    )
-
-    # ---------------------------------------------------
-    # NOTE
-    # ---------------------------------------------------
-
-    note = Paragraph(
-        (
-            "Monteres i.h.t. Knauf montagevejledning, som findes i gældende Knauf Manual i afsnittet Brandbeskyttelse."
-        ),
-        normal_style
-    )
-
-    elements.append(note)
-
-    # ---------------------------------------------------
-    # BUILD PDF
-    # ---------------------------------------------------
-
-    doc.build(elements)
-
-    buffer.seek(0)
-
-    return buffer
-
+    return output_stream
 # ---------------------------------------------------
 # TAB 4 - RESULTAT
 # ---------------------------------------------------
