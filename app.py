@@ -1769,44 +1769,45 @@ def generate_pdf():
 
     can.setFont(
         "Helvetica",
-        10
+        9
     )
 
     # ---------------------------------------------------
     # PROJECT INFO
     # ---------------------------------------------------
 
-    # 1,5 cm til venstre = ca. 42 pt
-    # 2 trin ned i størrelse = 8 pt
+    # 0,5 cm til højre = +14 pt
+    # 1 mm ned = -3 pt
+    # skriftstørrelse op til 9
 
-    project_x = 183
+    project_x = 197
 
     can.setFont(
         "Helvetica",
-        8
+        9
     )
 
     can.drawString(
         project_x,
-        565,
+        562,
         str(st.session_state.project_name)
     )
 
     can.drawString(
         project_x,
-        545,
+        542,
         str(st.session_state.prepared_by)
     )
 
     can.drawString(
         project_x,
-        525,
+        522,
         str(st.session_state.company)
     )
 
     can.drawString(
         project_x,
-        505,
+        502,
         datetime.now().strftime("%d-%m-%Y")
     )
 
@@ -1822,19 +1823,19 @@ def generate_pdf():
 
     text_object.setTextOrigin(
         project_x,
-        485
+        482
     )
 
     text_object.setFont(
         "Helvetica",
-        8
+        9
     )
 
     text_object.setFillColor(
         dark_text
     )
 
-    max_chars = 78
+    max_chars = 72
 
     words = description.split()
 
@@ -1864,11 +1865,10 @@ def generate_pdf():
     # CALCULATION DATA
     # ---------------------------------------------------
 
-    # 1,5 cm til venstre
     # 8 mm op
-    # 2 trin ned i størrelse
+    # 0,5 cm til højre
 
-    calc_x = 183
+    calc_x = 197
 
     calc_y = 415
 
@@ -1876,7 +1876,7 @@ def generate_pdf():
 
     can.setFont(
         "Helvetica",
-        8
+        9
     )
 
     calc_values = [
@@ -1910,7 +1910,7 @@ def generate_pdf():
     # RESULT TEXT
     # ---------------------------------------------------
 
-    # 10 mm op
+    # 5 mm ned
 
     can.setFillColor(colors.white)
 
@@ -1921,7 +1921,7 @@ def generate_pdf():
 
     can.drawCentredString(
         287,
-        236,
+        222,
         (
             f"Profil skal inddækkes med "
             f"{int(thickness)} mm "
@@ -1933,8 +1933,8 @@ def generate_pdf():
     # PAGE NUMBER
     # ---------------------------------------------------
 
-    # 2,5 cm til venstre
-    # 3 mm op
+    # 1 cm til højre
+    # 1 mm ned
 
     can.setFillColor(
         colors.HexColor("#009fe3")
@@ -1946,8 +1946,8 @@ def generate_pdf():
     )
 
     can.drawString(
-        261,
-        28,
+        289,
+        25,
         "1"
     )
 
