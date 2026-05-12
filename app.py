@@ -945,6 +945,24 @@ def generate_complete_pdf():
 
     template_path = "PDF_template.pdf"
 
+    image_map = {
+
+        "H-profiler": "images/h_profiles.png",
+        "I-profiler": "images/i_profiles.png",
+        "U-profiler": "images/u_profiles.png",
+
+        "Kvadratiske rør varmvalsede": "images/shs_hot.png",
+        "Kvadratiske rør koldvalsede": "images/shs_cold.png",
+
+        "Rektangulære rør varmvalsede": "images/rhs_hot.png",
+        "Rektangulære rør koldvalsede": "images/rhs_cold.png",
+
+        "Cirkulære rør middelsvære": "images/chs_medium.png",
+        "Cirkulære rør svære": "images/chs_heavy.png",
+
+        "Andre profiler": "images/other_profiles.png",
+    }
+
     for page_number, calc in enumerate(
         st.session_state.calculations,
         start=1
@@ -1048,6 +1066,41 @@ def generate_complete_pdf():
         )
 
         # ---------------------------------------------------
+        # PROFILE IMAGE
+        # ---------------------------------------------------
+
+        image_path = image_map.get(
+            calc["category"]
+        )
+
+        if image_path:
+
+            can.drawImage(
+                image_path,
+                430,
+                610,
+                width=110,
+                height=110,
+                preserveAspectRatio=True,
+                mask='auto'
+            )
+
+            can.setFillColor(
+                colors.HexColor("#2d343c")
+            )
+
+            can.setFont(
+                "Helvetica-Bold",
+                11
+            )
+
+            can.drawCentredString(
+                485,
+                600,
+                str(calc["profile"])
+            )
+
+        # ---------------------------------------------------
         # RESULT
         # ---------------------------------------------------
 
@@ -1137,6 +1190,24 @@ def generate_single_pdf(calc):
     output = PdfWriter()
 
     template_path = "PDF_template.pdf"
+
+    image_map = {
+
+        "H-profiler": "images/h_profiles.png",
+        "I-profiler": "images/i_profiles.png",
+        "U-profiler": "images/u_profiles.png",
+
+        "Kvadratiske rør varmvalsede": "images/shs_hot.png",
+        "Kvadratiske rør koldvalsede": "images/shs_cold.png",
+
+        "Rektangulære rør varmvalsede": "images/rhs_hot.png",
+        "Rektangulære rør koldvalsede": "images/rhs_cold.png",
+
+        "Cirkulære rør middelsvære": "images/chs_medium.png",
+        "Cirkulære rør svære": "images/chs_heavy.png",
+
+        "Andre profiler": "images/other_profiles.png",
+    }
 
     packet = BytesIO()
 
@@ -1234,6 +1305,41 @@ def generate_single_pdf(calc):
         CALC_Y - (CALC_LINE_HEIGHT * 6),
         f"{calc['apv']} m²/m³"
     )
+
+    # ---------------------------------------------------
+    # PROFILE IMAGE
+    # ---------------------------------------------------
+
+    image_path = image_map.get(
+        calc["category"]
+    )
+
+    if image_path:
+
+        can.drawImage(
+            image_path,
+            430,
+            610,
+            width=110,
+            height=110,
+            preserveAspectRatio=True,
+            mask='auto'
+        )
+
+        can.setFillColor(
+            colors.HexColor("#2d343c")
+        )
+
+        can.setFont(
+            "Helvetica-Bold",
+            11
+        )
+
+        can.drawCentredString(
+            485,
+            600,
+            str(calc["profile"])
+        )
 
     # ---------------------------------------------------
     # RESULT
