@@ -1829,18 +1829,33 @@ def generate_pdf():
 
     logo = Image(
         logo_buffer,
-        width=38 * mm,
-        height=12 * mm
+        width=33 * mm,
+        height=9 * mm
     )
 
-    fireboard = Paragraph(
-        "<i><b>Fireboard</b></i>",
-        fireboard_style
+    fireboard = Table(
+        [[
+            Paragraph(
+                "<i><b>Fireboard</b></i>",
+                fireboard_style
+            )
+        ]]
     )
+
+fireboard.setStyle(TableStyle([
+
+    ("TOPPADDING", (0,0), (-1,-1), 2),
+
+    ("LEFTPADDING", (0,0), (-1,-1), 0),
+
+    ("RIGHTPADDING", (0,0), (-1,-1), 0),
+
+    ("BOTTOMPADDING", (0,0), (-1,-1), 0),
+]))
 
     header_table = Table(
         [[logo, fireboard]],
-        colWidths=[40 * mm, 55 * mm]
+        colWidths=[34 * mm, 60 * mm]
     )
 
     header_table.setStyle(TableStyle([
