@@ -1776,29 +1776,29 @@ def generate_pdf():
     # PROJECT INFO
     # ---------------------------------------------------
 
-    project_x = 240
+    project_x = 225
 
     can.drawString(
         project_x,
-        560,
+        565,
         str(st.session_state.project_name)
     )
 
     can.drawString(
         project_x,
-        540,
+        545,
         str(st.session_state.prepared_by)
     )
 
     can.drawString(
         project_x,
-        520,
+        525,
         str(st.session_state.company)
     )
 
     can.drawString(
         project_x,
-        500,
+        505,
         datetime.now().strftime("%d-%m-%Y")
     )
 
@@ -1814,7 +1814,7 @@ def generate_pdf():
 
     text_object.setTextOrigin(
         project_x,
-        480
+        485
     )
 
     text_object.setFont(
@@ -1856,9 +1856,9 @@ def generate_pdf():
     # CALCULATION DATA
     # ---------------------------------------------------
 
-    calc_x = 240
+    calc_x = 225
 
-    calc_y = 392
+    calc_y = 407
 
     line_spacing = 20
 
@@ -1901,8 +1901,8 @@ def generate_pdf():
     )
 
     can.drawCentredString(
-        297,
-        203,
+        287,
+        208,
         (
             f"Profil skal inddækkes med "
             f"{int(thickness)} mm "
@@ -1911,31 +1911,12 @@ def generate_pdf():
     )
 
     # ---------------------------------------------------
-    # FOOTER NOTE
-    # ---------------------------------------------------
-
-    can.setFillColor(dark_text)
-
-    can.setFont(
-        "Helvetica",
-        10
-    )
-
-    can.drawCentredString(
-        297,
-        152,
-        (
-            "Monteres i.h.t. Knauf montagevejledning, "
-            "som findes i gældende Knauf Manual "
-            "i afsnittet Brandbeskyttelse."
-        )
-    )
-
-    # ---------------------------------------------------
     # PAGE NUMBER
     # ---------------------------------------------------
 
-    can.setFillColor(colors.HexColor("#009fe3"))
+    can.setFillColor(
+        colors.HexColor("#009fe3")
+    )
 
     can.setFont(
         "Helvetica",
@@ -1943,9 +1924,9 @@ def generate_pdf():
     )
 
     can.drawString(
-        315,
-        26,
-        "side 1"
+        332,
+        20,
+        "1"
     )
 
     # ---------------------------------------------------
