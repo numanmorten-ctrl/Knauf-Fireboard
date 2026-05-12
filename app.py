@@ -1080,6 +1080,24 @@ with st.sidebar:
                         st.session_state.editing = False
 
                     st.rerun()
+
+    # ---------------------------------------------------
+    # DOWNLOAD ALL CALCULATIONS
+    # ---------------------------------------------------
+
+    if st.session_state.calculations:
+
+        st.divider()
+
+        complete_pdf = generate_complete_pdf()
+
+        st.download_button(
+            label="📚 Download alle beregninger",
+            data=complete_pdf,
+            file_name="Knauf_Fireboard_Rapport.pdf",
+            mime="application/pdf",
+            use_container_width=True
+        )
 # ---------------------------------------------------
 # CARD FUNCTIONS
 # ---------------------------------------------------
@@ -1741,246 +1759,37 @@ if (
     ]
 
 # ---------------------------------------------------
-# PDF FUNCTION
+# PDF DOWNLOAD
 # ---------------------------------------------------
 
-def generate_pdf():
-
-    template_path = "PDF_template.pdf"
-
-    packet = BytesIO()
-
-    can = canvas.Canvas(
-        packet,
-        pagesize=A4
-    )
-
-    # ---------------------------------------------------
-    # COLORS
-    # ---------------------------------------------------
-
-    dark_text = colors.HexColor("#2d343c")
-
-    # ---------------------------------------------------
-    # DEFAULT FONT
-    # ---------------------------------------------------
-
-    can.setFillColor(dark_text)
-
-    can.setFont(
-        "Helvetica",
-        9
-    )
-
-    # ---------------------------------------------------
-    # PROJECT INFO
-    # ---------------------------------------------------
-
-    project_x = 197
-
-    can.setFont(
-        "Helvetica",
-        9
-    )
-
-    can.drawString(
-        project_x,
-        562,
-        str(st.session_state.project_name)
-    )
-
-    can.drawString(
-        project_x,
-        542,
-        str(st.session_state.prepared_by)
-    )
-
-    can.drawString(
-        project_x,
-        522,
-        str(st.session_state.company)
-    )
-
-    can.drawString(
-        project_x,
-        502,
-        datetime.now().strftime("%d-%m-%Y")
-    )
-
-    # ---------------------------------------------------
-    # DESCRIPTION WITH WRAP
-    # ---------------------------------------------------
-
-    description = str(
-        st.session_state.description
-    )
-
-    text_object = can.beginText()
-
-    text_object.setTextOrigin(
-        project_x,
-        482
-    )
-
-    text_object.setFont(
-        "Helvetica",
-        9
-    )
-
-    text_object.setFillColor(
-        dark_text
-    )
-
-    max_chars = 72
-
-    words = description.split()
-
-    line = ""
-
-    for word in words:
-
-        test_line = f"{line} {word}".strip()
-
-        if len(test_line) <= max_chars:
-
-            line = test_line
-
-        else:
-
-            text_object.textLine(line)
-
-            line = word
-
-    if line:
-
-        text_object.textLine(line)
-
-    can.drawText(text_object)
-
-    # ---------------------------------------------------
-    # CALCULATION DATA
-    # ---------------------------------------------------
-
-    # 1,5 mm ned
-    # lidt større linjeafstand
-
-    calc_x = 197
-
-    calc_y = 418.5
-
-    line_spacing = 19
-
-    can.setFont(
-        "Helvetica",
-        9
-    )
-
-    calc_values = [
-
-        str(category),
-
-        str(selected_profile),
-
-        f"{sides} sider",
-
-        str(montage),
-
-        f"R{fire_time}",
-
-        f"{temperature} °C",
-
-        f"{apv} m²/m³"
-    ]
-
-    for value in calc_values:
-
-        can.drawString(
-            calc_x,
-            calc_y,
-            value
-        )
-
-        calc_y -= line_spacing
-
-    # ---------------------------------------------------
-    # RESULT TEXT
-    # ---------------------------------------------------
-
-    can.setFillColor(colors.white)
-
-    can.setFont(
-        "Helvetica-Bold",
-        14
-    )
-
-    can.drawCentredString(
-        287,
-        220.5,
-        (
-            f"Profil skal inddækkes med "
-            f"{int(thickness)} mm "
-            f"Knauf Fireboard"
-        )
-    )
-
-    # ---------------------------------------------------
-    # PAGE NUMBER
-    # ---------------------------------------------------
-
-    can.setFillColor(
-        colors.HexColor("#009fe3")
-    )
-
-    can.setFont(
-        "Helvetica",
-        10
-    )
-
-    can.drawString(
-        283,
-        22,
-        "1"
-    )
-
-    # ---------------------------------------------------
-    # SAVE OVERLAY
-    # ---------------------------------------------------
-
-    can.save()
-
-    # ---------------------------------------------------
-    # MERGE TEMPLATE + OVERLAY
-    # ---------------------------------------------------
-
-    packet.seek(0)
-
-    overlay_pdf = PdfReader(packet)
-
-    template_pdf = PdfReader(
-        open(template_path, "rb")
-    )
-
-    output = PdfWriter()
-
-    base_page = template_pdf.pages[0]
-
-    base_page.merge_page(
-        overlay_pdf.pages[0]
-    )
-
-    output.add_page(base_page)
-
-    # ---------------------------------------------------
-    # EXPORT
-    # ---------------------------------------------------
-
-    output_stream = BytesIO()
-
-    output.write(output_stream)
-
-    output_stream.seek(0)
-
-    return output_stream
+current_calculation = {
+
+    "category": category,
+    "profile": selected_profile,
+    "montage": montage,
+    "sides": sides,
+
+    "fire_time": fire_time,
+    "temperature": temperature,
+
+    "apv": apv,
+    "thickness": thickness
+}
+
+pdf_file = generate_single_pdf(
+    current_calculation
+)
+
+st.download_button(
+    label="📄 Download denne beregning",
+    data=pdf_file,
+    file_name=(
+        f"{selected_profile}_"
+        f"R{fire_time}.pdf"
+    ),
+    mime="application/pdf",
+    use_container_width=True
+)
 
 # ---------------------------------------------------
 # TAB 4 - RESULTAT
