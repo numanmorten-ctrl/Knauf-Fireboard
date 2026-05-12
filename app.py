@@ -1759,14 +1759,10 @@ def generate_pdf():
     # COLORS
     # ---------------------------------------------------
 
-    knauf_blue = colors.HexColor("#009fe3")
-
-    dark_blue = colors.HexColor("#003b7a")
-
     dark_text = colors.HexColor("#2d343c")
 
     # ---------------------------------------------------
-    # DEFAULT TEXT STYLE
+    # DEFAULT FONT
     # ---------------------------------------------------
 
     can.setFillColor(dark_text)
@@ -1806,7 +1802,9 @@ def generate_pdf():
         datetime.now().strftime("%d-%m-%Y")
     )
 
-    # Beskrivelse med wrap
+    # ---------------------------------------------------
+    # DESCRIPTION WITH WRAP
+    # ---------------------------------------------------
 
     description = str(
         st.session_state.description
@@ -1855,7 +1853,7 @@ def generate_pdf():
     can.drawText(text_object)
 
     # ---------------------------------------------------
-    # CALCULATION
+    # CALCULATION DATA
     # ---------------------------------------------------
 
     calc_x = 215
@@ -1892,26 +1890,24 @@ def generate_pdf():
         calc_y -= line_spacing
 
     # ---------------------------------------------------
-    # RESULT BOX TEXT
+    # RESULT TEXT
     # ---------------------------------------------------
 
     can.setFillColor(colors.white)
 
     can.setFont(
         "Helvetica-Bold",
-        15
-    )
-
-    result_text = (
-        f"Profil skal inddækkes med "
-        f"{int(thickness)} mm "
-        f"Knauf Fireboard"
+        14
     )
 
     can.drawString(
-        70,
-        183,
-        result_text
+        85,
+        188,
+        (
+            f"Profil skal inddækkes med "
+            f"{int(thickness)} mm "
+            f"Knauf Fireboard"
+        )
     )
 
     # ---------------------------------------------------
@@ -1925,32 +1921,30 @@ def generate_pdf():
         10
     )
 
-    footer_note = (
-        "Monteres i.h.t. Knauf montagevejledning, "
-        "som findes i gældende Knauf Manual "
-        "i afsnittet Brandbeskyttelse."
-    )
-
     can.drawCentredString(
         297,
-        130,
-        footer_note
+        112,
+        (
+            "Monteres i.h.t. Knauf montagevejledning, "
+            "som findes i gældende Knauf Manual "
+            "i afsnittet Brandbeskyttelse."
+        )
     )
 
     # ---------------------------------------------------
     # PAGE NUMBER
     # ---------------------------------------------------
 
-    can.setFillColor(knauf_blue)
+    can.setFillColor(colors.white)
 
     can.setFont(
         "Helvetica",
-        10
+        9
     )
 
     can.drawRightString(
-        560,
-        32,
+        555,
+        24,
         "Side 1"
     )
 
