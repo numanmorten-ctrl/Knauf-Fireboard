@@ -1829,8 +1829,8 @@ def generate_pdf():
 
     logo = Image(
         logo_buffer,
-        width=33 * mm,
-        height=9 * mm
+        width=42 * mm,
+        height=12 * mm
     )
 
     fireboard = Table(
@@ -1855,7 +1855,7 @@ def generate_pdf():
 
     header_table = Table(
         [[logo, fireboard]],
-        colWidths=[34 * mm, 60 * mm]
+        colWidths=[44 * mm, 60 * mm]
     )
 
     header_table.setStyle(TableStyle([
