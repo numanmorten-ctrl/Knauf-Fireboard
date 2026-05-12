@@ -2,7 +2,7 @@ import base64
 from io import BytesIO
 from datetime import datetime
 from reportlab.pdfgen import canvas
-from PyPDF2 import PdfReader, PdfWriter
+from pypdf import PdfReader, PdfWriter
 
 import streamlit as st
 import pandas as pd
