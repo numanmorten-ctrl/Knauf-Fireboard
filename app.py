@@ -1747,137 +1747,273 @@ def generate_pdf():
     doc = SimpleDocTemplate(
         buffer,
         pagesize=A4,
-        rightMargin=40,
-        leftMargin=40,
-        topMargin=40,
-        bottomMargin=40
+        rightMargin=18 * mm,
+        leftMargin=18 * mm,
+        topMargin=18 * mm,
+        bottomMargin=18 * mm
     )
 
     styles = getSampleStyleSheet()
 
+    # ---------------------------------------------------
+    # CUSTOM STYLES
+    # ---------------------------------------------------
+
+    title_style = ParagraphStyle(
+        "KnaufTitle",
+        parent=styles["Heading1"],
+        fontName="Helvetica-Bold",
+        fontSize=24,
+        leading=28,
+        textColor=colors.HexColor("#2d343c"),
+        spaceAfter=18,
+    )
+
+    section_style = ParagraphStyle(
+        "SectionTitle",
+        parent=styles["Heading2"],
+        fontName="Helvetica-Bold",
+        fontSize=16,
+        leading=20,
+        textColor=colors.HexColor("#003b7a"),
+        spaceAfter=10,
+        spaceBefore=10,
+    )
+
+    normal_style = ParagraphStyle(
+        "NormalCustom",
+        parent=styles["BodyText"],
+        fontName="Helvetica",
+        fontSize=10,
+        leading=15,
+        textColor=colors.HexColor("#2d343c"),
+    )
+
+    result_style = ParagraphStyle(
+        "ResultStyle",
+        parent=styles["BodyText"],
+        fontName="Helvetica-Bold",
+        fontSize=13,
+        leading=18,
+        textColor=colors.white,
+        alignment=TA_LEFT,
+    )
+
     elements = []
+
+    # ---------------------------------------------------
+    # HEADER
+    # ---------------------------------------------------
+
+    header_table = Table(
+        [[
+            Paragraph(
+                "<font color='#009fe3'><b>KNAUF</b></font>",
+                styles["Heading2"]
+            ),
+            Paragraph(
+                "<font color='#7d7d7d'><i>Fireboard</i></font>",
+                styles["Heading2"]
+            )
+        ]],
+        colWidths=[55 * mm, 100 * mm]
+    )
+
+    header_table.setStyle(TableStyle([
+
+        ("VALIGN", (0,0), (-1,-1), "MIDDLE"),
+
+        ("BOTTOMPADDING", (0,0), (-1,-1), 0),
+
+        ("LEFTPADDING", (0,0), (-1,-1), 0),
+
+        ("RIGHTPADDING", (0,0), (-1,-1), 0),
+
+    ]))
+
+    elements.append(header_table)
+
+    elements.append(Spacer(1, 12))
 
     # ---------------------------------------------------
     # TITLE
     # ---------------------------------------------------
 
-    title = Paragraph(
-        "Brandbeskyttelse af stålkonstruktioner med Knauf Fireboard",
-        styles['Title']
+    elements.append(
+        Paragraph(
+            "Brandbeskyttelse af stålkonstruktioner",
+            title_style
+        )
     )
 
-    elements.append(title)
+    # ---------------------------------------------------
+    # PROJECT INFO
+    # ---------------------------------------------------
 
     elements.append(
-        Spacer(1, 25)
+        Paragraph(
+            "Projektoplysninger",
+            section_style
+        )
     )
-
-    # ---------------------------------------------------
-    # PROJEKTOPLYSNINGER
-    # ---------------------------------------------------
 
     project_data = [
 
         ["Projekt", st.session_state.project_name],
+
         ["Udarbejdet af", st.session_state.prepared_by],
+
         ["Firma", st.session_state.company],
+
         ["Dato", datetime.now().strftime("%d-%m-%Y")],
+
         ["Beskrivelse", st.session_state.description],
     ]
 
     project_table = Table(
         project_data,
-        colWidths=[180, 300]
+        colWidths=[45 * mm, 115 * mm]
     )
 
-    project_table.setStyle(
+    project_table.setStyle(TableStyle([
 
-        TableStyle([
+        ("BACKGROUND", (0,0), (0,-1), colors.HexColor("#eef3f7")),
 
-            ('GRID', (0,0), (-1,-1), 1, colors.black),
+        ("TEXTCOLOR", (0,0), (-1,-1), colors.HexColor("#2d343c")),
 
-            ('BACKGROUND', (0,0), (0,-1), colors.lightgrey),
+        ("FONTNAME", (0,0), (0,-1), "Helvetica-Bold"),
 
-            ('FONTNAME', (0,0), (-1,-1), 'Helvetica'),
+        ("FONTNAME", (1,0), (1,-1), "Helvetica"),
 
-            ('FONTSIZE', (0,0), (-1,-1), 10),
+        ("FONTSIZE", (0,0), (-1,-1), 10),
 
-            ('BOTTOMPADDING', (0,0), (-1,-1), 8),
-        ])
-    )
+        ("GRID", (0,0), (-1,-1), 1, colors.HexColor("#cfd6dd")),
+
+        ("BOTTOMPADDING", (0,0), (-1,-1), 8),
+
+        ("TOPPADDING", (0,0), (-1,-1), 8),
+
+        ("LEFTPADDING", (0,0), (-1,-1), 8),
+
+        ("RIGHTPADDING", (0,0), (-1,-1), 8),
+
+        ("VALIGN", (0,0), (-1,-1), "TOP"),
+
+    ]))
 
     elements.append(project_table)
 
+    elements.append(Spacer(1, 18))
+
+    # ---------------------------------------------------
+    # CALCULATION
+    # ---------------------------------------------------
+
     elements.append(
-        Spacer(1, 25)
+        Paragraph(
+            "Beregning",
+            section_style
+        )
     )
 
-    # ---------------------------------------------------
-    # INPUT DATA
-    # ---------------------------------------------------
-
-    input_data = [
+    calc_data = [
 
         ["Profilkategori", category],
+
         ["Profil", str(selected_profile)],
+
         ["Inddækning", f"{sides} sider"],
+
         ["Montage", montage],
-        ["Brandtid", f"{fire_time} minutter"],
+
+        ["Brandtid", f"R{fire_time}"],
+
         ["Temperatur", f"{temperature} °C"],
+
         ["Ap/V", f"{apv} m²/m³"],
     ]
 
-    input_table = Table(
-        input_data,
-        colWidths=[180, 300]
+    calc_table = Table(
+        calc_data,
+        colWidths=[45 * mm, 115 * mm]
     )
 
-    input_table.setStyle(
+    calc_table.setStyle(TableStyle([
 
-        TableStyle([
+        ("BACKGROUND", (0,0), (0,-1), colors.HexColor("#eef3f7")),
 
-            ('GRID', (0,0), (-1,-1), 1, colors.black),
+        ("TEXTCOLOR", (0,0), (-1,-1), colors.HexColor("#2d343c")),
 
-            ('BACKGROUND', (0,0), (0,-1), colors.lightgrey),
+        ("FONTNAME", (0,0), (0,-1), "Helvetica-Bold"),
 
-            ('FONTNAME', (0,0), (-1,-1), 'Helvetica'),
+        ("FONTNAME", (1,0), (1,-1), "Helvetica"),
 
-            ('FONTSIZE', (0,0), (-1,-1), 10),
+        ("FONTSIZE", (0,0), (-1,-1), 10),
 
-            ('BOTTOMPADDING', (0,0), (-1,-1), 8),
-        ])
-    )
+        ("GRID", (0,0), (-1,-1), 1, colors.HexColor("#cfd6dd")),
 
-    elements.append(input_table)
+        ("BOTTOMPADDING", (0,0), (-1,-1), 8),
 
-    elements.append(
-        Spacer(1, 30)
-    )
+        ("TOPPADDING", (0,0), (-1,-1), 8),
+
+        ("LEFTPADDING", (0,0), (-1,-1), 8),
+
+        ("RIGHTPADDING", (0,0), (-1,-1), 8),
+
+    ]))
+
+    elements.append(calc_table)
+
+    elements.append(Spacer(1, 20))
 
     # ---------------------------------------------------
-    # RESULTAT
+    # RESULT BOX
     # ---------------------------------------------------
 
-    result = Paragraph(
-        f"<b>Profil skal inddækkes med "
-        f"{int(thickness)} mm "
-        f"Knauf Fireboard</b>",
-        styles['Heading2']
+    result_table = Table(
+        [[
+            Paragraph(
+                (
+                    f"Profil skal inddækkes med "
+                    f"{int(thickness)} mm "
+                    f"Knauf Fireboard"
+                ),
+                result_style
+            )
+        ]],
+        colWidths=[160 * mm]
     )
 
-    elements.append(result)
+    result_table.setStyle(TableStyle([
 
-    elements.append(
-        Spacer(1, 20)
-    )
+        ("BACKGROUND", (0,0), (-1,-1), colors.HexColor("#003b7a")),
+
+        ("BOX", (0,0), (-1,-1), 1, colors.HexColor("#003b7a")),
+
+        ("TOPPADDING", (0,0), (-1,-1), 14),
+
+        ("BOTTOMPADDING", (0,0), (-1,-1), 14),
+
+        ("LEFTPADDING", (0,0), (-1,-1), 14),
+
+        ("RIGHTPADDING", (0,0), (-1,-1), 14),
+
+    ]))
+
+    elements.append(result_table)
+
+    elements.append(Spacer(1, 18))
 
     # ---------------------------------------------------
     # NOTE
     # ---------------------------------------------------
 
     note = Paragraph(
-        "Monteres iht. gældende Knauf montagevejledning.",
-        styles['BodyText']
+        (
+            "Monteres iht. gældende "
+            "Knauf montagevejledning."
+        ),
+        normal_style
     )
 
     elements.append(note)
