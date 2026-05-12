@@ -2061,8 +2061,7 @@ def generate_pdf():
 
     note = Paragraph(
         (
-            "Monteres iht. gældende "
-            "Knauf montagevejledning."
+            "Monteres i.h.t. Knauf montagevejledning, som findes i gældende Knauf Manual i afsnittet Brandbeskyttelse."
         ),
         normal_style
     )
