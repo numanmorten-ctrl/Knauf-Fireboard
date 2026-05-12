@@ -982,7 +982,7 @@ with st.sidebar:
                 if st.button(
                     label,
                     key=f"sidebar_calc_{idx}",
-                    type="secondary"
+                    type="secondary",
                     use_container_width=True
                 ):
 
