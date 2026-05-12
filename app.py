@@ -1780,25 +1780,25 @@ def generate_pdf():
 
     can.drawString(
         project_x,
-        555,
+        560,
         str(st.session_state.project_name)
     )
 
     can.drawString(
         project_x,
-        535,
+        540,
         str(st.session_state.prepared_by)
     )
 
     can.drawString(
         project_x,
-        515,
+        520,
         str(st.session_state.company)
     )
 
     can.drawString(
         project_x,
-        495,
+        500,
         datetime.now().strftime("%d-%m-%Y")
     )
 
@@ -1814,7 +1814,7 @@ def generate_pdf():
 
     text_object.setTextOrigin(
         project_x,
-        475
+        480
     )
 
     text_object.setFont(
@@ -1858,7 +1858,7 @@ def generate_pdf():
 
     calc_x = 215
 
-    calc_y = 365
+    calc_y = 390
 
     line_spacing = 20
 
@@ -1902,7 +1902,7 @@ def generate_pdf():
 
     can.drawString(
         85,
-        188,
+        205,
         (
             f"Profil skal inddækkes med "
             f"{int(thickness)} mm "
@@ -1923,7 +1923,7 @@ def generate_pdf():
 
     can.drawCentredString(
         297,
-        112,
+        145,
         (
             "Monteres i.h.t. Knauf montagevejledning, "
             "som findes i gældende Knauf Manual "
@@ -1943,8 +1943,8 @@ def generate_pdf():
     )
 
     can.drawRightString(
-        555,
-        24,
+        560,
+        28,
         "Side 1"
     )
 
