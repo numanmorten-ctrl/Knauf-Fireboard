@@ -508,36 +508,49 @@ FINAL BASEWEB INPUT FIX
 AKTIV SIDEBAR BEREGNING
 --------------------------------------------------- */
 
-div[data-testid="stSidebar"] div.stButton > button[kind="primary"] {
+section[data-testid="stSidebar"] button[kind="primary"] {
 
-    background: #003b7a !important;
+    background-color: #003b7a !important;
 
     border: 1px solid #003b7a !important;
 
     box-shadow: none !important;
 }
 
-/* TVING HELE KNAPPENS INDHOLD */
+/* SELVE LABEL-CONTAINEREN */
 
-div[data-testid="stSidebar"] div.stButton > button[kind="primary"],
-div[data-testid="stSidebar"] div.stButton > button[kind="primary"] p,
-div[data-testid="stSidebar"] div.stButton > button[kind="primary"] span,
-div[data-testid="stSidebar"] div.stButton > button[kind="primary"] div {
+section[data-testid="stSidebar"] button[kind="primary"] p {
 
-    color: white !important;
-
-    -webkit-text-fill-color: white !important;
+    color: #ffffff !important;
 
     font-weight: 700 !important;
 
     opacity: 1 !important;
+
+    margin: 0 !important;
+}
+
+/* STREAMLIT LABEL WRAPPER */
+
+section[data-testid="stSidebar"] button[kind="primary"] div[data-testid="stMarkdownContainer"] {
+
+    color: #ffffff !important;
+}
+
+/* ALT INDHOLD */
+
+section[data-testid="stSidebar"] button[kind="primary"] * {
+
+    color: #ffffff !important;
+
+    -webkit-text-fill-color: #ffffff !important;
 }
 
 /* HOVER */
 
-div[data-testid="stSidebar"] div.stButton > button[kind="primary"]:hover {
+section[data-testid="stSidebar"] button[kind="primary"]:hover {
 
-    background: #002e5f !important;
+    background-color: #002e5f !important;
 
     border: 1px solid #002e5f !important;
 }
