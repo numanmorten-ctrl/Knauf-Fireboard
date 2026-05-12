@@ -1861,14 +1861,14 @@ def generate_pdf():
     # CALCULATION DATA
     # ---------------------------------------------------
 
-    # 3 mm op
-    # mindre linjeafstand
+    # 1,5 mm ned
+    # lidt større linjeafstand
 
     calc_x = 197
 
-    calc_y = 423
+    calc_y = 418.5
 
-    line_spacing = 17
+    line_spacing = 19
 
     can.setFont(
         "Helvetica",
@@ -1906,8 +1906,6 @@ def generate_pdf():
     # RESULT TEXT
     # ---------------------------------------------------
 
-    # 0,5 mm ned
-
     can.setFillColor(colors.white)
 
     can.setFont(
@@ -1928,9 +1926,6 @@ def generate_pdf():
     # ---------------------------------------------------
     # PAGE NUMBER
     # ---------------------------------------------------
-
-    # 2 mm til venstre
-    # 1 mm ned
 
     can.setFillColor(
         colors.HexColor("#009fe3")
