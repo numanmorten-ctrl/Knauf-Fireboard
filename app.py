@@ -863,7 +863,7 @@ with st.sidebar:
 
     /* AKTIV BEREGNING */
 
-    div[data-testid="stSidebar"] button[kind="primary"] {
+    div[data-testid="stSidebar"] div.stButton > button.active-calc {
 
         background-color: #003b7a !important;
 
@@ -876,7 +876,7 @@ with st.sidebar:
         box-shadow: none !important;
     }
 
-    div[data-testid="stSidebar"] button[kind="primary"]:hover {
+    div[data-testid="stSidebar"] div.stButton > button.active-calc:hover {
 
         background-color: #002e5f !important;
 
@@ -950,10 +950,26 @@ with st.sidebar:
 
             with col1:
 
+                if is_active:
+
+                    st.markdown("""
+                    <style>
+                    div[data-testid="stSidebar"] button[kind="secondary"] {
+
+                        background-color: #003b7a !important;
+
+                        border: 1px solid #003b7a !important;
+
+                        color: white !important;
+
+                        font-weight: 700 !important;
+                    }
+                    </style>
+                    """, unsafe_allow_html=True)
+
                 if st.button(
                     label,
                     key=f"sidebar_calc_{idx}",
-                    type="primary" if is_active else "secondary",
                     use_container_width=True
                 ):
 
