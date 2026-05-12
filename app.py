@@ -1090,6 +1090,191 @@ def generate_complete_pdf():
     output_stream.seek(0)
 
     return output_stream
+    
+# ---------------------------------------------------
+# GENERATE Single PDF
+# ---------------------------------------------------
+
+def generate_single_pdf(calc):
+
+    output = PdfWriter()
+
+    template_path = "PDF_template.pdf"
+
+    packet = BytesIO()
+
+    can = canvas.Canvas(
+        packet,
+        pagesize=A4
+    )
+
+    # ---------------------------------------------------
+    # PROJECT INFO
+    # ---------------------------------------------------
+
+    can.setFont(
+        "Helvetica",
+        9
+    )
+
+    project_x = 240
+    project_y = 557
+
+    line_height = 20
+
+    can.drawString(
+        project_x,
+        project_y,
+        st.session_state.project_name
+    )
+
+    can.drawString(
+        project_x,
+        project_y - line_height,
+        st.session_state.prepared_by
+    )
+
+    can.drawString(
+        project_x,
+        project_y - (line_height * 2),
+        st.session_state.company
+    )
+
+    can.drawString(
+        project_x,
+        project_y - (line_height * 3),
+        datetime.now().strftime("%d-%m-%Y")
+    )
+
+    can.drawString(
+        project_x,
+        project_y - (line_height * 4),
+        st.session_state.description
+    )
+
+    # ---------------------------------------------------
+    # CALCULATION
+    # ---------------------------------------------------
+
+    calc_x = 240
+    calc_y = 383
+
+    calc_line_height = 18
+
+    can.drawString(
+        calc_x,
+        calc_y,
+        str(calc["category"])
+    )
+
+    can.drawString(
+        calc_x,
+        calc_y - calc_line_height,
+        str(calc["profile"])
+    )
+
+    can.drawString(
+        calc_x,
+        calc_y - (calc_line_height * 2),
+        f"{calc['sides']} sider"
+    )
+
+    can.drawString(
+        calc_x,
+        calc_y - (calc_line_height * 3),
+        calc["montage"]
+    )
+
+    can.drawString(
+        calc_x,
+        calc_y - (calc_line_height * 4),
+        f"R{calc['fire_time']}"
+    )
+
+    can.drawString(
+        calc_x,
+        calc_y - (calc_line_height * 5),
+        f"{calc['temperature']} °C"
+    )
+
+    can.drawString(
+        calc_x,
+        calc_y - (calc_line_height * 6),
+        f"{calc['apv']} m²/m³"
+    )
+
+    # ---------------------------------------------------
+    # RESULT
+    # ---------------------------------------------------
+
+    can.setFillColorRGB(
+        1,
+        1,
+        1
+    )
+
+    can.setFont(
+        "Helvetica-Bold",
+        15
+    )
+
+    can.drawCentredString(
+        297,
+        164,
+        (
+            f"Profil skal inddækkes med "
+            f"{int(calc['thickness'])} mm "
+            f"Knauf Fireboard"
+        )
+    )
+
+    # ---------------------------------------------------
+    # PAGE NUMBER
+    # ---------------------------------------------------
+
+    can.setFillColorRGB(
+        0,
+        0.62,
+        0.89
+    )
+
+    can.setFont(
+        "Helvetica",
+        11
+    )
+
+    can.drawString(
+        330,
+        17,
+        "1"
+    )
+
+    can.save()
+
+    packet.seek(0)
+
+    overlay_pdf = PdfReader(packet)
+
+    template_pdf = PdfReader(
+        open(template_path, "rb")
+    )
+
+    base_page = template_pdf.pages[0]
+
+    base_page.merge_page(
+        overlay_pdf.pages[0]
+    )
+
+    output.add_page(base_page)
+
+    output_stream = BytesIO()
+
+    output.write(output_stream)
+
+    output_stream.seek(0)
+
+    return output_stream
+
 # ---------------------------------------------------
 # SIDEBAR
 # ---------------------------------------------------
@@ -2013,7 +2198,9 @@ if current_step == 3:
     # DOWNLOAD DENNE BEREGNING
     # ---------------------------------------------------
 
-    single_calc_pdf = generate_complete_pdf()
+    single_calc_pdf = generate_single_pdf(
+        calculation_data
+    )
 
     st.download_button(
         label="📄 Download denne beregning",
