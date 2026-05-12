@@ -502,17 +502,24 @@ FINAL BASEWEB INPUT FIX
 SIDEBAR ACTIVE CALCULATION
 --------------------------------------------------- */
 
-section[data-testid="stSidebar"] button[kind="primary"] {
+div[data-testid="stSidebar"] .stButton button[kind="primary"] {
 
-    background:#009fe3 !important;
+    background-color: #003b7a !important;
 
-    border:1px solid #009fe3 !important;
+    border: 1px solid #003b7a !important;
 
-    color:white !important;
+    color: white !important;
 
-    font-weight:700 !important;
+    font-weight: 700 !important;
 
-    box-shadow:none !important;
+    box-shadow: none !important;
+}
+
+div[data-testid="stSidebar"] .stButton button[kind="primary"] p {
+
+    color: white !important;
+
+    font-weight: 700 !important;
 }
 /* ---------------------------------------------------
 DIVIDER SPACING
