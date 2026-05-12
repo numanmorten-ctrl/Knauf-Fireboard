@@ -861,21 +861,28 @@ with st.sidebar:
     st.markdown("""
     <style>
 
+    /* Aktiv beregning */
+
     div[data-testid="stSidebar"] button[kind="primary"] {
 
-        border: 2px solid #00c853 !important;
+        background: #003b7a !important;
 
-        background: linear-gradient(
-            135deg,
-            rgba(0,200,83,0.35),
-            rgba(0,120,50,0.50)
-        ) !important;
+        border: 1px solid #003b7a !important;
 
         color: white !important;
 
         font-weight: 700 !important;
 
-        box-shadow: 0 0 12px rgba(0,200,83,0.35);
+        box-shadow: none !important;
+    }
+
+    div[data-testid="stSidebar"] button[kind="primary"]:hover {
+
+        background: #002e5f !important;
+
+        border: 1px solid #002e5f !important;
+
+        color: white !important;
     }
 
     </style>
@@ -928,7 +935,7 @@ with st.sidebar:
                 st.session_state.edit_index == idx
             )
 
-            col1, col2 = st.columns([5,1])
+            col1, col2 = st.columns([5, 1])
 
             label = (
                 f"{calc['profile']} • "
