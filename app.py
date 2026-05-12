@@ -21,6 +21,7 @@ from reportlab.lib.pagesizes import A4
 from reportlab.lib.units import mm
 from reportlab.lib.enums import TA_LEFT
 from reportlab.lib.styles import ParagraphStyle
+from reportlab.platypus import Image
 
 # ---------------------------------------------------
 # KNAUF THEME
@@ -1799,41 +1800,67 @@ def generate_pdf():
         alignment=TA_LEFT,
     )
 
+    fireboard_style = ParagraphStyle(
+        "FireboardStyle",
+        parent=styles["BodyText"],
+        fontName="Helvetica-Oblique",
+        fontSize=22,
+        leading=22,
+        textColor=colors.HexColor("#7a7a7a"),
+    )
+
     elements = []
 
     # ---------------------------------------------------
-    # HEADER
+    # HEADER LOGO
     # ---------------------------------------------------
 
+    logo_url = (
+        "https://knauf.com/api/download-center/v1/assets/"
+        "8355fec5-8cb9-42fe-b5d7-4e7258bf446a?download=true"
+    )
+
+    logo_response = requests.get(logo_url)
+
+    logo_buffer = BytesIO(
+        logo_response.content
+    )
+
+    logo = Image(
+        logo_buffer,
+        width=38 * mm,
+        height=12 * mm
+    )
+
+    fireboard = Paragraph(
+        "<i><b>Fireboard</b></i>",
+        fireboard_style
+    )
+
     header_table = Table(
-        [[
-            Paragraph(
-                "<font color='#009fe3'><b>KNAUF</b></font>",
-                styles["Heading2"]
-            ),
-            Paragraph(
-                "<font color='#7d7d7d'><i>Fireboard</i></font>",
-                styles["Heading2"]
-            )
-        ]],
-        colWidths=[55 * mm, 100 * mm]
+        [[logo, fireboard]],
+        colWidths=[40 * mm, 55 * mm]
     )
 
     header_table.setStyle(TableStyle([
 
         ("VALIGN", (0,0), (-1,-1), "MIDDLE"),
 
-        ("BOTTOMPADDING", (0,0), (-1,-1), 0),
-
         ("LEFTPADDING", (0,0), (-1,-1), 0),
 
         ("RIGHTPADDING", (0,0), (-1,-1), 0),
+
+        ("TOPPADDING", (0,0), (-1,-1), 0),
+
+        ("BOTTOMPADDING", (0,0), (-1,-1), 0),
 
     ]))
 
     elements.append(header_table)
 
-    elements.append(Spacer(1, 12))
+    elements.append(
+        Spacer(1, 14)
+    )
 
     # ---------------------------------------------------
     # TITLE
@@ -1903,7 +1930,9 @@ def generate_pdf():
 
     elements.append(project_table)
 
-    elements.append(Spacer(1, 18))
+    elements.append(
+        Spacer(1, 18)
+    )
 
     # ---------------------------------------------------
     # CALCULATION
@@ -1964,7 +1993,9 @@ def generate_pdf():
 
     elements.append(calc_table)
 
-    elements.append(Spacer(1, 20))
+    elements.append(
+        Spacer(1, 20)
+    )
 
     # ---------------------------------------------------
     # RESULT BOX
@@ -2002,7 +2033,9 @@ def generate_pdf():
 
     elements.append(result_table)
 
-    elements.append(Spacer(1, 18))
+    elements.append(
+        Spacer(1, 18)
+    )
 
     # ---------------------------------------------------
     # NOTE
