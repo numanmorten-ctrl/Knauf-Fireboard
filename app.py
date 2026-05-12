@@ -515,7 +515,7 @@ div[data-testid="stSidebar"] .stButton button[kind="primary"] {
     box-shadow: none !important;
 }
 
-div[data-testid="stSidebar"] .stButton button[kind="primary"] p {
+div[data-testid="stSidebar"] .stButton button[kind="primary"] * {
 
     color: white !important;
 
