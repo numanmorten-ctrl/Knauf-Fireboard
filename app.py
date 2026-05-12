@@ -77,8 +77,6 @@ div.stDownloadButton > button {
 
     border: 1px solid #b8c2cc !important;
 
-    color: #003b7a !important;
-
     font-size: 14px;
 
     font-weight: 600;
@@ -88,6 +86,14 @@ div.stDownloadButton > button {
     box-shadow: none !important;
 
     outline: none !important;
+}
+
+/* NORMAL BUTTON TEKST */
+
+div.stButton > button:not([kind="primary"]),
+div.stDownloadButton > button {
+
+    color: #003b7a !important;
 }
 
 /* ---------------------------------------------------
