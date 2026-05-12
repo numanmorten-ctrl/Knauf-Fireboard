@@ -504,20 +504,23 @@ SIDEBAR ACTIVE CALCULATION
 
 div[data-testid="stSidebar"] .stButton button[kind="primary"] {
 
-    background-color: #003b7a !important;
+    background: #003b7a !important;
 
     border: 1px solid #003b7a !important;
-
-    color: white !important;
-
-    font-weight: 700 !important;
 
     box-shadow: none !important;
 }
 
-div[data-testid="stSidebar"] .stButton button[kind="primary"] * {
+/* FORCE ALL TEXT WHITE */
+
+div[data-testid="stSidebar"] .stButton button[kind="primary"],
+div[data-testid="stSidebar"] .stButton button[kind="primary"] span,
+div[data-testid="stSidebar"] .stButton button[kind="primary"] p,
+div[data-testid="stSidebar"] .stButton button[kind="primary"] div {
 
     color: white !important;
+
+    -webkit-text-fill-color: white !important;
 
     font-weight: 700 !important;
 }
