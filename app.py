@@ -394,24 +394,17 @@ header[data-testid="stHeader"]::after {
 SIDEBAR
 --------------------------------------------------- */
 
-div[data-testid="stSidebar"] .stButton button[kind="primary"] {
+section[data-testid="stSidebar"] {
 
-    background-color: #003b7a !important;
+    background-color: white;
 
-    border: 1px solid #003b7a !important;
+    border-right: 1px solid #d9dde3;
 
-    color: white !important;
+    margin-top: 4.05rem !important;
 
-    font-weight: 700 !important;
+    z-index: 0 !important;
 
-    box-shadow: none !important;
-}
-
-div[data-testid="stSidebar"] .stButton button[kind="primary"] p {
-
-    color: white !important;
-
-    font-weight: 700 !important;
+    position: relative !important;
 }
 
 /* ---------------------------------------------------
@@ -870,6 +863,7 @@ with st.sidebar:
 
     /* AKTIV BEREGNING */
 
+    div[data-testid="stSidebar"] button[kind="primary"] {
     div[data-testid="stSidebar"] div.stButton > button.active-calc {
 
         background-color: #003b7a !important;
@@ -883,6 +877,7 @@ with st.sidebar:
         box-shadow: none !important;
     }
 
+    div[data-testid="stSidebar"] button[kind="primary"]:hover {
     div[data-testid="stSidebar"] div.stButton > button.active-calc:hover {
 
         background-color: #002e5f !important;
