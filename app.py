@@ -1600,10 +1600,7 @@ if current_step == 2:
     temperature = st.text_input(
         "Indtast dimensionerende ståltemperatur (°C)",
         value=str(
-            st.session_state.get(
-                "temperature",
-                450
-            )
+            st.session_state.get("temperature") or 450
         )
     )
 
