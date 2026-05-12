@@ -892,12 +892,16 @@ with st.sidebar:
 
         border: 1px solid #003b7a !important;
 
+        color: white !important;
+
+        font-weight: 700 !important;
+
         box-shadow: none !important;
     }
 
-    /* ALT TEKST I AKTIV KNAP */
-
-    div[data-testid="stSidebar"] button[kind="primary"] * {
+    div[data-testid="stSidebar"] button[kind="primary"] p,
+    div[data-testid="stSidebar"] button[kind="primary"] span,
+    div[data-testid="stSidebar"] button[kind="primary"] div {
 
         color: white !important;
 
@@ -915,6 +919,8 @@ with st.sidebar:
         background: #002e5f !important;
 
         border: 1px solid #002e5f !important;
+
+        color: white !important;
     }
 
     </style>
