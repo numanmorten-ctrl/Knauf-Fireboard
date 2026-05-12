@@ -1014,32 +1014,6 @@ with st.sidebar:
                         st.session_state.editing = False
 
                     st.rerun()
-
-            # ---------------------------------------------------
-            # DELETE
-            # ---------------------------------------------------
-
-            with col2:
-
-                if st.button(
-                    "🗑️",
-                    key=f"delete_sidebar_{idx}"
-                ):
-
-                    st.session_state.calculations.pop(
-                        idx
-                    )
-
-                    if (
-                        st.session_state.edit_index
-                        == idx
-                    ):
-
-                        st.session_state.edit_index = None
-
-                        st.session_state.editing = False
-
-                    st.rerun()
 # ---------------------------------------------------
 # CARD FUNCTIONS
 # ---------------------------------------------------
