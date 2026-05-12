@@ -499,30 +499,38 @@ FINAL BASEWEB INPUT FIX
     box-shadow: none !important;
 }
 /* ---------------------------------------------------
-SIDEBAR ACTIVE CALCULATION
+AKTIV SIDEBAR BEREGNING
 --------------------------------------------------- */
 
-div[data-testid="stSidebar"] .stButton button[kind="primary"] {
+div[data-testid="stSidebar"] .stButton button {
+
+    background: white !important;
+
+    color: #003b7a !important;
+}
+
+/* AKTIV */
+
+div[data-testid="stSidebar"] .stButton button[kind="secondary"] {
 
     background: #003b7a !important;
 
     border: 1px solid #003b7a !important;
 
-    box-shadow: none !important;
+    color: white !important;
+
+    font-weight: 700 !important;
 }
 
-/* FORCE ALL TEXT WHITE */
-
-div[data-testid="stSidebar"] .stButton button[kind="primary"],
-div[data-testid="stSidebar"] .stButton button[kind="primary"] span,
-div[data-testid="stSidebar"] .stButton button[kind="primary"] p,
-div[data-testid="stSidebar"] .stButton button[kind="primary"] div {
+div[data-testid="stSidebar"] .stButton button[kind="secondary"] * {
 
     color: white !important;
 
     -webkit-text-fill-color: white !important;
 
     font-weight: 700 !important;
+
+    opacity: 1 !important;
 }
 /* ---------------------------------------------------
 DIVIDER SPACING
@@ -974,7 +982,7 @@ with st.sidebar:
                 if st.button(
                     label,
                     key=f"sidebar_calc_{idx}",
-                    type="primary" if is_active else "secondary",
+                    type="secondary"
                     use_container_width=True
                 ):
 
