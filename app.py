@@ -2195,6 +2195,24 @@ if current_step == 3:
         st.stop()
 
     # ---------------------------------------------------
+    # BEREGNINGSDATA
+    # ---------------------------------------------------
+
+    calculation_data = {
+
+        "category": category,
+        "profile": selected_profile,
+        "montage": montage,
+        "sides": sides,
+
+        "fire_time": fire_time,
+        "temperature": temperature,
+
+        "apv": apv,
+        "thickness": thickness
+    }
+
+    # ---------------------------------------------------
     # DOWNLOAD DENNE BEREGNING
     # ---------------------------------------------------
 
@@ -2259,24 +2277,6 @@ if current_step == 3:
     st.session_state.company = company
     st.session_state.prepared_by = prepared_by
     st.session_state.description = description
-
-    # ---------------------------------------------------
-    # BEREGNINGSDATA
-    # ---------------------------------------------------
-
-    calculation_data = {
-
-        "category": category,
-        "profile": selected_profile,
-        "montage": montage,
-        "sides": sides,
-
-        "fire_time": fire_time,
-        "temperature": temperature,
-
-        "apv": apv,
-        "thickness": thickness
-    }
 
     # ---------------------------------------------------
     # NAVIGATION
