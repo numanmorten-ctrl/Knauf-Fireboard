@@ -1844,7 +1844,7 @@ def generate_pdf():
 
     fireboard.setStyle(TableStyle([
 
-        ("TOPPADDING", (0,0), (-1,-1), 2),
+        ("TOPPADDING", (0,0), (-1,-1), 0),
 
         ("LEFTPADDING", (0,0), (-1,-1), 0),
 
@@ -1860,7 +1860,7 @@ def generate_pdf():
 
     header_table.setStyle(TableStyle([
 
-        ("VALIGN", (0,0), (-1,-1), "MIDDLE"),
+        ("VALIGN", (0,0), (-1,-1), "BOTTOM"),
 
         ("LEFTPADDING", (0,0), (-1,-1), 0),
 
