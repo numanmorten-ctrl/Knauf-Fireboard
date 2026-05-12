@@ -502,35 +502,31 @@ FINAL BASEWEB INPUT FIX
 AKTIV SIDEBAR BEREGNING
 --------------------------------------------------- */
 
-div[data-testid="stSidebar"] .stButton button {
+div[data-testid="stSidebar"] button[kind="primary"] {
 
-    background: white !important;
-
-    color: #003b7a !important;
-}
-
-/* AKTIV */
-
-div[data-testid="stSidebar"] .stButton button[kind="secondary"] {
-
-    background: #003b7a !important;
+    background-color: #003b7a !important;
 
     border: 1px solid #003b7a !important;
 
-    color: white !important;
-
-    font-weight: 700 !important;
+    box-shadow: none !important;
 }
 
-div[data-testid="stSidebar"] .stButton button[kind="secondary"] * {
+/* TVING AL TEKST TIL HVID */
+
+div[data-testid="stSidebar"] button[kind="primary"],
+div[data-testid="stSidebar"] button[kind="primary"] *,
+div[data-testid="stSidebar"] button[kind="primary"] p,
+div[data-testid="stSidebar"] button[kind="primary"] span {
 
     color: white !important;
 
     -webkit-text-fill-color: white !important;
 
-    font-weight: 700 !important;
+    fill: white !important;
 
     opacity: 1 !important;
+
+    font-weight: 700 !important;
 }
 /* ---------------------------------------------------
 DIVIDER SPACING
@@ -982,7 +978,7 @@ with st.sidebar:
                 if st.button(
                     label,
                     key=f"sidebar_calc_{idx}",
-                    type="secondary",
+                    type="primary" if is_active else "secondary",
                     use_container_width=True
                 ):
 
