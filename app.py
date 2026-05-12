@@ -1953,39 +1953,6 @@ if (
         apv
     ]
 
-# ---------------------------------------------------
-# PDF DOWNLOAD
-# ---------------------------------------------------
-
-current_calculation = {
-
-    "category": category,
-    "profile": selected_profile,
-    "montage": montage,
-    "sides": sides,
-
-    "fire_time": fire_time,
-    "temperature": temperature,
-
-    "apv": apv,
-    "thickness": thickness
-}
-
-pdf_file = generate_single_pdf(
-    current_calculation
-)
-
-st.download_button(
-    label="📄 Download denne beregning",
-    data=pdf_file,
-    file_name=(
-        f"{selected_profile}_"
-        f"R{fire_time}.pdf"
-    ),
-    mime="application/pdf",
-    use_container_width=True
-)
-
 # --------------------------------------------------
 # TAB 4 - RESULTAT
 # ---------------------------------------------------
@@ -2043,14 +2010,14 @@ if current_step == 3:
         st.stop()
 
     # ---------------------------------------------------
-    # PDF DOWNLOAD
+    # DOWNLOAD DENNE BEREGNING
     # ---------------------------------------------------
 
-    pdf_file = generate_pdf()
+    single_calc_pdf = generate_complete_pdf()
 
     st.download_button(
-        label="📄 Download PDF rapport",
-        data=pdf_file,
+        label="📄 Download denne beregning",
+        data=single_calc_pdf,
         file_name=(
             f"{selected_profile}_"
             f"R{fire_time}.pdf"
