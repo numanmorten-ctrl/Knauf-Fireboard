@@ -1776,7 +1776,7 @@ def generate_pdf():
     # PROJECT INFO
     # ---------------------------------------------------
 
-    project_x = 215
+    project_x = 240
 
     can.drawString(
         project_x,
@@ -1826,7 +1826,7 @@ def generate_pdf():
         dark_text
     )
 
-    max_chars = 70
+    max_chars = 65
 
     words = description.split()
 
@@ -1856,9 +1856,9 @@ def generate_pdf():
     # CALCULATION DATA
     # ---------------------------------------------------
 
-    calc_x = 215
+    calc_x = 240
 
-    calc_y = 390
+    calc_y = 392
 
     line_spacing = 20
 
@@ -1900,9 +1900,9 @@ def generate_pdf():
         14
     )
 
-    can.drawString(
-        85,
-        205,
+    can.drawCentredString(
+        297,
+        203,
         (
             f"Profil skal inddækkes med "
             f"{int(thickness)} mm "
@@ -1923,7 +1923,7 @@ def generate_pdf():
 
     can.drawCentredString(
         297,
-        145,
+        152,
         (
             "Monteres i.h.t. Knauf montagevejledning, "
             "som findes i gældende Knauf Manual "
@@ -1935,17 +1935,17 @@ def generate_pdf():
     # PAGE NUMBER
     # ---------------------------------------------------
 
-    can.setFillColor(colors.white)
+    can.setFillColor(colors.HexColor("#009fe3"))
 
     can.setFont(
         "Helvetica",
-        9
+        10
     )
 
-    can.drawRightString(
-        560,
-        28,
-        "Side 1"
+    can.drawString(
+        315,
+        26,
+        "side 1"
     )
 
     # ---------------------------------------------------
