@@ -1750,119 +1750,218 @@ def generate_pdf():
 
     packet = BytesIO()
 
-    can = canvas.Canvas(packet, pagesize=A4)
+    can = canvas.Canvas(
+        packet,
+        pagesize=A4
+    )
+
+    # ---------------------------------------------------
+    # COLORS
+    # ---------------------------------------------------
+
+    knauf_blue = colors.HexColor("#009fe3")
+
+    dark_blue = colors.HexColor("#003b7a")
+
+    dark_text = colors.HexColor("#2d343c")
+
+    # ---------------------------------------------------
+    # DEFAULT TEXT STYLE
+    # ---------------------------------------------------
+
+    can.setFillColor(dark_text)
+
+    can.setFont(
+        "Helvetica",
+        10
+    )
 
     # ---------------------------------------------------
     # PROJECT INFO
     # ---------------------------------------------------
 
-    can.setFont("Helvetica", 10)
+    project_x = 215
 
     can.drawString(
-        215,
+        project_x,
         555,
-        st.session_state.project_name
+        str(st.session_state.project_name)
     )
 
     can.drawString(
-        215,
+        project_x,
         535,
-        st.session_state.prepared_by
+        str(st.session_state.prepared_by)
     )
 
     can.drawString(
-        215,
+        project_x,
         515,
-        st.session_state.company
+        str(st.session_state.company)
     )
 
     can.drawString(
-        215,
+        project_x,
         495,
         datetime.now().strftime("%d-%m-%Y")
     )
 
-    can.drawString(
-        215,
-        475,
+    # Beskrivelse med wrap
+
+    description = str(
         st.session_state.description
     )
+
+    text_object = can.beginText()
+
+    text_object.setTextOrigin(
+        project_x,
+        475
+    )
+
+    text_object.setFont(
+        "Helvetica",
+        10
+    )
+
+    text_object.setFillColor(
+        dark_text
+    )
+
+    max_chars = 70
+
+    words = description.split()
+
+    line = ""
+
+    for word in words:
+
+        test_line = f"{line} {word}".strip()
+
+        if len(test_line) <= max_chars:
+
+            line = test_line
+
+        else:
+
+            text_object.textLine(line)
+
+            line = word
+
+    if line:
+
+        text_object.textLine(line)
+
+    can.drawText(text_object)
 
     # ---------------------------------------------------
     # CALCULATION
     # ---------------------------------------------------
 
-    can.drawString(
-        215,
-        375,
-        str(category)
-    )
+    calc_x = 215
 
-    can.drawString(
-        215,
-        355,
-        str(selected_profile)
-    )
+    calc_y = 365
 
-    can.drawString(
-        215,
-        335,
-        f"{sides} sider"
-    )
+    line_spacing = 20
 
-    can.drawString(
-        215,
-        315,
-        montage
-    )
+    calc_values = [
 
-    can.drawString(
-        215,
-        295,
-        f"R{fire_time}"
-    )
+        str(category),
 
-    can.drawString(
-        215,
-        275,
-        f"{temperature} °C"
-    )
+        str(selected_profile),
 
-    can.drawString(
-        215,
-        255,
+        f"{sides} sider",
+
+        str(montage),
+
+        f"R{fire_time}",
+
+        f"{temperature} °C",
+
         f"{apv} m²/m³"
-    )
+    ]
+
+    for value in calc_values:
+
+        can.drawString(
+            calc_x,
+            calc_y,
+            value
+        )
+
+        calc_y -= line_spacing
 
     # ---------------------------------------------------
-    # RESULT
+    # RESULT BOX TEXT
     # ---------------------------------------------------
 
-    can.setFillColorRGB(
-        1,
-        1,
-        1
-    )
+    can.setFillColor(colors.white)
 
     can.setFont(
         "Helvetica-Bold",
-        13
+        15
+    )
+
+    result_text = (
+        f"Profil skal inddækkes med "
+        f"{int(thickness)} mm "
+        f"Knauf Fireboard"
     )
 
     can.drawString(
         70,
-        180,
-        (
-            f"Profil skal inddækkes med "
-            f"{int(thickness)} mm "
-            f"Knauf Fireboard"
-        )
+        183,
+        result_text
     )
+
+    # ---------------------------------------------------
+    # FOOTER NOTE
+    # ---------------------------------------------------
+
+    can.setFillColor(dark_text)
+
+    can.setFont(
+        "Helvetica",
+        10
+    )
+
+    footer_note = (
+        "Monteres i.h.t. Knauf montagevejledning, "
+        "som findes i gældende Knauf Manual "
+        "i afsnittet Brandbeskyttelse."
+    )
+
+    can.drawCentredString(
+        297,
+        130,
+        footer_note
+    )
+
+    # ---------------------------------------------------
+    # PAGE NUMBER
+    # ---------------------------------------------------
+
+    can.setFillColor(knauf_blue)
+
+    can.setFont(
+        "Helvetica",
+        10
+    )
+
+    can.drawRightString(
+        560,
+        32,
+        "Side 1"
+    )
+
+    # ---------------------------------------------------
+    # SAVE OVERLAY
+    # ---------------------------------------------------
 
     can.save()
 
     # ---------------------------------------------------
-    # MERGE TEMPLATE + DATA
+    # MERGE TEMPLATE + OVERLAY
     # ---------------------------------------------------
 
     packet.seek(0)
@@ -1882,6 +1981,10 @@ def generate_pdf():
     )
 
     output.add_page(base_page)
+
+    # ---------------------------------------------------
+    # EXPORT
+    # ---------------------------------------------------
 
     output_stream = BytesIO()
 
