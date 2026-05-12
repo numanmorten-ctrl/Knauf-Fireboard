@@ -394,17 +394,24 @@ header[data-testid="stHeader"]::after {
 SIDEBAR
 --------------------------------------------------- */
 
-section[data-testid="stSidebar"] {
+div[data-testid="stSidebar"] .stButton button[kind="primary"] {
 
-    background-color: white;
+    background-color: #003b7a !important;
 
-    border-right: 1px solid #d9dde3;
+    border: 1px solid #003b7a !important;
 
-    margin-top: 4.05rem !important;
+    color: white !important;
 
-    z-index: 0 !important;
+    font-weight: 700 !important;
 
-    position: relative !important;
+    box-shadow: none !important;
+}
+
+div[data-testid="stSidebar"] .stButton button[kind="primary"] p {
+
+    color: white !important;
+
+    font-weight: 700 !important;
 }
 
 /* ---------------------------------------------------
@@ -970,6 +977,7 @@ with st.sidebar:
                 if st.button(
                     label,
                     key=f"sidebar_calc_{idx}",
+                    type="primary" if is_active else "secondary",
                     use_container_width=True
                 ):
 
