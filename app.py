@@ -861,11 +861,11 @@ with st.sidebar:
     st.markdown("""
     <style>
 
-    /* Aktiv beregning */
+    /* AKTIV BEREGNING */
 
     div[data-testid="stSidebar"] button[kind="primary"] {
 
-        background: #003b7a !important;
+        background-color: #003b7a !important;
 
         border: 1px solid #003b7a !important;
 
@@ -878,7 +878,7 @@ with st.sidebar:
 
     div[data-testid="stSidebar"] button[kind="primary"]:hover {
 
-        background: #002e5f !important;
+        background-color: #002e5f !important;
 
         border: 1px solid #002e5f !important;
 
@@ -950,16 +950,10 @@ with st.sidebar:
 
             with col1:
 
-                button_type = (
-                    "primary"
-                    if is_active
-                    else "secondary"
-                )
-
                 if st.button(
                     label,
                     key=f"sidebar_calc_{idx}",
-                    type=button_type,
+                    type="primary" if is_active else "secondary",
                     use_container_width=True
                 ):
 
@@ -992,6 +986,32 @@ with st.sidebar:
                     st.session_state.editing = True
 
                     st.session_state.current_step = 0
+
+                    st.rerun()
+
+            # ---------------------------------------------------
+            # DELETE
+            # ---------------------------------------------------
+
+            with col2:
+
+                if st.button(
+                    "🗑️",
+                    key=f"delete_sidebar_{idx}"
+                ):
+
+                    st.session_state.calculations.pop(
+                        idx
+                    )
+
+                    if (
+                        st.session_state.edit_index
+                        == idx
+                    ):
+
+                        st.session_state.edit_index = None
+
+                        st.session_state.editing = False
 
                     st.rerun()
 
