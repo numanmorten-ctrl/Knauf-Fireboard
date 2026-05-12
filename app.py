@@ -894,6 +894,41 @@ with col3:
         st.session_state.clear()
 
         st.rerun()
+
+# ---------------------------------------------------
+# PDF COORDINATES
+# ---------------------------------------------------
+
+# PROJECT INFO
+
+PROJECT_X = 240
+PROJECT_Y = 556
+PROJECT_LINE_HEIGHT = 20
+
+# CALCULATION
+
+CALC_X = 240
+CALC_Y = 386
+CALC_LINE_HEIGHT = 19
+
+# RESULT
+
+RESULT_X = 297
+RESULT_Y = 163
+
+# PAGE NUMBER
+
+PAGE_X = 328
+PAGE_Y = 16
+
+# FONT SIZES
+
+PROJECT_FONT = 9
+CALC_FONT = 9
+RESULT_FONT = 15
+PAGE_FONT = 11
+
+
 # ---------------------------------------------------
 # GENERATE COMPLETE PDF
 # ---------------------------------------------------
@@ -922,41 +957,36 @@ def generate_complete_pdf():
 
         can.setFont(
             "Helvetica",
-            9
+            PROJECT_FONT
         )
 
-        project_x = 240
-        project_y = 557
-
-        line_height = 20
-
         can.drawString(
-            project_x,
-            project_y,
+            PROJECT_X,
+            PROJECT_Y,
             st.session_state.project_name
         )
 
         can.drawString(
-            project_x,
-            project_y - line_height,
+            PROJECT_X,
+            PROJECT_Y - PROJECT_LINE_HEIGHT,
             st.session_state.prepared_by
         )
 
         can.drawString(
-            project_x,
-            project_y - (line_height * 2),
+            PROJECT_X,
+            PROJECT_Y - (PROJECT_LINE_HEIGHT * 2),
             st.session_state.company
         )
 
         can.drawString(
-            project_x,
-            project_y - (line_height * 3),
+            PROJECT_X,
+            PROJECT_Y - (PROJECT_LINE_HEIGHT * 3),
             datetime.now().strftime("%d-%m-%Y")
         )
 
         can.drawString(
-            project_x,
-            project_y - (line_height * 4),
+            PROJECT_X,
+            PROJECT_Y - (PROJECT_LINE_HEIGHT * 4),
             st.session_state.description
         )
 
@@ -964,50 +994,50 @@ def generate_complete_pdf():
         # CALCULATION
         # ---------------------------------------------------
 
-        calc_x = 240
-        calc_y = 383
-
-        calc_line_height = 18
+        can.setFont(
+            "Helvetica",
+            CALC_FONT
+        )
 
         can.drawString(
-            calc_x,
-            calc_y,
+            CALC_X,
+            CALC_Y,
             str(calc["category"])
         )
 
         can.drawString(
-            calc_x,
-            calc_y - calc_line_height,
+            CALC_X,
+            CALC_Y - CALC_LINE_HEIGHT,
             str(calc["profile"])
         )
 
         can.drawString(
-            calc_x,
-            calc_y - (calc_line_height * 2),
+            CALC_X,
+            CALC_Y - (CALC_LINE_HEIGHT * 2),
             f"{calc['sides']} sider"
         )
 
         can.drawString(
-            calc_x,
-            calc_y - (calc_line_height * 3),
+            CALC_X,
+            CALC_Y - (CALC_LINE_HEIGHT * 3),
             calc["montage"]
         )
 
         can.drawString(
-            calc_x,
-            calc_y - (calc_line_height * 4),
+            CALC_X,
+            CALC_Y - (CALC_LINE_HEIGHT * 4),
             f"R{calc['fire_time']}"
         )
 
         can.drawString(
-            calc_x,
-            calc_y - (calc_line_height * 5),
+            CALC_X,
+            CALC_Y - (CALC_LINE_HEIGHT * 5),
             f"{calc['temperature']} °C"
         )
 
         can.drawString(
-            calc_x,
-            calc_y - (calc_line_height * 6),
+            CALC_X,
+            CALC_Y - (CALC_LINE_HEIGHT * 6),
             f"{calc['apv']} m²/m³"
         )
 
@@ -1023,12 +1053,12 @@ def generate_complete_pdf():
 
         can.setFont(
             "Helvetica-Bold",
-            15
+            RESULT_FONT
         )
 
         can.drawCentredString(
-            297,
-            164,
+            RESULT_X,
+            RESULT_Y,
             (
                 f"Profil skal inddækkes med "
                 f"{int(calc['thickness'])} mm "
@@ -1048,12 +1078,12 @@ def generate_complete_pdf():
 
         can.setFont(
             "Helvetica",
-            11
+            PAGE_FONT
         )
 
         can.drawString(
-            330,
-            17,
+            PAGE_X,
+            PAGE_Y,
             str(page_number)
         )
 
@@ -1090,9 +1120,10 @@ def generate_complete_pdf():
     output_stream.seek(0)
 
     return output_stream
-    
+
+
 # ---------------------------------------------------
-# GENERATE Single PDF
+# GENERATE SINGLE PDF
 # ---------------------------------------------------
 
 def generate_single_pdf(calc):
@@ -1114,41 +1145,36 @@ def generate_single_pdf(calc):
 
     can.setFont(
         "Helvetica",
-        9
+        PROJECT_FONT
     )
 
-    project_x = 240
-    project_y = 557
-
-    line_height = 20
-
     can.drawString(
-        project_x,
-        project_y,
+        PROJECT_X,
+        PROJECT_Y,
         st.session_state.project_name
     )
 
     can.drawString(
-        project_x,
-        project_y - line_height,
+        PROJECT_X,
+        PROJECT_Y - PROJECT_LINE_HEIGHT,
         st.session_state.prepared_by
     )
 
     can.drawString(
-        project_x,
-        project_y - (line_height * 2),
+        PROJECT_X,
+        PROJECT_Y - (PROJECT_LINE_HEIGHT * 2),
         st.session_state.company
     )
 
     can.drawString(
-        project_x,
-        project_y - (line_height * 3),
+        PROJECT_X,
+        PROJECT_Y - (PROJECT_LINE_HEIGHT * 3),
         datetime.now().strftime("%d-%m-%Y")
     )
 
     can.drawString(
-        project_x,
-        project_y - (line_height * 4),
+        PROJECT_X,
+        PROJECT_Y - (PROJECT_LINE_HEIGHT * 4),
         st.session_state.description
     )
 
@@ -1156,50 +1182,50 @@ def generate_single_pdf(calc):
     # CALCULATION
     # ---------------------------------------------------
 
-    calc_x = 240
-    calc_y = 383
-
-    calc_line_height = 18
+    can.setFont(
+        "Helvetica",
+        CALC_FONT
+    )
 
     can.drawString(
-        calc_x,
-        calc_y,
+        CALC_X,
+        CALC_Y,
         str(calc["category"])
     )
 
     can.drawString(
-        calc_x,
-        calc_y - calc_line_height,
+        CALC_X,
+        CALC_Y - CALC_LINE_HEIGHT,
         str(calc["profile"])
     )
 
     can.drawString(
-        calc_x,
-        calc_y - (calc_line_height * 2),
+        CALC_X,
+        CALC_Y - (CALC_LINE_HEIGHT * 2),
         f"{calc['sides']} sider"
     )
 
     can.drawString(
-        calc_x,
-        calc_y - (calc_line_height * 3),
+        CALC_X,
+        CALC_Y - (CALC_LINE_HEIGHT * 3),
         calc["montage"]
     )
 
     can.drawString(
-        calc_x,
-        calc_y - (calc_line_height * 4),
+        CALC_X,
+        CALC_Y - (CALC_LINE_HEIGHT * 4),
         f"R{calc['fire_time']}"
     )
 
     can.drawString(
-        calc_x,
-        calc_y - (calc_line_height * 5),
+        CALC_X,
+        CALC_Y - (CALC_LINE_HEIGHT * 5),
         f"{calc['temperature']} °C"
     )
 
     can.drawString(
-        calc_x,
-        calc_y - (calc_line_height * 6),
+        CALC_X,
+        CALC_Y - (CALC_LINE_HEIGHT * 6),
         f"{calc['apv']} m²/m³"
     )
 
@@ -1215,12 +1241,12 @@ def generate_single_pdf(calc):
 
     can.setFont(
         "Helvetica-Bold",
-        15
+        RESULT_FONT
     )
 
     can.drawCentredString(
-        297,
-        164,
+        RESULT_X,
+        RESULT_Y,
         (
             f"Profil skal inddækkes med "
             f"{int(calc['thickness'])} mm "
@@ -1240,16 +1266,20 @@ def generate_single_pdf(calc):
 
     can.setFont(
         "Helvetica",
-        11
+        PAGE_FONT
     )
 
     can.drawString(
-        330,
-        17,
+        PAGE_X,
+        PAGE_Y,
         "1"
     )
 
     can.save()
+
+    # ---------------------------------------------------
+    # MERGE TEMPLATE
+    # ---------------------------------------------------
 
     packet.seek(0)
 
@@ -1266,6 +1296,10 @@ def generate_single_pdf(calc):
     )
 
     output.add_page(base_page)
+
+    # ---------------------------------------------------
+    # OUTPUT
+    # ---------------------------------------------------
 
     output_stream = BytesIO()
 
