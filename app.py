@@ -502,31 +502,28 @@ FINAL BASEWEB INPUT FIX
 AKTIV SIDEBAR BEREGNING
 --------------------------------------------------- */
 
-div[data-testid="stSidebar"] button[kind="primary"] {
+div[data-testid="stSidebar"] div.stButton > button[kind="primary"] {
 
     background-color: #003b7a !important;
 
     border: 1px solid #003b7a !important;
 
+    color: white !important;
+
+    font-weight: 700 !important;
+
     box-shadow: none !important;
 }
 
-/* TVING AL TEKST TIL HVID */
+/* HOVER */
 
-div[data-testid="stSidebar"] button[kind="primary"],
-div[data-testid="stSidebar"] button[kind="primary"] *,
-div[data-testid="stSidebar"] button[kind="primary"] p,
-div[data-testid="stSidebar"] button[kind="primary"] span {
+div[data-testid="stSidebar"] div.stButton > button[kind="primary"]:hover {
+
+    background-color: #002e5f !important;
+
+    border: 1px solid #002e5f !important;
 
     color: white !important;
-
-    -webkit-text-fill-color: white !important;
-
-    fill: white !important;
-
-    opacity: 1 !important;
-
-    font-weight: 700 !important;
 }
 /* ---------------------------------------------------
 DIVIDER SPACING
