@@ -871,30 +871,39 @@ with st.sidebar:
     st.markdown("""
     <style>
 
-    /* AKTIV BEREGNING */
+    /* ---------------------------------------------------
+    AKTIV SIDEBAR BEREGNING
+    --------------------------------------------------- */
 
     div[data-testid="stSidebar"] button[kind="primary"] {
-    div[data-testid="stSidebar"] div.stButton > button.active-calc {
 
-        background-color: #003b7a !important;
+        background: #003b7a !important;
 
         border: 1px solid #003b7a !important;
-
-        color: white !important;
-
-        font-weight: 700 !important;
 
         box-shadow: none !important;
     }
 
-    div[data-testid="stSidebar"] button[kind="primary"]:hover {
-    div[data-testid="stSidebar"] div.stButton > button.active-calc:hover {
+    /* ALT TEKST I AKTIV KNAP */
 
-        background-color: #002e5f !important;
-
-        border: 1px solid #002e5f !important;
+    div[data-testid="stSidebar"] button[kind="primary"] * {
 
         color: white !important;
+
+        -webkit-text-fill-color: white !important;
+
+        font-weight: 700 !important;
+
+        opacity: 1 !important;
+    }
+
+    /* HOVER */
+
+    div[data-testid="stSidebar"] button[kind="primary"]:hover {
+
+        background: #002e5f !important;
+
+        border: 1px solid #002e5f !important;
     }
 
     </style>
@@ -961,23 +970,6 @@ with st.sidebar:
             # ---------------------------------------------------
 
             with col1:
-
-                if is_active:
-
-                    st.markdown("""
-                    <style>
-                    div[data-testid="stSidebar"] button[kind="secondary"] {
-
-                        background-color: #003b7a !important;
-
-                        border: 1px solid #003b7a !important;
-
-                        color: white !important;
-
-                        font-weight: 700 !important;
-                    }
-                    </style>
-                    """, unsafe_allow_html=True)
 
                 if st.button(
                     label,
