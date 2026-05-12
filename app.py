@@ -77,8 +77,6 @@ div.stDownloadButton > button {
 
     border: 1px solid #b8c2cc !important;
 
-    background-color: white !important;
-
     color: #003b7a !important;
 
     font-size: 14px;
@@ -138,13 +136,15 @@ ACTIVE SIDEBAR CALCULATION
 
 section[data-testid="stSidebar"] button[kind="primary"] {
 
-    background-color: #009fe3 !important;
+    background:#003b7a !important;
 
-    border-color: #009fe3 !important;
+    border:1px solid #003b7a !important;
 
-    color: white !important;
+    color:white !important;
 
-    font-weight: 700 !important;
+    font-weight:700 !important;
+
+    box-shadow:none !important;
 }
 
 /* ---------------------------------------------------
