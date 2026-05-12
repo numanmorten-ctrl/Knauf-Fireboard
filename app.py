@@ -1776,10 +1776,6 @@ def generate_pdf():
     # PROJECT INFO
     # ---------------------------------------------------
 
-    # 0,5 cm til højre = +14 pt
-    # 1 mm ned = -3 pt
-    # skriftstørrelse op til 9
-
     project_x = 197
 
     can.setFont(
@@ -1865,14 +1861,14 @@ def generate_pdf():
     # CALCULATION DATA
     # ---------------------------------------------------
 
-    # 8 mm op
-    # 0,5 cm til højre
+    # 3 mm op
+    # mindre linjeafstand
 
     calc_x = 197
 
-    calc_y = 415
+    calc_y = 423
 
-    line_spacing = 20
+    line_spacing = 17
 
     can.setFont(
         "Helvetica",
@@ -1910,7 +1906,7 @@ def generate_pdf():
     # RESULT TEXT
     # ---------------------------------------------------
 
-    # 5 mm ned
+    # 0,5 mm ned
 
     can.setFillColor(colors.white)
 
@@ -1921,7 +1917,7 @@ def generate_pdf():
 
     can.drawCentredString(
         287,
-        222,
+        220.5,
         (
             f"Profil skal inddækkes med "
             f"{int(thickness)} mm "
@@ -1933,7 +1929,7 @@ def generate_pdf():
     # PAGE NUMBER
     # ---------------------------------------------------
 
-    # 1 cm til højre
+    # 2 mm til venstre
     # 1 mm ned
 
     can.setFillColor(
@@ -1946,8 +1942,8 @@ def generate_pdf():
     )
 
     can.drawString(
-        289,
-        25,
+        283,
+        22,
         "1"
     )
 
