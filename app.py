@@ -1842,16 +1842,16 @@ def generate_pdf():
         ]]
     )
 
-fireboard.setStyle(TableStyle([
+    fireboard.setStyle(TableStyle([
 
-    ("TOPPADDING", (0,0), (-1,-1), 2),
+        ("TOPPADDING", (0,0), (-1,-1), 2),
 
-    ("LEFTPADDING", (0,0), (-1,-1), 0),
+        ("LEFTPADDING", (0,0), (-1,-1), 0),
 
-    ("RIGHTPADDING", (0,0), (-1,-1), 0),
+        ("RIGHTPADDING", (0,0), (-1,-1), 0),
 
-    ("BOTTOMPADDING", (0,0), (-1,-1), 0),
-]))
+        ("BOTTOMPADDING", (0,0), (-1,-1), 0),
+    ]))
 
     header_table = Table(
         [[logo, fireboard]],
