@@ -926,6 +926,17 @@ RESULT_Y = 220.5
 PAGE_X = 283
 PAGE_Y = 22
 
+# PROFILE IMAGE
+
+PROFILE_IMAGE_X = 430
+PROFILE_IMAGE_Y = 610
+PROFILE_IMAGE_WIDTH = 110
+PROFILE_IMAGE_HEIGHT = 110
+
+PROFILE_TEXT_X = 485
+PROFILE_TEXT_Y = 600
+PROFILE_TEXT_FONT = 11
+
 # FONT SIZES
 
 PROJECT_FONT = 9
@@ -933,6 +944,29 @@ DESCRIPTION_FONT = 9
 CALC_FONT = 9
 RESULT_FONT = 14
 PAGE_FONT = 10
+
+
+# ---------------------------------------------------
+# PROFILE IMAGE MAP
+# ---------------------------------------------------
+
+PROFILE_IMAGE_MAP = {
+
+    "H-profiler": "images/h_profiles.png",
+    "I-profiler": "images/i_profiles.png",
+    "U-profiler": "images/u_profiles.png",
+
+    "Kvadratiske rør varmvalsede": "images/shs_hot.png",
+    "Kvadratiske rør koldvalsede": "images/shs_cold.png",
+
+    "Rektangulære rør varmvalsede": "images/rhs_hot.png",
+    "Rektangulære rør koldvalsede": "images/rhs_cold.png",
+
+    "Cirkulære rør middelsvære": "images/chs_medium.png",
+    "Cirkulære rør svære": "images/chs_heavy.png",
+
+    "Andre profiler": "images/other_profiles.png",
+}
 
 
 # ---------------------------------------------------
@@ -944,24 +978,6 @@ def generate_complete_pdf():
     output = PdfWriter()
 
     template_path = "PDF_template.pdf"
-
-    image_map = {
-
-        "H-profiler": "images/h_profiles.png",
-        "I-profiler": "images/i_profiles.png",
-        "U-profiler": "images/u_profiles.png",
-
-        "Kvadratiske rør varmvalsede": "images/shs_hot.png",
-        "Kvadratiske rør koldvalsede": "images/shs_cold.png",
-
-        "Rektangulære rør varmvalsede": "images/rhs_hot.png",
-        "Rektangulære rør koldvalsede": "images/rhs_cold.png",
-
-        "Cirkulære rør middelsvære": "images/chs_medium.png",
-        "Cirkulære rør svære": "images/chs_heavy.png",
-
-        "Andre profiler": "images/other_profiles.png",
-    }
 
     for page_number, calc in enumerate(
         st.session_state.calculations,
@@ -987,19 +1003,19 @@ def generate_complete_pdf():
         can.drawString(
             PROJECT_X,
             PROJECT_Y,
-            st.session_state.project_name
+            str(st.session_state.project_name)
         )
 
         can.drawString(
             PROJECT_X,
             PROJECT_Y - PROJECT_LINE_HEIGHT,
-            st.session_state.prepared_by
+            str(st.session_state.prepared_by)
         )
 
         can.drawString(
             PROJECT_X,
             PROJECT_Y - (PROJECT_LINE_HEIGHT * 2),
-            st.session_state.company
+            str(st.session_state.company)
         )
 
         can.drawString(
@@ -1011,7 +1027,7 @@ def generate_complete_pdf():
         can.drawString(
             PROJECT_X,
             PROJECT_Y - (PROJECT_LINE_HEIGHT * 4),
-            st.session_state.description
+            str(st.session_state.description)
         )
 
         # ---------------------------------------------------
@@ -1044,7 +1060,7 @@ def generate_complete_pdf():
         can.drawString(
             CALC_X,
             CALC_Y - (CALC_LINE_HEIGHT * 3),
-            calc["montage"]
+            str(calc["montage"])
         )
 
         can.drawString(
@@ -1069,7 +1085,7 @@ def generate_complete_pdf():
         # PROFILE IMAGE
         # ---------------------------------------------------
 
-        image_path = image_map.get(
+        image_path = PROFILE_IMAGE_MAP.get(
             calc["category"]
         )
 
@@ -1077,10 +1093,10 @@ def generate_complete_pdf():
 
             can.drawImage(
                 image_path,
-                430,
-                610,
-                width=110,
-                height=110,
+                PROFILE_IMAGE_X,
+                PROFILE_IMAGE_Y,
+                width=PROFILE_IMAGE_WIDTH,
+                height=PROFILE_IMAGE_HEIGHT,
                 preserveAspectRatio=True,
                 mask='auto'
             )
@@ -1091,12 +1107,12 @@ def generate_complete_pdf():
 
             can.setFont(
                 "Helvetica-Bold",
-                11
+                PROFILE_TEXT_FONT
             )
 
             can.drawCentredString(
-                485,
-                600,
+                PROFILE_TEXT_X,
+                PROFILE_TEXT_Y,
                 str(calc["profile"])
             )
 
@@ -1191,24 +1207,6 @@ def generate_single_pdf(calc):
 
     template_path = "PDF_template.pdf"
 
-    image_map = {
-
-        "H-profiler": "images/h_profiles.png",
-        "I-profiler": "images/i_profiles.png",
-        "U-profiler": "images/u_profiles.png",
-
-        "Kvadratiske rør varmvalsede": "images/shs_hot.png",
-        "Kvadratiske rør koldvalsede": "images/shs_cold.png",
-
-        "Rektangulære rør varmvalsede": "images/rhs_hot.png",
-        "Rektangulære rør koldvalsede": "images/rhs_cold.png",
-
-        "Cirkulære rør middelsvære": "images/chs_medium.png",
-        "Cirkulære rør svære": "images/chs_heavy.png",
-
-        "Andre profiler": "images/other_profiles.png",
-    }
-
     packet = BytesIO()
 
     can = canvas.Canvas(
@@ -1228,19 +1226,19 @@ def generate_single_pdf(calc):
     can.drawString(
         PROJECT_X,
         PROJECT_Y,
-        st.session_state.project_name
+        str(st.session_state.project_name)
     )
 
     can.drawString(
         PROJECT_X,
         PROJECT_Y - PROJECT_LINE_HEIGHT,
-        st.session_state.prepared_by
+        str(st.session_state.prepared_by)
     )
 
     can.drawString(
         PROJECT_X,
         PROJECT_Y - (PROJECT_LINE_HEIGHT * 2),
-        st.session_state.company
+        str(st.session_state.company)
     )
 
     can.drawString(
@@ -1252,7 +1250,7 @@ def generate_single_pdf(calc):
     can.drawString(
         PROJECT_X,
         PROJECT_Y - (PROJECT_LINE_HEIGHT * 4),
-        st.session_state.description
+        str(st.session_state.description)
     )
 
     # ---------------------------------------------------
@@ -1285,7 +1283,7 @@ def generate_single_pdf(calc):
     can.drawString(
         CALC_X,
         CALC_Y - (CALC_LINE_HEIGHT * 3),
-        calc["montage"]
+        str(calc["montage"])
     )
 
     can.drawString(
@@ -1310,7 +1308,7 @@ def generate_single_pdf(calc):
     # PROFILE IMAGE
     # ---------------------------------------------------
 
-    image_path = image_map.get(
+    image_path = PROFILE_IMAGE_MAP.get(
         calc["category"]
     )
 
@@ -1318,10 +1316,10 @@ def generate_single_pdf(calc):
 
         can.drawImage(
             image_path,
-            430,
-            610,
-            width=110,
-            height=110,
+            PROFILE_IMAGE_X,
+            PROFILE_IMAGE_Y,
+            width=PROFILE_IMAGE_WIDTH,
+            height=PROFILE_IMAGE_HEIGHT,
             preserveAspectRatio=True,
             mask='auto'
         )
@@ -1332,12 +1330,12 @@ def generate_single_pdf(calc):
 
         can.setFont(
             "Helvetica-Bold",
-            11
+            PROFILE_TEXT_FONT
         )
 
         can.drawCentredString(
-            485,
-            600,
+            PROFILE_TEXT_X,
+            PROFILE_TEXT_Y,
             str(calc["profile"])
         )
 
