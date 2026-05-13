@@ -66,10 +66,15 @@ h1, h2, h3 {
     font-weight: 700 !important;
 }
 
-p,
+/* INPUT LABELS */
+
 label {
 
-    color: #3e4650;
+    color: #3e4650 !important;
+
+    font-size: 15px !important;
+
+    font-weight: 500 !important;
 }
 /* ---------------------------------------------------
 BUTTONS
