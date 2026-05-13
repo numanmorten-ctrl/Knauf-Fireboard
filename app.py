@@ -616,6 +616,27 @@ div.stButton {
 
     margin-bottom: 0.5rem !important;
 }
+/* ---------------------------------------------------
+APV METHOD ACTIVE BUTTONS
+--------------------------------------------------- */
+
+div.stButton > button[kind="primary"] {
+
+    background-color: #003b7a !important;
+
+    border: 1px solid #003b7a !important;
+
+    color: white !important;
+
+    font-weight: 700 !important;
+}
+
+div.stButton > button[kind="primary"] * {
+
+    color: white !important;
+
+    -webkit-text-fill-color: white !important;
+}
 </style>
 """, unsafe_allow_html=True)
 
