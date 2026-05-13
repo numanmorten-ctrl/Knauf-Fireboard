@@ -2101,7 +2101,7 @@ if current_step == 0:
                 value=(
                     str(st.session_state.surface_area)
                     if st.session_state.surface_area
-                    else "200"
+                    else ""
                 )
             )
 
@@ -2110,7 +2110,7 @@ if current_step == 0:
                 value=(
                     str(st.session_state.steel_area)
                     if st.session_state.steel_area
-                    else "2000"
+                    else ""
                 )
             )
 
