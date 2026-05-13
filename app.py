@@ -2043,8 +2043,8 @@ if current_step == 0:
         # ---------------------------------------------------
         st.markdown("""
         <div style="
-            font-size:16px;
-            font-weight:400;
+            font-size:15px;
+            font-weight:500;
             color:#3e4650;
             margin-bottom:0.3rem;
         ">
