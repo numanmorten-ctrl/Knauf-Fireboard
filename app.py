@@ -2238,7 +2238,11 @@ if current_step == 1:
                     st.stop()
 
                 st.session_state.selected_profile = (
+
                     st.session_state.custom_profile_name
+
+                    if st.session_state.custom_profile_name
+                    else "Specialprofil"
                 )
 
             st.session_state.current_step = 2
