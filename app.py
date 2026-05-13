@@ -665,10 +665,8 @@ div.stButton > button {
     margin-top: 0px !important;
 }
 /* ---------------------------------------------------
-SELECTBOX ARROW CLEAN
+SELECTBOX ARROW IMPROVED
 --------------------------------------------------- */
-
-/* SELECT CONTAINER */
 
 div[data-baseweb="select"] > div {
 
@@ -681,20 +679,17 @@ div[data-baseweb="select"] svg {
 
     color: #003b7a !important;
 
-    width: 18px !important;
+    width: 22px !important;
 
-    height: 18px !important;
+    height: 22px !important;
 
-    margin-right: 6px !important;
-}
+    margin-right: 10px !important;
 
-/* HØJRE FELT */
+    padding-left: 14px !important;
 
-div[data-baseweb="select"] svg {
+    border-left: 1px solid #c7d0d9 !important;
 
-    padding-left: 10px;
-
-    border-left: 1px solid #d9dde3;
+    opacity: 1 !important;
 }
 </style>
 """, unsafe_allow_html=True)
