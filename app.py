@@ -2123,12 +2123,12 @@ if current_step == 0:
         else:
 
             ap_input = st.text_input(
-                "Opvarmet omkreds Ap (mm)",
+                "Indtast indvendig omkreds (mm)",
                 value=st.session_state.surface_area
             )
 
             v_input = st.text_input(
-                "Tværsnitsareal V (mm²)",
+                "Indtast stålets tværsnitsareal (mm²) Afslut med Enter",
                 value=st.session_state.steel_area
             )
 
