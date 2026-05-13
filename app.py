@@ -2307,12 +2307,17 @@ if current_step == 2:
 
     fire_options = [30, 60, 90, 120]
 
+    saved_fire_time = st.session_state.get(
+    "fire_time"
+    )
+
+    if saved_fire_time not in fire_options:
+        saved_fire_time = 30
+
     fire_time = st.selectbox(
         "Vælg brandbeskyttelsestid",
         fire_options,
-        index=fire_options.index(
-            st.session_state.get("fire_time", 30)
-        )
+        index=fire_options.index(saved_fire_time)
     )
 
     st.divider()
