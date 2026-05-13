@@ -335,18 +335,18 @@ div[role="radiogroup"] label {
     color: #2d343c !important;
 }
 
-/* Selected radio circle */
+/* Outer circle */
 
 div[role="radiogroup"] label[data-baseweb="radio"] > div:first-child {
 
     border-color: #003b7a !important;
 }
 
-/* Inner selected dot */
+/* Inner SVG dot */
 
-div[role="radiogroup"] label[data-baseweb="radio"] > div:first-child div {
+div[role="radiogroup"] svg circle {
 
-    background-color: #003b7a !important;
+    fill: #003b7a !important;
 }
 /* ---------------------------------------------------
 INFO / SUCCESS BOXES
