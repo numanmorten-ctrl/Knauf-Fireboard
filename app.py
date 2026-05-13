@@ -673,25 +673,41 @@ div[data-baseweb="select"] {
     position: relative;
 }
 
+/* HØJRE PIL-FELT */
+
 div[data-baseweb="select"]::after {
 
     content: "⌄";
 
     position: absolute;
 
-    right: 14px;
+    top: 0;
 
-    top: 50%;
+    right: 0;
 
-    transform: translateY(-52%);
+    width: 44px;
 
-    font-size: 18px;
+    height: 100%;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-left: 1px solid #b8c2cc;
+
+    background: #f8fafc;
 
     color: #003b7a;
 
-    pointer-events: none;
+    font-size: 18px;
 
     font-weight: 700;
+
+    pointer-events: none;
+
+    box-sizing: border-box;
 }
 </style>
 """, unsafe_allow_html=True)
