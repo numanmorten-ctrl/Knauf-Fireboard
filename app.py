@@ -725,6 +725,10 @@ defaults = {
 
     "custom_apv": None,
     "custom_profile_name": ""
+
+    "surface_area": "",
+    "steel_area": "",
+    "apv_method": "Direkte",
 }
 
 for key, value in defaults.items():
@@ -2076,12 +2080,12 @@ if current_step == 0:
 
             ap_input = st.text_input(
                 "Opvarmet omkreds Ap (mm)",
-                value=""
+                value=st.session_state.surface_area
             )
 
             v_input = st.text_input(
                 "Tværsnitsareal V (mm²)",
-                value=""
+                value=st.session_state.steel_area
             )
 
             try:
@@ -2098,6 +2102,9 @@ if current_step == 0:
                     (ap * 1000) / v
                 )
 
+                st.session_state.surface_area = ap_input
+                st.session_state.steel_area = v_input
+                
                 st.info(
                     f"Beregnet Ap/V: "
                     f"{calculated_apv} m²/m³"
@@ -2298,9 +2305,14 @@ if current_step == 2:
 
     st.divider()
 
+    fire_options = [30, 60, 90, 120]
+
     fire_time = st.selectbox(
         "Vælg brandbeskyttelsestid",
-        [30, 60, 90, 120]
+        fire_options,
+        index=fire_options.index(
+            st.session_state.get("fire_time", 30)
+        )
     )
 
     st.divider()
