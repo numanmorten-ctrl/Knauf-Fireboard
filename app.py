@@ -1979,13 +1979,20 @@ if current_step == 0:
             custom_profile_name
         )
 
+        apv_options = [
+            "Direkte Ap/V",
+            "Beregn Ap/V"
+        ]
+
         apv_method = st.radio(
             "Vælg metode",
-            [
-                "Direkte Ap/V",
-                "Beregn Ap/V"
-            ]
+            apv_options,
+            index=apv_options.index(
+                st.session_state.apv_method
+            )
         )
+
+st.session_state.apv_method = apv_method
 
         st.session_state.apv_method = apv_method
 
@@ -2017,13 +2024,21 @@ if current_step == 0:
             surface_area = st.number_input(
                 "Opvarmet omkreds Ap (mm)",
                 min_value=1.0,
-                value=100.0
+                value=(
+                    st.session_state.surface_area
+                    if st.session_state.surface_area
+                    else 100.0
+                )
             )
 
             steel_area = st.number_input(
                 "Tværsnitsareal V (mm²)",
                 min_value=1.0,
-                value=1000.0
+                value=(
+                    st.session_state.steel_area
+                    if st.session_state.steel_area
+                    else 1000.0
+                )
             )
 
             st.session_state.surface_area = (
