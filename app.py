@@ -1966,7 +1966,7 @@ if current_step == 0:
     # ANDRE PROFILER
     # ---------------------------------------------------
 
-        else:
+    else:
 
         custom_profile_name = st.text_input(
             "Profilnavn",
