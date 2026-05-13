@@ -2040,23 +2040,35 @@ if current_step == 0:
         # DEFAULT PROFILE TYPE
         # ---------------------------------------------------
 
-        if (
-            st.session_state.get("profile_type")
-            is None
-        ):
+        if category == "H-profiler":
 
-            if category == "H-profiler":
+            valid_types = ["HEB", "HEA", "HEM"]
+
+            if (
+                st.session_state.get("profile_type")
+                not in valid_types
+            ):
 
                 st.session_state.profile_type = "HEB"
 
-            elif category == "I-profiler":
+        elif category == "I-profiler":
+
+            valid_types = ["IPE", "INP"]
+
+            if (
+                st.session_state.get("profile_type")
+                not in valid_types
+            ):
 
                 st.session_state.profile_type = "IPE"
 
-            elif category == "U-profiler":
+        elif category == "U-profiler":
 
-                st.session_state.profile_type = "UNP"
+            st.session_state.profile_type = "UNP"
 
+        else:
+
+            st.session_state.profile_type = None
         # ---------------------------------------------------
         # H-PROFILER
         # ---------------------------------------------------
@@ -2174,6 +2186,12 @@ if current_step == 0:
         )
 
         profiles = sorted(profiles)
+
+        if len(profiles) == 0:
+
+            st.error("Ingen profiler fundet")
+
+            st.stop()
 
         # ---------------------------------------------------
         # PROFILVALG
