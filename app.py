@@ -327,6 +327,37 @@ li:hover {
     color: #003b7a !important;
 }
 /* ---------------------------------------------------
+RADIO BUTTONS
+--------------------------------------------------- */
+
+div[role="radiogroup"] label {
+
+    color: #2d343c !important;
+}
+
+/* Selected radio */
+
+div[role="radiogroup"] input:checked + div {
+
+    background-color: #003b7a !important;
+
+    border-color: #003b7a !important;
+}
+
+/* Radio circle */
+
+div[role="radiogroup"] div[data-testid="stMarkdownContainer"] {
+
+    color: #2d343c !important;
+}
+
+/* FORCE KNauf blue */
+
+input[type="radio"] {
+
+    accent-color: #003b7a !important;
+}
+/* ---------------------------------------------------
 INFO / SUCCESS BOXES
 --------------------------------------------------- */
 
