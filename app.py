@@ -1729,7 +1729,37 @@ def card(
         use_container_width=True
     ):
 
+        # ---------------------------------------------------
+        # RESET VED NY PROFILKATEGORI
+        # ---------------------------------------------------
+
+        if state_key == "category":
+
+            st.session_state.selected_profile = None
+
+            st.session_state.custom_apv = None
+
+            st.session_state.surface_area = None
+
+            st.session_state.steel_area = None
+
+            st.session_state.custom_profile_name = ""
+
+            st.session_state.fire_time = None
+
+            st.session_state.temperature = 450
+
+            st.session_state.current_step = 0
+
+        # ---------------------------------------------------
+        # GEM VALG
+        # ---------------------------------------------------
+
         st.session_state[state_key] = label
+
+        # ---------------------------------------------------
+        # CIRKULÆRE PROFILER
+        # ---------------------------------------------------
 
         if (
             label == "Cirkulære rør middelsvære"
@@ -1738,6 +1768,10 @@ def card(
         ):
 
             st.session_state["sides"] = "4"
+
+        else:
+
+            st.session_state["sides"] = None
 
         st.rerun()
 
