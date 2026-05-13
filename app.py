@@ -2017,17 +2017,32 @@ if current_step == 0:
         # BEREGN AP/V
         # ---------------------------------------------------
 
+        else:
+
             surface_area = st.number_input(
                 "Opvarmet omkreds Ap (mm)",
                 min_value=1.0,
+                value=(
+                    st.session_state.surface_area
+                    if st.session_state.surface_area
+                    else 100.0
+                ),
                 key="surface_area"
             )
 
             steel_area = st.number_input(
                 "Tværsnitsareal V (mm²)",
                 min_value=1.0,
+                value=(
+                    st.session_state.steel_area
+                    if st.session_state.steel_area
+                    else 1000.0
+                ),
                 key="steel_area"
             )
+
+            st.session_state.surface_area = surface_area
+            st.session_state.steel_area = steel_area
 
             calculated_apv = round(
                 (surface_area * 1000)
@@ -2039,18 +2054,7 @@ if current_step == 0:
                 f"{calculated_apv} m²/m³"
             )
 
-            st.session_state.custom_apv = (
-                calculated_apv
-            )
-
-            selected_profile = (
-                custom_profile_name
-            )
-
-            st.session_state.selected_profile = (
-                selected_profile
-            )
-
+            st.session_state.custom_apv = calculated_apv
     # ---------------------------------------------------
     # NAVIGATION
     # ---------------------------------------------------
