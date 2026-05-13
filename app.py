@@ -721,7 +721,18 @@ defaults = {
     "prepared_by": "",
     "description": "",
 
-    "last_updated": datetime.now()
+    "last_updated": datetime.now(),
+
+    # ---------------------------------------------------
+    # ANDRE PROFILER
+    # ---------------------------------------------------
+
+    "custom_apv": None,
+    "custom_profile_name": "",
+    "apv_method": "Direkte Ap/V",
+
+    "surface_area": None,
+    "steel_area": None
 }
 
 for key, value in defaults.items():
@@ -729,7 +740,6 @@ for key, value in defaults.items():
     if key not in st.session_state:
 
         st.session_state[key] = value
-
 # ---------------------------------------------------
 # LOAD DATA
 # ---------------------------------------------------
@@ -1934,23 +1944,121 @@ if current_step == 0:
 
     st.divider()
 
-    filtered_df = apv_df[
-        apv_df["profile_category"]
-        == category
-    ]
+    # ---------------------------------------------------
+    # STANDARD PROFILER
+    # ---------------------------------------------------
 
-    profiles = filtered_df[
-        "profile"
-    ].unique()
+    if category != "Andre profiler":
 
-    selected_profile = st.selectbox(
-        "Vælg profilstørrelse",
-        profiles
-    )
+        filtered_df = apv_df[
+            apv_df["profile_category"]
+            == category
+        ]
 
-    st.session_state.selected_profile = (
-    selected_profile
-    )
+        profiles = filtered_df[
+            "profile"
+        ].unique()
+
+        selected_profile = st.selectbox(
+            "Vælg profilstørrelse",
+            profiles
+        )
+
+        st.session_state.selected_profile = (
+            selected_profile
+        )
+
+    # ---------------------------------------------------
+    # ANDRE PROFILER
+    # ---------------------------------------------------
+
+    else:
+
+        custom_profile_name = st.text_input(
+            "Profilnavn",
+            value=st.session_state.custom_profile_name
+        )
+
+        st.session_state.custom_profile_name = (
+            custom_profile_name
+        )
+
+        apv_method = st.radio(
+            "Vælg metode",
+            [
+                "Direkte Ap/V",
+                "Beregn Ap/V"
+            ]
+        )
+
+        st.session_state.apv_method = apv_method
+
+        # ---------------------------------------------------
+        # DIREKTE AP/V
+        # ---------------------------------------------------
+
+        if apv_method == "Direkte Ap/V":
+
+            custom_apv = st.number_input(
+                "Indtast Ap/V værdi (m²/m³)",
+                min_value=1,
+                step=1,
+                value=(
+                    st.session_state.custom_apv
+                    if st.session_state.custom_apv
+                    else 150
+                )
+            )
+
+            st.session_state.custom_apv = custom_apv
+
+        # ---------------------------------------------------
+        # BEREGN AP/V
+        # ---------------------------------------------------
+
+        else:
+
+            surface_area = st.number_input(
+                "Opvarmet omkreds Ap (mm)",
+                min_value=1.0,
+                value=100.0
+            )
+
+            steel_area = st.number_input(
+                "Tværsnitsareal V (mm²)",
+                min_value=1.0,
+                value=1000.0
+            )
+
+            st.session_state.surface_area = (
+                surface_area
+            )
+
+            st.session_state.steel_area = (
+                steel_area
+            )
+
+            calculated_apv = round(
+                (surface_area * 1000)
+                / steel_area
+            )
+
+            st.info(
+                f"Beregnet Ap/V: "
+                f"{calculated_apv} m²/m³"
+            )
+
+            st.session_state.custom_apv = (
+                calculated_apv
+            )
+
+        selected_profile = (
+            custom_profile_name
+        )
+
+        st.session_state.selected_profile = (
+            selected_profile
+        )
 
     # ---------------------------------------------------
     # NAVIGATION
@@ -2226,34 +2334,50 @@ if (
     and temperature
 ):
 
-    row = apv_df[
-        (
-            apv_df["profile"]
-            == selected_profile
-        )
-        &
-        (
-            apv_df["montage"]
-            == montage
-        )
-        &
-        (
-            apv_df["sides"]
-            == int(sides)
-        )
-    ]
+    # ---------------------------------------------------
+    # STANDARD PROFILER
+    # ---------------------------------------------------
 
-    if row.empty:
+    if category != "Andre profiler":
 
-        st.error(
-            "Denne kombination er ikke mulig"
+        row = apv_df[
+            (
+                apv_df["profile"]
+                == selected_profile
+            )
+            &
+            (
+                apv_df["montage"]
+                == montage
+            )
+            &
+            (
+                apv_df["sides"]
+                == int(sides)
+            )
+        ]
+
+        if row.empty:
+
+            st.error(
+                "Denne kombination er ikke mulig"
+            )
+
+            st.stop()
+
+        apv = int(
+            row.iloc[0]["apv"]
         )
 
-        st.stop()
+    # ---------------------------------------------------
+    # ANDRE PROFILER
+    # ---------------------------------------------------
 
-    apv = int(
-        row.iloc[0]["apv"]
-    )
+    else:
+
+        apv = int(
+            st.session_state.custom_apv
+        )
 
     # ---------------------------------------------------
     # FIND TYKKELSE
