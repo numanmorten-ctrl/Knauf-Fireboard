@@ -76,6 +76,18 @@ label {
 
     font-weight: 500 !important;
 }
+/* CUSTOM MARKDOWN LABELS */
+
+div[data-testid="stMarkdownContainer"] p {
+
+    color: #3e4650 !important;
+
+    font-size: 15px !important;
+
+    font-weight: 500 !important;
+
+    margin-bottom: 0.3rem !important;
+}
 /* ---------------------------------------------------
 BUTTONS
 --------------------------------------------------- */
