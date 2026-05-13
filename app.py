@@ -2068,7 +2068,7 @@ if current_step == 0:
                 value=(
                     str(st.session_state.custom_apv)
                     if st.session_state.custom_apv
-                    else "150"
+                    else ""
                 )
             )
 
