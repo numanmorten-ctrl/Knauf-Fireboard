@@ -711,8 +711,6 @@ defaults = {
     "montage": None,
     "sides": None,
 
-    "selected_profile": None,
-
     "calculations": [],
 
     "edit_index": None,
@@ -723,18 +721,7 @@ defaults = {
     "prepared_by": "",
     "description": "",
 
-    "last_updated": datetime.now(),
-
-    # ---------------------------------------------------
-    # ANDRE PROFILER
-    # ---------------------------------------------------
-
-    "custom_apv": None,
-    "custom_profile_name": "",
-    "apv_method": "Direkte Ap/V",
-
-    "surface_area": None,
-    "steel_area": None
+    "last_updated": datetime.now()
 }
 
 for key, value in defaults.items():
@@ -742,6 +729,7 @@ for key, value in defaults.items():
     if key not in st.session_state:
 
         st.session_state[key] = value
+
 # ---------------------------------------------------
 # LOAD DATA
 # ---------------------------------------------------
@@ -946,6 +934,7 @@ PROFILE_IMAGE_WIDTH = 110
 PROFILE_IMAGE_HEIGHT = 110
 
 PROFILE_TEXT_X = 485
+PROFILE_TEXT_Y = 720
 PROFILE_TEXT_Y = 730
 PROFILE_TEXT_FONT = 11
 
@@ -1731,35 +1720,7 @@ def card(
         use_container_width=True
     ):
 
-        # ---------------------------------------------------
-        # RESET VED NY PROFILKATEGORI
-        # ---------------------------------------------------
-
-        if state_key == "category":
-
-            st.session_state.custom_apv = None
-
-            st.session_state.surface_area = None
-
-            st.session_state.steel_area = None
-
-            st.session_state.custom_profile_name = ""
-
-            st.session_state.fire_time = None
-
-            st.session_state.temperature = 450
-
-            st.session_state.current_step = 0
-
-        # ---------------------------------------------------
-        # GEM VALG
-        # ---------------------------------------------------
-
         st.session_state[state_key] = label
-
-        # ---------------------------------------------------
-        # CIRKULÆRE PROFILER
-        # ---------------------------------------------------
 
         if (
             label == "Cirkulære rør middelsvære"
@@ -1874,6 +1835,10 @@ temperature = st.session_state.get(
     450
 )
 
+selected_profile = st.session_state.get(
+    "selected_profile"
+)
+
 apv = None
 thickness = None
 
@@ -1970,230 +1935,23 @@ if current_step == 0:
 
     st.divider()
 
-    # ---------------------------------------------------
-    # STANDARD PROFILER
-    # ---------------------------------------------------
+    filtered_df = apv_df[
+        apv_df["profile_category"]
+        == category
+    ]
 
-    if category != "Andre profiler":
+    profiles = filtered_df[
+        "profile"
+    ].unique()
 
-        filtered_df = apv_df[
-            apv_df["profile_category"]
-            == category
-        ]
+    selected_profile = st.selectbox(
+        "Vælg profilstørrelse",
+        profiles
+    )
 
-        profiles = filtered_df[
-            "profile"
-        ].unique()
-
-        # ---------------------------------------------------
-        # RESET UGYLDIG PROFIL
-        # ---------------------------------------------------
-
-        if (
-            "selected_profile" not in st.session_state
-            or
-            st.session_state.selected_profile is None
-            or
-            st.session_state.selected_profile == ""
-            or
-            st.session_state.selected_profile not in profiles
-        ):
-
-            st.session_state.selected_profile = (
-                profiles[0]
-            )
-
-        selected_profile = st.selectbox(
-            "Vælg profilstørrelse",
-            profiles,
-            key="selected_profile"
-        )
-    # ---------------------------------------------------
-    # ANDRE PROFILER
-    # ---------------------------------------------------
-
-    else:
-
-        custom_profile_name = st.text_input(
-            "Profilnavn (Valgfri)",
-            value=st.session_state.custom_profile_name
-        )
-
-        st.session_state.custom_profile_name = (
-            custom_profile_name
-        )
-
-        # ---------------------------------------------------
-        # METODE VALG
-        # ---------------------------------------------------
-
-        st.markdown("""
-        <div style="
-            font-size:16px;
-            font-weight:400;
-            color:#3e4650;
-            margin-bottom:0.3rem;
-        ">
-            Vælg metode
-        </div>
-        """, unsafe_allow_html=True)
-
-        col1, col2 = st.columns(2)
-
-        # ---------------------------------------------------
-        # DIREKTE AP/V BUTTON
-        # ---------------------------------------------------
-
-        with col1:
-
-            is_selected = (
-                st.session_state.apv_method
-                == "Direkte Ap/V"
-            )
-
-            if st.button(
-                "Direkte Ap/V",
-                use_container_width=True,
-                type=(
-                    "primary"
-                    if is_selected
-                    else "secondary"
-                )
-            ):
-
-                st.session_state.apv_method = (
-                    "Direkte Ap/V"
-                )
-
-                st.rerun()
-
-        # ---------------------------------------------------
-        # BEREGN AP/V BUTTON
-        # ---------------------------------------------------
-
-        with col2:
-
-            is_selected = (
-                st.session_state.apv_method
-                == "Beregn Ap/V"
-            )
-
-            if st.button(
-                "Beregn Ap/V",
-                use_container_width=True,
-                type=(
-                    "primary"
-                    if is_selected
-                    else "secondary"
-                )
-            ):
-
-                st.session_state.apv_method = (
-                    "Beregn Ap/V"
-                )
-
-                st.rerun()
-
-        apv_method = (
-            st.session_state.apv_method
-        )
-
-        st.divider()
-
-        # ---------------------------------------------------
-        # DIREKTE AP/V
-        # ---------------------------------------------------
-
-        if apv_method == "Direkte Ap/V":
-
-            custom_apv = st.text_input(
-                "Indtast Ap/V værdi (m²/m³)",
-                value=(
-                    str(st.session_state.custom_apv)
-                    if st.session_state.custom_apv
-                    else ""
-                )
-            )
-
-            try:
-
-                custom_apv = int(
-                    float(
-                        custom_apv.replace(",", ".")
-                    )
-                )
-
-                st.session_state.custom_apv = (
-                    custom_apv
-                )
-
-            except:
-
-                st.error(
-                    "Indtast gyldig Ap/V værdi"
-                )
-
-        # ---------------------------------------------------
-        # BEREGN AP/V
-        # ---------------------------------------------------
-
-        else:
-
-            surface_area = st.text_input(
-                "Opvarmet omkreds Ap (mm)",
-                value=(
-                    str(st.session_state.surface_area)
-                    if st.session_state.surface_area
-                    else ""
-                )
-            )
-
-            steel_area = st.text_input(
-                "Tværsnitsareal V (mm²)",
-                value=(
-                    str(st.session_state.steel_area)
-                    if st.session_state.steel_area
-                    else ""
-                )
-            )
-
-            try:
-
-                surface_area_value = float(
-                    surface_area.replace(",", ".")
-                )
-
-                steel_area_value = float(
-                    steel_area.replace(",", ".")
-                )
-
-                calculated_apv = round(
-                    (surface_area_value * 1000)
-                    / steel_area_value
-                )
-
-                st.info(
-                    f"Beregnet Ap/V: "
-                    f"{calculated_apv} m²/m³"
-                )
-
-                st.session_state.custom_apv = (
-                    calculated_apv
-                )
-
-                st.session_state.surface_area = (
-                    surface_area
-                )
-
-                st.session_state.steel_area = (
-                    steel_area
-                )
-
-            except:
-
-                st.error(
-                    "Indtast gyldige tal"
-                )
+    st.session_state.selected_profile = (
+    selected_profile
+    )
 
     # ---------------------------------------------------
     # NAVIGATION
@@ -2347,34 +2105,23 @@ if current_step == 1:
 
     col1, col2 = st.columns([1,1])
 
+    with col1:
+
+        if st.button(
+            "← Forrige",
+            use_container_width=True
+        ):
+
+            st.session_state.current_step = 0
+
+            st.rerun()
+
     with col2:
 
         if st.button(
             "Næste →",
             use_container_width=True
         ):
-
-            # ---------------------------------------------------
-            # ANDRE PROFILER VALIDERING
-            # ---------------------------------------------------
-
-            if category == "Andre profiler":
-
-                if not st.session_state.custom_apv:
-
-                    st.error(
-                        "Indtast eller beregn Ap/V"
-                    )
-    
-                    st.stop()
-
-                st.session_state.selected_profile = (
-
-                    st.session_state.custom_profile_name
-
-                    if st.session_state.custom_profile_name
-                    else "Specialprofil"
-                )
 
             st.session_state.current_step = 2
 
@@ -2468,68 +2215,46 @@ if current_step == 2:
 # ---------------------------------------------------
 # FIND AP/V + TYKKELSE
 # ---------------------------------------------------
-selected_profile = st.session_state.get(
-    "selected_profile"
-)
 
 apv = None
 thickness = None
 
 if (
-    (
-        selected_profile
-        or category == "Andre profiler"
-    )
+    selected_profile
     and montage
     and sides
     and fire_time
     and temperature
 ):
 
-    # ---------------------------------------------------
-    # STANDARD PROFILER
-    # ---------------------------------------------------
+    row = apv_df[
+        (
+            apv_df["profile"]
+            == selected_profile
+        )
+        &
+        (
+            apv_df["montage"]
+            == montage
+        )
+        &
+        (
+            apv_df["sides"]
+            == int(sides)
+        )
+    ]
 
-    if category != "Andre profiler":
+    if row.empty:
 
-        row = apv_df[
-            (
-                apv_df["profile"]
-                == selected_profile
-            )
-            &
-            (
-                apv_df["montage"]
-                == montage
-            )
-            &
-            (
-                apv_df["sides"]
-                == int(sides)
-            )
-        ]
-
-        if row.empty:
-
-            st.error(
-                "Denne kombination er ikke mulig"
-            )
-
-            st.stop()
-
-        apv = int(
-            row.iloc[0]["apv"]
+        st.error(
+            "Denne kombination er ikke mulig"
         )
 
-    # ---------------------------------------------------
-    # ANDRE PROFILER
-    # ---------------------------------------------------
+        st.stop()
 
-    else:
-
-        apv = int(
-            st.session_state.custom_apv
-        )
+    apv = int(
+        row.iloc[0]["apv"]
+    )
 
     # ---------------------------------------------------
     # FIND TYKKELSE
@@ -2563,17 +2288,6 @@ if (
 # ---------------------------------------------------
 
 if current_step == 3:
-
-    st.write({
-        "selected_profile": selected_profile,
-        "category": category,
-        "montage": montage,
-        "sides": sides,
-        "fire_time": fire_time,
-        "temperature": temperature,
-        "apv": apv,
-        "thickness": thickness
-    })
 
     st.subheader(
         "Resultat"
