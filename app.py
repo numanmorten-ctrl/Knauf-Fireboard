@@ -637,6 +637,16 @@ div.stButton > button[kind="primary"] * {
 
     -webkit-text-fill-color: white !important;
 }
+/* ---------------------------------------------------
+ALIGN CALCULATE BUTTON HEIGHT
+--------------------------------------------------- */
+
+div.stButton > button {
+
+    min-height: 44px !important;
+
+    margin-top: 0px !important;
+}
 </style>
 """, unsafe_allow_html=True)
 
@@ -2142,9 +2152,6 @@ if current_step == 0:
                 )
 
             with col2:
-
-                st.write("")
-                st.write("")
 
                 calculate_clicked = st.button(
                     "Beregn",
