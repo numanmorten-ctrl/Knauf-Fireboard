@@ -1984,9 +1984,16 @@ if current_step == 0:
         # METODE VALG
         # ---------------------------------------------------
 
-        st.markdown(
-            "##### Vælg metode"
-        )
+        st.markdown("""
+        <div style="
+            font-size:16px;
+            font-weight:400;
+            color:#3e4650;
+            margin-bottom:0.3rem;
+        ">
+            Vælg metode
+        </div>
+        """, unsafe_allow_html=True)
 
         col1, col2 = st.columns(2)
 
