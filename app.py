@@ -335,23 +335,7 @@ div[role="radiogroup"] label {
     color: #2d343c !important;
 }
 
-/* Selected radio */
-
-div[role="radiogroup"] input:checked + div {
-
-    background-color: #003b7a !important;
-
-    border-color: #003b7a !important;
-}
-
-/* Radio circle */
-
-div[role="radiogroup"] div[data-testid="stMarkdownContainer"] {
-
-    color: #2d343c !important;
-}
-
-/* FORCE KNauf blue */
+/* KNauf blue radio */
 
 input[type="radio"] {
 
