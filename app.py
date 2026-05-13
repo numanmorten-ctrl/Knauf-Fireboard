@@ -2024,6 +2024,43 @@ if current_step == 0:
 
         profile_options = []
 
+        # ---------------------------------------------------
+        # RESET PROFILE TYPE FOR OTHER CATEGORIES
+        # ---------------------------------------------------
+
+        if category not in [
+            "H-profiler",
+            "I-profiler",
+            "U-profiler"
+        ]:
+
+            st.session_state.profile_type = None
+
+        # ---------------------------------------------------
+        # DEFAULT PROFILE TYPE
+        # ---------------------------------------------------
+
+        if (
+            st.session_state.get("profile_type")
+            is None
+        ):
+
+            if category == "H-profiler":
+
+                st.session_state.profile_type = "HEB"
+
+            elif category == "I-profiler":
+
+                st.session_state.profile_type = "IPE"
+
+            elif category == "U-profiler":
+
+                st.session_state.profile_type = "UNP"
+
+        # ---------------------------------------------------
+        # H-PROFILER
+        # ---------------------------------------------------
+
         if category == "H-profiler":
 
             profile_options = [
@@ -2032,12 +2069,20 @@ if current_step == 0:
                 "HEM"
             ]
 
+        # ---------------------------------------------------
+        # I-PROFILER
+        # ---------------------------------------------------
+
         elif category == "I-profiler":
 
             profile_options = [
                 "IPE",
                 "INP"
             ]
+
+        # ---------------------------------------------------
+        # U-PROFILER
+        # ---------------------------------------------------
 
         elif category == "U-profiler":
 
@@ -2093,6 +2138,8 @@ if current_step == 0:
                         st.session_state.profile_type = (
                             option
                         )
+
+                        st.session_state.selected_profile = None
 
                         st.rerun()
 
