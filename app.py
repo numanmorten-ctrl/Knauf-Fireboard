@@ -2221,20 +2221,12 @@ if current_step == 1:
 
             if category == "Andre profiler":
 
-                if not st.session_state.custom_profile_name:
-
-                    st.error(
-                        "Indtast profilnavn"
-                    )
-
-                    st.stop()
-
                 if not st.session_state.custom_apv:
 
                     st.error(
                         "Indtast eller beregn Ap/V"
                     )
-
+    
                     st.stop()
 
                 st.session_state.selected_profile = (
