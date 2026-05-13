@@ -724,7 +724,7 @@ defaults = {
     "last_updated": datetime.now(),
 
     "custom_apv": None,
-    "custom_profile_name": ""
+    "custom_profile_name": "",
 
     "surface_area": "",
     "steel_area": "",
