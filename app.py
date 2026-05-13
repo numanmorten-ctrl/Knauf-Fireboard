@@ -1,4 +1,4 @@
-import base64
+    import base64
 from io import BytesIO
 from datetime import datetime
 from reportlab.pdfgen import canvas
@@ -1994,8 +1994,13 @@ if current_step == 0:
         # ---------------------------------------------------
 
         if (
-            st.session_state.selected_profile
-            not in profiles
+            "selected_profile" not in st.session_state
+            or
+            st.session_state.selected_profile is None
+            or
+            st.session_state.selected_profile == ""
+            or
+            st.session_state.selected_profile not in profiles
         ):
 
             st.session_state.selected_profile = (
@@ -2007,7 +2012,6 @@ if current_step == 0:
             profiles,
             key="selected_profile"
         )
-
     # ---------------------------------------------------
     # ANDRE PROFILER
     # ---------------------------------------------------
