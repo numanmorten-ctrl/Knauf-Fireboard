@@ -665,31 +665,63 @@ div.stButton > button {
     margin-top: 0px !important;
 }
 /* ---------------------------------------------------
-SELECTBOX ARROW IMPROVED
+SELECTBOX DROPDOWN TRIANGLE
 --------------------------------------------------- */
 
-div[data-baseweb="select"] > div {
-
-    position: relative;
-}
-
-/* PIL */
+/* skjul standard ikon */
 
 div[data-baseweb="select"] svg {
 
-    color: #003b7a !important;
+    display: none !important;
+}
 
-    width: 40px !important;
+/* select container */
 
-    height: 40px !important;
+div[data-baseweb="select"] > div {
 
-    margin-right: 10px !important;
+    position: relative !important;
+}
 
-    padding-left: 14px !important;
+/* custom trekant */
 
-    border-left: 1px solid #c7d0d9 !important;
+div[data-baseweb="select"] > div::after {
 
-    opacity: 1 !important;
+    content: "";
+
+    position: absolute;
+
+    right: 18px;
+
+    top: 50%;
+
+    transform: translateY(-35%);
+
+    width: 0;
+    height: 0;
+
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-top: 8px solid #003b7a;
+
+    pointer-events: none;
+}
+
+/* separator linje */
+
+div[data-baseweb="select"] > div::before {
+
+    content: "";
+
+    position: absolute;
+
+    top: 10px;
+    bottom: 10px;
+
+    right: 44px;
+
+    width: 1px;
+
+    background: #c7d0d9;
 }
 </style>
 """, unsafe_allow_html=True)
