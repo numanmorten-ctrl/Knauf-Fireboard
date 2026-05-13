@@ -679,9 +679,9 @@ div[data-baseweb="select"] svg {
 
     color: #003b7a !important;
 
-    width: 22px !important;
+    width: 40px !important;
 
-    height: 22px !important;
+    height: 40px !important;
 
     margin-right: 10px !important;
 
