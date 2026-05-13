@@ -327,28 +327,6 @@ li:hover {
     color: #003b7a !important;
 }
 /* ---------------------------------------------------
-RADIO BUTTONS
---------------------------------------------------- */
-
-div[role="radiogroup"] label {
-
-    color: #2d343c !important;
-}
-
-/* Selected radio outer */
-
-div[role="radiogroup"] [data-checked="true"] {
-
-    border-color: #003b7a !important;
-}
-
-/* Selected radio inner dot */
-
-div[role="radiogroup"] [data-checked="true"]::before {
-
-    background-color: #003b7a !important;
-}
-/* ---------------------------------------------------
 INFO / SUCCESS BOXES
 --------------------------------------------------- */
 
@@ -2002,22 +1980,75 @@ if current_step == 0:
             custom_profile_name
         )
 
-        apv_options = [
-            "Direkte Ap/V",
-            "Beregn Ap/V"
-        ]
+        # ---------------------------------------------------
+        # METODE VALG
+        # ---------------------------------------------------
 
-        apv_method = st.radio(
-            "Vælg metode",
-            apv_options,
-            index=apv_options.index(
+        st.markdown(
+            "##### Vælg metode"
+        )
+
+        col1, col2 = st.columns(2)
+
+        # ---------------------------------------------------
+        # DIREKTE AP/V BUTTON
+        # ---------------------------------------------------
+
+        with col1:
+
+            is_selected = (
                 st.session_state.apv_method
+                == "Direkte Ap/V"
             )
+
+            if st.button(
+                "Direkte Ap/V",
+                use_container_width=True,
+                type=(
+                    "primary"
+                    if is_selected
+                    else "secondary"
+                )
+            ):
+
+                st.session_state.apv_method = (
+                    "Direkte Ap/V"
+                )
+
+                st.rerun()
+
+        # ---------------------------------------------------
+        # BEREGN AP/V BUTTON
+        # ---------------------------------------------------
+
+        with col2:
+
+            is_selected = (
+                st.session_state.apv_method
+                == "Beregn Ap/V"
+            )
+
+            if st.button(
+                "Beregn Ap/V",
+                use_container_width=True,
+                type=(
+                    "primary"
+                    if is_selected
+                    else "secondary"
+                )
+            ):
+
+                st.session_state.apv_method = (
+                    "Beregn Ap/V"
+                )
+
+                st.rerun()
+
+        apv_method = (
+            st.session_state.apv_method
         )
 
-        st.session_state.apv_method = (
-            apv_method
-        )
+        st.divider()
 
         # ---------------------------------------------------
         # DIREKTE AP/V
