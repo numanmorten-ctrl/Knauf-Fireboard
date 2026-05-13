@@ -1956,7 +1956,7 @@ if current_step == 0:
         ]
 
         profiles = filtered_df[
-        "profile"
+            "profile"
         ].unique()
 
         selected_profile = st.selectbox(
@@ -1964,6 +1964,7 @@ if current_step == 0:
             profiles,
             key="selected_profile"
         )
+
     # ---------------------------------------------------
     # ANDRE PROFILER
     # ---------------------------------------------------
@@ -1992,7 +1993,9 @@ if current_step == 0:
             )
         )
 
-        st.session_state.apv_method = apv_method
+        st.session_state.apv_method = (
+            apv_method
+        )
 
         # ---------------------------------------------------
         # DIREKTE AP/V
@@ -2000,18 +2003,32 @@ if current_step == 0:
 
         if apv_method == "Direkte Ap/V":
 
-            custom_apv = st.number_input(
+            custom_apv = st.text_input(
                 "Indtast Ap/V værdi (m²/m³)",
-                min_value=1,
-                step=1,
                 value=(
-                    st.session_state.custom_apv
+                    str(st.session_state.custom_apv)
                     if st.session_state.custom_apv
-                    else 150
+                    else "150"
                 )
             )
 
-            st.session_state.custom_apv = custom_apv
+            try:
+
+                custom_apv = int(
+                    float(
+                        custom_apv.replace(",", ".")
+                    )
+                )
+
+                st.session_state.custom_apv = (
+                    custom_apv
+                )
+
+            except:
+
+                st.error(
+                    "Indtast gyldig Ap/V værdi"
+                )
 
         # ---------------------------------------------------
         # BEREGN AP/V
@@ -2019,39 +2036,62 @@ if current_step == 0:
 
         else:
 
-            surface_area = st.number_input(
+            surface_area = st.text_input(
                 "Opvarmet omkreds Ap (mm)",
-                min_value=1.0,
                 value=(
-                    st.session_state.surface_area
+                    str(st.session_state.surface_area)
                     if st.session_state.surface_area
-                    else 100.0
-                ),
-                key="surface_area"
+                    else "200"
+                )
             )
 
-            steel_area = st.number_input(
+            steel_area = st.text_input(
                 "Tværsnitsareal V (mm²)",
-                min_value=1.0,
                 value=(
-                    st.session_state.steel_area
+                    str(st.session_state.steel_area)
                     if st.session_state.steel_area
-                    else 1000.0
-                ),
-                key="steel_area"
+                    else "2000"
+                )
             )
 
-            calculated_apv = round(
-                (surface_area * 1000)
-                / steel_area
-            )
+            try:
 
-            st.info(
-                f"Beregnet Ap/V: "
-                f"{calculated_apv} m²/m³"
-            )
+                surface_area_value = float(
+                    surface_area.replace(",", ".")
+                )
 
-            st.session_state.custom_apv = calculated_apv
+                steel_area_value = float(
+                    steel_area.replace(",", ".")
+                )
+
+                calculated_apv = round(
+                    (surface_area_value * 1000)
+                    / steel_area_value
+                )
+
+                st.info(
+                    f"Beregnet Ap/V: "
+                    f"{calculated_apv} m²/m³"
+                )
+
+                st.session_state.custom_apv = (
+                    calculated_apv
+                )
+
+                st.session_state.surface_area = (
+                    surface_area
+                )
+
+                st.session_state.steel_area = (
+                    steel_area
+                )
+
+            except:
+
+                st.error(
+                    "Indtast gyldige tal"
+                )
+
     # ---------------------------------------------------
     # NAVIGATION
     # ---------------------------------------------------
