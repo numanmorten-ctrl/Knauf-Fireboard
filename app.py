@@ -2132,36 +2132,54 @@ if current_step == 0:
                 value=st.session_state.steel_area
             )
 
-            try:
+            col1, col2 = st.columns([1, 4])
 
-                ap = float(
-                    ap_input.replace(",", ".")
+            with col1:
+
+                calculate_clicked = st.button(
+                    "Beregn",
+                    use_container_width=True
                 )
 
-                v = float(
-                    v_input.replace(",", ".")
-                )
+            if calculate_clicked:
 
-                calculated_apv = round(
-                    (ap * 1000) / v
-                )
+                try:
 
-                st.session_state.surface_area = ap_input
-                st.session_state.steel_area = v_input
-                
+                    ap = float(
+                        ap_input.replace(",", ".")
+                    )
+
+                    v = float(
+                        v_input.replace(",", ".")
+                    )
+
+                    calculated_apv = round(
+                        (ap * 1000) / v
+                    )
+
+                    st.session_state.surface_area = (
+                        ap_input
+                    )
+
+                    st.session_state.steel_area = (
+                        v_input
+                    )
+
+                    st.session_state.custom_apv = (
+                        calculated_apv
+                    )
+
+                except:
+
+                    st.error(
+                        "Indtast gyldige tal"
+                    )
+
+            if st.session_state.custom_apv:
+
                 st.info(
                     f"Beregnet Ap/V: "
-                    f"{calculated_apv} m²/m³"
-                )
-
-                st.session_state.custom_apv = (
-                    calculated_apv
-                )
-
-            except:
-
-                st.error(
-                    "Indtast gyldige tal"
+                    f"{st.session_state.custom_apv} m²/m³"
                 )
 
     # ---------------------------------------------------
