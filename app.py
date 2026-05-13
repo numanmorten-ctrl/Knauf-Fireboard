@@ -2241,7 +2241,7 @@ if current_step == 1:
                     st.session_state.custom_profile_name
                 )
 
-            st.session_state.current_step = 1
+            st.session_state.current_step = 2
 
             st.rerun()
 # ---------------------------------------------------
