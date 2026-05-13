@@ -930,7 +930,7 @@ with col2:
 
     st.write("")
     st.write("")
-
+    
     if st.button(
         "🔄 Ny beregning",
         use_container_width=True
@@ -2381,7 +2381,7 @@ if current_step == 0:
                 "Indtast stålets Tværsnitsareal (mm²)"
             )
 
-            col1, col2 = st.columns([5, 1])
+            col1, col2 = st.columns([5, 1], vertical_alignment="bottom")
 
             with col1:
 
@@ -2392,9 +2392,6 @@ if current_step == 0:
                 )
 
             with col2:
-
-                st.write("")
-                st.write("")
 
                 calculate_clicked = st.button(
                     "Beregn",
