@@ -664,6 +664,35 @@ div.stButton > button {
 
     margin-top: 0px !important;
 }
+/* ---------------------------------------------------
+SELECTBOX DROPDOWN ARROW
+--------------------------------------------------- */
+
+div[data-baseweb="select"] {
+
+    position: relative;
+}
+
+div[data-baseweb="select"]::after {
+
+    content: "⌄";
+
+    position: absolute;
+
+    right: 14px;
+
+    top: 50%;
+
+    transform: translateY(-52%);
+
+    font-size: 18px;
+
+    color: #003b7a;
+
+    pointer-events: none;
+
+    font-weight: 700;
+}
 </style>
 """, unsafe_allow_html=True)
 
