@@ -1959,15 +1959,11 @@ if current_step == 0:
             "profile"
         ].unique()
 
-        selected_profile = st.selectbox(
-            "Vælg profilstørrelse",
-            profiles
-        )
-
-        st.session_state.selected_profile = (
-            selected_profile
-        )
-
+       selected_profile = st.selectbox(
+           "Vælg profilstørrelse",
+           profiles,
+           key="selected_profile"
+       )
     # ---------------------------------------------------
     # ANDRE PROFILER
     # ---------------------------------------------------
