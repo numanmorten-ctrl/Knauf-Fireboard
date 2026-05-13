@@ -1977,32 +1977,141 @@ if current_step == 0:
             custom_profile_name
         )
 
-        custom_apv = st.text_input(
-            "Ap/V værdi (m²/m³)",
-            value=(
-                str(st.session_state.custom_apv)
-                if st.session_state.custom_apv
-                else ""
+        st.divider()
+
+        # ---------------------------------------------------
+        # METODEVALG
+        # ---------------------------------------------------
+
+        col1, col2 = st.columns(2)
+
+        with col1:
+
+            if st.button(
+                "Direkte Ap/V",
+                use_container_width=True,
+                type=(
+                    "primary"
+                    if st.session_state.get(
+                        "apv_method",
+                        "Direkte"
+                    ) == "Direkte"
+                    else "secondary"
+                )
+            ):
+
+                st.session_state.apv_method = (
+                    "Direkte"
+                )
+
+                st.rerun()
+
+        with col2:
+
+            if st.button(
+                "Beregn Ap/V",
+                use_container_width=True,
+                type=(
+                    "primary"
+                    if st.session_state.get(
+                        "apv_method",
+                        "Direkte"
+                    ) == "Beregn"
+                    else "secondary"
+                )
+            ):
+
+                st.session_state.apv_method = (
+                    "Beregn"
+                )
+
+                st.rerun()
+
+        st.divider()
+
+        # ---------------------------------------------------
+        # DIREKTE AP/V
+        # ---------------------------------------------------
+
+        if (
+            st.session_state.get(
+                "apv_method",
+                "Direkte"
             )
-        )
+            == "Direkte"
+        ):
 
-        try:
-
-            custom_apv = int(
-                float(
-                    custom_apv.replace(",", ".")
+            custom_apv = st.text_input(
+                "Ap/V værdi (m²/m³)",
+                value=(
+                    str(st.session_state.custom_apv)
+                    if st.session_state.custom_apv
+                    else ""
                 )
             )
 
-            st.session_state.custom_apv = (
-                custom_apv
+            try:
+
+                custom_apv = int(
+                    float(
+                        custom_apv.replace(",", ".")
+                    )
+                )
+
+                st.session_state.custom_apv = (
+                    custom_apv
+                )
+
+            except:
+
+                st.error(
+                    "Indtast gyldig Ap/V værdi"
+                )
+
+        # ---------------------------------------------------
+        # BEREGN AP/V
+        # ---------------------------------------------------
+
+        else:
+
+            ap_input = st.text_input(
+                "Opvarmet omkreds Ap (mm)",
+                value=""
             )
 
-        except:
-
-            st.error(
-                "Indtast gyldig Ap/V værdi"
+            v_input = st.text_input(
+                "Tværsnitsareal V (mm²)",
+                value=""
             )
+
+            try:
+
+                ap = float(
+                    ap_input.replace(",", ".")
+                )
+
+                v = float(
+                    v_input.replace(",", ".")
+                )
+
+                calculated_apv = round(
+                    (ap * 1000) / v
+                )
+
+                st.info(
+                    f"Beregnet Ap/V: "
+                    f"{calculated_apv} m²/m³"
+                )
+
+                st.session_state.custom_apv = (
+                    calculated_apv
+                )
+
+            except:
+
+                st.error(
+                    "Indtast gyldige tal"
+                )
 
     # ---------------------------------------------------
     # NAVIGATION
