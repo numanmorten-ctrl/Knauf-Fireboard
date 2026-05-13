@@ -2127,14 +2127,24 @@ if current_step == 0:
                 value=st.session_state.surface_area
             )
 
-            v_input = st.text_input(
-                "Indtast stålets tværsnitsareal (mm²) Afslut med Enter",
-                value=st.session_state.steel_area
+            st.markdown(
+                "Indtast stålets Tværsnitsareal (mm²)"
             )
 
-            col1, col2 = st.columns([1, 4])
+            col1, col2 = st.columns([5, 1])
 
             with col1:
+
+                v_input = st.text_input(
+                    label="",
+                    value=st.session_state.steel_area,
+                    label_visibility="collapsed"
+                )
+
+            with col2:
+
+                st.write("")
+                st.write("")
 
                 calculate_clicked = st.button(
                     "Beregn",
