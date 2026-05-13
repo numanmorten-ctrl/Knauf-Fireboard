@@ -1992,8 +1992,6 @@ if current_step == 0:
             )
         )
 
-st.session_state.apv_method = apv_method
-
         st.session_state.apv_method = apv_method
 
         # ---------------------------------------------------
