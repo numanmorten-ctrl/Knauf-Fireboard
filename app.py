@@ -335,11 +335,18 @@ div[role="radiogroup"] label {
     color: #2d343c !important;
 }
 
-/* KNauf blue radio */
+/* Selected radio circle */
 
-input[type="radio"] {
+div[role="radiogroup"] label[data-baseweb="radio"] > div:first-child {
 
-    accent-color: #003b7a !important;
+    border-color: #003b7a !important;
+}
+
+/* Inner selected dot */
+
+div[role="radiogroup"] label[data-baseweb="radio"] > div:first-child div {
+
+    background-color: #003b7a !important;
 }
 /* ---------------------------------------------------
 INFO / SUCCESS BOXES
