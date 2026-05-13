@@ -756,6 +756,7 @@ st.markdown(header_html, unsafe_allow_html=True)
 defaults = {
 
     "category": None,
+    "profile_type": None,
     "montage": None,
     "sides": None,
 
@@ -909,6 +910,7 @@ with col2:
         reset_keys = [
 
             "category",
+            "profile_type",
             "montage",
             "sides",
             "selected_profile",
@@ -1546,6 +1548,7 @@ with st.sidebar:
         reset_keys = [
 
             "category",
+            "profile_type",
             "montage",
             "sides",
             "selected_profile",
@@ -2015,18 +2018,133 @@ if current_step == 0:
 
     if category != "Andre profiler":
 
+        # ---------------------------------------------------
+        # PROFILTYPER
+        # ---------------------------------------------------
+
+        profile_options = []
+
+        if category == "H-profiler":
+
+            profile_options = [
+                "HEB",
+                "HEA",
+                "HEM"
+            ]
+
+        elif category == "I-profiler":
+
+            profile_options = [
+                "IPE",
+                "INP"
+            ]
+
+        elif category == "U-profiler":
+
+            profile_options = [
+                "UNP"
+            ]
+
+        # ---------------------------------------------------
+        # TYPEVALG
+        # ---------------------------------------------------
+
+        if profile_options:
+
+            st.markdown("""
+            <div style="
+                font-size:15px;
+                font-weight:500;
+                color:#3e4650;
+                margin-bottom:0.3rem;
+            ">
+                Vælg profiltype
+            </div>
+            """, unsafe_allow_html=True)
+
+            cols = st.columns(
+                len(profile_options)
+            )
+
+            for idx, option in enumerate(
+                profile_options
+            ):
+
+                with cols[idx]:
+
+                    selected = (
+                        st.session_state.get(
+                            "profile_type"
+                        )
+                        == option
+                    )
+
+                    if st.button(
+                        option,
+                        key=f"profile_type_{option}",
+                        use_container_width=True,
+                        type=(
+                            "primary"
+                            if selected
+                            else "secondary"
+                        )
+                    ):
+
+                        st.session_state.profile_type = (
+                            option
+                        )
+
+                        st.rerun()
+
+            st.divider()
+
+        # ---------------------------------------------------
+        # FILTER DATA
+        # ---------------------------------------------------
+
         filtered_df = apv_df[
             apv_df["profile_category"]
             == category
         ]
 
-        profiles = filtered_df[
-            "profile"
-        ].unique()
+        selected_type = (
+            st.session_state.get(
+                "profile_type"
+            )
+        )
+
+        if selected_type:
+
+            filtered_df = filtered_df[
+                filtered_df["profile"]
+                .astype(str)
+                .str.startswith(selected_type)
+            ]
+
+        profiles = (
+            filtered_df["profile"]
+            .unique()
+        )
+
+        profiles = sorted(profiles)
+
+        # ---------------------------------------------------
+        # PROFILVALG
+        # ---------------------------------------------------
 
         selected_profile = st.selectbox(
             "Vælg profilstørrelse",
-            profiles
+            profiles,
+            index=(
+                list(profiles).index(
+                    st.session_state.selected_profile
+                )
+                if (
+                    st.session_state.selected_profile
+                    in profiles
+                )
+                else 0
+            )
         )
 
         st.session_state.selected_profile = (
@@ -2053,6 +2171,7 @@ if current_step == 0:
         # ---------------------------------------------------
         # METODEVALG
         # ---------------------------------------------------
+
         st.markdown("""
         <div style="
             font-size:15px;
@@ -2063,7 +2182,7 @@ if current_step == 0:
             Vælg metode
         </div>
         """, unsafe_allow_html=True)
-        
+
         col1, col2 = st.columns(2)
 
         with col1:
@@ -2179,6 +2298,9 @@ if current_step == 0:
                 )
 
             with col2:
+
+                st.write("")
+                st.write("")
 
                 calculate_clicked = st.button(
                     "Beregn",
