@@ -1579,6 +1579,25 @@ with st.sidebar:
                         calc["profile"]
                     )
 
+                    st.session_state.apv_method = calc.get(
+                        "apv_method",
+                        "Direkte"
+                    )
+
+                    st.session_state.custom_apv = calc.get(
+                        "custom_apv"
+                    )
+
+                    st.session_state.surface_area = calc.get(
+                        "surface_area",
+                        ""
+                    )
+
+                    st.session_state.steel_area = calc.get(
+                        "steel_area",
+                        ""
+                    )
+
                     st.session_state.edit_index = idx
 
                     st.session_state.editing = True
@@ -2556,6 +2575,11 @@ if current_step == 3:
 
         "apv": apv,
         "thickness": thickness
+         # ANDRE PROFILER
+        "apv_method": st.session_state.get("apv_method"),
+        "custom_apv": st.session_state.get("custom_apv"),
+        "surface_area": st.session_state.get("surface_area"),
+        "steel_area": st.session_state.get("steel_area"),
     }
 
     # ---------------------------------------------------
