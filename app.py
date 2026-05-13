@@ -335,25 +335,18 @@ div[role="radiogroup"] label {
     color: #2d343c !important;
 }
 
-/* Outer ring */
+/* Selected radio outer */
 
-div[role="radiogroup"] div[data-testid="stMarkdownContainer"] {
+div[role="radiogroup"] [data-checked="true"] {
 
-    color: #2d343c !important;
+    border-color: #003b7a !important;
 }
 
-/* Selected radio */
+/* Selected radio inner dot */
 
-div[role="radiogroup"] input:checked {
+div[role="radiogroup"] [data-checked="true"]::before {
 
-    accent-color: #003b7a !important;
-}
-
-/* Force SVG fill */
-
-div[role="radiogroup"] svg {
-
-    fill: #003b7a !important;
+    background-color: #003b7a !important;
 }
 /* ---------------------------------------------------
 INFO / SUCCESS BOXES
