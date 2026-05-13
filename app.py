@@ -2562,6 +2562,17 @@ if (
 
 if current_step == 3:
 
+    st.write({
+        "selected_profile": selected_profile,
+        "category": category,
+        "montage": montage,
+        "sides": sides,
+        "fire_time": fire_time,
+        "temperature": temperature,
+        "apv": apv,
+        "thickness": thickness
+    })
+
     st.subheader(
         "Resultat"
     )
