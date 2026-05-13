@@ -2010,15 +2010,17 @@ if current_step == 0:
 
         with col1:
 
+            direkte_selected = (
+                st.session_state.apv_method
+                == "Direkte"
+            )
+
             if st.button(
                 "Direkte Ap/V",
                 use_container_width=True,
                 type=(
                     "primary"
-                    if st.session_state.get(
-                        "apv_method",
-                        "Direkte"
-                    ) == "Direkte"
+                    if direkte_selected
                     else "secondary"
                 )
             ):
@@ -2031,15 +2033,17 @@ if current_step == 0:
 
         with col2:
 
+            beregn_selected = (
+                st.session_state.apv_method
+                == "Beregn"
+            )
+
             if st.button(
                 "Beregn Ap/V",
                 use_container_width=True,
                 type=(
                     "primary"
-                    if st.session_state.get(
-                        "apv_method",
-                        "Direkte"
-                    ) == "Beregn"
+                    if beregn_selected
                     else "secondary"
                 )
             ):
