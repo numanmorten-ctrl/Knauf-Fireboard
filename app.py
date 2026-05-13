@@ -2041,9 +2041,6 @@ if current_step == 0:
                 key="steel_area"
             )
 
-            st.session_state.surface_area = surface_area
-            st.session_state.steel_area = steel_area
-
             calculated_apv = round(
                 (surface_area * 1000)
                 / steel_area
