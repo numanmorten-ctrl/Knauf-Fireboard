@@ -721,7 +721,10 @@ defaults = {
     "prepared_by": "",
     "description": "",
 
-    "last_updated": datetime.now()
+    "last_updated": datetime.now(),
+
+    "custom_apv": None,
+    "custom_profile_name": ""
 }
 
 for key, value in defaults.items():
@@ -1935,23 +1938,71 @@ if current_step == 0:
 
     st.divider()
 
-    filtered_df = apv_df[
-        apv_df["profile_category"]
-        == category
-    ]
+    # ---------------------------------------------------
+    # STANDARD PROFILER
+    # ---------------------------------------------------
 
-    profiles = filtered_df[
-        "profile"
-    ].unique()
+    if category != "Andre profiler":
 
-    selected_profile = st.selectbox(
-        "Vælg profilstørrelse",
-        profiles
-    )
+        filtered_df = apv_df[
+            apv_df["profile_category"]
+            == category
+        ]
 
-    st.session_state.selected_profile = (
-    selected_profile
-    )
+        profiles = filtered_df[
+            "profile"
+        ].unique()
+
+        selected_profile = st.selectbox(
+            "Vælg profilstørrelse",
+            profiles
+        )
+
+        st.session_state.selected_profile = (
+            selected_profile
+        )
+
+    # ---------------------------------------------------
+    # ANDRE PROFILER
+    # ---------------------------------------------------
+
+        else:
+
+        custom_profile_name = st.text_input(
+            "Profilnavn",
+            value=st.session_state.custom_profile_name
+        )
+
+        st.session_state.custom_profile_name = (
+            custom_profile_name
+        )
+
+        custom_apv = st.text_input(
+            "Ap/V værdi (m²/m³)",
+            value=(
+                str(st.session_state.custom_apv)
+                if st.session_state.custom_apv
+                else ""
+            )
+        )
+
+        try:
+
+            custom_apv = int(
+                float(
+                    custom_apv.replace(",", ".")
+                )
+            )
+
+            st.session_state.custom_apv = (
+                custom_apv
+            )
+
+        except:
+
+            st.error(
+                "Indtast gyldig Ap/V værdi"
+            )
 
     # ---------------------------------------------------
     # NAVIGATION
@@ -2216,45 +2267,69 @@ if current_step == 2:
 # FIND AP/V + TYKKELSE
 # ---------------------------------------------------
 
-apv = None
-thickness = None
-
 if (
-    selected_profile
+    (
+        selected_profile
+        or category == "Andre profiler"
+    )
     and montage
     and sides
     and fire_time
     and temperature
 ):
 
-    row = apv_df[
-        (
-            apv_df["profile"]
-            == selected_profile
-        )
-        &
-        (
-            apv_df["montage"]
-            == montage
-        )
-        &
-        (
-            apv_df["sides"]
-            == int(sides)
-        )
-    ]
+    # ---------------------------------------------------
+    # STANDARD PROFILER
+    # ---------------------------------------------------
 
-    if row.empty:
+    if category != "Andre profiler":
 
-        st.error(
-            "Denne kombination er ikke mulig"
+        row = apv_df[
+            (
+                apv_df["profile"]
+                == selected_profile
+            )
+            &
+            (
+                apv_df["montage"]
+                == montage
+            )
+            &
+            (
+                apv_df["sides"]
+                == int(sides)
+            )
+        ]
+
+        if row.empty:
+
+            st.error(
+                "Denne kombination er ikke mulig"
+            )
+
+            st.stop()
+
+        apv = int(
+            row.iloc[0]["apv"]
         )
 
-        st.stop()
+    # ---------------------------------------------------
+    # ANDRE PROFILER
+    # ---------------------------------------------------
 
-    apv = int(
-        row.iloc[0]["apv"]
-    )
+    else:
+
+        apv = int(
+            st.session_state.custom_apv
+        )
+
+        selected_profile = (
+
+            st.session_state.custom_profile_name
+
+            if st.session_state.custom_profile_name
+            else "Specialprofil"
+        )
 
     # ---------------------------------------------------
     # FIND TYKKELSE
