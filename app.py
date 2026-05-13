@@ -1735,8 +1735,6 @@ def card(
 
         if state_key == "category":
 
-            st.session_state.selected_profile = ""
-
             st.session_state.custom_apv = None
 
             st.session_state.surface_area = None
