@@ -2574,7 +2574,8 @@ if current_step == 3:
         "temperature": temperature,
 
         "apv": apv,
-        "thickness": thickness
+        "thickness": thickness,
+        
          # ANDRE PROFILER
         "apv_method": st.session_state.get("apv_method"),
         "custom_apv": st.session_state.get("custom_apv"),
