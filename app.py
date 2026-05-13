@@ -1956,14 +1956,14 @@ if current_step == 0:
         ]
 
         profiles = filtered_df[
-            "profile"
+        "profile"
         ].unique()
 
-    selected_profile = st.selectbox(
-        "Vælg profilstørrelse",
-         profiles,
-         key="selected_profile"
-    )
+        selected_profile = st.selectbox(
+            "Vælg profilstørrelse",
+            profiles,
+            key="selected_profile"
+        )
     # ---------------------------------------------------
     # ANDRE PROFILER
     # ---------------------------------------------------
