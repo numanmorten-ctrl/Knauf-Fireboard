@@ -1735,7 +1735,7 @@ def card(
 
         if state_key == "category":
 
-            st.session_state.selected_profile = None
+            st.session_state.selected_profile = ""
 
             st.session_state.custom_apv = None
 
@@ -1988,6 +1988,19 @@ if current_step == 0:
         profiles = filtered_df[
             "profile"
         ].unique()
+
+        # ---------------------------------------------------
+        # RESET UGYLDIG PROFIL
+        # ---------------------------------------------------
+
+        if (
+            st.session_state.selected_profile
+            not in profiles
+        ):
+
+            st.session_state.selected_profile = (
+                profiles[0]
+            )
 
         selected_profile = st.selectbox(
             "Vælg profilstørrelse",
