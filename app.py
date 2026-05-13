@@ -335,16 +335,23 @@ div[role="radiogroup"] label {
     color: #2d343c !important;
 }
 
-/* Outer circle */
+/* Outer ring */
 
-div[role="radiogroup"] label[data-baseweb="radio"] > div:first-child {
+div[role="radiogroup"] div[data-testid="stMarkdownContainer"] {
 
-    border-color: #003b7a !important;
+    color: #2d343c !important;
 }
 
-/* Inner SVG dot */
+/* Selected radio */
 
-div[role="radiogroup"] svg circle {
+div[role="radiogroup"] input:checked {
+
+    accent-color: #003b7a !important;
+}
+
+/* Force SVG fill */
+
+div[role="radiogroup"] svg {
 
     fill: #003b7a !important;
 }
