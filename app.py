@@ -711,6 +711,8 @@ defaults = {
     "montage": None,
     "sides": None,
 
+    "selected_profile": None,
+
     "calculations": [],
 
     "edit_index": None,
