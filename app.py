@@ -699,8 +699,8 @@ div[data-baseweb="select"] > div::after {
     width: 0;
     height: 0;
 
-    border-left: 6px solid transparent;
-    border-right: 6px solid transparent;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
     border-top: 8px solid #7f7f7f;
 
     pointer-events: none;
