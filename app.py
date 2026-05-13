@@ -1874,10 +1874,6 @@ temperature = st.session_state.get(
     450
 )
 
-selected_profile = st.session_state.get(
-    "selected_profile"
-)
-
 apv = None
 thickness = None
 
@@ -2472,6 +2468,9 @@ if current_step == 2:
 # ---------------------------------------------------
 # FIND AP/V + TYKKELSE
 # ---------------------------------------------------
+selected_profile = st.session_state.get(
+    "selected_profile"
+)
 
 apv = None
 thickness = None
