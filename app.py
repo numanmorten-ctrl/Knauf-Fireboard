@@ -1769,10 +1769,6 @@ def card(
 
             st.session_state["sides"] = "4"
 
-        else:
-
-            st.session_state["sides"] = None
-
         st.rerun()
 
 
