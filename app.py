@@ -665,49 +665,36 @@ div.stButton > button {
     margin-top: 0px !important;
 }
 /* ---------------------------------------------------
-SELECTBOX DROPDOWN ARROW
+SELECTBOX ARROW CLEAN
 --------------------------------------------------- */
 
-div[data-baseweb="select"] {
+/* SELECT CONTAINER */
+
+div[data-baseweb="select"] > div {
 
     position: relative;
 }
 
-/* HØJRE PIL-FELT */
+/* PIL */
 
-div[data-baseweb="select"]::after {
+div[data-baseweb="select"] svg {
 
-    content: "⌄";
+    color: #003b7a !important;
 
-    position: absolute;
+    width: 18px !important;
 
-    top: 0;
+    height: 18px !important;
 
-    right: 0;
+    margin-right: 6px !important;
+}
 
-    width: 44px;
+/* HØJRE FELT */
 
-    height: 100%;
+div[data-baseweb="select"] svg {
 
-    display: flex;
+    padding-left: 10px;
 
-    align-items: center;
-
-    justify-content: center;
-
-    border-left: 1px solid #b8c2cc;
-
-    background: #f8fafc;
-
-    color: #003b7a;
-
-    font-size: 18px;
-
-    font-weight: 700;
-
-    pointer-events: none;
-
-    box-sizing: border-box;
+    border-left: 1px solid #d9dde3;
 }
 </style>
 """, unsafe_allow_html=True)
