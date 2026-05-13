@@ -2212,17 +2212,6 @@ if current_step == 1:
 
     col1, col2 = st.columns([1,1])
 
-    with col1:
-
-        if st.button(
-            "← Forrige",
-            use_container_width=True
-        ):
-
-            st.session_state.current_step = 0
-
-            st.rerun()
-
     with col2:
 
         if st.button(
@@ -2230,7 +2219,33 @@ if current_step == 1:
             use_container_width=True
         ):
 
-            st.session_state.current_step = 2
+            # ---------------------------------------------------
+            # ANDRE PROFILER VALIDERING
+            # ---------------------------------------------------
+
+            if category == "Andre profiler":
+
+                if not st.session_state.custom_profile_name:
+
+                    st.error(
+                        "Indtast profilnavn"
+                    )
+
+                    st.stop()
+
+                if not st.session_state.custom_apv:
+
+                    st.error(
+                        "Indtast eller beregn Ap/V"
+                    )
+
+                    st.stop()
+
+                st.session_state.selected_profile = (
+                    st.session_state.custom_profile_name
+                )
+
+            st.session_state.current_step = 1
 
             st.rerun()
 # ---------------------------------------------------
@@ -2327,7 +2342,10 @@ apv = None
 thickness = None
 
 if (
-    selected_profile
+    (
+        selected_profile
+        or category == "Andre profiler"
+    )
     and montage
     and sides
     and fire_time
