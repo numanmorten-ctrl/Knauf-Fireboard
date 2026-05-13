@@ -701,27 +701,9 @@ div[data-baseweb="select"] > div::after {
 
     border-left: 6px solid transparent;
     border-right: 6px solid transparent;
-    border-top: 8px solid #003b7a;
+    border-top: 8px solid #7f7f7f;
 
     pointer-events: none;
-}
-
-/* separator linje */
-
-div[data-baseweb="select"] > div::before {
-
-    content: "";
-
-    position: absolute;
-
-    top: 10px;
-    bottom: 10px;
-
-    right: 44px;
-
-    width: 1px;
-
-    background: #c7d0d9;
 }
 </style>
 """, unsafe_allow_html=True)
