@@ -757,6 +757,8 @@ defaults = {
 
     "category": None,
     "profile_type": None,
+    "selected_profile": None,
+    
     "montage": None,
     "sides": None,
 
