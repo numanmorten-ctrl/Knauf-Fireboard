@@ -2023,7 +2023,7 @@ if current_step == 0:
     else:
 
         custom_profile_name = st.text_input(
-            "Profilnavn",
+            "Profilnavn (vaglfri)",
             value=st.session_state.custom_profile_name
         )
 
