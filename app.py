@@ -724,18 +724,16 @@ div[data-baseweb="select"] > div::after {
 LANGUAGE DROPDOWN
 --------------------------------------------------- */
 
-/* KUN LANGUAGE SELECTBOX */
+/* SELECTBOX */
 
-.language-wrapper + div div[data-testid="stSelectbox"] {
+div[data-testid="stSelectbox"] {
 
     margin-top: -8px !important;
 }
 
-/* KUN LANGUAGE VALUE */
+/* SELECT VALUE */
 
-.language-wrapper + div div[data-baseweb="select"] > div {
-
-    padding-left: 20px !important;
+div[data-baseweb="select"] > div {
 
     min-height: 44px !important;
 
@@ -750,19 +748,19 @@ LANGUAGE DROPDOWN
 
     position: absolute;
 
-    left: 10px;
+    left: 4px;
 
-    top: 15px;
+    top: 16px;
 
     z-index: 1000;
 
     pointer-events: none;
 
-    font-size: 16px;
+    font-size: 15px;
 
     filter: grayscale(180%);
 
-    opacity: 1.0;
+    opacity: 0.9;
 }
 </style>
 """, unsafe_allow_html=True)
@@ -1001,7 +999,7 @@ fire_tables = {
 # ---------------------------------------------------
 
 col1, col2, col3, col4 = st.columns(
-    [6, 2, 2, 1.1],
+    [6, 2, 2, 1.4],
     vertical_alignment="bottom"
 )
 
