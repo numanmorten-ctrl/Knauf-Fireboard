@@ -734,13 +734,11 @@ LANGUAGE DROPDOWN
 
     font-size: 16px;
 
-    color: #7f7f7f !important;
-
-    opacity: 0.9;
-
     line-height: 1;
 
     filter: grayscale(100%);
+
+    opacity: 0.65;
 }
 
 /* SELECTBOX */
@@ -1075,15 +1073,15 @@ with col3:
 
 with col4:
 
-    st.markdown("""
-<div class="language-wrapper">
+   st.markdown("""
+    <div class="language-wrapper">
 
-    <div class="language-globe">
-        &#127760;
+        <div class="language-globe">
+            🌐
+        </div>
+
     </div>
-
-</div>
-""", unsafe_allow_html=True)
+    """, unsafe_allow_html=True)
 
     selected_language = st.selectbox(
         "",
