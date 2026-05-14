@@ -721,7 +721,36 @@ div[data-baseweb="select"] > div::after {
 }
 
 /* ---------------------------------------------------
-LANGUAGE DROPDOWN
+LANGUAGE ICON BOX
+--------------------------------------------------- */
+
+.language-icon-box {
+
+    height: 44px;
+
+    border: 1px solid #b8c2cc;
+
+    border-right: none;
+
+    background: white;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    font-size: 16px;
+
+    filter: grayscale(180%);
+
+    opacity: 0.82;
+
+    margin-top: -8px;
+}
+
+/* ---------------------------------------------------
+LANGUAGE SELECTBOX
 --------------------------------------------------- */
 
 div[data-testid="stSelectbox"] {
@@ -729,41 +758,11 @@ div[data-testid="stSelectbox"] {
     margin-top: -8px !important;
 }
 
-/* SELECT CONTAINER */
+/* FJERN VENSTRE BORDER */
 
-div[data-testid="stSelectbox"]
 div[data-baseweb="select"] > div {
 
-    min-height: 44px !important;
-}
-
-/* FLYT KUN TEKSTEN */
-
-div[data-testid="stSelectbox"]
-div[data-baseweb="select"] div[role="combobox"] {
-
-    padding-left: 30px !important;
-}
-
-/* GLOBE */
-
-.language-globe {
-
-    position: absolute;
-
-    left: 12px;
-
-    top: 17px;
-
-    z-index: 1000;
-
-    pointer-events: none;
-
-    font-size: 16px;
-
-    filter: grayscale(180%);
-
-    opacity: 0.82;
+    border-left: none !important;
 }
 </style>
 """, unsafe_allow_html=True)
@@ -1001,8 +1000,8 @@ fire_tables = {
 # HEADER
 # ---------------------------------------------------
 
-col1, col2, col3, col4 = st.columns(
-    [6, 2, 2, 1.4],
+col1, col2, col3, col4, col5 = st.columns(
+    [6, 2, 2, 0.32, 0.9],
     vertical_alignment="bottom"
 )
 
@@ -1072,16 +1071,22 @@ with col3:
         st.rerun()
 
 # ---------------------------------------------------
-# LANGUAGE
+# LANGUAGE ICON
 # ---------------------------------------------------
 
 with col4:
 
     st.markdown("""
-    <div class="language-select-wrapper">
-        <div class="language-globe">🌐</div>
+    <div class="language-icon-box">
+        🌐
     </div>
     """, unsafe_allow_html=True)
+
+# ---------------------------------------------------
+# LANGUAGE SELECT
+# ---------------------------------------------------
+
+with col5:
 
     selected_language = st.selectbox(
         "",
