@@ -717,6 +717,12 @@ div[data-baseweb="select"] > div::after {
 
     max-width: 90px;
 }
+/* LANGUAGE SELECTBOX */
+
+div[data-testid="stSelectbox"] {
+
+    margin-top: -2px !important;
+}
 </style>
 """, unsafe_allow_html=True)
 
@@ -1029,13 +1035,13 @@ with col4:
     st.write("")
 
     selected_language = st.selectbox(
-        "🌐",
-        options=["Dansk", "English"],
+        "Language",
+        options=["🌐 Dansk", "🌐 English"],
         index=0 if st.session_state.language == "DA" else 1,
         label_visibility="collapsed"
     )
 
-    if selected_language == "Dansk":
+    if "Dansk" in selected_language:
 
         new_lang = "DA"
 
