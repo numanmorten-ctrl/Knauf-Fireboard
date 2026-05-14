@@ -724,21 +724,31 @@ div[data-baseweb="select"] > div::after {
 LANGUAGE DROPDOWN
 --------------------------------------------------- */
 
-/* KUN language dropdown */
+/* LANGUAGE SELECTBOX */
 
-div[data-testid="stHorizontalBlock"] 
-div[data-testid="column"]:last-child
+div[data-testid="stSelectbox"]:has(div#language_select) {
+
+    margin-top: -8px !important;
+
+    position: relative !important;
+}
+
+/* SELECT CONTAINER */
+
+div[data-testid="stSelectbox"]:has(div#language_select)
 div[data-baseweb="select"] > div {
 
+    padding-left: 34px !important;
+
     min-height: 44px !important;
+}
 
-    display: flex !important;
+/* SELECT VALUE */
 
-    align-items: center !important;
+div[data-testid="stSelectbox"]:has(div#language_select)
+div[data-baseweb="select"] input {
 
-    gap: 12px !important;
-
-    padding-left: 12px !important;
+    padding-left: 4px !important;
 }
 
 /* GLOBE */
@@ -747,7 +757,7 @@ div[data-baseweb="select"] > div {
 
     position: absolute;
 
-    left: 14px;
+    left: 12px;
 
     top: 17px;
 
@@ -755,11 +765,11 @@ div[data-baseweb="select"] > div {
 
     pointer-events: none;
 
-    font-size: 15px;
+    font-size: 16px;
 
     filter: grayscale(180%);
 
-    opacity: 0.85;
+    opacity: 0.82;
 }
 </style>
 """, unsafe_allow_html=True)
@@ -1073,34 +1083,19 @@ with col3:
 
 with col4:
 
-    lang_icon_col, lang_select_col = st.columns(
-        [1, 6],
-        vertical_alignment="center"
+    st.markdown("""
+    <div class="language-select-wrapper">
+        <div class="language-globe">🌐</div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    selected_language = st.selectbox(
+        "",
+        options=["Dansk", "English"],
+        index=0 if st.session_state.language == "DA" else 1,
+        label_visibility="collapsed",
+        key="language_select"
     )
-
-    with lang_icon_col:
-
-        st.markdown("""
-        <div style="
-            font-size:16px;
-            filter:grayscale(180%);
-            opacity:0.82;
-            margin-top:6px;
-            margin-left:6px;
-        ">
-            🌐
-        </div>
-        """, unsafe_allow_html=True)
-
-    with lang_select_col:
-
-        selected_language = st.selectbox(
-            "",
-            options=["Dansk", "English"],
-            index=0 if st.session_state.language == "DA" else 1,
-            label_visibility="collapsed",
-            key="language_select"
-        )
 
     new_lang = (
         "DA"
