@@ -749,11 +749,6 @@ LANGUAGE ICON BUTTON
 
 div[data-testid="stButton"] button:disabled {
 
-    position: relative !important;
-
-    z-index: 2 !important;
-}
-
     height: 44px !important;
 
     min-height: 44px !important;
