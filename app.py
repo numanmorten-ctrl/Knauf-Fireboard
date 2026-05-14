@@ -738,7 +738,7 @@ div[data-testid="stSelectbox"]:has(#language_select) {
 div[data-testid="stSelectbox"]:has(#language_select)
 div[data-baseweb="select"] > div {
 
-    padding-left: 36px !important;
+    padding-left: 48px !important;
 
     min-height: 44px !important;
 }
@@ -749,9 +749,9 @@ div[data-baseweb="select"] > div {
 
     position: absolute;
 
-    left: 12px;
+    left: 14px;
 
-    top: 14px;
+    top: 17px;
 
     z-index: 1000;
 
