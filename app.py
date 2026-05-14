@@ -1073,54 +1073,34 @@ with col3:
 
 with col4:
 
-    st.markdown("""
-    <style>
-
-    /* KUN language dropdown */
-
-    div[data-testid="column"]:last-child
-    div[data-baseweb="select"] > div {
-
-        justify-content: center !important;
-
-        min-height: 44px !important;
-    }
-
-    /* LANGUAGE GLOBE */
-
-    .language-globe {
-
-        position: absolute;
-
-        left: 14px;
-
-        top: 17px;
-
-        z-index: 1000;
-
-        pointer-events: none;
-
-        font-size: 16px;
-
-        filter: grayscale(180%);
-
-        opacity: 0.82;
-    }
-
-    </style>
-
-    <div class="language-select-wrapper">
-        <div class="language-globe">🌐</div>
-    </div>
-    """, unsafe_allow_html=True)
-
-    selected_language = st.selectbox(
-        "",
-        options=["Dansk", "English"],
-        index=0 if st.session_state.language == "DA" else 1,
-        label_visibility="collapsed",
-        key="language_select"
+    lang_icon_col, lang_select_col = st.columns(
+        [1, 6],
+        vertical_alignment="center"
     )
+
+    with lang_icon_col:
+
+        st.markdown("""
+        <div style="
+            font-size:16px;
+            filter:grayscale(180%);
+            opacity:0.82;
+            margin-top:6px;
+            margin-left:6px;
+        ">
+            🌐
+        </div>
+        """, unsafe_allow_html=True)
+
+    with lang_select_col:
+
+        selected_language = st.selectbox(
+            "",
+            options=["Dansk", "English"],
+            index=0 if st.session_state.language == "DA" else 1,
+            label_visibility="collapsed",
+            key="language_select"
+        )
 
     new_lang = (
         "DA"
