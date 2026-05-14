@@ -733,7 +733,7 @@ div[data-testid="stSelectbox"] {
 
 /* SELECT VALUE */
 
-div[data-testid="stSelectbox"]:has(#language_select) div[data-baseweb="select"] > div {
+div[data-testid="stSelectbox"]:nth-of-type(1) div[data-baseweb="select"] > div {
 
     padding-left: 20Px !important;
 
