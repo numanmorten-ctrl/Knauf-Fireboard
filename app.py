@@ -719,7 +719,7 @@ LANGUAGE DROPDOWN
 
     position: absolute;
 
-    margin-top: 11px;
+    margin-top: 14px;
 
     margin-left: 4px;
 
@@ -744,11 +744,11 @@ div[data-testid="stSelectbox"] {
     margin-top: -8px !important;
 }
 
-/* SELECT TEXT */
+/* SELECT VALUE */
 
-div[data-baseweb="select"] span {
+div[data-baseweb="select"] > div {
 
-    margin-left: 28px !important;
+    padding-left: 24px !important;
 }
 /* SELECT TEXT */
 
