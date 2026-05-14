@@ -749,6 +749,11 @@ LANGUAGE ICON BUTTON
 
 div[data-testid="stButton"] button:disabled {
 
+    position: relative !important;
+
+    z-index: 2 !important;
+}
+
     height: 44px !important;
 
     min-height: 44px !important;
@@ -787,8 +792,13 @@ LANGUAGE SELECTBOX
 div[data-testid="stSelectbox"] {
 
     margin-top: -8px !important;
-}
 
+    margin-left: -8px !important;
+
+    position: relative !important;
+
+    z-index: 1 !important;
+}
 /* ---------------------------------------------------
 FJERN VENSTRE BORDER
 KUN LANGUAGE DROPDOWN
