@@ -724,11 +724,18 @@ div[data-baseweb="select"] > div::after {
 LANGUAGE DROPDOWN
 --------------------------------------------------- */
 
-/* KUN LANGUAGE SELECTBOX */
+/* SELECTBOX */
 
-div[data-baseweb="select"]:has(input[id*="language_select"]) > div {
+div[data-testid="stSelectbox"] {
 
-    padding-left: 20px !important;
+    margin-top: -8px !important;
+}
+
+/* SELECT VALUE */
+
+div[data-baseweb="select"] > div {
+
+    padding-left: 20Px !important;
 
     min-height: 44px !important;
 
@@ -743,7 +750,7 @@ div[data-baseweb="select"]:has(input[id*="language_select"]) > div {
 
     position: absolute;
 
-    left: 8px;
+    left: 10px;
 
     top: 15px;
 
@@ -753,9 +760,10 @@ div[data-baseweb="select"]:has(input[id*="language_select"]) > div {
 
     font-size: 16px;
 
-    filter: grayscale(100%);
+    filter: grayscale(120%);
+    filter: grayscale(180%);
 
-    opacity: 0.78;
+    opacity: 1.0;
 }
 </style>
 """, unsafe_allow_html=True)
