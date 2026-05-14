@@ -731,7 +731,14 @@ LANGUAGE DROPDOWN
     margin-top: -8px !important;
 }
 
-/* KUN LANGUAGE VALUE */
+/* SELVE SELECTBOXEN */
+
+[data-testid="column"]:nth-of-type(4) div[data-baseweb="select"] {
+
+    padding-left: 18px !important;
+}
+
+/* INDRE CONTAINER */
 
 [data-testid="column"]:nth-of-type(4) div[data-baseweb="select"] > div {
 
@@ -742,22 +749,15 @@ LANGUAGE DROPDOWN
     align-items: center !important;
 }
 
-/* SELVE TEKSTEN */
-
-[data-testid="column"]:nth-of-type(4) div[data-baseweb="select"] span {
-
-    margin-left: 16px !important;
-}
-
 /* LANGUAGE GLOBE */
 
 .language-globe {
 
     position: absolute;
 
-    left: 10px;
+    left: 8px;
 
-    top: 19px;
+    top: 15px;
 
     z-index: 1000;
 
