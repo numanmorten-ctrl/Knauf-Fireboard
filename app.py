@@ -727,7 +727,7 @@ div[data-testid="stSelectbox"] {
 
 div[data-baseweb="select"] > div {
 
-    padding-left: 220x !important;
+    padding-left: 22Px !important;
 
     min-height: 44px !important;
 
