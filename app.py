@@ -609,6 +609,14 @@ h1, h2, h3 {
 
     padding-bottom: 0rem !important;
 }
+h1 {
+
+    color: #2d343c !important;
+
+    font-weight: 700 !important;
+
+    font-size: 58px !important;
+}
 
 /* Mindre afstand mellem elementer */
 
