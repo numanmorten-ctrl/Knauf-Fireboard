@@ -711,6 +711,12 @@ div[data-baseweb="select"] > div::after {
 
     pointer-events: none;
 }
+/* LANGUAGE DROPDOWN */
+
+.language-dropdown {
+
+    max-width: 90px;
+}
 </style>
 """, unsafe_allow_html=True)
 
@@ -947,7 +953,7 @@ fire_tables = {
 # HEADER
 # ---------------------------------------------------
 
-col1, col2, col3, col4, col5 = st.columns([6, 2, 2, 0.6, 0.6])
+col1, col2, col3, col4 = st.columns([6, 2, 2, 1.2])
 
 with col1:
 
@@ -1021,25 +1027,27 @@ with col3:
 with col4:
 
     st.write("")
-    st.write("")
 
-    if st.button("🇩🇰"):
+    selected_language = st.selectbox(
+        "🌐",
+        options=["Dansk", "English"],
+        index=0 if st.session_state.language == "DA" else 1,
+        label_visibility="collapsed"
+    )
 
-        st.session_state.language = "DA"
+    if selected_language == "Dansk":
+
+        new_lang = "DA"
+
+    else:
+
+        new_lang = "EN"
+
+    if new_lang != st.session_state.language:
+
+        st.session_state.language = new_lang
 
         st.rerun()
-
-with col5:
-
-    st.write("")
-    st.write("")
-
-    if st.button("🇬🇧"):
-
-        st.session_state.language = "EN"
-
-        st.rerun()
-
 # ---------------------------------------------------
 # PDF COORDINATES
 # ---------------------------------------------------
