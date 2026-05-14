@@ -796,6 +796,8 @@ st.markdown(header_html, unsafe_allow_html=True)
 
 defaults = {
 
+    "language": "DA",
+    
     "category": None,
     "profile_type": None,
     "selected_profile": None,
@@ -828,6 +830,17 @@ for key, value in defaults.items():
     if key not in st.session_state:
 
         st.session_state[key] = value
+
+# ---------------------------------------------------
+# TRANSLATION HELPER
+# ---------------------------------------------------
+
+def t(key):
+
+    return translations[
+        st.session_state.language
+    ][key]
+
 
 # ---------------------------------------------------
 # LOAD DATA
@@ -928,12 +941,12 @@ fire_tables = {
 # HEADER
 # ---------------------------------------------------
 
-col1, col2, col3 = st.columns([6, 2, 2])
+col1, col2, col3, col4, col5 = st.columns([6, 2, 2, 0.6, 0.6])
 
 with col1:
 
     st.title(
-        "Brandbeskyttelse af stålkonstruktioner"
+        t("title")
     )
 
 # ---------------------------------------------------
@@ -946,7 +959,7 @@ with col2:
     st.write("")
     
     if st.button(
-        "🔄 Ny beregning",
+        f"🔄 {t('new_calculation')}"
         use_container_width=True
     ):
 
@@ -987,11 +1000,37 @@ with col3:
     st.write("")
 
     if st.button(
-        "🗑️ Nyt projekt",
+        f"🗑️ {t('new_project')}",
         use_container_width=True
     ):
 
         st.session_state.clear()
+
+        st.rerun()
+
+# ---------------------------------------------------
+# LANGUAGE
+# ---------------------------------------------------
+
+with col4:
+
+    st.write("")
+    st.write("")
+
+    if st.button("🇩🇰"):
+
+        st.session_state.language = "DA"
+
+        st.rerun()
+
+with col5:
+
+    st.write("")
+    st.write("")
+
+    if st.button("🇬🇧"):
+
+        st.session_state.language = "EN"
 
         st.rerun()
 
