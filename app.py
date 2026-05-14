@@ -8,6 +8,12 @@ import streamlit as st
 import pandas as pd
 import requests
 
+import streamlit as st
+import pandas as pd
+import requests
+
+from translations import translations
+
 from reportlab.platypus import (
     SimpleDocTemplate,
     Paragraph,
