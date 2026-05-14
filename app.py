@@ -1079,6 +1079,25 @@ with col4:
 
     st.markdown(
         """
+        <style>
+        .language-container {
+            position: relative;
+        }
+
+        .language-globe {
+            position: absolute;
+            left: 10px;
+            top: 13px;
+            z-index: 1000;
+            pointer-events: none;
+
+            font-size: 16px;
+
+            filter: grayscale(100%);
+            opacity: 0.55;
+        }
+        </style>
+
         <div class="language-container">
             <div class="language-globe">🌐</div>
         </div>
