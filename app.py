@@ -71,6 +71,14 @@ h1, h2, h3 {
 
     font-weight: 700 !important;
 }
+h1 {
+
+    color: #2d343c !important;
+
+    font-weight: 700 !important;
+
+    font-size: 40px !important;
+}
 
 /* INPUT LABELS */
 
@@ -608,14 +616,6 @@ h1, h2, h3 {
     margin-bottom: 0.2rem !important;
 
     padding-bottom: 0rem !important;
-}
-h1 {
-
-    color: #2d343c !important;
-
-    font-weight: 700 !important;
-
-    font-size: 58px !important;
 }
 
 /* Mindre afstand mellem elementer */
