@@ -1074,6 +1074,41 @@ with col3:
 with col4:
 
     st.markdown("""
+    <style>
+
+    /* KUN language dropdown */
+
+    div[data-testid="column"]:last-child
+    div[data-baseweb="select"] > div {
+
+        justify-content: center !important;
+
+        min-height: 44px !important;
+    }
+
+    /* LANGUAGE GLOBE */
+
+    .language-globe {
+
+        position: absolute;
+
+        left: 14px;
+
+        top: 17px;
+
+        z-index: 1000;
+
+        pointer-events: none;
+
+        font-size: 16px;
+
+        filter: grayscale(180%);
+
+        opacity: 0.82;
+    }
+
+    </style>
+
     <div class="language-select-wrapper">
         <div class="language-globe">🌐</div>
     </div>
