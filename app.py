@@ -724,29 +724,34 @@ div[data-baseweb="select"] > div::after {
 LANGUAGE DROPDOWN
 --------------------------------------------------- */
 
-/* SELECTBOX */
+/* KUN language dropdown */
 
-div[data-testid="stSelectbox"] {
+div[data-testid="stSelectbox"]:has(#language_select) {
 
     margin-top: -8px !important;
+
+    position: relative !important;
 }
 
-/* SELECT VALUE CONTAINER */
+/* KUN language select value */
 
-div[data-baseweb="select"] div {
+div[data-testid="stSelectbox"]:has(#language_select)
+div[data-baseweb="select"] > div {
 
-    padding-left: 14px !important;
+    padding-left: 36px !important;
+
+    min-height: 44px !important;
 }
 
-/* LANGUAGE GLOBE */
+/* GLOBE */
 
 .language-globe {
 
     position: absolute;
 
-    left: 6px;
+    left: 12px;
 
-    top: 15px;
+    top: 14px;
 
     z-index: 1000;
 
@@ -756,7 +761,7 @@ div[data-baseweb="select"] div {
 
     filter: grayscale(180%);
 
-    opacity: 0.9;
+    opacity: 0.85;
 }
 </style>
 """, unsafe_allow_html=True)
@@ -1070,33 +1075,11 @@ with col3:
 
 with col4:
 
-    st.markdown(
-        """
-        <style>
-        .language-wrapper {
-            position: relative;
-        }
-
-        .language-globe {
-            position: absolute;
-            left: 10px;
-            top: 13px;
-            z-index: 1000;
-            pointer-events: none;
-
-            font-size: 16px;
-
-            filter: grayscale(180%);
-            opacity: 1.0;
-        }
-        </style>
-
-        <div class="language-wrapper">
-            <div class="language-globe">🌐</div>
-        </div>
-        """,
-        unsafe_allow_html=True
-    )
+    st.markdown("""
+    <div class="language-select-wrapper">
+        <div class="language-globe">🌐</div>
+    </div>
+    """, unsafe_allow_html=True)
 
     selected_language = st.selectbox(
         "",
