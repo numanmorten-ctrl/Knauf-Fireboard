@@ -728,17 +728,19 @@ LANGUAGE DROPDOWN
     pointer-events: none;
 }
 
-/* SVG GLOBE */
+/* GLOBE */
 
-.language-globe svg {
+.language-globe {
 
-    width: 18px;
+    font-size: 16px;
 
-    height: 18px;
+    color: #7f7f7f !important;
 
-    stroke: #7f7f7f;
+    opacity: 0.9;
 
-    display: block;
+    line-height: 1;
+
+    filter: grayscale(100%);
 }
 
 /* SELECTBOX */
@@ -752,7 +754,7 @@ div[data-testid="stSelectbox"] {
 
 div[data-baseweb="select"] > div {
 
-    padding-left: 16px !important;
+    padding-left: 24px !important;
 }
 
 /* SELECT TEXT */
@@ -1074,37 +1076,14 @@ with col3:
 with col4:
 
     st.markdown("""
-        <div class="language-wrapper">
+<div class="language-wrapper">
 
-            <div class="language-globe">
+    <div class="language-globe">
+        &#127760;
+    </div>
 
-                <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                >
-
-                    <circle cx="12" cy="12" r="10"></circle>
-
-                    <line x1="2" y1="12" x2="22" y2="12"></line>
-
-                    <path d="M12 2
-                             a15.3 15.3 0 0 1 4 10
-                             a15.3 15.3 0 0 1 -4 10
-                             a15.3 15.3 0 0 1 -4 -10
-                             a15.3 15.3 0 0 1 4 -10">
-                    </path>
-
-                </svg>
-
-            </div>
-
-        </div>
-        """, unsafe_allow_html=True)
+</div>
+""", unsafe_allow_html=True)
 
     selected_language = st.selectbox(
         "",
