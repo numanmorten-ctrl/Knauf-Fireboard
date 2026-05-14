@@ -293,7 +293,7 @@ SELECTBOX DROPDOWN
 
 /* Main select container */
 
-div[data-baseweb="select"] > div {
+div[data-testid="stSelectbox"]:has(#language_select) div[data-baseweb="select"] > div {
 
     background: white !important;
 
