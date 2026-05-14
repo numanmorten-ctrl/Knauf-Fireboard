@@ -711,28 +711,16 @@ div[data-baseweb="select"] > div::after {
 
     pointer-events: none;
 }
-/* LANGUAGE DROPDOWN */
-
-.language-dropdown {
-
-    max-width: 90px;
-}
 /* LANGUAGE SELECTBOX */
 
 div[data-testid="stSelectbox"] {
 
-    margin-top: -2px !important;
-}
-/* LANGUAGE SELECTBOX ALIGNMENT */
-
-div[data-testid="stSelectbox"] {
-
-    margin-top: -14px !important;
+    margin-top: -18px !important;
 }
 
-/* LANGUAGE ICON */
+/* GLOBE ICON */
 
-div[data-testid="stSelectbox"] span {
+.language-globe {
 
     color: #7f7f7f !important;
 }
@@ -972,7 +960,10 @@ fire_tables = {
 # HEADER
 # ---------------------------------------------------
 
-col1, col2, col3, col4 = st.columns([6, 2, 2, 1.2])
+col1, col2, col3, col4 = st.columns(
+    [6, 2, 2, 1.1],
+    vertical_alignment="bottom"
+)
 
 with col1:
 
@@ -1045,20 +1036,32 @@ with col3:
 
 with col4:
 
+    st.markdown("""
+    <div style="
+        display:flex;
+        align-items:center;
+        gap:8px;
+        margin-top:-2px;
+        color:#7f7f7f;
+        font-size:22px;
+        padding-left:6px;
+    ">
+        🌐
+    </div>
+    """, unsafe_allow_html=True)
+
     selected_language = st.selectbox(
-        "Language",
-        options=["◌ Dansk", "◌ English"],
+        "",
+        options=["Dansk", "English"],
         index=0 if st.session_state.language == "DA" else 1,
         label_visibility="collapsed"
     )
 
-    if "Dansk" in selected_language:
-
-        new_lang = "DA"
-
-    else:
-
-        new_lang = "EN"
+    new_lang = (
+        "DA"
+        if selected_language == "Dansk"
+        else "EN"
+    )
 
     if new_lang != st.session_state.language:
 
