@@ -724,13 +724,6 @@ div[data-baseweb="select"] > div::after {
 LANGUAGE DROPDOWN
 --------------------------------------------------- */
 
-/* SELECTBOX */
-
-div[data-testid="stSelectbox"] {
-
-    margin-top: -8px !important;
-}
-
 /* SELECT VALUE */
 
 div[data-testid="stSelectbox"]:nth-of-type(1) div[data-baseweb="select"] > div {
@@ -750,7 +743,7 @@ div[data-testid="stSelectbox"]:nth-of-type(1) div[data-baseweb="select"] > div {
 
     left: -2px;
 
-    top: 15px;
+    top: 7px;
 
     z-index: 1000;
 
