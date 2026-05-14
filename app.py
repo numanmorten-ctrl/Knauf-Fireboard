@@ -731,15 +731,11 @@ div[data-testid="stSelectbox"] {
     margin-top: -8px !important;
 }
 
-/* SELECT VALUE */
+/* SELECT VALUE CONTAINER */
 
-div[data-baseweb="select"] > div {
+div[data-baseweb="select"] div {
 
-    min-height: 44px !important;
-
-    display: flex !important;
-
-    align-items: center !important;
+    padding-left: 14px !important;
 }
 
 /* LANGUAGE GLOBE */
@@ -748,9 +744,9 @@ div[data-baseweb="select"] > div {
 
     position: absolute;
 
-    left: 4px;
+    left: 6px;
 
-    top: 16px;
+    top: 15px;
 
     z-index: 1000;
 
