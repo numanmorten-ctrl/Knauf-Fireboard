@@ -724,25 +724,18 @@ div[data-baseweb="select"] > div::after {
 LANGUAGE DROPDOWN
 --------------------------------------------------- */
 
-/* KUN LANGUAGE SELECTBOX */
+/* SELECTBOX */
 
-[data-testid="column"]:nth-of-type(4) div[data-testid="stSelectbox"] {
+div[data-testid="stSelectbox"] {
 
     margin-top: -8px !important;
 }
 
-/* INPUTFELTET */
+/* SELECT VALUE */
 
-[data-testid="column"]:nth-of-type(4)
-div[data-baseweb="select"] input {
-
-    padding-left: 18px !important;
-}
-
-/* INDRE CONTAINER */
-
-[data-testid="column"]:nth-of-type(4)
 div[data-baseweb="select"] > div {
+
+    padding-left: 20Px !important;
 
     min-height: 44px !important;
 
@@ -757,7 +750,7 @@ div[data-baseweb="select"] > div {
 
     position: absolute;
 
-    left: 8px;
+    left: 10px;
 
     top: 15px;
 
@@ -767,6 +760,7 @@ div[data-baseweb="select"] > div {
 
     font-size: 16px;
 
+    filter: grayscale(120%);
     filter: grayscale(180%);
 
     opacity: 1.0;
