@@ -754,7 +754,7 @@ div[data-baseweb="select"] > div {
 
     filter: grayscale(100%);
 
-    opacity: 1.0;
+    opacity: 1.9;
 }
 </style>
 """, unsafe_allow_html=True)
