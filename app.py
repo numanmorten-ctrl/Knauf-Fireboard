@@ -711,6 +711,10 @@ div[data-baseweb="select"] > div::after {
 
     pointer-events: none;
 }
+
+/* ---------------------------------------------------
+LANGUAGE DROPDOWN
+--------------------------------------------------- */
 /* SELECTBOX */
 
 div[data-testid="stSelectbox"] {
@@ -722,7 +726,7 @@ div[data-testid="stSelectbox"] {
 
 div[data-baseweb="select"] > div {
 
-    padding-left: 30px !important;
+    padding-left: 24px !important;
 }
 </style>
 """, unsafe_allow_html=True)
