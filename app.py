@@ -793,8 +793,7 @@ div[data-testid="stSelectbox"] {
 KUN LANGUAGE DROPDOWN
 --------------------------------------------------- */
 
-div[data-testid="stSelectbox"]:has(#language_select)
-div[data-baseweb="select"] > div {
+.language-select-fix div[data-baseweb="select"] > div {
 
     border-left: none !important;
 }
@@ -1123,6 +1122,11 @@ with col4:
 
 with col5:
 
+    st.markdown(
+        '<div class="language-select-fix">',
+        unsafe_allow_html=True
+    )
+
     selected_language = st.selectbox(
         "",
         options=["Dansk", "English"],
@@ -1131,17 +1135,10 @@ with col5:
         key="language_select"
     )
 
-    new_lang = (
-        "DA"
-        if selected_language == "Dansk"
-        else "EN"
+    st.markdown(
+        '</div>',
+        unsafe_allow_html=True
     )
-
-    if new_lang != st.session_state.language:
-
-        st.session_state.language = new_lang
-
-        st.rerun()
 # ---------------------------------------------------
 # PDF COORDINATES
 # ---------------------------------------------------
