@@ -752,9 +752,9 @@ div[data-baseweb="select"] > div {
 
     font-size: 16px;
 
-    filter: grayscale(100%);
+    filter: grayscale(120%);
 
-    opacity: 1.9;
+    opacity: 1.0;
 }
 </style>
 """, unsafe_allow_html=True)
