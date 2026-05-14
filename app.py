@@ -715,6 +715,7 @@ div[data-baseweb="select"] > div::after {
 /* ---------------------------------------------------
 LANGUAGE DROPDOWN
 --------------------------------------------------- */
+
 /* SELECTBOX */
 
 div[data-testid="stSelectbox"] {
@@ -726,7 +727,34 @@ div[data-testid="stSelectbox"] {
 
 div[data-baseweb="select"] > div {
 
-    padding-left: 20px !important;
+    padding-left: 30px !important;
+
+    min-height: 44px !important;
+
+    display: flex !important;
+
+    align-items: center !important;
+}
+
+/* LANGUAGE GLOBE */
+
+.language-globe {
+
+    position: absolute;
+
+    left: 10px;
+
+    top: 15px;
+
+    z-index: 1000;
+
+    pointer-events: none;
+
+    font-size: 16px;
+
+    filter: grayscale(100%);
+
+    opacity: 0.78;
 }
 </style>
 """, unsafe_allow_html=True)
