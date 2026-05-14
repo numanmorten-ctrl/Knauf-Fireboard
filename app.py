@@ -721,6 +721,17 @@ div[data-baseweb="select"] > div::after {
 }
 
 /* ---------------------------------------------------
+LANGUAGE ICON COLUMN
+--------------------------------------------------- */
+
+div[data-testid="column"]:nth-last-child(2) {
+
+    display: flex !important;
+
+    align-items: flex-end !important;
+}
+
+/* ---------------------------------------------------
 LANGUAGE ICON BOX
 --------------------------------------------------- */
 
@@ -746,8 +757,6 @@ LANGUAGE ICON BOX
 
     opacity: 0.82;
 
-    margin-top: -16px;
-
     margin-right: -16px;
 }
 
@@ -760,7 +769,9 @@ div[data-testid="stSelectbox"] {
     margin-top: -8px !important;
 }
 
-/* FJERN VENSTRE BORDER */
+/* ---------------------------------------------------
+FJERN VENSTRE BORDER
+--------------------------------------------------- */
 
 div[data-baseweb="select"] > div {
 
