@@ -959,7 +959,7 @@ with col2:
     st.write("")
     
     if st.button(
-        f"🔄 {t('new_calculation')}"
+        f"🔄 {t('new_calculation')}",
         use_container_width=True
     ):
 
