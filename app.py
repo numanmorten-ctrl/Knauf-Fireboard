@@ -747,9 +747,9 @@ div[data-testid="stMarkdownContainer"] {
 FJERN COLUMN GAP MELLEM COL4 OG COL5
 --------------------------------------------------- */
 
-div[data-testid="stHorizontalBlock"] {
+div[data-testid="stHorizontalBlock"]:has(div[data-testid="stSelectbox"]) {
 
-    gap: 0rem !important;
+    gap: 0.05rem !important;
 }
 
 /* ---------------------------------------------------
