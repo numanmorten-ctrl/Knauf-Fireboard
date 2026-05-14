@@ -730,13 +730,15 @@ LANGUAGE DROPDOWN
 
 /* SVG GLOBE */
 
-.language-globe {
+.language-globe svg {
 
     width: 18px;
 
     height: 18px;
 
-    color: #7f7f7f;
+    stroke: #7f7f7f;
+
+    display: block;
 }
 
 /* SELECTBOX */
@@ -1072,34 +1074,37 @@ with col3:
 with col4:
 
     st.markdown("""
-    <div class="language-wrapper">
+        <div class="language-wrapper">
 
-    <svg
-        class="language-globe"
-        xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="2"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-    >
+            <div class="language-globe">
 
-    <circle cx="12" cy="12" r="10"></circle>
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                >
 
-    <line x1="2" y1="12" x2="22" y2="12"></line>
+                    <circle cx="12" cy="12" r="10"></circle>
 
-    <path d="M12 2
-             a15.3 15.3 0 0 1 4 10
-             a15.3 15.3 0 0 1 -4 10
-             a15.3 15.3 0 0 1 -4 -10
-             a15.3 15.3 0 0 1 4 -10">
-    </path>
+                    <line x1="2" y1="12" x2="22" y2="12"></line>
 
-    </svg>
+                    <path d="M12 2
+                             a15.3 15.3 0 0 1 4 10
+                             a15.3 15.3 0 0 1 -4 10
+                             a15.3 15.3 0 0 1 -4 -10
+                             a15.3 15.3 0 0 1 4 -10">
+                    </path>
 
-    </div>
-    """, unsafe_allow_html=True)
+                </svg>
+
+            </div>
+
+        </div>
+        """, unsafe_allow_html=True)
 
     selected_language = st.selectbox(
         "",
