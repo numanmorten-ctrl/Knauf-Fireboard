@@ -724,18 +724,18 @@ div[data-baseweb="select"] > div::after {
 LANGUAGE DROPDOWN
 --------------------------------------------------- */
 
-/* KUN LANGUAGE SELECTBOX */
+/* KUN HEADER LANGUAGE SELECTBOX */
 
-div[data-testid="stSelectbox"]:has(#language_select) {
+[data-testid="column"]:last-child div[data-testid="stSelectbox"] {
 
     margin-top: -8px !important;
 }
 
-/* KUN LANGUAGE VALUE */
+/* KUN HEADER LANGUAGE VALUE */
 
-div[data-testid="stSelectbox"]:has(#language_select) div[data-baseweb="select"] > div {
+[data-testid="column"]:last-child div[data-baseweb="select"] > div {
 
-    padding-left: 28px !important;
+    padding-left: 30px !important;
 
     min-height: 44px !important;
 
