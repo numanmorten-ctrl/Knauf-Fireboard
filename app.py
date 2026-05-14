@@ -721,7 +721,7 @@ LANGUAGE DROPDOWN
 
     margin-top: 11px;
 
-    margin-left: 8px;
+    margin-left: 4px;
 
     z-index: 1000;
 
@@ -748,7 +748,7 @@ div[data-testid="stSelectbox"] {
 
 div[data-baseweb="select"] span {
 
-    margin-left: 18px !important;
+    margin-left: 28px !important;
 }
 /* SELECT TEXT */
 
