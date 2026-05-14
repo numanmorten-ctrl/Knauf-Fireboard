@@ -12,10 +12,10 @@ translations = {
             "← Forrige",
 
         "new_calculation":
-            "🔄 Ny beregning",
+            "Ny beregning",
 
         "new_project":
-            "🗑️ Nyt projekt",
+            "Nyt projekt",
     },
 
     "EN": {
@@ -30,9 +30,9 @@ translations = {
             "← Previous",
 
         "new_calculation":
-            "🔄 New calculation",
+            "New calculation",
 
         "new_project":
-            "🗑️ New project",
+            "New project",
     }
 }
