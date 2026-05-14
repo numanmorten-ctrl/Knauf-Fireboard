@@ -748,7 +748,7 @@ div[data-testid="stSelectbox"]:nth-of-type(1) div[data-baseweb="select"] > div {
 
     position: absolute;
 
-    left: 10px;
+    left: -2px;
 
     top: 15px;
 
@@ -758,9 +758,9 @@ div[data-testid="stSelectbox"]:nth-of-type(1) div[data-baseweb="select"] > div {
 
     font-size: 16px;
 
-    filter: grayscale(180%);
+    filter: grayscale(100%);
 
-    opacity: 1.0;
+    opacity: 0.78;
 }
 </style>
 """, unsafe_allow_html=True)
