@@ -733,14 +733,20 @@ div[data-testid="stSelectbox"]:has(#language_select) {
     position: relative !important;
 }
 
-/* KUN language select value */
+/* KUN language select container */
 
 div[data-testid="stSelectbox"]:has(#language_select)
 div[data-baseweb="select"] > div {
 
-    padding-left: 48px !important;
-
     min-height: 44px !important;
+}
+
+/* FLYT KUN TEKSTEN */
+
+div[data-testid="stSelectbox"]:has(#language_select)
+div[data-baseweb="select"] span {
+
+    margin-left: 22px !important;
 }
 
 /* GLOBE */
