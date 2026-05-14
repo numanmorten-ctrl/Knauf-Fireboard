@@ -735,7 +735,7 @@ LANGUAGE DROPDOWN
 
 [data-testid="column"]:nth-of-type(4) div[data-baseweb="select"] > div {
 
-    padding-left: 22px !important;
+    padding-left: 34px !important;
 
     min-height: 44px !important;
 
@@ -752,7 +752,7 @@ LANGUAGE DROPDOWN
 
     left: 10px;
 
-    top: 15px;
+    top: 19px;
 
     z-index: 1000;
 
