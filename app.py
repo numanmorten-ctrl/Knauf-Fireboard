@@ -777,7 +777,7 @@ div[data-testid="stButton"] button:disabled {
 
     cursor: default !important;
 
-    margin-right: -10px !important;
+    margin-right: 0px !important;
 }
 
 /* ---------------------------------------------------
