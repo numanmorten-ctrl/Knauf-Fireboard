@@ -724,33 +724,21 @@ div[data-baseweb="select"] > div::after {
 LANGUAGE DROPDOWN
 --------------------------------------------------- */
 
-/* KUN sidste selectbox i headeren */
-
-div[data-testid="stHorizontalBlock"] 
-div[data-testid="column"]:last-child
-div[data-testid="stSelectbox"] {
-
-    margin-top: -8px !important;
-
-    position: relative !important;
-}
-
-/* SELECT CONTAINER */
+/* KUN language dropdown */
 
 div[data-testid="stHorizontalBlock"] 
 div[data-testid="column"]:last-child
 div[data-baseweb="select"] > div {
 
     min-height: 44px !important;
-}
 
-/* FLYT TEKST */
+    display: flex !important;
 
-div[data-testid="stHorizontalBlock"] 
-div[data-testid="column"]:last-child
-div[data-baseweb="select"] input {
+    align-items: center !important;
 
-    padding-left: 18px !important;
+    gap: 12px !important;
+
+    padding-left: 12px !important;
 }
 
 /* GLOBE */
