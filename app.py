@@ -724,18 +724,11 @@ div[data-baseweb="select"] > div::after {
 LANGUAGE DROPDOWN
 --------------------------------------------------- */
 
-/* KUN HEADER LANGUAGE SELECTBOX */
+/* KUN LANGUAGE SELECTBOX */
 
-[data-testid="column"]:last-child div[data-testid="stSelectbox"] {
+div[data-baseweb="select"]:has(input[id*="language_select"]) > div {
 
-    margin-top: -8px !important;
-}
-
-/* KUN HEADER LANGUAGE VALUE */
-
-[data-testid="column"]:last-child div[data-baseweb="select"] > div {
-
-    padding-left: 30px !important;
+    padding-left: 20px !important;
 
     min-height: 44px !important;
 
