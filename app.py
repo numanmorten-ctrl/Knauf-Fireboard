@@ -723,6 +723,19 @@ div[data-testid="stSelectbox"] {
 
     margin-top: -2px !important;
 }
+/* LANGUAGE SELECTBOX ALIGNMENT */
+
+div[data-testid="stSelectbox"] {
+
+    margin-top: -14px !important;
+}
+
+/* LANGUAGE ICON */
+
+div[data-testid="stSelectbox"] span {
+
+    color: #7f7f7f !important;
+}
 </style>
 """, unsafe_allow_html=True)
 
@@ -1032,11 +1045,9 @@ with col3:
 
 with col4:
 
-    st.write("")
-
     selected_language = st.selectbox(
         "Language",
-        options=["🌐 Dansk", "🌐 English"],
+        options=["◌ Dansk", "◌ English"],
         index=0 if st.session_state.language == "DA" else 1,
         label_visibility="collapsed"
     )
