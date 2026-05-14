@@ -733,7 +733,7 @@ div[data-testid="stSelectbox"]:has(#language_select) {
     position: relative !important;
 }
 
-/* KUN language select container */
+/* SELECT CONTAINER */
 
 div[data-testid="stSelectbox"]:has(#language_select)
 div[data-baseweb="select"] > div {
@@ -741,12 +741,12 @@ div[data-baseweb="select"] > div {
     min-height: 44px !important;
 }
 
-/* FLYT KUN TEKSTEN */
+/* FLYT TEKST */
 
 div[data-testid="stSelectbox"]:has(#language_select)
-div[data-baseweb="select"] span {
+div[data-baseweb="select"] div {
 
-    margin-left: 22px !important;
+    padding-left: 14px !important;
 }
 
 /* GLOBE */
