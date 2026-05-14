@@ -724,9 +724,11 @@ div[data-baseweb="select"] > div::after {
 LANGUAGE DROPDOWN
 --------------------------------------------------- */
 
-/* KUN language dropdown */
+/* KUN sidste selectbox i headeren */
 
-div[data-testid="stSelectbox"]:has(#language_select) {
+div[data-testid="stHorizontalBlock"] 
+div[data-testid="column"]:last-child
+div[data-testid="stSelectbox"] {
 
     margin-top: -8px !important;
 
@@ -735,7 +737,8 @@ div[data-testid="stSelectbox"]:has(#language_select) {
 
 /* SELECT CONTAINER */
 
-div[data-testid="stSelectbox"]:has(#language_select)
+div[data-testid="stHorizontalBlock"] 
+div[data-testid="column"]:last-child
 div[data-baseweb="select"] > div {
 
     min-height: 44px !important;
@@ -743,10 +746,11 @@ div[data-baseweb="select"] > div {
 
 /* FLYT TEKST */
 
-div[data-testid="stSelectbox"]:has(#language_select)
-div[data-baseweb="select"] div {
+div[data-testid="stHorizontalBlock"] 
+div[data-testid="column"]:last-child
+div[data-baseweb="select"] input {
 
-    padding-left: 14px !important;
+    padding-left: 18px !important;
 }
 
 /* GLOBE */
