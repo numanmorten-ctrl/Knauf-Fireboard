@@ -735,8 +735,6 @@ div[data-testid="stSelectbox"] {
 
 div[data-testid="stSelectbox"]:nth-of-type(1) div[data-baseweb="select"] > div {
 
-    padding-left: 20Px !important;
-
     min-height: 44px !important;
 
     display: flex !important;
