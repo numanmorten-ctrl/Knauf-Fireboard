@@ -726,16 +726,16 @@ LANGUAGE DROPDOWN
 
 /* KUN LANGUAGE SELECTBOX */
 
-.language-select-wrapper div[data-testid="stSelectbox"] {
+[data-testid="column"]:nth-of-type(4) div[data-testid="stSelectbox"] {
 
     margin-top: -8px !important;
 }
 
 /* KUN LANGUAGE VALUE */
 
-.language-select-wrapper div[data-baseweb="select"] > div {
+[data-testid="column"]:nth-of-type(4) div[data-baseweb="select"] > div {
 
-    padding-left: 20px !important;
+    padding-left: 22px !important;
 
     min-height: 44px !important;
 
@@ -1078,12 +1078,9 @@ with col4:
 
     st.markdown(
         """
-        <div class="language-select-wrapper">
-
-            <div class="language-container">
-                <div class="language-globe">🌐</div>
-            </div>
-
+        <div class="language-container">
+            <div class="language-globe">🌐</div>
+        </div>
         """,
         unsafe_allow_html=True
     )
@@ -1107,13 +1104,6 @@ with col4:
         st.session_state.language = new_lang
 
         st.rerun()
-
-    st.markdown(
-        """
-        </div>
-        """,
-        unsafe_allow_html=True
-    )
 # ---------------------------------------------------
 # PDF COORDINATES
 # ---------------------------------------------------
