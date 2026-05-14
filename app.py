@@ -744,15 +744,6 @@ div[data-testid="stMarkdownContainer"] {
 }
 
 /* ---------------------------------------------------
-FJERN COLUMN GAP MELLEM COL4 OG COL5
---------------------------------------------------- */
-
-div[data-testid="stHorizontalBlock"]:has(div[data-testid="stSelectbox"]) {
-
-    gap: 0.05rem !important;
-}
-
-/* ---------------------------------------------------
 LANGUAGE ICON BUTTON
 --------------------------------------------------- */
 
@@ -777,6 +768,8 @@ div[data-testid="stButton"] button:disabled {
     font-size: 16px !important;
 
     cursor: default !important;
+
+    margin-right: -6px !important;
 }
 
 /* ---------------------------------------------------
