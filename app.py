@@ -731,16 +731,18 @@ LANGUAGE DROPDOWN
     margin-top: -8px !important;
 }
 
-/* SELVE SELECTBOXEN */
+/* INPUTFELTET */
 
-[data-testid="column"]:nth-of-type(4) div[data-baseweb="select"] {
+[data-testid="column"]:nth-of-type(4)
+div[data-baseweb="select"] input {
 
     padding-left: 18px !important;
 }
 
 /* INDRE CONTAINER */
 
-[data-testid="column"]:nth-of-type(4) div[data-baseweb="select"] > div {
+[data-testid="column"]:nth-of-type(4)
+div[data-baseweb="select"] > div {
 
     min-height: 44px !important;
 
