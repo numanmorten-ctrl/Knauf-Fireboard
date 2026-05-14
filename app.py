@@ -744,6 +744,15 @@ div[data-testid="stMarkdownContainer"] {
 }
 
 /* ---------------------------------------------------
+FJERN COLUMN GAP MELLEM COL4 OG COL5
+--------------------------------------------------- */
+
+div[data-testid="stHorizontalBlock"] {
+
+    gap: 0.35rem !important;
+}
+
+/* ---------------------------------------------------
 LANGUAGE ICON BUTTON
 --------------------------------------------------- */
 
@@ -763,9 +772,13 @@ div[data-testid="stButton"] button:disabled {
 
     color: #7f7f7f !important;
 
+    filter: grayscale(100%) !important;
+
     font-size: 16px !important;
 
     cursor: default !important;
+
+    margin-right: -10px !important;
 }
 
 /* ---------------------------------------------------
