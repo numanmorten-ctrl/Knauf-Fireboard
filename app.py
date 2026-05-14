@@ -790,9 +790,10 @@ div[data-testid="stSelectbox"] {
 }
 
 /* ---------------------------------------------------
-FJERN VENSTRE BORDER
+KUN LANGUAGE DROPDOWN
 --------------------------------------------------- */
 
+div[data-testid="stSelectbox"]:has(#language_select)
 div[data-baseweb="select"] > div {
 
     border-left: none !important;
