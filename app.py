@@ -735,13 +735,18 @@ LANGUAGE DROPDOWN
 
 [data-testid="column"]:nth-of-type(4) div[data-baseweb="select"] > div {
 
-    padding-left: 34px !important;
-
     min-height: 44px !important;
 
     display: flex !important;
 
     align-items: center !important;
+}
+
+/* SELVE TEKSTEN */
+
+[data-testid="column"]:nth-of-type(4) div[data-baseweb="select"] span {
+
+    margin-left: 16px !important;
 }
 
 /* LANGUAGE GLOBE */
