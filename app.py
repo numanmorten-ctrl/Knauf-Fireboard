@@ -719,9 +719,9 @@ LANGUAGE DROPDOWN
 
     position: absolute;
 
-    margin-top: 9px;
+    margin-top: 11px;
 
-    margin-left: 14px;
+    margin-left: 12px;
 
     z-index: 1000;
 
@@ -746,9 +746,10 @@ div[data-testid="stSelectbox"] {
 
 /* PLADS TIL GLOBUS */
 
-div[data-baseweb="select"] input {
+div[data-baseweb="select"] input,
+div[data-baseweb="select"] span {
 
-    padding-left: 28px !important;
+    padding-left: 34px !important;
 }
 
 /* SELECT TEXT */
