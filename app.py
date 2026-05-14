@@ -724,18 +724,18 @@ div[data-baseweb="select"] > div::after {
 LANGUAGE DROPDOWN
 --------------------------------------------------- */
 
-/* SELECTBOX */
+/* KUN LANGUAGE SELECTBOX */
 
-div[data-testid="stSelectbox"] {
+.language-wrapper + div div[data-testid="stSelectbox"] {
 
     margin-top: -8px !important;
 }
 
-/* SELECT VALUE */
+/* KUN LANGUAGE VALUE */
 
-div[data-baseweb="select"] > div {
+.language-wrapper + div div[data-baseweb="select"] > div {
 
-    padding-left: 20Px !important;
+    padding-left: 20px !important;
 
     min-height: 44px !important;
 
@@ -760,7 +760,6 @@ div[data-baseweb="select"] > div {
 
     font-size: 16px;
 
-    filter: grayscale(120%);
     filter: grayscale(180%);
 
     opacity: 1.0;
@@ -1080,7 +1079,7 @@ with col4:
     st.markdown(
         """
         <style>
-        .language-container {
+        .language-wrapper {
             position: relative;
         }
 
@@ -1093,12 +1092,12 @@ with col4:
 
             font-size: 16px;
 
-            filter: grayscale(100%);
-            opacity: 0.55;
+            filter: grayscale(180%);
+            opacity: 1.0;
         }
         </style>
 
-        <div class="language-container">
+        <div class="language-wrapper">
             <div class="language-globe">🌐</div>
         </div>
         """,
