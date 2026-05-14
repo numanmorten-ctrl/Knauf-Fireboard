@@ -746,7 +746,7 @@ LANGUAGE ICON BOX
 
     opacity: 0.82;
 
-    margin-top: -8px;
+    margin-top: -16px;
 
     margin-right: -16px;
 }
