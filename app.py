@@ -721,7 +721,7 @@ LANGUAGE DROPDOWN
 
     margin-top: 11px;
 
-    margin-left: 12px;
+    margin-left: 8px;
 
     z-index: 1000;
 
@@ -744,14 +744,12 @@ div[data-testid="stSelectbox"] {
     margin-top: -8px !important;
 }
 
-/* PLADS TIL GLOBUS */
+/* SELECT TEXT */
 
-div[data-baseweb="select"] input,
 div[data-baseweb="select"] span {
 
-    padding-left: 34px !important;
+    margin-left: 18px !important;
 }
-
 /* SELECT TEXT */
 
 div[data-baseweb="select"] span {
