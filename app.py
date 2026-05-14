@@ -719,9 +719,9 @@ LANGUAGE DROPDOWN
 
     position: absolute;
 
-    margin-top: 14px;
+    margin-top: 15px;
 
-    margin-left: 5px;
+    margin-left: 8px;
 
     z-index: 1000;
 
@@ -738,7 +738,7 @@ LANGUAGE DROPDOWN
 
     filter: grayscale(100%);
 
-    opacity: 0.65;
+    opacity: 0.55;
 }
 
 /* SELECTBOX */
@@ -752,7 +752,7 @@ div[data-testid="stSelectbox"] {
 
 div[data-baseweb="select"] > div {
 
-    padding-left: 24px !important;
+    padding-left: 30px !important;
 }
 
 /* SELECT TEXT */
