@@ -711,36 +711,6 @@ div[data-baseweb="select"] > div::after {
 
     pointer-events: none;
 }
-/* ---------------------------------------------------
-LANGUAGE DROPDOWN
---------------------------------------------------- */
-
-.language-wrapper {
-
-    position: absolute;
-
-    margin-top: 15px;
-
-    margin-left: 8px;
-
-    z-index: 1000;
-
-    pointer-events: none;
-}
-
-/* GLOBE */
-
-.language-globe {
-
-    font-size: 16px;
-
-    line-height: 1;
-
-    filter: grayscale(100%);
-
-    opacity: 0.55;
-}
-
 /* SELECTBOX */
 
 div[data-testid="stSelectbox"] {
@@ -753,13 +723,6 @@ div[data-testid="stSelectbox"] {
 div[data-baseweb="select"] > div {
 
     padding-left: 30px !important;
-}
-
-/* SELECT TEXT */
-
-div[data-baseweb="select"] span {
-
-    color: #2d343c !important;
 }
 </style>
 """, unsafe_allow_html=True)
@@ -1073,15 +1036,33 @@ with col3:
 
 with col4:
 
-    st.markdown("""
-    <div class="language-wrapper">
+    st.markdown(
+        """
+        <style>
+        .language-container {
+            position: relative;
+        }
 
-        <div class="language-globe">
-            🌐
+        .language-globe {
+            position: absolute;
+            left: 10px;
+            top: 13px;
+            z-index: 1000;
+            pointer-events: none;
+
+            font-size: 16px;
+
+            filter: grayscale(100%);
+            opacity: 0.55;
+        }
+        </style>
+
+        <div class="language-container">
+            <div class="language-globe">🌐</div>
         </div>
-
-    </div>
-    """, unsafe_allow_html=True)
+        """,
+        unsafe_allow_html=True
+    )
 
     selected_language = st.selectbox(
         "",
