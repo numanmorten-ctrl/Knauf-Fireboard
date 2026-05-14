@@ -1071,35 +1071,35 @@ with col3:
 
 with col4:
 
-   st.markdown("""
-<div class="language-wrapper">
+    st.markdown("""
+    <div class="language-wrapper">
 
-<svg
-    class="language-globe"
-    xmlns="http://www.w3.org/2000/svg"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    stroke-width="2"
-    stroke-linecap="round"
-    stroke-linejoin="round"
->
+    <svg
+        class="language-globe"
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+    >
 
-<circle cx="12" cy="12" r="10"></circle>
+    <circle cx="12" cy="12" r="10"></circle>
 
-<line x1="2" y1="12" x2="22" y2="12"></line>
+    <line x1="2" y1="12" x2="22" y2="12"></line>
 
-<path d="M12 2
-         a15.3 15.3 0 0 1 4 10
-         a15.3 15.3 0 0 1 -4 10
-         a15.3 15.3 0 0 1 -4 -10
-         a15.3 15.3 0 0 1 4 -10">
-</path>
+    <path d="M12 2
+             a15.3 15.3 0 0 1 4 10
+             a15.3 15.3 0 0 1 -4 10
+             a15.3 15.3 0 0 1 -4 -10
+             a15.3 15.3 0 0 1 4 -10">
+    </path>
 
-</svg>
+    </svg>
 
-</div>
-""", unsafe_allow_html=True)
+    </div>
+    """, unsafe_allow_html=True)
 
     selected_language = st.selectbox(
         "",
