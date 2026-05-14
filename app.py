@@ -724,18 +724,18 @@ div[data-baseweb="select"] > div::after {
 LANGUAGE DROPDOWN
 --------------------------------------------------- */
 
-/* SELECTBOX */
+/* KUN LANGUAGE SELECTBOX */
 
-div[data-testid="stSelectbox"] {
+.language-select-wrapper div[data-testid="stSelectbox"] {
 
     margin-top: -8px !important;
 }
 
-/* SELECT VALUE */
+/* KUN LANGUAGE VALUE */
 
-div[data-baseweb="select"] > div {
+.language-select-wrapper div[data-baseweb="select"] > div {
 
-    padding-left: 20Px !important;
+    padding-left: 20px !important;
 
     min-height: 44px !important;
 
@@ -760,7 +760,6 @@ div[data-baseweb="select"] > div {
 
     font-size: 16px;
 
-    filter: grayscale(120%);
     filter: grayscale(180%);
 
     opacity: 1.0;
@@ -1079,28 +1078,12 @@ with col4:
 
     st.markdown(
         """
-        <style>
-        .language-container {
-            position: relative;
-        }
+        <div class="language-select-wrapper">
 
-        .language-globe {
-            position: absolute;
-            left: 10px;
-            top: 13px;
-            z-index: 1000;
-            pointer-events: none;
+            <div class="language-container">
+                <div class="language-globe">🌐</div>
+            </div>
 
-            font-size: 16px;
-
-            filter: grayscale(100%);
-            opacity: 0.55;
-        }
-        </style>
-
-        <div class="language-container">
-            <div class="language-globe">🌐</div>
-        </div>
         """,
         unsafe_allow_html=True
     )
@@ -1124,6 +1107,13 @@ with col4:
         st.session_state.language = new_lang
 
         st.rerun()
+
+    st.markdown(
+        """
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
 # ---------------------------------------------------
 # PDF COORDINATES
 # ---------------------------------------------------
