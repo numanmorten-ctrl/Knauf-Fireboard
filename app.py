@@ -748,7 +748,7 @@ div[data-testid="stSelectbox"] {
 
 div[data-baseweb="select"] > div {
 
-    padding-left: 24px !important;
+    padding-left: 22px !important;
 }
 /* SELECT TEXT */
 
