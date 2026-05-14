@@ -747,6 +747,8 @@ LANGUAGE ICON BOX
     opacity: 0.82;
 
     margin-top: -8px;
+
+    margin-right: -16px;
 }
 
 /* ---------------------------------------------------
@@ -1001,7 +1003,7 @@ fire_tables = {
 # ---------------------------------------------------
 
 col1, col2, col3, col4, col5 = st.columns(
-    [6, 2, 2, 0.32, 0.9],
+    [6, 2, 2, 0.22, 1.0],
     vertical_alignment="bottom"
 )
 
