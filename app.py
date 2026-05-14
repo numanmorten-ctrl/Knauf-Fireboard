@@ -749,7 +749,7 @@ FJERN COLUMN GAP MELLEM COL4 OG COL5
 
 div[data-testid="stHorizontalBlock"] {
 
-    gap: 0.35rem !important;
+    gap: 0rem !important;
 }
 
 /* ---------------------------------------------------
