@@ -724,31 +724,25 @@ div[data-baseweb="select"] > div::after {
 LANGUAGE DROPDOWN
 --------------------------------------------------- */
 
-/* LANGUAGE SELECTBOX */
-
-div[data-testid="stSelectbox"]:has(div#language_select) {
+div[data-testid="stSelectbox"] {
 
     margin-top: -8px !important;
-
-    position: relative !important;
 }
 
 /* SELECT CONTAINER */
 
-div[data-testid="stSelectbox"]:has(div#language_select)
+div[data-testid="stSelectbox"]
 div[data-baseweb="select"] > div {
-
-    padding-left: 34px !important;
 
     min-height: 44px !important;
 }
 
-/* SELECT VALUE */
+/* FLYT KUN TEKSTEN */
 
-div[data-testid="stSelectbox"]:has(div#language_select)
-div[data-baseweb="select"] input {
+div[data-testid="stSelectbox"]
+div[data-baseweb="select"] div[role="combobox"] {
 
-    padding-left: 4px !important;
+    padding-left: 30px !important;
 }
 
 /* GLOBE */
