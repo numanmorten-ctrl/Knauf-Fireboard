@@ -711,18 +711,51 @@ div[data-baseweb="select"] > div::after {
 
     pointer-events: none;
 }
-/* LANGUAGE SELECTBOX */
+/* ---------------------------------------------------
+LANGUAGE DROPDOWN
+--------------------------------------------------- */
 
-div[data-testid="stSelectbox"] {
+.language-wrapper {
 
-    margin-top: -18px !important;
+    position: absolute;
+
+    margin-top: 9px;
+
+    margin-left: 14px;
+
+    z-index: 1000;
+
+    pointer-events: none;
 }
-
-/* GLOBE ICON */
 
 .language-globe {
 
-    color: #7f7f7f !important;
+    color: #7f7f7f;
+
+    font-size: 18px;
+
+    line-height: 1;
+}
+
+/* SELECTBOX */
+
+div[data-testid="stSelectbox"] {
+
+    margin-top: -8px !important;
+}
+
+/* PLADS TIL GLOBUS */
+
+div[data-baseweb="select"] input {
+
+    padding-left: 28px !important;
+}
+
+/* SELECT TEXT */
+
+div[data-baseweb="select"] span {
+
+    color: #2d343c !important;
 }
 </style>
 """, unsafe_allow_html=True)
@@ -1037,16 +1070,10 @@ with col3:
 with col4:
 
     st.markdown("""
-    <div style="
-        display:flex;
-        align-items:center;
-        gap:8px;
-        margin-top:-2px;
-        color:#7f7f7f;
-        font-size:22px;
-        padding-left:6px;
-    ">
-        🌐
+    <div class="language-wrapper">
+        <div class="language-globe">
+            🌐
+        </div>
     </div>
     """, unsafe_allow_html=True)
 
@@ -1054,7 +1081,8 @@ with col4:
         "",
         options=["Dansk", "English"],
         index=0 if st.session_state.language == "DA" else 1,
-        label_visibility="collapsed"
+        label_visibility="collapsed",
+        key="language_select"
     )
 
     new_lang = (
