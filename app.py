@@ -790,10 +790,12 @@ div[data-testid="stSelectbox"] {
 }
 
 /* ---------------------------------------------------
+FJERN VENSTRE BORDER
 KUN LANGUAGE DROPDOWN
 --------------------------------------------------- */
 
-.language-select-fix div[data-baseweb="select"] > div {
+div[data-testid="stSelectbox"]:has(#language_select)
+div[data-baseweb="select"] > div {
 
     border-left: none !important;
 }
@@ -889,11 +891,11 @@ st.markdown(header_html, unsafe_allow_html=True)
 defaults = {
 
     "language": "DA",
-    
+
     "category": None,
     "profile_type": None,
     "selected_profile": None,
-    
+
     "montage": None,
     "sides": None,
 
@@ -1053,7 +1055,7 @@ with col2:
 
     st.write("")
     st.write("")
-    
+
     if st.button(
         f"🔄 {t('new_calculation')}",
         use_container_width=True
@@ -1122,11 +1124,6 @@ with col4:
 
 with col5:
 
-    st.markdown(
-        '<div class="language-select-fix">',
-        unsafe_allow_html=True
-    )
-
     selected_language = st.selectbox(
         "",
         options=["Dansk", "English"],
@@ -1135,10 +1132,17 @@ with col5:
         key="language_select"
     )
 
-    st.markdown(
-        '</div>',
-        unsafe_allow_html=True
+    new_lang = (
+        "DA"
+        if selected_language == "Dansk"
+        else "EN"
     )
+
+    if new_lang != st.session_state.language:
+
+        st.session_state.language = new_lang
+
+        st.rerun()
 # ---------------------------------------------------
 # PDF COORDINATES
 # ---------------------------------------------------
@@ -3033,7 +3037,7 @@ if current_step == 3:
 
         "apv": apv,
         "thickness": thickness,
-        
+
          # ANDRE PROFILER
         "apv_method": st.session_state.get("apv_method"),
         "custom_apv": st.session_state.get("custom_apv"),
