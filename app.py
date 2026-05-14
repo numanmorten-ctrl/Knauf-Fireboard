@@ -732,6 +732,18 @@ div[data-testid="column"]:nth-last-child(2) {
 }
 
 /* ---------------------------------------------------
+FJERN STREAMLIT SPACING I COL4
+--------------------------------------------------- */
+
+div[data-testid="column"]:nth-last-child(2)
+div[data-testid="stMarkdownContainer"] {
+
+    margin-bottom: 0 !important;
+
+    padding-bottom: 0 !important;
+}
+
+/* ---------------------------------------------------
 LANGUAGE ICON BOX
 --------------------------------------------------- */
 
@@ -756,6 +768,8 @@ LANGUAGE ICON BOX
     filter: grayscale(180%);
 
     opacity: 0.82;
+
+    margin-top: -8px;
 
     margin-right: -16px;
 }
