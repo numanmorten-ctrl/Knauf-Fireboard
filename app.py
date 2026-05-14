@@ -744,34 +744,28 @@ div[data-testid="stMarkdownContainer"] {
 }
 
 /* ---------------------------------------------------
-LANGUAGE ICON BOX
+LANGUAGE ICON BUTTON
 --------------------------------------------------- */
 
-.language-icon-box {
+div[data-testid="stButton"] button:disabled {
 
-    height: 44px;
+    height: 44px !important;
 
-    border: 1px solid #b8c2cc;
+    min-height: 44px !important;
 
-    border-right: none;
+    border: 1px solid #b8c2cc !important;
 
-    background: white;
+    border-right: none !important;
 
-    display: flex;
+    background: white !important;
 
-    align-items: center;
+    opacity: 1 !important;
 
-    justify-content: center;
+    color: #7f7f7f !important;
 
-    font-size: 16px;
+    font-size: 16px !important;
 
-    filter: grayscale(180%);
-
-    opacity: 0.82;
-
-    margin-top: -8px;
-
-    margin-right: -16px;
+    cursor: default !important;
 }
 
 /* ---------------------------------------------------
@@ -1103,11 +1097,11 @@ with col3:
 
 with col4:
 
-    st.markdown("""
-    <div class="language-icon-box">
-        🌐
-    </div>
-    """, unsafe_allow_html=True)
+    st.button(
+        "🌐",
+        disabled=True,
+        use_container_width=True
+    )
 
 # ---------------------------------------------------
 # LANGUAGE SELECT
