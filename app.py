@@ -777,10 +777,6 @@ div[data-testid="stButton"] button:disabled {
     font-size: 16px !important;
 
     cursor: default !important;
-
-    margin-right: -17px !important;
-
-    padding-right: 0 !important;
 }
 
 /* ---------------------------------------------------
@@ -1037,7 +1033,8 @@ fire_tables = {
 # ---------------------------------------------------
 
 col1, col2, col3, col4, col5 = st.columns(
-    [6, 2, 2, 0.22, 1.0],
+    [6, 2, 2, 0.24, 1.12],
+    gap="small",
     vertical_alignment="bottom"
 )
 
