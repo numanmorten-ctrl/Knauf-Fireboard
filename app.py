@@ -2546,9 +2546,7 @@ if current_step == 0:
 
             except:
 
-                st.error(
-                    "Indtast gyldig Ap/V værdi"
-                )
+                st.session_state.custom_apv = None
 
         # ---------------------------------------------------
         # BEREGN AP/V
