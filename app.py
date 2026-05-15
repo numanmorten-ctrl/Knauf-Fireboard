@@ -753,9 +753,9 @@ div[data-testid="stButton"] button:disabled {
 
     min-height: 44px !important;
 
-    width: 42px !important;
+    width: 34px !important;
 
-    min-width: 42px !important;
+    min-width: 34px !important;
 
     padding-left: 0 !important;
 
