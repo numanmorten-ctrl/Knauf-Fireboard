@@ -779,7 +779,16 @@ div[data-testid="stButton"] button:disabled {
 
     margin-right: 0px !important;
 }
+/* ---------------------------------------------------
+LANGUAGE ICON BUTTON
+--------------------------------------------------- */
 
+div[data-testid="stButton"] button:disabled {
+
+    position: relative !important;
+
+    z-index: 1 !important;
+}
 /* ---------------------------------------------------
 LANGUAGE SELECTBOX
 --------------------------------------------------- */
