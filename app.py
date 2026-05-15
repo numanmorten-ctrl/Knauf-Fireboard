@@ -792,7 +792,7 @@ div[data-testid="stSelectbox"] {
 
     position: relative !important;
 
-    z-index: 1 !important;
+    z-index: 2 !important;
 }
 /* ---------------------------------------------------
 FJERN VENSTRE BORDER
