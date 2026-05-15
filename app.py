@@ -2562,7 +2562,7 @@ if current_step == 0:
             )
 
             st.markdown(
-                "Indtast stålets Tværsnitsareal (mm²)"
+                "Indtast stålets tværsnitsareal (mm²)"
             )
 
             col1, col2 = st.columns([5, 1], vertical_alignment="bottom")
