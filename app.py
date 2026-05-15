@@ -609,15 +609,23 @@ hr {
 
 /* Mindre afstand efter headers */
 
-h1, h2, h3 {
+h1, {
 
-    margin-top: -2rem !important;
+    margin-top: -4rem !important;
 
     margin-bottom: 0.2rem !important;
 
     padding-bottom: 0rem !important;
 }
 
+h2, h3 {
+
+    margin-top: 0rem !important;
+
+    margin-bottom: 0.2rem !important;
+
+    padding-bottom: 0rem !important;
+}
 /* Mindre afstand mellem elementer */
 
 div[data-testid="stVerticalBlock"] {
