@@ -2948,17 +2948,25 @@ if (
 
     else:
 
-        apv = int(
-            st.session_state.custom_apv
+    if st.session_state.custom_apv is None:
+
+        st.error(
+            "Indtast gyldig Ap/V værdi"
         )
 
-        selected_profile = (
+        st.stop()
 
-            st.session_state.custom_profile_name
+    apv = int(
+        st.session_state.custom_apv
+    )
 
-            if st.session_state.custom_profile_name
-            else "Specialprofil"
-        )
+    selected_profile = (
+
+        st.session_state.custom_profile_name
+
+        if st.session_state.custom_profile_name
+        else "Specialprofil"
+    )
 
     # ---------------------------------------------------
     # FIND TYKKELSE
