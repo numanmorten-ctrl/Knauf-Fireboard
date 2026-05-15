@@ -787,7 +787,7 @@ div[data-testid="stButton"] button:disabled {
 
     position: relative !important;
 
-    z-index: 1 !important;
+    z-index: 3 !important;
 }
 /* ---------------------------------------------------
 LANGUAGE SELECTBOX
@@ -801,7 +801,7 @@ div[data-testid="stSelectbox"] {
 
     position: relative !important;
 
-    z-index: 2 !important;
+    z-index: 1 !important;
 }
 /* ---------------------------------------------------
 FJERN VENSTRE BORDER
