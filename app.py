@@ -2969,7 +2969,7 @@ if (
     if apv not in table.columns:
 
         st.error(
-            "Profilforholdet overstiger 380 m²/m³, vælg et andet eller større profil"
+            "Profilforholdet (Ap/V) overstiger 380 m²/m³, vælg et andet eller større profil"
         )
 
         st.stop()
