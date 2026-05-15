@@ -77,7 +77,7 @@ h1 {
 
     font-weight: 700 !important;
 
-    font-size: 40px !important;
+    font-size: 38px !important;
 }
 
 /* INPUT LABELS */
