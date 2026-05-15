@@ -611,7 +611,7 @@ hr {
 
 h1, h2, h3 {
 
-    margin-top: -8rem !important;
+    margin-top: -2rem !important;
 
     margin-bottom: 0.2rem !important;
 
