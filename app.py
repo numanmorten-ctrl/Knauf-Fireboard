@@ -805,7 +805,7 @@ div[data-testid="stSelectbox"] {
 
     margin-top: -8px !important;
 
-    margin-left: -8px !important;
+    margin-left: -0px !important;
 
     position: relative !important;
 
