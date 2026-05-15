@@ -2471,7 +2471,7 @@ if current_step == 0:
             )
 
             if st.button(
-                "Direkte Ap/V",
+                "Indtast Ap/V",
                 use_container_width=True,
                 type=(
                     "primary"
@@ -2524,7 +2524,7 @@ if current_step == 0:
         ):
 
             custom_apv = st.text_input(
-                "Ap/V værdi (m²/m³)",
+                "Indtast Ap/V forhold (m²/m³)",
                 value=(
                     str(st.session_state.custom_apv)
                     if st.session_state.custom_apv
