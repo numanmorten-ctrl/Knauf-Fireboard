@@ -2398,7 +2398,25 @@ if current_step == 0:
             .unique()
         )
 
-        profiles = sorted(profiles)
+        profiles = sorted(
+            profiles,
+            key=lambda x: [
+
+                float(
+                    v.replace(",", ".")
+                )
+
+                for v in (
+                    x.replace("HEB", "")
+                     .replace("HEA", "")
+                     .replace("HEM", "")
+                     .replace("IPE", "")
+                     .replace("INP", "")
+                     .replace("UNP", "")
+                     .split("x")
+                )
+            ]
+        )
 
         if len(profiles) == 0:
 
