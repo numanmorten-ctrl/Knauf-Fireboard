@@ -2005,7 +2005,7 @@ def card(
     )
 
     if st.button(
-        "Vælg",
+        t("select"),
         key=f"{state_key}_{label}",
         use_container_width=True
     ):
@@ -2088,10 +2088,14 @@ def disabled_card(
 # ---------------------------------------------------
 
 steps = [
-    "Profil",
-    "Inddækning",
-    "Brand",
-    "Resultat"
+
+    t("tab_profile"),
+
+    t("tab_cladding"),
+
+    t("tab_fire"),
+
+    t("tab_result")
 ]
 
 if "current_step" not in st.session_state:
@@ -2179,12 +2183,12 @@ for idx, step in enumerate(steps):
 if current_step == 0:
 
     st.subheader(
-        "Vælg profilkategori"
+        t("select_profile_category")
     )
 
     categories = [
 
-        ("H-profiler", "images/h_profiles.png"),
+       (t("h_profiles"), "images/h_profiles.png"),
         ("I-profiler", "images/i_profiles.png"),
         ("U-profiler", "images/u_profiles.png"),
 
@@ -2328,7 +2332,7 @@ if current_step == 0:
                 color:#3e4650;
                 margin-bottom:0.3rem;
             ">
-                Vælg profiltype
+                t("select_profile_type")
             </div>
             """, unsafe_allow_html=True)
 
@@ -2420,7 +2424,9 @@ if current_step == 0:
 
         if len(profiles) == 0:
 
-            st.error("Ingen profiler fundet")
+            st.error(
+                t("no_profiles_found")
+            )
 
             st.stop()
 
@@ -2429,7 +2435,7 @@ if current_step == 0:
         # ---------------------------------------------------
 
         selected_profile = st.selectbox(
-            "Vælg profilstørrelse",
+            t("select_profile_size"),
             profiles,
             index=(
                 list(profiles).index(
@@ -2454,7 +2460,7 @@ if current_step == 0:
     else:
 
         custom_profile_name = st.text_input(
-            "Profilnavn (vaglfri)",
+            t("profile_name_optional"),
             value=st.session_state.custom_profile_name
         )
 
@@ -2475,21 +2481,20 @@ if current_step == 0:
             color:#3e4650;
             margin-bottom:0.3rem;
         ">
-            Vælg metode
+            t("select_method")
         </div>
         """, unsafe_allow_html=True)
 
         col1, col2 = st.columns(2)
 
         with col1:
-
             direkte_selected = (
                 st.session_state.apv_method
                 == "Direkte"
             )
 
             if st.button(
-                "Indtast Ap/V",
+                t("enter_apv"),
                 use_container_width=True,
                 type=(
                     "primary"
@@ -2512,7 +2517,7 @@ if current_step == 0:
             )
 
             if st.button(
-                "Beregn Ap/V",
+                t("calculate_apv"),
                 use_container_width=True,
                 type=(
                     "primary"
@@ -2542,7 +2547,7 @@ if current_step == 0:
         ):
 
             custom_apv = st.text_input(
-                "Indtast Ap/V forhold (m²/m³)",
+               t("enter_apv_ratio"),
                 value=(
                     str(st.session_state.custom_apv)
                     if st.session_state.custom_apv
@@ -2573,12 +2578,12 @@ if current_step == 0:
         else:
 
             ap_input = st.text_input(
-                "Indtast indvendig omkreds (mm)",
+                t("enter_perimeter"),
                 value=st.session_state.surface_area
             )
 
             st.markdown(
-                "Indtast stålets tværsnitsareal (mm²)"
+                t("enter_area")
             )
 
             col1, col2 = st.columns([5, 1], vertical_alignment="bottom")
@@ -2594,7 +2599,7 @@ if current_step == 0:
             with col2:
 
                 calculate_clicked = st.button(
-                    "Beregn",
+                    t("calculate"),
                     use_container_width=True
                 )
 
@@ -2629,13 +2634,13 @@ if current_step == 0:
                 except:
 
                     st.error(
-                        "Indtast gyldige tal"
+                       t("invalid_numbers")
                     )
 
             if st.session_state.custom_apv:
 
                 st.info(
-                    f"Beregnet Ap/V: "
+                    t("invalid_apv")
                     f"{st.session_state.custom_apv} m²/m³"
                 )
 
@@ -2981,7 +2986,7 @@ if (
             st.session_state.custom_profile_name
 
             if st.session_state.custom_profile_name
-            else "Specialprofil"
+            else t("special_profile")
         )
 
     # ---------------------------------------------------
