@@ -2654,7 +2654,7 @@ if current_step == 0:
     with col2:
 
         if st.button(
-            "Næste →",
+            t("next"),
             use_container_width=True
         ):
 
