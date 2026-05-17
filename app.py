@@ -2188,20 +2188,20 @@ if current_step == 0:
 
     categories = [
 
-       (t("h_profiles"), "images/h_profiles.png"),
-        ("I-profiler", "images/i_profiles.png"),
-        ("U-profiler", "images/u_profiles.png"),
+        (t("h_profiles"), "images/h_profiles.png"),
+        (t("i_profiles"), "images/i_profiles.png"),
+        (t("u_profiles"), "images/u_profiles.png"),
+    
+        (t("shs_hot"), "images/shs_hot.png"),
+        (t("shs_cold"), "images/shs_cold.png"),
 
-        ("Kvadratiske rør varmvalsede", "images/shs_hot.png"),
-        ("Kvadratiske rør koldvalsede", "images/shs_cold.png"),
+        (t("rhs_hot"), "images/rhs_hot.png"),
+        (t("rhs_cold"), "images/rhs_cold.png"),
 
-        ("Rektangulære rør varmvalsede", "images/rhs_hot.png"),
-        ("Rektangulære rør koldvalsede", "images/rhs_cold.png"),
+        (t("chs_medium"), "images/chs_medium.png"),
+        (t("chs_heavy"), "images/chs_heavy.png"),
 
-        ("Cirkulære rør middelsvære", "images/chs_medium.png"),
-        ("Cirkulære rør svære", "images/chs_heavy.png"),
-
-        ("Andre profiler", "images/other_profiles.png"),
+        (t("other_profiles"), "images/other_profiles.png"),
     ]
 
     for i in range(0, len(categories), 5):
