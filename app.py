@@ -2477,14 +2477,14 @@ if current_step == 0:
         # METODEVALG
         # ---------------------------------------------------
 
-        st.markdown("""
+        st.markdown(f"""
         <div style="
             font-size:15px;
             font-weight:500;
             color:#3e4650;
             margin-bottom:0.3rem;
         ">
-            t("select_method")
+            {t("select_method")}
         </div>
         """, unsafe_allow_html=True)
 
