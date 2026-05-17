@@ -1,4 +1,4 @@
-import base64
+    import base64
 from io import BytesIO
 from datetime import datetime
 from reportlab.pdfgen import canvas
@@ -1929,12 +1929,15 @@ def get_base64_image(image_path):
 def card(
     label,
     image_path,
-    state_key
+    state_key,
+    value=None
 ):
+
+    compare_value = value if value else label
 
     selected = (
         st.session_state[state_key]
-        == label
+        == compare_value
     )
 
     background = (
@@ -2010,7 +2013,7 @@ def card(
         use_container_width=True
     ):
 
-        st.session_state[state_key] = label
+        st.session_state[state_key] = compare_value
 
         if (
             label == "Cirkulære rør middelsvære"
@@ -2188,27 +2191,27 @@ if current_step == 0:
 
     categories = [
 
-        (t("h_profiles"), "images/h_profiles.png"),
-        (t("i_profiles"), "images/i_profiles.png"),
-        (t("u_profiles"), "images/u_profiles.png"),
-    
-        (t("shs_hot"), "images/shs_hot.png"),
-        (t("shs_cold"), "images/shs_cold.png"),
+        ("H-profiler", t("h_profiles"), "images/h_profiles.png"),
+        ("I-profiler", t("i_profiles"), "images/i_profiles.png"),
+        ("U-profiler", t("u_profiles"), "images/u_profiles.png"),
 
-        (t("rhs_hot"), "images/rhs_hot.png"),
-        (t("rhs_cold"), "images/rhs_cold.png"),
+        ("Kvadratiske rør varmvalsede", t("shs_hot"), "images/shs_hot.png"),
+        ("Kvadratiske rør koldvalsede", t("shs_cold"), "images/shs_cold.png"),
 
-        (t("chs_medium"), "images/chs_medium.png"),
-        (t("chs_heavy"), "images/chs_heavy.png"),
+        ("Rektangulære rør varmvalsede", t("rhs_hot"), "images/rhs_hot.png"),
+        ("Rektangulære rør koldvalsede", t("rhs_cold"), "images/rhs_cold.png"),
 
-        (t("other_profiles"), "images/other_profiles.png"),
+        ("Cirkulære rør middelsvære", t("chs_medium"), "images/chs_medium.png"),
+        ("Cirkulære rør svære", t("chs_heavy"), "images/chs_heavy.png"),
+
+        ("Andre profiler", t("other_profiles"), "images/other_profiles.png"),
     ]
 
     for i in range(0, len(categories), 5):
 
         cols = st.columns(5)
 
-        for col, (label, image) in zip(
+        for col, (value, label, image) in zip(
             cols,
             categories[i:i+5]
         ):
@@ -2218,7 +2221,8 @@ if current_step == 0:
                 card(
                     label,
                     image,
-                    "category"
+                    "category",
+                    value
                 )
 
     category = st.session_state.category
