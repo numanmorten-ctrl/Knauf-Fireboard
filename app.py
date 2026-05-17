@@ -2325,17 +2325,16 @@ if current_step == 0:
 
         if profile_options:
 
-            st.markdown("""
+            st.markdown(f"""
             <div style="
                 font-size:15px;
                 font-weight:500;
                 color:#3e4650;
                 margin-bottom:0.3rem;
             ">
-                t("select_profile_type")
+                {t("select_profile_type")}
             </div>
             """, unsafe_allow_html=True)
-
             cols = st.columns(
                 len(profile_options)
             )
