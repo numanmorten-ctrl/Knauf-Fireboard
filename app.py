@@ -1696,7 +1696,7 @@ def generate_single_pdf(calc):
 
 with st.sidebar:
 
-    st.title("📚 Beregninger")
+    st.title(f"📚 {t('calculations')}")
 
     # ---------------------------------------------------
     # CUSTOM STYLE
@@ -1754,7 +1754,7 @@ with st.sidebar:
     # ---------------------------------------------------
 
     if st.button(
-        "➕ Ny beregning",
+        f"➕ {t('new_calculation')}",
         use_container_width=True
     ):
 
@@ -1907,7 +1907,7 @@ with st.sidebar:
         complete_pdf = generate_complete_pdf()
 
         st.download_button(
-            label="📚 Download alle beregninger",
+            label=f"📚 {t('download_all_calculations')}",
             data=complete_pdf,
             file_name="Knauf_Fireboard_Rapport.pdf",
             mime="application/pdf",

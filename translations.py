@@ -16,6 +16,16 @@ translations = {
 
         "new_project":
             "Nyt projekt",
+
+        # ---------------------------------------------------
+        # SIDEBAR
+        # ---------------------------------------------------
+
+        "calculations":
+            "Beregninger",
+
+        "download_all_calculations":
+            "Download alle beregninger",
     },
 
     "EN": {
@@ -34,6 +44,16 @@ translations = {
 
         "new_project":
             "New project",
+
+        # ---------------------------------------------------
+        # SIDEBAR
+        # ---------------------------------------------------
+
+        "calculations":
+            "Calculations",
+
+        "download_all_calculations":
+            "Download all calculations",
     }
 }
 translations = {
