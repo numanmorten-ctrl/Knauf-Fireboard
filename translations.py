@@ -44,11 +44,9 @@ translations = {
 
         "new_project":
             "New project",
-
         # ---------------------------------------------------
         # SIDEBAR
         # ---------------------------------------------------
-
         "calculations":
             "Calculations",
 
