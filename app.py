@@ -1279,7 +1279,10 @@ def generate_complete_pdf():
 
     output = PdfWriter()
 
-    template_path = "PDF_template.pdf"
+    if st.session_state.language == "EN":
+        template_path = "PDF_template_EN.pdf"
+    else:
+        template_path = "PDF_template.pdf"
 
     for page_number, calc in enumerate(
         st.session_state.calculations,
@@ -1521,7 +1524,10 @@ def generate_single_pdf(calc):
 
     output = PdfWriter()
 
-    template_path = "PDF_template.pdf"
+    if st.session_state.language == "EN":
+        template_path = "PDF_template_EN.pdf"
+    else:
+        template_path = "PDF_template.pdf"
 
     packet = BytesIO()
 
