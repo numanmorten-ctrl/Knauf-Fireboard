@@ -238,6 +238,8 @@ translations = {
 
         "knauf_fireboard":
             "Knauf Fireboard",
+        "page":
+            "Side",
     },
 
     "EN": {
@@ -478,5 +480,7 @@ translations = {
 
         "knauf_fireboard":
             "Knauf Fireboard",
+        "page":
+            "page",
     }
 }

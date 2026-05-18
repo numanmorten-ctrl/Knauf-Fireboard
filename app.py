@@ -1005,8 +1005,10 @@ def get_display_text(value):
 
 def get_translated_category(category):
     """Get the translated category name based on current language."""
-    key = CATEGORY_TO_TRANSLATION_KEY.get(category, category)
-    return t(key) if key in CATEGORY_TO_TRANSLATION_KEY.values() else category
+    key = CATEGORY_TO_TRANSLATION_KEY.get(category)
+    if key:
+        return t(key)
+    return category
 
 
 def format_profile_display(category, profile):
@@ -1505,7 +1507,7 @@ def generate_complete_pdf():
         can.drawString(
             PAGE_X,
             PAGE_Y,
-            str(page_number)
+            f"{t('page')} {page_number}"
         )
 
         can.save()
@@ -1745,7 +1747,7 @@ def generate_single_pdf(calc):
     can.drawString(
         PAGE_X,
         PAGE_Y,
-        "1"
+        f"{t('page')} 1"
     )
 
     can.save()
