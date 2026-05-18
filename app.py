@@ -976,6 +976,33 @@ CATEGORY_TO_TRANSLATION_KEY = {
 }
 
 
+# ---------------------------------------------------
+# DISPLAY VALUE TRANSLATION MAPPING
+# Map internal (stored) values to translation keys for labels shown in PDFs
+# ---------------------------------------------------
+DISPLAY_VALUE_TO_TRANSLATION_KEY = {
+    "Klammeløsning": "clamping_solution",
+    "Bjælkeprofil eller PDP profil": "beam_or_pdp_profile",
+}
+
+
+def get_display_text(value):
+    """Return a translated display string for an internal value when available.
+
+    Preserves the original internal value for logic/filtering; only used for
+    rendering text in the PDF.
+    """
+    if value is None:
+        return ""
+
+    key = DISPLAY_VALUE_TO_TRANSLATION_KEY.get(value)
+
+    if key:
+        return translations[st.session_state.language].get(key, value)
+
+    return value
+
+
 def get_translated_category(category):
     """Get the translated category name based on current language."""
     key = CATEGORY_TO_TRANSLATION_KEY.get(category, category)
@@ -1365,7 +1392,7 @@ def generate_complete_pdf():
         can.drawString(
             CALC_X,
             CALC_Y - (CALC_LINE_HEIGHT * 3),
-            str(calc["montage"])
+            str(get_display_text(calc["montage"]))
         )
 
         can.drawString(
@@ -1605,7 +1632,7 @@ def generate_single_pdf(calc):
     can.drawString(
         CALC_X,
         CALC_Y - (CALC_LINE_HEIGHT * 3),
-        str(calc["montage"])
+        str(get_display_text(calc["montage"]))
     )
 
     can.drawString(
