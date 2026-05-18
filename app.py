@@ -2672,7 +2672,7 @@ if current_step == 0:
 if current_step == 1:
 
     st.subheader(
-        "Vælg inddækningstype"
+        t("select_cladding_type")
     )
 
     col1, col2 = st.columns(2)
@@ -2680,7 +2680,7 @@ if current_step == 1:
     with col1:
 
         card(
-            "Klammeløsning",
+            t("clamping_solution"),
             "images/klamme.png",
             "montage"
         )
@@ -2688,7 +2688,7 @@ if current_step == 1:
     with col2:
 
         card(
-            "Bjælkeprofil eller PDP profil",
+            t("beam_or_pdp_profile"),
             "images/bjaelke.png",
             "montage"
         )
@@ -2702,7 +2702,7 @@ if current_step == 1:
     st.divider()
 
     st.subheader(
-        "Vælg antal sider med inddækning"
+        t("select_cladding_sides")
     )
 
     is_circular = (
@@ -2723,21 +2723,21 @@ if current_step == 1:
         with col1:
 
             disabled_card(
-                "1 side ikke muligt",
+                t("one_side_not_possible"),
                 "images/side1.png"
             )
 
         with col2:
 
             disabled_card(
-                "2 sider ikke muligt",
+                t("two_sides_not_possible"),
                 "images/side2.png"
             )
 
         with col3:
 
             disabled_card(
-                "3 sider ikke muligt",
+                t("three_sides_not_possible"),
                 "images/side3.png"
             )
 
@@ -2802,7 +2802,7 @@ if current_step == 1:
     with col1:
 
         if st.button(
-            "← Forrige",
+            t("previous"),
             use_container_width=True
         ):
 
@@ -2813,7 +2813,7 @@ if current_step == 1:
     with col2:
 
         if st.button(
-            "Næste →",
+            t("next"),
             use_container_width=True
         ):
 

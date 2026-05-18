@@ -163,6 +163,31 @@ translations = {
 
         "special_profile":
             "Specialprofil",
+
+        # ---------------------------------------------------
+        # TAB 2
+        # ---------------------------------------------------
+
+        "select_cladding_type":
+            "Vælg inddækningstype",
+
+        "select_cladding_sides":
+            "Vælg antal sider med inddækning",
+
+        "clamping_solution":
+            "Klammeløsning",
+
+        "beam_or_pdp_profile":
+            "Bjælkeprofil eller PDP profil",
+
+        "one_side_not_possible":
+            "1 side ikke muligt",
+
+        "two_sides_not_possible":
+            "2 sider ikke muligt",
+
+        "three_sides_not_possible":
+            "3 sider ikke muligt",
     },
 
     "EN": {
@@ -290,5 +315,30 @@ translations = {
 
         "special_profile":
             "Special profile",
+
+        # ---------------------------------------------------
+        # TAB 2
+        # ---------------------------------------------------
+
+        "select_cladding_type":
+            "Select cladding type",
+
+        "select_cladding_sides":
+            "Select number of sides with cladding",
+
+        "clamping_solution":
+            "Clamping solution",
+
+        "beam_or_pdp_profile":
+            "Beam profile or PDP profile",
+
+        "one_side_not_possible":
+            "1 side not possible",
+
+        "two_sides_not_possible":
+            "2 sides not possible",
+
+        "three_sides_not_possible":
+            "3 sides not possible",
     }
 }
