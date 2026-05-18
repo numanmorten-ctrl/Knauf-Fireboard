@@ -222,6 +222,22 @@ translations = {
 
         "calculation_saved":
             "Beregning gemt",
+
+        # ---------------------------------------------------
+        # PDF
+        # ---------------------------------------------------
+
+        "sides":
+            "sider",
+
+        "minutes":
+            "minutter",
+
+        "mm":
+            "mm",
+
+        "knauf_fireboard":
+            "Knauf Fireboard",
     },
 
     "EN": {
@@ -446,5 +462,21 @@ translations = {
 
         "calculation_saved":
             "Calculation saved",
+
+        # ---------------------------------------------------
+        # PDF
+        # ---------------------------------------------------
+
+        "sides":
+            "sides",
+
+        "minutes":
+            "minutes",
+
+        "mm":
+            "mm",
+
+        "knauf_fireboard":
+            "Knauf Fireboard",
     }
 }

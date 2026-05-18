@@ -1344,7 +1344,7 @@ def generate_complete_pdf():
         can.drawString(
             CALC_X,
             CALC_Y,
-            str(calc["category"])
+            get_translated_category(calc["category"])
         )
 
         can.drawString(
@@ -1356,7 +1356,7 @@ def generate_complete_pdf():
         can.drawString(
             CALC_X,
             CALC_Y - (CALC_LINE_HEIGHT * 2),
-            f"{calc['sides']} sider"
+            f"{calc['sides']} {t('sides')}"
         )
 
         can.drawString(
@@ -1368,7 +1368,7 @@ def generate_complete_pdf():
         can.drawString(
             CALC_X,
             CALC_Y - (CALC_LINE_HEIGHT * 4),
-            f"{calc['fire_time']} minutter"
+            f"{calc['fire_time']} {t('minutes')}"
         )
 
         can.drawString(
@@ -1451,9 +1451,9 @@ def generate_complete_pdf():
             RESULT_X,
             RESULT_Y,
             (
-                f"Profil skal inddækkes med "
-                f"{int(calc['thickness'])} mm "
-                f"Knauf Fireboard"
+                f"{t('profile_must_be_clad_with')} "
+                f"{int(calc['thickness'])} {t('mm')} "
+                f"{t('knauf_fireboard')}"
             )
         )
 
@@ -1581,7 +1581,7 @@ def generate_single_pdf(calc):
     can.drawString(
         CALC_X,
         CALC_Y,
-        str(calc["category"])
+        get_translated_category(calc["category"])
     )
 
     can.drawString(
@@ -1593,7 +1593,7 @@ def generate_single_pdf(calc):
     can.drawString(
         CALC_X,
         CALC_Y - (CALC_LINE_HEIGHT * 2),
-        f"{calc['sides']} sider"
+        f"{calc['sides']} {t('sides')}"
     )
 
     can.drawString(
@@ -1605,7 +1605,7 @@ def generate_single_pdf(calc):
     can.drawString(
         CALC_X,
         CALC_Y - (CALC_LINE_HEIGHT * 4),
-        f"{calc['fire_time']} minutter"
+        f"{calc['fire_time']} {t('minutes')}"
     )
 
     can.drawString(
@@ -1688,9 +1688,9 @@ def generate_single_pdf(calc):
         RESULT_X,
         RESULT_Y,
         (
-            f"Profil skal inddækkes med "
-            f"{int(calc['thickness'])} mm "
-            f"Knauf Fireboard"
+            f"{t('profile_must_be_clad_with')} "
+            f"{int(calc['thickness'])} {t('mm')} "
+            f"{t('knauf_fireboard')}"
         )
     )
 
