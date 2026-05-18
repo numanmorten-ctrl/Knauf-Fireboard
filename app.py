@@ -1641,6 +1641,13 @@ def generate_single_pdf(calc):
             PROFILE_TEXT_FONT
         )
 
+        # Draw category and profile size on separate lines
+        translated_category = get_translated_category(calc["category"])
+        can.drawCentredString(
+            PROFILE_TEXT_X,
+            PROFILE_TEXT_Y + 12,
+            translated_category
+        )
         can.drawCentredString(
             PROFILE_TEXT_X,
             PROFILE_TEXT_Y,
