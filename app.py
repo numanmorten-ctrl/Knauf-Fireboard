@@ -959,6 +959,36 @@ def t(key):
 
 
 # ---------------------------------------------------
+# PROFILE CATEGORY MAPPING
+# ---------------------------------------------------
+
+CATEGORY_TO_TRANSLATION_KEY = {
+    "H-profiler": "h_profiles",
+    "I-profiler": "i_profiles",
+    "U-profiler": "u_profiles",
+    "Kvadratiske rør varmvalsede": "shs_hot",
+    "Kvadratiske rør koldvalsede": "shs_cold",
+    "Rektangulære rør varmvalsede": "rhs_hot",
+    "Rektangulære rør koldvalsede": "rhs_cold",
+    "Cirkulære rør middelsvære": "chs_medium",
+    "Cirkulære rør svære": "chs_heavy",
+    "Andre profiler": "other_profiles",
+}
+
+
+def get_translated_category(category):
+    """Get the translated category name based on current language."""
+    key = CATEGORY_TO_TRANSLATION_KEY.get(category, category)
+    return t(key) if key in CATEGORY_TO_TRANSLATION_KEY.values() else category
+
+
+def format_profile_display(category, profile):
+    """Format profile display with category and size on separate lines."""
+    translated_category = get_translated_category(category)
+    return f"{translated_category}\n{profile}"
+
+
+# ---------------------------------------------------
 # LOAD DATA
 # ---------------------------------------------------
 
@@ -1381,6 +1411,13 @@ def generate_complete_pdf():
                 PROFILE_TEXT_FONT
             )
 
+            # Draw category and profile size on separate lines
+            translated_category = get_translated_category(calc["category"])
+            can.drawCentredString(
+                PROFILE_TEXT_X,
+                PROFILE_TEXT_Y + 12,
+                translated_category
+            )
             can.drawCentredString(
                 PROFILE_TEXT_X,
                 PROFILE_TEXT_Y,
