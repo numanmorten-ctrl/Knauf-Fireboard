@@ -365,18 +365,18 @@ translations = {
         # ---------------------------------------------------
 
         "fire_requirements":
-            "Brandkrav",
+            "Fire requirements",
 
         "select_fire_protection_time":
-            "Vælg brandbeskyttelsestid",
+            "Select fire protection time",
 
         "enter_design_steel_temperature":
-            "Indtast dimensionerende ståltemperatur (°C)",
+            "Enter design steel temperature (°C)",
 
         "temperature_must_be_integer":
-            "Temperatur skal være et helt tal",
+            "Temperature must be an integer",
 
         "temperature_must_be_between":
-            "Temperatur skal være mellem 350 og 750 °C",
+            "Temperature must be between 350 and 750 °C",
     }
 }
