@@ -2827,7 +2827,7 @@ if current_step == 1:
 if current_step == 2:
 
     st.subheader(
-        "Brandkrav"
+        t("fire_requirements")
     )
 
     st.divider()
@@ -2842,7 +2842,7 @@ if current_step == 2:
         saved_fire_time = 30
 
     fire_time = st.selectbox(
-        "Vælg brandbeskyttelsestid",
+        t("select_fire_protection_time"),
         fire_options,
         index=fire_options.index(saved_fire_time)
     )
@@ -2854,7 +2854,7 @@ if current_step == 2:
     # ---------------------------------------------------
 
     temperature = st.text_input(
-        "Indtast dimensionerende ståltemperatur (°C)",
+        t("enter_design_steel_temperature"),
         value=str(
             st.session_state.get("temperature") or 450
         )
@@ -2871,7 +2871,7 @@ if current_step == 2:
     except:
 
         st.error(
-            "Temperatur skal være et helt tal"
+            t("temperature_must_be_integer")
         )
 
         st.stop()
@@ -2879,7 +2879,7 @@ if current_step == 2:
     if temperature < 350 or temperature > 750:
 
         st.error(
-            "Temperatur skal være mellem 350 og 750 °C"
+            t("temperature_must_be_between")
         )
 
         st.stop()
@@ -2898,7 +2898,7 @@ if current_step == 2:
     with col1:
 
         if st.button(
-            "← Forrige",
+            t("previous"),
             use_container_width=True
         ):
 
@@ -2909,7 +2909,7 @@ if current_step == 2:
     with col2:
 
         if st.button(
-            "Næste →",
+            t("next"),
             use_container_width=True
         ):
 

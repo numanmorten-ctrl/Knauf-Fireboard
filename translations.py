@@ -188,6 +188,25 @@ translations = {
 
         "three_sides_not_possible":
             "3 sider ikke muligt",
+
+        # ---------------------------------------------------
+        # TAB 3
+        # ---------------------------------------------------
+
+        "fire_requirements":
+            "Brandkrav",
+
+        "select_fire_protection_time":
+            "Vælg brandbeskyttelsestid",
+
+        "enter_design_steel_temperature":
+            "Indtast dimensionerende ståltemperatur (°C)",
+
+        "temperature_must_be_integer":
+            "Temperatur skal være et helt tal",
+
+        "temperature_must_be_between":
+            "Temperatur skal være mellem 350 og 750 °C",
     },
 
     "EN": {
@@ -340,5 +359,24 @@ translations = {
 
         "three_sides_not_possible":
             "3 sides not possible",
+
+        # ---------------------------------------------------
+        # TAB 3
+        # ---------------------------------------------------
+
+        "fire_requirements":
+            "Brandkrav",
+
+        "select_fire_protection_time":
+            "Vælg brandbeskyttelsestid",
+
+        "enter_design_steel_temperature":
+            "Indtast dimensionerende ståltemperatur (°C)",
+
+        "temperature_must_be_integer":
+            "Temperatur skal være et helt tal",
+
+        "temperature_must_be_between":
+            "Temperatur skal være mellem 350 og 750 °C",
     }
 }
