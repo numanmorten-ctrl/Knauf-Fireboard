@@ -207,6 +207,49 @@ translations = {
 
         "temperature_must_be_between":
             "Temperatur skal være mellem 350 og 750 °C",
+
+        # ---------------------------------------------------
+        # TAB 4
+        # ---------------------------------------------------
+
+        "calculated_profile_ratio_label":
+            "Beregnet profilforhold Ap/V",
+
+        "profile_must_be_clad_with":
+            "Profil skal inddækkes med",
+
+        "fill_all_steps_to_see_result":
+            "Udfyld alle trin for at se resultat",
+
+        "download_this_calculation":
+            "📄 Download denne beregning",
+
+        "project_information":
+            "Projektoplysninger",
+
+        "project":
+            "Projekt",
+
+        "prepared_by":
+            "Udarbejdet af",
+
+        "company":
+            "Firma",
+
+        "date":
+            "Dato",
+
+        "description":
+            "Beskrivelse",
+
+        "update_calculation":
+            "🔄 Opdater beregning",
+
+        "add_calculation":
+            "➕ Tilføj beregning",
+
+        "calculation_saved":
+            "Beregning gemt",
     },
 
     "EN": {
@@ -378,5 +421,48 @@ translations = {
 
         "temperature_must_be_between":
             "Temperature must be between 350 and 750 °C",
+
+        # ---------------------------------------------------
+        # TAB 4
+        # ---------------------------------------------------
+
+        "calculated_profile_ratio_label":
+            "Calculated profile ratio Ap/V",
+
+        "profile_must_be_clad_with":
+            "Profile must be clad with",
+
+        "fill_all_steps_to_see_result":
+            "Fill all steps to see results",
+
+        "download_this_calculation":
+            "📄 Download this calculation",
+
+        "project_information":
+            "Project information",
+
+        "project":
+            "Project",
+
+        "prepared_by":
+            "Prepared by",
+
+        "company":
+            "Company",
+
+        "date":
+            "Date",
+
+        "description":
+            "Description",
+
+        "update_calculation":
+            "🔄 Update calculation",
+
+        "add_calculation":
+            "➕ Add calculation",
+
+        "calculation_saved":
+            "Calculation saved",
     }
 }

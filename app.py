@@ -3026,7 +3026,7 @@ if (
 if current_step == 3:
 
     st.subheader(
-        "Resultat"
+        t("tab_result")
     )
 
     st.divider()
@@ -3047,7 +3047,7 @@ if current_step == 3:
             color:white;
             font-weight:700;
         ">
-            <b>Beregnet profilforhold Ap/V:</b>
+            <b>{t("calculated_profile_ratio_label")}:</b>
             {apv} m²/m³
         </div>
         """, unsafe_allow_html=True)
@@ -3062,7 +3062,7 @@ if current_step == 3:
             color:white;
             font-weight:700;
         ">
-            <b>Profil skal inddækkes med:</b>
+            <b>{t("profile_must_be_clad_with")}:</b>
             {int(thickness)} mm Knauf Fireboard
         </div>
         """, unsafe_allow_html=True)
@@ -3070,7 +3070,7 @@ if current_step == 3:
     else:
 
         st.info(
-            "Udfyld alle trin for at se resultat"
+            t("fill_all_steps_to_see_result")
         )
 
         st.stop()
@@ -3108,7 +3108,7 @@ if current_step == 3:
     )
 
     st.download_button(
-        label="📄 Download denne beregning",
+        label=t("download_this_calculation"),
         data=single_calc_pdf,
         file_name=(
             f"{selected_profile}_"
@@ -3125,7 +3125,7 @@ if current_step == 3:
     st.divider()
 
     st.header(
-        "Projektoplysninger"
+        t("project_information")
     )
 
     col1, col2 = st.columns(2)
@@ -3133,29 +3133,29 @@ if current_step == 3:
     with col1:
 
         project_name = st.text_input(
-            "Projekt",
+            t("project"),
             value=st.session_state.project_name
         )
 
         prepared_by = st.text_input(
-            "Udarbejdet af",
+            t("prepared_by"),
             value=st.session_state.prepared_by
         )
 
     with col2:
 
         company = st.text_input(
-            "Firma",
+            t("company"),
             value=st.session_state.company
         )
 
         report_date = st.text_input(
-            "Dato",
+            t("date"),
             value=datetime.now().strftime("%d-%m-%Y")
         )
 
     description = st.text_area(
-        "Beskrivelse",
+        t("description"),
         value=st.session_state.description,
         height=120
     )
@@ -3176,7 +3176,7 @@ if current_step == 3:
     with col1:
 
         if st.button(
-            "← Forrige",
+            t("previous"),
             use_container_width=True
         ):
 
@@ -3187,9 +3187,9 @@ if current_step == 3:
     with col2:
 
         button_text = (
-            "🔄 Opdater beregning"
+            t("update_calculation")
             if st.session_state.edit_index is not None
-            else "➕ Tilføj beregning"
+            else t("add_calculation")
         )
 
         if st.button(
@@ -3216,7 +3216,5 @@ if current_step == 3:
             st.session_state.last_updated = datetime.now()
 
             st.success(
-                "Beregning gemt"
+                t("calculation_saved")
             )
-
-            st.rerun()
