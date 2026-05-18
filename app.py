@@ -2016,9 +2016,9 @@ def card(
         st.session_state[state_key] = compare_value
 
         if (
-            label == "Cirkulære rør middelsvære"
+            compare_value == "Cirkulære rør middelsvære"
             or
-            label == "Cirkulære rør svære"
+            compare_value == "Cirkulære rør svære"
         ):
 
             st.session_state["sides"] = "4"
@@ -2682,7 +2682,8 @@ if current_step == 1:
         card(
             t("clamping_solution"),
             "images/klamme.png",
-            "montage"
+            "montage",
+            "Klammeløsning"
         )
 
     with col2:
@@ -2690,7 +2691,8 @@ if current_step == 1:
         card(
             t("beam_or_pdp_profile"),
             "images/bjaelke.png",
-            "montage"
+            "montage",
+            "Bjælkeprofil eller PDP profil"
         )
 
     montage = st.session_state.montage
