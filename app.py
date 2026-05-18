@@ -3196,7 +3196,8 @@ if current_step == 3:
 
         if st.button(
             button_text,
-            use_container_width=True
+            use_container_width=True,
+            key="save_calculation_button"
         ):
 
             if st.session_state.edit_index is not None:
@@ -3211,12 +3212,16 @@ if current_step == 3:
 
             else:
 
-                st.session_state.calculations.append(
-                    calculation_data
-                )
+                if not (
+                    st.session_state.calculations
+                    and st.session_state.calculations[-1]
+                    == calculation_data
+                ):
+
+                    st.session_state.calculations.append(
+                        calculation_data
+                    )
 
             st.session_state.last_updated = datetime.now()
 
-            st.success(
-                t("calculation_saved")
-            )
+            st.rerun()
