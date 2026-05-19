@@ -1035,7 +1035,36 @@ apv_df.columns = (
     .str.strip()
 )
 
-# tekstfelter
+# FIX UTF8 / ANSI ISSUES
+
+def clean_text(value):
+
+    if pd.isna(value):
+        return ""
+
+    value = str(value)
+
+    replacements = {
+
+        "Ã¦": "æ",
+        "Ã¸": "ø",
+        "Ã¥": "å",
+
+        "Ã†": "Æ",
+        "Ã˜": "Ø",
+        "Ã…": "Å"
+    }
+
+    for bad, good in replacements.items():
+
+        value = value.replace(
+            bad,
+            good
+        )
+
+    return value.strip()
+
+# tekst kolonner
 
 text_cols = [
     "profile",
@@ -1045,36 +1074,23 @@ text_cols = [
 
 for col in text_cols:
 
-    apv_df[col] = (
-        apv_df[col]
-        .astype(str)
-        .str.strip()
-    )
+    if col in apv_df.columns:
 
-# numeriske felter
+        apv_df[col] = (
+            apv_df[col]
+            .apply(clean_text)
+        )
+
+# numeriske kolonner
 
 numeric_cols = [
-
     "sides",
-    "apv",
-
-    "Antal m² fireboard pr. m profil",
-    "Antal bjælkeprofiler/PDP pr. m profil",
-    "Antal vinkelprofil pr. m profil",
-    "Antal skruer pr. m profil",
-    "Antal klammer pr. m profil"
+    "apv"
 ]
 
 for col in numeric_cols:
 
     if col in apv_df.columns:
-
-        apv_df[col] = (
-            apv_df[col]
-            .astype(str)
-            .str.replace(",", ".")
-            .str.strip()
-        )
 
         apv_df[col] = pd.to_numeric(
             apv_df[col],
