@@ -1017,6 +1017,38 @@ table td {
 
     padding: 0 !important;
 }
+/* FIX NUMBER INPUT WIDTH / SPINNER SPACE */
+
+[data-testid="stNumberInput"] div[data-baseweb="input"] {
+
+    display: flex !important;
+
+    align-items: center !important;
+
+    width: 100% !important;
+}
+
+[data-testid="stNumberInput"] div[data-baseweb="input"] > div {
+
+    width: 100% !important;
+
+    flex: 1 1 auto !important;
+}
+
+/* REMOVE EMPTY +/- AREAS */
+
+[data-testid="stNumberInput"] button {
+
+    display: none !important;
+
+    width: 0 !important;
+
+    min-width: 0 !important;
+
+    padding: 0 !important;
+
+    margin: 0 !important;
+}
 </style>
 """, unsafe_allow_html=True)
 
