@@ -3600,7 +3600,6 @@ if current_step == 3:
     if not amount_row.empty:
 
         amount_row = amount_row.iloc[0]
-        st.write(amount_row.index.tolist())
 
         fireboard_amount = (
             (
