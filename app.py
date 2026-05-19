@@ -897,6 +897,11 @@ DATAFRAMES / TABLES
     background: #f7f8fa !important;
 
     color: #364650 !important;
+
+    border-bottom: 1px solid #d9dde3 !important;
+
+    font-weight: 600 !important;
+}
 /* TABLE CELLS */
 
 [data-testid="stDataFrame"] tbody tr td {
