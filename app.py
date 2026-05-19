@@ -818,6 +818,99 @@ div[data-baseweb="select"] > div {
 
     border-left: none !important;
 }
+/* ---------------------------------------------------
+EXPANDERS
+--------------------------------------------------- */
+
+[data-testid="stExpander"] {
+
+    border: 1px solid #d9dde3 !important;
+
+    border-radius: 0px !important;
+
+    background: white !important;
+
+    overflow: hidden !important;
+
+    margin-bottom: 1rem !important;
+}
+
+/* HEADER */
+
+[data-testid="stExpander"] summary {
+
+    background: #003b7a !important;
+
+    color: white !important;
+
+    font-weight: 700 !important;
+
+    padding: 0.9rem 1rem !important;
+
+    border: none !important;
+
+    transition: background 0.15s ease;
+}
+
+/* HOVER */
+
+[data-testid="stExpander"] summary:hover {
+
+    background: #002e5f !important;
+}
+
+/* CONTENT */
+
+[data-testid="stExpanderDetails"] {
+
+    background: white !important;
+
+    padding: 1rem !important;
+}
+
+/* ---------------------------------------------------
+DATAFRAMES / TABLES
+--------------------------------------------------- */
+
+[data-testid="stDataFrame"] {
+
+    border: 1px solid #d9dde3 !important;
+
+    border-radius: 0px !important;
+
+    overflow: hidden !important;
+}
+
+/* TABLE HEADER */
+
+[data-testid="stDataFrame"] thead tr th {
+
+    background: #f3f5f7 !important;
+
+    color: #2d343c !important;
+
+    font-weight: 700 !important;
+
+    border-bottom: 1px solid #d9dde3 !important;
+}
+
+/* TABLE CELLS */
+
+[data-testid="stDataFrame"] tbody tr td {
+
+    background: white !important;
+
+    color: #2d343c !important;
+
+    border-bottom: 1px solid #eef1f4 !important;
+}
+
+/* REMOVE BLACK STREAMLIT BG */
+
+[data-testid="stDataFrame"] div {
+
+    background: white !important;
+}
 </style>
 """, unsafe_allow_html=True)
 
