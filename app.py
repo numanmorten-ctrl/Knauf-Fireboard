@@ -1049,33 +1049,7 @@ apv_df.columns = (
 )
 
 # FIX UTF8 / ANSI ISSUES
-
-def clean_text(value):
-
-    if pd.isna(value):
-        return ""
-
-    value = str(value)
-
-    replacements = {
-
-        "Ã¦": "æ",
-        "Ã¸": "ø",
-        "Ã¥": "å",
-
-        "Ã†": "Æ",
-        "Ã˜": "Ø",
-        "Ã…": "Å"
-    }
-
-    for bad, good in replacements.items():
-
-        value = value.replace(
-            bad,
-            good
-        )
-
-    return value.strip()
+# Centralized cleaning is handled by load_and_clean_csv and the shared clean_text helper.
 
 # tekst kolonner
 
@@ -1089,10 +1063,7 @@ for col in text_cols:
 
     if col in apv_df.columns:
 
-        apv_df[col] = (
-            apv_df[col]
-            .apply(clean_text)
-        )
+        apv_df[col] = apv_df[col].map(clean_text)
 
 # numeriske kolonner
 
@@ -1105,10 +1076,7 @@ for col in numeric_cols:
 
     if col in apv_df.columns:
 
-        apv_df[col] = pd.to_numeric(
-            apv_df[col],
-            errors="coerce"
-        )
+        apv_df[col] = apv_df[col].map(clean_numeric)
 
 # ---------------------------------------------------
 # FIREBOARD TABLES
@@ -3606,22 +3574,22 @@ profile_length = st.number_input(
 amount_row = apv_df[
     (
         apv_df["profile"]
-        .astype(str)
-        .str.strip()
+        .map(clean_text)
         ==
-        str(selected_profile).strip()
+        clean_text(selected_profile)
     )
     &
     (
         apv_df["montage"]
-        .astype(str)
-        .str.strip()
+        .map(clean_text)
         ==
-        str(montage).strip()
+        clean_text(montage)
     )
     &
     (
         apv_df["sides"]
+        .map(clean_numeric)
+        .fillna(0)
         .astype(int)
         ==
         int(sides)
@@ -3633,47 +3601,47 @@ if not amount_row.empty:
     amount_row = amount_row.iloc[0]
 
     fireboard_amount = (
-        float(
+        (clean_numeric(
             amount_row[
                 "Antal m² fireboard pr. m profil"
             ]
-        )
+        ) or 0)
         * profile_length
     )
 
     beam_amount = (
-        float(
+        (clean_numeric(
             amount_row[
                 "Antal bjælkeprofiler/PDP pr. m profil"
             ]
-        )
+        ) or 0)
         * profile_length
     )
 
     angle_amount = (
-        float(
+        (clean_numeric(
             amount_row[
                 "Antal vinkelprofil pr. m profil"
             ]
-        )
+        ) or 0)
         * profile_length
     )
 
     screw_amount = (
-        float(
+        (clean_numeric(
             amount_row[
                 "Antal skruer pr. m profil"
             ]
-        )
+        ) or 0)
         * profile_length
     )
 
     staple_amount = (
-        float(
+        (clean_numeric(
             amount_row[
                 "Antal klammer pr. m profil"
             ]
-        )
+        ) or 0)
         * profile_length
     )
 
