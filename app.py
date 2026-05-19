@@ -905,9 +905,9 @@ DATAFRAMES / TABLES
     border-bottom: 1px solid #eef1f4 !important;
 }
 
-/* REMOVE BLACK STREAMLIT BG */
+/* DATAFRAME BG */
 
-[data-testid="stDataFrame"] div {
+[data-testid="stDataFrame"] {
 
     background: white !important;
 }
