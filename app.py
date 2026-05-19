@@ -504,19 +504,6 @@ div[data-baseweb="select"] > div,
     box-sizing: border-box !important;
 }
 
-/* REMOVE EXTRA INNER BORDERS */
-
-.stTextInput input,
-.stTextArea textarea,
-.stNumberInput input {
-
-    border: none !important;
-
-    box-shadow: none !important;
-
-    background: transparent !important;
-}
-
 /* REMOVE BASEWEB SHADOW LAYERS */
 
 [data-baseweb="input"]::before,
