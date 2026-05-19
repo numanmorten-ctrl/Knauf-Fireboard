@@ -984,6 +984,39 @@ table td {
     color: #364650 !important;
     background: white !important;
 }
+/* FORCE NUMBER INPUT INSIDE EXPANDERS */
+
+[data-testid="stExpander"] [data-testid="stNumberInput"] input {
+
+    background: white !important;
+
+    border: none !important;
+
+    color: #364650 !important;
+
+    height: 44px !important;
+
+    font-size: 16px !important;
+
+    padding: 0 12px !important;
+
+    box-shadow: none !important;
+
+    outline: none !important;
+}
+
+[data-testid="stExpander"] [data-testid="stNumberInput"] > div > div {
+
+    background: white !important;
+
+    border: 1px solid #c5cbd3 !important;
+
+    min-height: 44px !important;
+
+    box-shadow: none !important;
+
+    padding: 0 !important;
+}
 </style>
 """, unsafe_allow_html=True)
 
