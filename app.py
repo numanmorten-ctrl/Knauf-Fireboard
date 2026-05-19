@@ -3656,6 +3656,13 @@ if current_step == 3:
             * profile_length
         )
 
+        layer_1 = amount_row.get("Fireboard lag 1", "")
+        layer_2 = amount_row.get("Fireboard lag 2", "")
+
+        beam_profile = amount_row.get("Bjælkeprofil", "")
+        screw_1 = amount_row.get("Skrue lag 1", "")
+        staple = amount_row.get("Klammer", "")
+
         materials = []
 
         materials.append({
