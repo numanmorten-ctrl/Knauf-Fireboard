@@ -1,0 +1,5 @@
+﻿"board_thickness_mm,clamp_length_mm,back_width_mm_min,back_width_mm_max,wire_thickness_mm_min,wire_thickness_mm_max"
+"15,40,8.5,11.5,1.0,1.3"
+"20,50,9.0,12.0,1.5,1.6"
+"25,64,9.0,12.0,1.5,1.6"
+"30,64,9.0,12.0,1.5,1.6"
