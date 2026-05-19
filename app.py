@@ -824,39 +824,42 @@ EXPANDERS
 
 [data-testid="stExpander"] {
 
-    border: 1px solid #d9dde3 !important;
+    border: none !important;
 
     border-radius: 0px !important;
 
-    background: white !important;
+    background: transparent !important;
 
     overflow: hidden !important;
 
     margin-bottom: 1rem !important;
-}
 
+    box-shadow: none !important;
+}
 /* HEADER */
 
 [data-testid="stExpander"] summary {
 
-    background: #003b7a !important;
+    background: white !important;
 
-    color: white !important;
+    color: #364650 !important;
 
-    font-weight: 700 !important;
+    font-weight: 600 !important;
 
-    padding: 0.9rem 1rem !important;
+    padding: 0.75rem 1rem !important;
 
-    border: none !important;
+    border: 1px solid #c5cbd3 !important;
 
-    transition: background 0.15s ease;
+    border-radius: 0px !important;
+
+    transition: all 0.15s ease;
 }
 
 /* HOVER */
 
 [data-testid="stExpander"] summary:hover {
 
-    background: #002e5f !important;
+    background: #f5f7fa !important;
 }
 
 /* CONTENT */
@@ -879,21 +882,17 @@ DATAFRAMES / TABLES
     border-radius: 0px !important;
 
     overflow: hidden !important;
+
+    background: white !important;
 }
 
 /* TABLE HEADER */
 
 [data-testid="stDataFrame"] thead tr th {
 
-    background: #f3f5f7 !important;
+    background: #f7f8fa !important;
 
-    color: #2d343c !important;
-
-    font-weight: 700 !important;
-
-    border-bottom: 1px solid #d9dde3 !important;
-}
-
+    color: #364650 !important;
 /* TABLE CELLS */
 
 [data-testid="stDataFrame"] tbody tr td {
