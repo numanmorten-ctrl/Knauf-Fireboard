@@ -978,6 +978,51 @@ DATAFRAMES CLEAN STYLE
 
     color: #364650 !important;
 }
+/* ---------------------------------------------------
+GLIDE DATA EDITOR FIX
+--------------------------------------------------- */
+
+/* Hele tabellen */
+
+[data-testid="stDataFrame"] [data-testid="stStyledDataFrame"] {
+
+    background-color: white !important;
+}
+
+/* Header */
+
+[data-testid="stDataFrame"] [role="columnheader"] {
+
+    background-color: #f7f8fa !important;
+
+    color: #364650 !important;
+
+    font-weight: 600 !important;
+}
+
+/* Celler */
+
+[data-testid="stDataFrame"] [role="gridcell"] {
+
+    background-color: white !important;
+
+    color: #364650 !important;
+}
+
+/* Indre tekst */
+
+[data-testid="stDataFrame"] span,
+[data-testid="stDataFrame"] div {
+
+    color: #364650 !important;
+}
+
+/* Canvas layer */
+
+[data-testid="stDataFrame"] canvas {
+
+    filter: brightness(100%) !important;
+}
 </style>
 """, unsafe_allow_html=True)
 
