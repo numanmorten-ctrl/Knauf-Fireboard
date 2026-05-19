@@ -1385,16 +1385,19 @@ def generate_complete_pdf():
             str(calc["profile"])
         )
 
+        # Note: keep the same row/value order as the Danish PDF.
+        # The correct order is: category, profile, montage (clamping),
+        # sides (cladding), fire time, temperature, apv.
         can.drawString(
             CALC_X,
             CALC_Y - (CALC_LINE_HEIGHT * 2),
-            f"{calc['sides']} {t('sides')}"
+            str(get_display_text(calc["montage"]))
         )
 
         can.drawString(
             CALC_X,
             CALC_Y - (CALC_LINE_HEIGHT * 3),
-            str(get_display_text(calc["montage"]))
+            f"{calc['sides']} {t('sides')}"
         )
 
         can.drawString(
@@ -1479,14 +1482,22 @@ def generate_complete_pdf():
             RESULT_FONT
         )
 
+        # Render result text safely (some values can be strings/floats).
+        try:
+            thickness_val = int(float(calc.get("thickness", 0)))
+        except Exception:
+            thickness_val = 0
+
+        result_text = (
+            f"{t('profile_must_be_clad_with')} "
+            f"{thickness_val} {t('mm')} "
+            f"{t('knauf_fireboard')}"
+        )
+
         can.drawCentredString(
             RESULT_X,
             RESULT_Y,
-            (
-                f"{t('profile_must_be_clad_with')} "
-                f"{int(calc['thickness'])} {t('mm')} "
-                f"{t('knauf_fireboard')}"
-            )
+            result_text
         )
 
         # ---------------------------------------------------
@@ -1625,16 +1636,19 @@ def generate_single_pdf(calc):
         str(calc["profile"])
     )
 
+    # Note: keep the same row/value order as the Danish PDF.
+    # The correct order is: category, profile, montage (clamping),
+    # sides (cladding), fire time, temperature, apv.
     can.drawString(
         CALC_X,
         CALC_Y - (CALC_LINE_HEIGHT * 2),
-        f"{calc['sides']} {t('sides')}"
+        str(get_display_text(calc["montage"]))
     )
 
     can.drawString(
         CALC_X,
         CALC_Y - (CALC_LINE_HEIGHT * 3),
-        str(get_display_text(calc["montage"]))
+        f"{calc['sides']} {t('sides')}"
     )
 
     can.drawString(
@@ -1719,14 +1733,22 @@ def generate_single_pdf(calc):
         RESULT_FONT
     )
 
+    # Render result text safely (some values can be strings/floats).
+    try:
+        thickness_val = int(float(calc.get("thickness", 0)))
+    except Exception:
+        thickness_val = 0
+
+    result_text = (
+        f"{t('profile_must_be_clad_with')} "
+        f"{thickness_val} {t('mm')} "
+        f"{t('knauf_fireboard')}"
+    )
+
     can.drawCentredString(
         RESULT_X,
         RESULT_Y,
-        (
-            f"{t('profile_must_be_clad_with')} "
-            f"{int(calc['thickness'])} {t('mm')} "
-            f"{t('knauf_fireboard')}"
-        )
+        result_text
     )
 
     # ---------------------------------------------------
