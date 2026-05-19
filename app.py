@@ -3667,7 +3667,7 @@ if current_step == 3:
 
         materials.append({
             "Materiale": "Vinkelprofil",
-            "Mængde": beam_amount,
+            "Mængde": angle_amount,
             "Enhed": "m"
         })
 
@@ -3682,26 +3682,6 @@ if current_step == 3:
             "Mængde": staple_amount,
             "Enhed": "stk"
         })
-
-        if staple_amount > 0:
-
-            staple_label = display_value(staple)
-
-            materials.append({
-
-                "Materiale":
-                    (
-                        f"Klammer {staple_label} mm"
-                        if staple_label != "-"
-                        else ""
-                    ),
-
-                "Mængde":
-                    round(staple_amount, 0),
-
-                "Enhed":
-                    "stk"
-            })
 
         materials_df = pd.DataFrame(materials)
 
