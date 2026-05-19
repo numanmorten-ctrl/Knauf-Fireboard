@@ -3412,9 +3412,20 @@ fireboard_csv = pd.read_csv(
     sep=";"
 )
 
+fireboard_csv.columns = (
+    fireboard_csv.columns
+    .str.strip()
+)
+
+thickness_col = fireboard_csv.columns[0]
+
 fireboard_row = fireboard_csv[
-    fireboard_csv["Tykkelse"]
-    == thickness
+    pd.to_numeric(
+        fireboard_csv[thickness_col],
+        errors="coerce"
+    )
+    ==
+    thickness
 ]
 
 layer_1 = thickness
