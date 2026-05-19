@@ -2560,7 +2560,10 @@ if current_step == 0:
             key=lambda x: [
 
                 float(
-                    v.replace(",", ".")
+                    v.lower()
+                     .replace("mm", "")
+                     .replace(" ", "")
+                     .replace(",", ".")
                 )
 
                 for v in (
