@@ -3557,7 +3557,7 @@ if current_step == 3:
             st.rerun()
 
     # ---------------------------------------------------
-    # ADVANCED TECHNICAL SECTIONS (collapsed by default)
+    # MATERIALERFORBRUG
     # ---------------------------------------------------
 
     st.header("Materialeforbrug")
@@ -3601,57 +3601,84 @@ if current_step == 3:
 
         amount_row = amount_row.iloc[0]
 
-            fireboard_amount = (
-                (clean_numeric(
+        fireboard_amount = (
+            (
+                clean_numeric(
                     amount_row[
                         "Antal m² fireboard pr. m profil"
                     ]
-                ) or 0)
-                * profile_length
+                ) or 0
             )
+            * profile_length
+        )
 
-            beam_amount = (
-                (clean_numeric(
+        beam_amount = (
+            (
+                clean_numeric(
                     amount_row[
                         "Antal bjælkeprofiler/PDP pr. m profil"
                     ]
-                ) or 0)
-                * profile_length
+                ) or 0
             )
+            * profile_length
+        )
 
-            angle_amount = (
-                (clean_numeric(
+        angle_amount = (
+            (
+                clean_numeric(
                     amount_row[
                         "Antal vinkelprofil pr. m profil"
                     ]
-                ) or 0)
-                * profile_length
+                ) or 0
             )
+            * profile_length
+        )
 
-            screw_amount = (
-                (clean_numeric(
+        screw_amount = (
+            (
+                clean_numeric(
                     amount_row[
                         "Antal skruer pr. m profil"
                     ]
-                ) or 0)
-                * profile_length
+                ) or 0
             )
+            * profile_length
+        )
 
-            staple_amount = (
-                (clean_numeric(
+        staple_amount = (
+            (
+                clean_numeric(
                     amount_row[
                         "Antal klammer pr. m profil"
                     ]
-                ) or 0)
-                * profile_length
+                ) or 0
             )
+            * profile_length
+        )
 
-            materials = []
+        materials = []
+
+        materials.append({
+
+            "Materiale":
+                f"Knauf Fireboard {layer_1} mm",
+
+            "Mængde":
+                round(fireboard_amount, 2),
+
+            "Enhed":
+                "m²"
+        })
+
+        if (
+            pd.notna(layer_2)
+            and layer_2 != "-"
+        ):
 
             materials.append({
 
                 "Materiale":
-                    f"Knauf Fireboard {layer_1} mm",
+                    f"Knauf Fireboard {layer_2} mm",
 
                 "Mængde":
                     round(fireboard_amount, 2),
@@ -3660,87 +3687,68 @@ if current_step == 3:
                     "m²"
             })
 
-            if (
-                pd.notna(layer_2)
-                and layer_2 != "-"
-            ):
+        if beam_amount > 0:
 
-                materials.append({
+            materials.append({
 
-                    "Materiale":
-                        f"Knauf Fireboard {layer_2} mm",
+                "Materiale":
+                    display_value(beam_profile),
 
-                    "Mængde":
-                        round(fireboard_amount, 2),
+                "Mængde":
+                    round(beam_amount, 0),
 
-                    "Enhed":
-                        "m²"
-                })
+                "Enhed":
+                    "m"
+            })
 
-            if beam_amount > 0:
+        if angle_amount > 0:
 
-                materials.append({
+            materials.append({
 
-                    "Materiale":
-                        display_value(beam_profile),
+                "Materiale":
+                    "Vinkelprofil",
 
-                    "Mængde":
-                        round(beam_amount, 0),
+                "Mængde":
+                    round(angle_amount, 0),
 
-                    "Enhed":
-                        "m"
-                })
+                "Enhed":
+                    "m"
+            })
 
-            if angle_amount > 0:
+        if screw_amount > 0:
 
-                materials.append({
+            materials.append({
 
-                    "Materiale":
-                        "Vinkelprofil",
+                "Materiale":
+                    display_value(screw_1),
 
-                    "Mængde":
-                        round(angle_amount, 0),
+                "Mængde":
+                    round(screw_amount, 0),
 
-                    "Enhed":
-                        "m"
-                })
+                "Enhed":
+                    "stk"
+            })
 
-            if screw_amount > 0:
+        if staple_amount > 0:
 
-                materials.append({
+            staple_label = display_value(staple)
 
-                    "Materiale":
-                        display_value(screw_1),
+            materials.append({
 
-                    "Mængde":
-                        round(screw_amount, 0),
+                "Materiale":
+                    (
+                        f"Klammer {staple_label} mm"
+                        if staple_label != "-"
+                        else ""
+                    ),
 
-                    "Enhed":
-                        "stk"
-                })
+                "Mængde":
+                    round(staple_amount, 0),
 
-            if staple_amount > 0:
+                "Enhed":
+                    "stk"
+            })
 
-                staple_label = display_value(staple)
+        materials_df = pd.DataFrame(materials)
 
-                materials.append({
-
-                    "Materiale":
-                        (
-                            f"Klammer {staple_label} mm"
-                            if staple_label != "-"
-                            else ""
-                        ),
-
-                    "Mængde":
-                        round(staple_amount, 0),
-
-                    "Enhed":
-                        "stk"
-                })
-
-            materials_df = pd.DataFrame(
-                materials
-            )
-
-            st.table(materials_df)
+        st.table(materials_df)
