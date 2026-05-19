@@ -1242,13 +1242,13 @@ DESCRIPTION_MAX_CHARS = 72
 # CALCULATION
 
 CALC_X = 197
-CALC_Y = 418.5
+CALC_Y = 381
 CALC_LINE_HEIGHT = 19
 
 # RESULT
 
 RESULT_X = 287
-RESULT_Y = 220.5
+RESULT_Y = 192
 
 # PAGE NUMBER
 
@@ -1518,7 +1518,7 @@ def generate_complete_pdf():
         can.drawString(
             PAGE_X,
             PAGE_Y,
-            f"{t('page')} {page_number}"
+            f"{page_number}"
         )
 
         can.save()
