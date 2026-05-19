@@ -1320,8 +1320,8 @@ RESULT_Y = 238
 
 # PAGE NUMBER
 
-PAGE_X = 283
-PAGE_Y = 22
+PAGE_X = 292
+PAGE_Y = 20.4
 
 # PROFILE IMAGE
 
@@ -1474,7 +1474,7 @@ def generate_complete_pdf():
 
         can.drawString(
             CALC_X,
-            CALC_Y - (CALC_LINE_HEIGHT * 2),
+            CALC_Y_LOCAL - (CALC_LINE_HEIGHT * 2),
             str(get_display_text(calc["montage"]))
         )
 
@@ -1482,8 +1482,8 @@ def generate_complete_pdf():
 
         can.drawString(
             CALC_X,
-            CALC_Y - (CALC_LINE_HEIGHT * 3),
-            f"{calc['sides']} {t('sides')}"
+            CALC_Y_LOCAL - (CALC_LINE_HEIGHT * 3),
+            format_sides_display(calc['sides'])
         )
 
         # FIRE PROTECTION TIME
@@ -1755,7 +1755,7 @@ def generate_single_pdf(calc):
 
     can.drawString(
         CALC_X,
-        CALC_Y - (CALC_LINE_HEIGHT * 2),
+        CALC_Y_LOCAL - (CALC_LINE_HEIGHT * 2),
         str(get_display_text(calc["montage"]))
     )
 
@@ -1763,8 +1763,8 @@ def generate_single_pdf(calc):
 
     can.drawString(
         CALC_X,
-        CALC_Y - (CALC_LINE_HEIGHT * 3),
-        f"{calc['sides']} {t('sides')}"
+        CALC_Y_LOCAL - (CALC_LINE_HEIGHT * 3),
+        format_sides_display(calc['sides'])
     )
 
     # FIRE PROTECTION TIME
@@ -1896,8 +1896,8 @@ def generate_single_pdf(calc):
 
     can.drawString(
         PAGE_X,
-        PAGE_Y,
-        f"{t('page')} 1"
+        PAGE_Y_LOCAL,
+        "1"
     )
 
     can.save()
@@ -2651,11 +2651,7 @@ if current_step == 0:
         profiles = sorted(
             profiles,
             key=lambda x: [
-
-                float(
-                    v.replace(",", ".")
-                )
-
+                clean_numeric(v) or 0
                 for v in (
                     x.replace("HEB", "")
                      .replace("HEA", "")
