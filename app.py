@@ -3412,6 +3412,27 @@ if current_step == 3:
             .iloc[0]["Lag 2"]
         )
 
+    selected_profile_key = clean_text(selected_profile)
+    montage_key = clean_text(montage)
+    sides_key = clean_numeric(sides)
+    thickness_key = clean_numeric(thickness)
+
+    st.write(
+        "DEBUG: lookup inputs",
+        {
+            "selected_profile": selected_profile,
+            "selected_profile_key": selected_profile_key,
+            "montage": montage,
+            "montage_key": montage_key,
+            "sides": sides,
+            "sides_key": sides_key,
+            "thickness": thickness,
+            "thickness_key": thickness_key,
+            "layer_1": layer_1,
+            "layer_2": layer_2,
+        }
+    )
+
     # ---------------------------------------------------
     # BJÆLKEPROFIL
     # ---------------------------------------------------
@@ -3420,27 +3441,47 @@ if current_step == 3:
 
     try:
 
-        csv2_df = pd.read_csv(
-            "data/CSV_2.csv",
-            sep=";"
+        csv3_df = load_and_clean_csv(
+            "data/CSV_3.csv",
+            sep="," 
         )
 
-        profile_match = csv2_df[
-            csv2_df["Profil"]
-            .astype(str)
-            .str.strip()
+        if "profile" in csv3_df.columns:
+            csv3_df["profile"] = csv3_df["profile"].map(clean_text)
+
+        if "bj_profile" in csv3_df.columns:
+            csv3_df["bj_profile"] = csv3_df["bj_profile"].map(clean_text)
+
+        st.write(
+            "DEBUG: beam lookup",
+            {
+                "selected_profile": selected_profile,
+                "selected_profile_key": selected_profile_key,
+                "csv3_columns": list(csv3_df.columns),
+            }
+        )
+
+        profile_match = csv3_df[
+            csv3_df["profile"]
             ==
-            str(selected_profile).strip()
+            selected_profile_key
         ]
+
+        st.write(
+            "DEBUG: beam profile filtered rows",
+            len(profile_match),
+            profile_match.head(5)
+        )
 
         if not profile_match.empty:
 
             beam_profile = (
                 profile_match
-                .iloc[0]["Bjælkeprofil"]
-            )
+                .iloc[0]["bj_profile"]
+            ) or "-"
 
-    except:
+    except Exception as e:
+        st.write("DEBUG: beam lookup error", e)
         pass
 
     # ---------------------------------------------------
@@ -3452,29 +3493,57 @@ if current_step == 3:
 
     try:
 
-        csv3_df = pd.read_csv(
-            "data/CSV_3.csv",
-            sep=";"
+        csv2_df = load_and_clean_csv(
+            "data/CSV_2.csv",
+            sep="," 
         )
 
-        screw_row = csv3_df[
-            csv3_df["Tykkelse"]
-            == thickness
+        if "thickness_mm" in csv2_df.columns:
+            csv2_df["thickness_mm"] = csv2_df["thickness_mm"].map(clean_numeric)
+
+        if "layer1_screw" in csv2_df.columns:
+            csv2_df["layer1_screw"] = csv2_df["layer1_screw"].map(clean_text)
+
+        if "layer2_screw" in csv2_df.columns:
+            csv2_df["layer2_screw"] = csv2_df["layer2_screw"].map(clean_text)
+
+        thickness_key = clean_numeric(thickness)
+
+        st.write(
+            "DEBUG: screw lookup",
+            {
+                "thickness": thickness,
+                "thickness_key": thickness_key,
+                "csv2_columns": list(csv2_df.columns),
+            }
+        )
+
+        screw_row = csv2_df[
+            csv2_df["thickness_mm"]
+            ==
+            thickness_key
         ]
+
+        st.write(
+            "DEBUG: screw filtered rows",
+            len(screw_row),
+            screw_row.head(5)
+        )
 
         if not screw_row.empty:
 
             screw_1 = (
                 screw_row
-                .iloc[0]["Skrue lag 1"]
-            )
+                .iloc[0]["layer1_screw"]
+            ) or "-"
 
             screw_2 = (
                 screw_row
-                .iloc[0]["Skrue lag 2"]
-            )
+                .iloc[0]["layer2_screw"]
+            ) or "-"
 
-    except:
+    except Exception as e:
+        st.write("DEBUG: screw lookup error", e)
         pass
 
     # ---------------------------------------------------
@@ -3483,28 +3552,53 @@ if current_step == 3:
 
     staple = "-"
 
-    if montage == "Klammeløsning":
+    if clean_text(montage) == clean_text("Klammeløsning"):
 
         try:
 
-            csv4_df = pd.read_csv(
+            csv4_df = load_and_clean_csv(
                 "data/CSV_4.csv",
-                sep=";"
+                sep="," 
+            )
+
+            if "board_thickness_mm" in csv4_df.columns:
+                csv4_df["board_thickness_mm"] = csv4_df["board_thickness_mm"].map(clean_numeric)
+
+            if "clamp_length_mm" in csv4_df.columns:
+                csv4_df["clamp_length_mm"] = csv4_df["clamp_length_mm"].map(clean_text)
+
+            layer1_key = clean_numeric(layer_1)
+
+            st.write(
+                "DEBUG: staple lookup",
+                {
+                    "layer_1": layer_1,
+                    "layer1_key": layer1_key,
+                    "csv4_columns": list(csv4_df.columns),
+                }
             )
 
             staple_row = csv4_df[
-                csv4_df["Pladetykkelse"]
-                == layer_1
+                csv4_df["board_thickness_mm"]
+                ==
+                layer1_key
             ]
+
+            st.write(
+                "DEBUG: staple filtered rows",
+                len(staple_row),
+                staple_row.head(5)
+            )
 
             if not staple_row.empty:
 
                 staple = (
                     staple_row
-                    .iloc[0]["Klammelængde"]
-                )
+                    .iloc[0]["clamp_length_mm"]
+                ) or "-"
 
-        except:
+        except Exception as e:
+            st.write("DEBUG: staple lookup error", e)
             pass
 
     # ---------------------------------------------------

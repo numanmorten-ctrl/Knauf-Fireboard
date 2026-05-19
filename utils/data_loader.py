@@ -1,3 +1,5 @@
+import csv
+import io
 import re
 
 import pandas as pd
@@ -95,6 +97,35 @@ def load_and_clean_csv(path, sep=";", encoding="utf-8", dtype=str, na_values=Non
             path,
             sep=sep,
             encoding="latin1",
+            dtype=dtype,
+            keep_default_na=False,
+            na_values=na_values or ["nan", "NaN", "None", "none"],
+            usecols=usecols,
+        )
+
+    if (
+        df.shape[1] == 1
+        and isinstance(df.columns[0], str)
+        and sep in df.columns[0]
+        and df.iloc[:, 0].astype(str).str.contains(sep).any()
+    ):
+        try:
+            with open(path, encoding=encoding) as f:
+                raw_lines = [line.rstrip("\n\r") for line in f if line.strip()]
+        except UnicodeDecodeError:
+            with open(path, encoding="latin1") as f:
+                raw_lines = [line.rstrip("\n\r") for line in f if line.strip()]
+
+        cleaned_lines = []
+        for line in raw_lines:
+            line = line.lstrip("\ufeff").strip()
+            if line.startswith('"') and line.endswith('"'):
+                line = line[1:-1]
+            cleaned_lines.append(line)
+
+        df = pd.read_csv(
+            io.StringIO("\n".join(cleaned_lines)),
+            sep=sep,
             dtype=dtype,
             keep_default_na=False,
             na_values=na_values or ["nan", "NaN", "None", "none"],
