@@ -914,9 +914,38 @@ NUMBER INPUT
 
 /* REMOVE DARK WRAPPER */
 
+/* ---------------------------------------------------
+NUMBER INPUT
+--------------------------------------------------- */
+
 [data-testid="stNumberInput"] > div {
 
-    background: transparent !important;
+    background: white !important;
+
+    border: 1px solid #c5cbd3 !important;
+
+    border-radius: 0px !important;
+
+    padding: 0 !important;
+
+    box-shadow: none !important;
+}
+
+[data-testid="stNumberInput"] input {
+
+    background: white !important;
+
+    border: none !important;
+
+    color: #364650 !important;
+
+    height: 44px !important;
+
+    font-size: 16px !important;
+
+    box-shadow: none !important;
+
+    outline: none !important;
 }
 /* ---------------------------------------------------
 TABLE STYLE
@@ -1157,17 +1186,17 @@ def format_sides_display(value):
 
 def display_value(value):
     if value is None:
-        return "-"
+        return ""
 
     if isinstance(value, float) and pd.isna(value):
-        return "-"
+        return ""
 
     text = str(value).strip()
     if not text:
-        return "-"
+        return ""
 
     if text.lower() in {"none", "nan"}:
-        return "-"
+        return ""
 
     return text
 
@@ -3704,7 +3733,7 @@ if current_step == 3:
         thickness_key = clean_numeric(thickness)
 
         # BJÆLKEPROFIL
-        beam_profile = "-"
+        beam_profile = ""
 
         try:
 
@@ -3735,8 +3764,8 @@ if current_step == 3:
             pass
 
         # SKRUER
-        screw_1 = "-"
-        screw_2 = "-"
+        screw_1 = ""
+        screw_2 = ""
 
         try:
 
@@ -3777,7 +3806,7 @@ if current_step == 3:
             pass
 
         # KLAMMER
-        staple = "-"
+        staple = ""
 
         if clean_text(montage) == clean_text("Klammeløsning"):
 
@@ -3829,7 +3858,7 @@ if current_step == 3:
             (
                 f"{layer_1} mm"
                 if display_value(layer_1) != "-"
-                else "-"
+                else ""
             ),
 
             (
@@ -3837,7 +3866,7 @@ if current_step == 3:
                 if pd.notna(layer_2)
                 and layer_2 != "-"
                 and display_value(layer_2) != "-"
-                else "-"
+                else ""
             ),
 
             display_value(beam_profile),
@@ -3849,7 +3878,7 @@ if current_step == 3:
             (
                 f"{staple} mm"
                 if display_value(staple) != "-"
-                else "-"
+                else ""
             )
         ]
     })
@@ -4022,7 +4051,7 @@ if current_step == 3:
                         (
                             f"Klammer {staple_label} mm"
                             if staple_label != "-"
-                            else "-"
+                            else ""
                         ),
 
                     "Mængde":
