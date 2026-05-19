@@ -892,48 +892,51 @@ EXPANDERS
     background: white !important;
 }
 /* ---------------------------------------------------
-NUMBER INPUT
+NUMBER INPUT CLEAN FIX
 --------------------------------------------------- */
 
-[data-testid="stNumberInput"] input {
+[data-testid="stNumberInput"] {
 
-    background: white !important;
-
-    border: 1px solid #c5cbd3 !important;
-
-    border-radius: 0px !important;
-
-    color: #364650 !important;
-
-    height: 46px !important;
-
-    font-size: 16px !important;
+    border: none !important;
 
     box-shadow: none !important;
+
+    background: transparent !important;
 }
 
-/* REMOVE DARK WRAPPER */
-
-/* ---------------------------------------------------
-NUMBER INPUT
---------------------------------------------------- */
+/* OUTER WRAPPER */
 
 [data-testid="stNumberInput"] > div {
 
+    border: none !important;
+
+    background: transparent !important;
+
+    box-shadow: none !important;
+
+    padding: 0 !important;
+}
+
+/* INNER WRAPPER */
+
+[data-testid="stNumberInput"] > div > div {
+
     background: white !important;
 
     border: 1px solid #c5cbd3 !important;
 
     border-radius: 0px !important;
 
-    padding: 0 !important;
-
     box-shadow: none !important;
+
+    min-height: 46px !important;
 }
+
+/* INPUT */
 
 [data-testid="stNumberInput"] input {
 
-    background: white !important;
+    background: transparent !important;
 
     border: none !important;
 
@@ -943,9 +946,27 @@ NUMBER INPUT
 
     font-size: 16px !important;
 
+    padding: 0 12px !important;
+
     box-shadow: none !important;
 
     outline: none !important;
+}
+
+/* FOCUS */
+
+[data-testid="stNumberInput"] > div > div:focus-within {
+
+    border: 1px solid #009fe3 !important;
+
+    box-shadow: none !important;
+}
+
+/* HIDE +/- BUTTONS */
+
+[data-testid="stNumberInput"] button {
+
+    display: none !important;
 }
 /* ---------------------------------------------------
 TABLE STYLE
