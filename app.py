@@ -950,16 +950,12 @@ NUMBER INPUT
 STREAMLIT GLIDE DATA GRID FIX
 --------------------------------------------------- */
 
-/* Hele dataframe baggrund */
-
 [data-testid="stDataFrame"] * {
 
     background-color: white !important;
 
     color: #364650 !important;
 }
-
-/* Header */
 
 [data-testid="stDataFrame"] [role="columnheader"] {
 
@@ -972,8 +968,6 @@ STREAMLIT GLIDE DATA GRID FIX
     border-bottom: 1px solid #d9dde3 !important;
 }
 
-/* Cell backgrounds */
-
 [data-testid="stDataFrame"] [role="gridcell"] {
 
     background: white !important;
@@ -983,11 +977,35 @@ STREAMLIT GLIDE DATA GRID FIX
     border-bottom: 1px solid #eef1f4 !important;
 }
 
-/* Fjerner mørk canvas */
-
 [data-testid="stDataFrame"] canvas {
 
     background: white !important;
+}
+
+
+/* ---------------------------------------------------
+DATAFRAME TEXT FIX
+--------------------------------------------------- */
+
+[data-testid="stDataFrame"] div {
+
+    color: #364650 !important;
+}
+
+/* Header tekst */
+
+[data-testid="stDataFrame"] [role="columnheader"] div {
+
+    color: #364650 !important;
+
+    font-weight: 600 !important;
+}
+
+/* Celle tekst */
+
+[data-testid="stDataFrame"] [role="gridcell"] div {
+
+    color: #364650 !important;
 }
 </style>
 """, unsafe_allow_html=True)
