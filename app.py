@@ -3563,14 +3563,14 @@ if current_step == 3:
     st.header("Materialeforbrug")
 
     profile_length = st.text_input(
-    "Profil længde (meter)",
-    value="6,0"
+        "Profil længde (meter)",
+        value="6,0"
     )
 
     profile_length = clean_numeric(profile_length)
 
     if profile_length is None:
-    profile_length = 0
+        profile_length = 0
 
     amount_row = apv_df[
             (
