@@ -1325,6 +1325,15 @@ def generate_complete_pdf():
             pagesize=A4
         )
 
+        # Language-specific coordinates: keep EN as current values,
+        # restore DA to the previous placement so templates align.
+        if st.session_state.language == "EN":
+            calc_y_local = CALC_Y
+            result_y_local = RESULT_Y
+        else:
+            calc_y_local = 418.5
+            result_y_local = 220.5
+
         # ---------------------------------------------------
         # PROJECT INFO
         # ---------------------------------------------------
@@ -1375,13 +1384,13 @@ def generate_complete_pdf():
 
         can.drawString(
             CALC_X,
-            CALC_Y,
+            calc_y_local,
             get_translated_category(calc["category"])
         )
 
         can.drawString(
             CALC_X,
-            CALC_Y - CALC_LINE_HEIGHT,
+            calc_y_local - CALC_LINE_HEIGHT,
             str(calc["profile"])
         )
 
@@ -1390,31 +1399,31 @@ def generate_complete_pdf():
         # sides (cladding), fire time, temperature, apv.
         can.drawString(
             CALC_X,
-            CALC_Y - (CALC_LINE_HEIGHT * 2),
+            calc_y_local - (CALC_LINE_HEIGHT * 2),
             str(get_display_text(calc["montage"]))
         )
 
         can.drawString(
             CALC_X,
-            CALC_Y - (CALC_LINE_HEIGHT * 3),
+            calc_y_local - (CALC_LINE_HEIGHT * 3),
             f"{calc['sides']} {t('sides')}"
         )
 
         can.drawString(
             CALC_X,
-            CALC_Y - (CALC_LINE_HEIGHT * 4),
+            calc_y_local - (CALC_LINE_HEIGHT * 4),
             f"{calc['fire_time']} {t('minutes')}"
         )
 
         can.drawString(
             CALC_X,
-            CALC_Y - (CALC_LINE_HEIGHT * 5),
+            calc_y_local - (CALC_LINE_HEIGHT * 5),
             f"{calc['temperature']} °C"
         )
 
         can.drawString(
             CALC_X,
-            CALC_Y - (CALC_LINE_HEIGHT * 6),
+            calc_y_local - (CALC_LINE_HEIGHT * 6),
             f"{calc['apv']} m²/m³"
         )
 
@@ -1496,7 +1505,7 @@ def generate_complete_pdf():
 
         can.drawCentredString(
             RESULT_X,
-            RESULT_Y,
+            result_y_local,
             result_text
         )
 
@@ -1576,6 +1585,15 @@ def generate_single_pdf(calc):
         pagesize=A4
     )
 
+    # Language-specific coordinates: keep EN as current values,
+    # restore DA to the previous placement so templates align.
+    if st.session_state.language == "EN":
+        calc_y_local = CALC_Y
+        result_y_local = RESULT_Y
+    else:
+        calc_y_local = 418.5
+        result_y_local = 220.5
+
     # ---------------------------------------------------
     # PROJECT INFO
     # ---------------------------------------------------
@@ -1626,13 +1644,13 @@ def generate_single_pdf(calc):
 
     can.drawString(
         CALC_X,
-        CALC_Y,
+        calc_y_local,
         get_translated_category(calc["category"])
     )
 
     can.drawString(
         CALC_X,
-        CALC_Y - CALC_LINE_HEIGHT,
+        calc_y_local - CALC_LINE_HEIGHT,
         str(calc["profile"])
     )
 
@@ -1641,31 +1659,31 @@ def generate_single_pdf(calc):
     # sides (cladding), fire time, temperature, apv.
     can.drawString(
         CALC_X,
-        CALC_Y - (CALC_LINE_HEIGHT * 2),
+        calc_y_local - (CALC_LINE_HEIGHT * 2),
         str(get_display_text(calc["montage"]))
     )
 
     can.drawString(
         CALC_X,
-        CALC_Y - (CALC_LINE_HEIGHT * 3),
+        calc_y_local - (CALC_LINE_HEIGHT * 3),
         f"{calc['sides']} {t('sides')}"
     )
 
     can.drawString(
         CALC_X,
-        CALC_Y - (CALC_LINE_HEIGHT * 4),
+        calc_y_local - (CALC_LINE_HEIGHT * 4),
         f"{calc['fire_time']} {t('minutes')}"
     )
 
     can.drawString(
         CALC_X,
-        CALC_Y - (CALC_LINE_HEIGHT * 5),
+        calc_y_local - (CALC_LINE_HEIGHT * 5),
         f"{calc['temperature']} °C"
     )
 
     can.drawString(
         CALC_X,
-        CALC_Y - (CALC_LINE_HEIGHT * 6),
+        calc_y_local - (CALC_LINE_HEIGHT * 6),
         f"{calc['apv']} m²/m³"
     )
 
@@ -1747,7 +1765,7 @@ def generate_single_pdf(calc):
 
     can.drawCentredString(
         RESULT_X,
-        RESULT_Y,
+        result_y_local,
         result_text
     )
 
@@ -1769,7 +1787,7 @@ def generate_single_pdf(calc):
     can.drawString(
         PAGE_X,
         PAGE_Y,
-        f"{t('page')} 1"
+        "1"
     )
 
     can.save()
