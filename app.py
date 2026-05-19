@@ -14,6 +14,19 @@ import requests
 
 from translations import translations
 
+# ==============================
+# LOAD FIREBOARD DATABASE
+# ==============================
+
+FB_DATABASE = "data/fb_system_database.xlsx"
+
+apv_df = pd.read_excel(FB_DATABASE, sheet_name="apv")
+
+csv2_df = pd.read_excel(FB_DATABASE, sheet_name="CSV 2")
+csv3_df = pd.read_excel(FB_DATABASE, sheet_name="CSV 3")
+csv4_df = pd.read_excel(FB_DATABASE, sheet_name="CSV 4")
+csv5_df = pd.read_excel(FB_DATABASE, sheet_name="CSV 5")
+
 from reportlab.platypus import (
     SimpleDocTemplate,
     Paragraph,
@@ -1016,25 +1029,15 @@ def format_profile_display(category, profile):
     translated_category = get_translated_category(category)
     return f"{translated_category}\n{profile}"
 
-
-# ---------------------------------------------------
-# LOAD DATA
-# ---------------------------------------------------
-
-apv_df = pd.read_csv(
-    "data/apv.csv",
-    sep=";"
-)
-
 # ---------------------------------------------------
 # FIREBOARD TABLES
 # ---------------------------------------------------
 
-def load_fireboard(path):
+def load_fireboard_excel(sheet_name):
 
-    df = pd.read_csv(
-        path,
-        sep=";"
+    df = pd.read_excel(
+        FB_DATABASE,
+        sheet_name=sheet_name
     )
 
     df = df.dropna(how="all")
@@ -1093,23 +1096,16 @@ def load_fireboard(path):
 
     return df
 
+
 fire_tables = {
 
-    30: load_fireboard(
-        "data/fireboard_30.csv"
-    ),
+    30: load_fireboard_excel("fireboard_30"),
 
-    60: load_fireboard(
-        "data/fireboard_60.csv"
-    ),
+    60: load_fireboard_excel("fireboard_60"),
 
-    90: load_fireboard(
-        "data/fireboard_90.csv"
-    ),
+    90: load_fireboard_excel("fireboard_90"),
 
-    120: load_fireboard(
-        "data/fireboard_120.csv"
-    )
+    120: load_fireboard_excel("fireboard_120")
 }
 
 # ---------------------------------------------------
