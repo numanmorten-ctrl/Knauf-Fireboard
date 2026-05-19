@@ -1040,6 +1040,77 @@ apv_df = load_and_clean_csv(
 )
 
 # ---------------------------------------------------
+# CLEAN APV DATA
+# ---------------------------------------------------
+
+apv_df.columns = (
+    apv_df.columns
+    .str.strip()
+)
+
+# FIX UTF8 / ANSI ISSUES
+
+def clean_text(value):
+
+    if pd.isna(value):
+        return ""
+
+    value = str(value)
+
+    replacements = {
+
+        "Ã¦": "æ",
+        "Ã¸": "ø",
+        "Ã¥": "å",
+
+        "Ã†": "Æ",
+        "Ã˜": "Ø",
+        "Ã…": "Å"
+    }
+
+    for bad, good in replacements.items():
+
+        value = value.replace(
+            bad,
+            good
+        )
+
+    return value.strip()
+
+# tekst kolonner
+
+text_cols = [
+    "profile",
+    "montage",
+    "profile_category"
+]
+
+for col in text_cols:
+
+    if col in apv_df.columns:
+
+        apv_df[col] = (
+            apv_df[col]
+            .apply(clean_text)
+        )
+
+# numeriske kolonner
+
+numeric_cols = [
+    "sides",
+    "apv"
+]
+
+for col in numeric_cols:
+
+    if col in apv_df.columns:
+
+        apv_df[col] = pd.to_numeric(
+            apv_df[col],
+            errors="coerce"
+        )
+
+# ---------------------------------------------------
 # FIREBOARD TABLES
 # ---------------------------------------------------
 
@@ -1228,7 +1299,7 @@ with col5:
 # PROJECT INFO
 
 PROJECT_X = 197
-PROJECT_Y = 562
+PROJECT_Y = 570
 PROJECT_LINE_HEIGHT = 20
 
 # DESCRIPTION
@@ -1239,18 +1310,18 @@ DESCRIPTION_MAX_CHARS = 72
 # CALCULATION
 
 CALC_X = 197
-CALC_Y = 381
+CALC_Y = 436
 CALC_LINE_HEIGHT = 19
 
 # RESULT
 
 RESULT_X = 287
-RESULT_Y = 192
+RESULT_Y = 238
 
 # PAGE NUMBER
 
-PAGE_X = 292
-PAGE_Y = 20.4
+PAGE_X = 283
+PAGE_Y = 22
 
 # PROFILE IMAGE
 
@@ -1383,11 +1454,15 @@ def generate_complete_pdf():
             CALC_FONT
         )
 
+        # PROFILE CATEGORY
+
         can.drawString(
             CALC_X,
             CALC_Y_LOCAL,
             get_translated_category(calc["category"])
         )
+
+        # PROFILE
 
         can.drawString(
             CALC_X,
@@ -1395,20 +1470,23 @@ def generate_complete_pdf():
             str(calc["profile"])
         )
 
-        # Note: keep the same row/value order as the Danish PDF.
-        # The correct order is: category, profile, montage (clamping),
-        # sides (cladding), fire time, temperature, apv.
-        can.drawString(
-            CALC_X,
-            CALC_Y_LOCAL - (CALC_LINE_HEIGHT * 2),
-            str(get_display_text(calc["montage"]))
-        )
+        # CLADDING (3 sides / 4 sides)
 
         can.drawString(
             CALC_X,
-            CALC_Y_LOCAL - (CALC_LINE_HEIGHT * 3),
-            format_sides_display(calc['sides'])
+            CALC_Y - (CALC_LINE_HEIGHT * 2),
+            str(get_display_text(calc["montage"]))
         )
+
+        # CLADDING TYPE (Clamping solution)
+
+        can.drawString(
+            CALC_X,
+            CALC_Y - (CALC_LINE_HEIGHT * 3),
+            f"{calc['sides']} {t('sides')}"
+        )
+
+        # FIRE PROTECTION TIME
 
         can.drawString(
             CALC_X,
@@ -1416,11 +1494,15 @@ def generate_complete_pdf():
             f"{calc['fire_time']} {t('minutes')}"
         )
 
+        # TEMPERATURE
+
         can.drawString(
             CALC_X,
             CALC_Y_LOCAL - (CALC_LINE_HEIGHT * 5),
             f"{calc['temperature']} °C"
         )
+
+        # APV
 
         can.drawString(
             CALC_X,
@@ -1452,25 +1534,30 @@ def generate_complete_pdf():
                 colors.HexColor("#2d343c")
             )
 
-            # Draw category and profile size on separate lines
-            translated_category = get_translated_category(calc["category"])
-            
-            # Category text - smaller font for visual hierarchy
+            translated_category = get_translated_category(
+                calc["category"]
+            )
+
+            # CATEGORY TEXT
+
             can.setFont(
                 "Helvetica",
                 PROFILE_CATEGORY_FONT
             )
+
             can.drawCentredString(
                 PROFILE_TEXT_X,
                 PROFILE_CATEGORY_TEXT_Y,
                 translated_category
             )
-            
-            # Profile size text - larger font for emphasis
+
+            # PROFILE SIZE
+
             can.setFont(
                 "Helvetica-Bold",
                 PROFILE_TEXT_FONT
             )
+
             can.drawCentredString(
                 PROFILE_TEXT_X,
                 PROFILE_TEXT_Y,
@@ -1492,9 +1579,10 @@ def generate_complete_pdf():
             RESULT_FONT
         )
 
-        # Render result text safely (some values can be strings/floats).
         try:
-            thickness_val = int(float(calc.get("thickness", 0)))
+            thickness_val = int(
+                float(calc.get("thickness", 0))
+            )
         except Exception:
             thickness_val = 0
 
@@ -1647,11 +1735,15 @@ def generate_single_pdf(calc):
         CALC_FONT
     )
 
+    # PROFILE CATEGORY
+
     can.drawString(
         CALC_X,
         CALC_Y_LOCAL,
         get_translated_category(calc["category"])
     )
+
+    # PROFILE
 
     can.drawString(
         CALC_X,
@@ -1659,20 +1751,23 @@ def generate_single_pdf(calc):
         str(calc["profile"])
     )
 
-    # Note: keep the same row/value order as the Danish PDF.
-    # The correct order is: category, profile, montage (clamping),
-    # sides (cladding), fire time, temperature, apv.
-    can.drawString(
-        CALC_X,
-        CALC_Y_LOCAL - (CALC_LINE_HEIGHT * 2),
-        str(get_display_text(calc["montage"]))
-    )
+    # CLADDING (3 sides / 4 sides)
 
     can.drawString(
         CALC_X,
-        CALC_Y_LOCAL - (CALC_LINE_HEIGHT * 3),
-        format_sides_display(calc['sides'])
+        CALC_Y - (CALC_LINE_HEIGHT * 2),
+        str(get_display_text(calc["montage"]))
     )
+
+    # CLADDING TYPE (Clamping solution)
+
+    can.drawString(
+        CALC_X,
+        CALC_Y - (CALC_LINE_HEIGHT * 3),
+        f"{calc['sides']} {t('sides')}"
+    )
+
+    # FIRE PROTECTION TIME
 
     can.drawString(
         CALC_X,
@@ -1680,11 +1775,15 @@ def generate_single_pdf(calc):
         f"{calc['fire_time']} {t('minutes')}"
     )
 
+    # TEMPERATURE
+
     can.drawString(
         CALC_X,
         CALC_Y_LOCAL - (CALC_LINE_HEIGHT * 5),
         f"{calc['temperature']} °C"
     )
+
+    # APV
 
     can.drawString(
         CALC_X,
@@ -1716,25 +1815,30 @@ def generate_single_pdf(calc):
             colors.HexColor("#2d343c")
         )
 
-        # Draw category and profile size on separate lines
-        translated_category = get_translated_category(calc["category"])
-        
-        # Category text - smaller font for visual hierarchy
+        translated_category = get_translated_category(
+            calc["category"]
+        )
+
+        # CATEGORY TEXT
+
         can.setFont(
             "Helvetica",
             PROFILE_CATEGORY_FONT
         )
+
         can.drawCentredString(
             PROFILE_TEXT_X,
             PROFILE_CATEGORY_TEXT_Y,
             translated_category
         )
-        
-        # Profile size text - larger font for emphasis
+
+        # PROFILE SIZE
+
         can.setFont(
             "Helvetica-Bold",
             PROFILE_TEXT_FONT
         )
+
         can.drawCentredString(
             PROFILE_TEXT_X,
             PROFILE_TEXT_Y,
@@ -1756,9 +1860,10 @@ def generate_single_pdf(calc):
         RESULT_FONT
     )
 
-    # Render result text safely (some values can be strings/floats).
     try:
-        thickness_val = int(float(calc.get("thickness", 0)))
+        thickness_val = int(
+            float(calc.get("thickness", 0))
+        )
     except Exception:
         thickness_val = 0
 
@@ -1791,8 +1896,8 @@ def generate_single_pdf(calc):
 
     can.drawString(
         PAGE_X,
-        PAGE_Y_LOCAL,
-        "1"
+        PAGE_Y,
+        f"{t('page')} 1"
     )
 
     can.save()
@@ -2546,7 +2651,11 @@ if current_step == 0:
         profiles = sorted(
             profiles,
             key=lambda x: [
-                clean_numeric(v) or 0
+
+                float(
+                    v.replace(",", ".")
+                )
+
                 for v in (
                     x.replace("HEB", "")
                      .replace("HEA", "")
@@ -2957,7 +3066,7 @@ if current_step == 2:
     fire_options = [30, 60, 90, 120]
 
     saved_fire_time = st.session_state.get(
-    "fire_time"
+        "fire_time"
     )
 
     if saved_fire_time not in fire_options:
@@ -3038,6 +3147,7 @@ if current_step == 2:
             st.session_state.current_step = 3
 
             st.rerun()
+
 # ---------------------------------------------------
 # FIND AP/V + TYKKELSE
 # ---------------------------------------------------
@@ -3054,6 +3164,45 @@ if (
 ):
 
     # ---------------------------------------------------
+    # CLEAN APV DATA
+    # ---------------------------------------------------
+
+    apv_df.columns = (
+        apv_df.columns
+        .str.strip()
+    )
+
+    text_cols = [
+        "profile",
+        "montage",
+        "profile_category"
+    ]
+
+    for col in text_cols:
+
+        if col in apv_df.columns:
+
+            apv_df[col] = (
+                apv_df[col]
+                .astype(str)
+                .str.strip()
+            )
+
+    numeric_cols = [
+        "sides",
+        "apv"
+    ]
+
+    for col in numeric_cols:
+
+        if col in apv_df.columns:
+
+            apv_df[col] = pd.to_numeric(
+                apv_df[col],
+                errors="coerce"
+            )
+
+    # ---------------------------------------------------
     # STANDARD PROFILER
     # ---------------------------------------------------
 
@@ -3062,17 +3211,25 @@ if (
         row = apv_df[
             (
                 apv_df["profile"]
-                == selected_profile
+                .astype(str)
+                .str.strip()
+                ==
+                str(selected_profile).strip()
             )
             &
             (
                 apv_df["montage"]
-                == montage
+                .astype(str)
+                .str.strip()
+                ==
+                str(montage).strip()
             )
             &
             (
                 apv_df["sides"]
-                == int(sides)
+                .astype(int)
+                ==
+                int(sides)
             )
         ]
 
@@ -3080,6 +3237,50 @@ if (
 
             st.error(
                 "Denne kombination er ikke mulig"
+            )
+
+            st.write("DEBUG")
+
+            st.write(
+                "selected_profile:",
+                selected_profile
+            )
+
+            st.write(
+                "montage:",
+                montage
+            )
+
+            st.write(
+                "sides:",
+                sides
+            )
+
+            st.write(
+                "Profiler i CSV:"
+            )
+
+            st.write(
+                apv_df["profile"]
+                .unique()
+            )
+
+            st.write(
+                "Montage i CSV:"
+            )
+
+            st.write(
+                apv_df["montage"]
+                .unique()
+            )
+
+            st.write(
+                "Sides i CSV:"
+            )
+
+            st.write(
+                apv_df["sides"]
+                .unique()
             )
 
             st.stop()
@@ -3196,6 +3397,386 @@ if current_step == 3:
         )
 
         st.stop()
+
+# ---------------------------------------------------
+# SYSTEMOPBYGNING
+# ---------------------------------------------------
+
+st.divider()
+
+st.subheader(
+    "Systemopbygning"
+)
+
+# ---------------------------------------------------
+# FIREBOARD LAG
+# ---------------------------------------------------
+
+fireboard_csv = pd.read_csv(
+    f"data/fireboard_{fire_time}.csv",
+    sep=";"
+)
+
+fireboard_csv.columns = (
+    fireboard_csv.columns
+    .str.strip()
+)
+
+thickness_col = fireboard_csv.columns[0]
+
+fireboard_row = fireboard_csv[
+    pd.to_numeric(
+        fireboard_csv[thickness_col],
+        errors="coerce"
+    )
+    ==
+    thickness
+]
+
+layer_1 = thickness
+layer_2 = None
+
+if not fireboard_row.empty:
+
+    layer_1 = (
+        fireboard_row
+        .iloc[0]["Lag 1"]
+    )
+
+    layer_2 = (
+        fireboard_row
+        .iloc[0]["Lag 2"]
+    )
+
+# ---------------------------------------------------
+# BJÆLKEPROFIL
+# ---------------------------------------------------
+
+beam_profile = "-"
+
+try:
+
+    csv2_df = pd.read_csv(
+        "data/CSV_2.csv",
+        sep=";"
+    )
+
+    profile_match = csv2_df[
+        csv2_df["Profil"]
+        .astype(str)
+        .str.strip()
+        ==
+        str(selected_profile).strip()
+    ]
+
+    if not profile_match.empty:
+
+        beam_profile = (
+            profile_match
+            .iloc[0]["Bjælkeprofil"]
+        )
+
+except:
+    pass
+
+# ---------------------------------------------------
+# SKRUER
+# ---------------------------------------------------
+
+screw_1 = "-"
+screw_2 = "-"
+
+try:
+
+    csv3_df = pd.read_csv(
+        "data/CSV_3.csv",
+        sep=";"
+    )
+
+    screw_row = csv3_df[
+        csv3_df["Tykkelse"]
+        == thickness
+    ]
+
+    if not screw_row.empty:
+
+        screw_1 = (
+            screw_row
+            .iloc[0]["Skrue lag 1"]
+        )
+
+        screw_2 = (
+            screw_row
+            .iloc[0]["Skrue lag 2"]
+        )
+
+except:
+    pass
+
+# ---------------------------------------------------
+# KLAMMER
+# ---------------------------------------------------
+
+staple = "-"
+
+if montage == "Klammeløsning":
+
+    try:
+
+        csv4_df = pd.read_csv(
+            "data/CSV_4.csv",
+            sep=";"
+        )
+
+        staple_row = csv4_df[
+            csv4_df["Pladetykkelse"]
+            == layer_1
+        ]
+
+        if not staple_row.empty:
+
+            staple = (
+                staple_row
+                .iloc[0]["Klammelængde"]
+            )
+
+    except:
+        pass
+
+# ---------------------------------------------------
+# VIS SYSTEM
+# ---------------------------------------------------
+
+system_data = pd.DataFrame({
+
+    "Komponent": [
+
+        "Fireboard lag 1",
+        "Fireboard lag 2",
+        "Bjælkeprofil",
+        "Skrue lag 1",
+        "Skrue lag 2",
+        "Klammer"
+    ],
+
+    "Værdi": [
+
+        f"{layer_1} mm",
+
+        (
+            f"{layer_2} mm"
+            if pd.notna(layer_2)
+            and layer_2 != "-"
+            else "-"
+        ),
+
+        beam_profile,
+
+        screw_1,
+
+        screw_2,
+
+        (
+            f"{staple} mm"
+            if staple != "-"
+            else "-"
+        )
+    ]
+})
+
+st.dataframe(
+    system_data,
+    use_container_width=True,
+    hide_index=True
+)
+
+# ---------------------------------------------------
+# MATERIALER / MÆNGDER
+# ---------------------------------------------------
+
+st.divider()
+
+st.subheader(
+    "Materialeforbrug"
+)
+
+profile_length = st.number_input(
+    "Profil længde (meter)",
+    min_value=0.1,
+    value=6.0,
+    step=0.1
+)
+
+amount_row = apv_df[
+    (
+        apv_df["profile"]
+        .astype(str)
+        .str.strip()
+        ==
+        str(selected_profile).strip()
+    )
+    &
+    (
+        apv_df["montage"]
+        .astype(str)
+        .str.strip()
+        ==
+        str(montage).strip()
+    )
+    &
+    (
+        apv_df["sides"]
+        .astype(int)
+        ==
+        int(sides)
+    )
+]
+
+if not amount_row.empty:
+
+    amount_row = amount_row.iloc[0]
+
+    fireboard_amount = (
+        float(
+            amount_row[
+                "Antal m² fireboard pr. m profil"
+            ]
+        )
+        * profile_length
+    )
+
+    beam_amount = (
+        float(
+            amount_row[
+                "Antal bjælkeprofiler/PDP pr. m profil"
+            ]
+        )
+        * profile_length
+    )
+
+    angle_amount = (
+        float(
+            amount_row[
+                "Antal vinkelprofil pr. m profil"
+            ]
+        )
+        * profile_length
+    )
+
+    screw_amount = (
+        float(
+            amount_row[
+                "Antal skruer pr. m profil"
+            ]
+        )
+        * profile_length
+    )
+
+    staple_amount = (
+        float(
+            amount_row[
+                "Antal klammer pr. m profil"
+            ]
+        )
+        * profile_length
+    )
+
+    materials = []
+
+    materials.append({
+
+        "Materiale":
+            f"Knauf Fireboard {layer_1} mm",
+
+        "Mængde":
+            round(fireboard_amount, 2),
+
+        "Enhed":
+            "m²"
+    })
+
+    if (
+        pd.notna(layer_2)
+        and layer_2 != "-"
+    ):
+
+        materials.append({
+
+            "Materiale":
+                f"Knauf Fireboard {layer_2} mm",
+
+            "Mængde":
+                round(fireboard_amount, 2),
+
+            "Enhed":
+                "m²"
+        })
+
+    if beam_amount > 0:
+
+        materials.append({
+
+            "Materiale":
+                beam_profile,
+
+            "Mængde":
+                round(beam_amount, 0),
+
+            "Enhed":
+                "stk"
+        })
+
+    if angle_amount > 0:
+
+        materials.append({
+
+            "Materiale":
+                "Vinkelprofil",
+
+            "Mængde":
+                round(angle_amount, 0),
+
+            "Enhed":
+                "stk"
+        })
+
+    if screw_amount > 0:
+
+        materials.append({
+
+            "Materiale":
+                screw_1,
+
+            "Mængde":
+                round(screw_amount, 0),
+
+            "Enhed":
+                "stk"
+        })
+
+    if staple_amount > 0:
+
+        materials.append({
+
+            "Materiale":
+                f"Klammer {staple} mm",
+
+            "Mængde":
+                round(staple_amount, 0),
+
+            "Enhed":
+                "stk"
+        })
+
+    materials_df = pd.DataFrame(
+        materials
+    )
+
+    st.dataframe(
+        materials_df,
+        use_container_width=True,
+        hide_index=True
+    )
 
     # ---------------------------------------------------
     # BEREGNINGSDATA
