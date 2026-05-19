@@ -871,48 +871,6 @@ EXPANDERS
     padding: 1rem !important;
 }
 
-/* ---------------------------------------------------
-DATAFRAMES / TABLES
---------------------------------------------------- */
-
-[data-testid="stDataFrame"] {
-
-    border: 1px solid #d9dde3 !important;
-
-    border-radius: 0px !important;
-
-    overflow: hidden !important;
-
-    background: white !important;
-}
-[data-testid="stDataFrame"] div[role="grid"] {
-
-    background: white !important;
-}
-
-/* TABLE HEADER */
-
-[data-testid="stDataFrame"] thead tr th {
-
-    background: #f7f8fa !important;
-
-    color: #364650 !important;
-
-    border-bottom: 1px solid #d9dde3 !important;
-
-    font-weight: 600 !important;
-}
-/* TABLE CELLS */
-
-[data-testid="stDataFrame"] tbody tr td {
-
-    background: #ffffff !important;
-
-    color: #364650 !important;
-
-    border-bottom: 1px solid #eef1f4 !important;
-}
-
 /* DATAFRAME BG */
 
 [data-testid="stDataFrame"] {
@@ -945,75 +903,6 @@ NUMBER INPUT
 [data-testid="stNumberInput"] > div {
 
     background: transparent !important;
-}
-/* ---------------------------------------------------
-DATAFRAMES CLEAN STYLE
---------------------------------------------------- */
-
-[data-testid="stDataFrame"] {
-
-    background: white !important;
-
-    border: 1px solid #d9dde3 !important;
-
-    border-radius: 0 !important;
-}
-
-/* header */
-
-[data-testid="stDataFrame"] [role="columnheader"] {
-
-    background-color: #f7f8fa !important;
-
-    color: #364650 !important;
-
-    font-weight: 600 !important;
-}
-
-/* celler */
-
-[data-testid="stDataFrame"] [role="gridcell"] {
-
-    background-color: white !important;
-
-    color: #364650 !important;
-}
-/* ---------------------------------------------------
-GLIDE DATA EDITOR FIX
---------------------------------------------------- */
-
-[data-testid="stDataFrame"] {
-
-    background: white !important;
-
-    border: 1px solid #d9dde3 !important;
-
-    border-radius: 0 !important;
-}
-
-[data-testid="stDataFrame"] [data-testid="stStyledDataFrame"] {
-
-    background-color: white !important;
-}
-
-/* Header */
-
-[data-testid="stDataFrame"] [role="columnheader"] {
-
-    background-color: #f7f8fa !important;
-
-    color: #364650 !important;
-
-    font-weight: 600 !important;
-}
-
-/* Celler */
-
-[data-testid="stDataFrame"] [role="gridcell"] {
-
-    background-color: white !important;
-
-    color: #364650 !important;
 }
 </style>
 """, unsafe_allow_html=True)
@@ -3926,11 +3815,7 @@ if current_step == 3:
         ]
     })
 
-        st.dataframe(
-            system_data,
-            use_container_width=True,
-            hide_index=True
-        )
+        st.table(system_data)
 
     with st.expander("Materialeforbrug", expanded=False):
 
@@ -4112,8 +3997,4 @@ if current_step == 3:
                 materials
             )
 
-            st.dataframe(
-                materials_df,
-                use_container_width=True,
-                hide_index=True
-            )
+            st.table(materials_df)
