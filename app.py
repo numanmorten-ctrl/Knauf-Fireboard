@@ -3393,6 +3393,375 @@ if current_step == 3:
 
         st.stop()
 
+# ---------------------------------------------------
+# SYSTEMOPBYGNING
+# ---------------------------------------------------
+
+st.divider()
+
+st.subheader(
+    "Systemopbygning"
+)
+
+# ---------------------------------------------------
+# FIREBOARD LAG
+# ---------------------------------------------------
+
+fireboard_csv = pd.read_csv(
+    f"data/fireboard_{fire_time}.csv",
+    sep=";"
+)
+
+fireboard_row = fireboard_csv[
+    fireboard_csv["Tykkelse"]
+    == thickness
+]
+
+layer_1 = thickness
+layer_2 = None
+
+if not fireboard_row.empty:
+
+    layer_1 = (
+        fireboard_row
+        .iloc[0]["Lag 1"]
+    )
+
+    layer_2 = (
+        fireboard_row
+        .iloc[0]["Lag 2"]
+    )
+
+# ---------------------------------------------------
+# BJÆLKEPROFIL
+# ---------------------------------------------------
+
+beam_profile = "-"
+
+try:
+
+    csv2_df = pd.read_csv(
+        "data/CSV_2.csv",
+        sep=";"
+    )
+
+    profile_match = csv2_df[
+        csv2_df["Profil"]
+        .astype(str)
+        .str.strip()
+        ==
+        str(selected_profile).strip()
+    ]
+
+    if not profile_match.empty:
+
+        beam_profile = (
+            profile_match
+            .iloc[0]["Bjælkeprofil"]
+        )
+
+except:
+    pass
+
+# ---------------------------------------------------
+# SKRUER
+# ---------------------------------------------------
+
+screw_1 = "-"
+screw_2 = "-"
+
+try:
+
+    csv3_df = pd.read_csv(
+        "data/CSV_3.csv",
+        sep=";"
+    )
+
+    screw_row = csv3_df[
+        csv3_df["Tykkelse"]
+        == thickness
+    ]
+
+    if not screw_row.empty:
+
+        screw_1 = (
+            screw_row
+            .iloc[0]["Skrue lag 1"]
+        )
+
+        screw_2 = (
+            screw_row
+            .iloc[0]["Skrue lag 2"]
+        )
+
+except:
+    pass
+
+# ---------------------------------------------------
+# KLAMMER
+# ---------------------------------------------------
+
+staple = "-"
+
+if montage == "Klammeløsning":
+
+    try:
+
+        csv4_df = pd.read_csv(
+            "data/CSV_4.csv",
+            sep=";"
+        )
+
+        staple_row = csv4_df[
+            csv4_df["Pladetykkelse"]
+            == layer_1
+        ]
+
+        if not staple_row.empty:
+
+            staple = (
+                staple_row
+                .iloc[0]["Klammelængde"]
+            )
+
+    except:
+        pass
+
+# ---------------------------------------------------
+# VIS SYSTEM
+# ---------------------------------------------------
+
+system_data = pd.DataFrame({
+
+    "Komponent": [
+
+        "Fireboard lag 1",
+        "Fireboard lag 2",
+        "Bjælkeprofil",
+        "Skrue lag 1",
+        "Skrue lag 2",
+        "Klammer"
+    ],
+
+    "Værdi": [
+
+        f"{layer_1} mm",
+
+        (
+            f"{layer_2} mm"
+            if pd.notna(layer_2)
+            and layer_2 != "-"
+            else "-"
+        ),
+
+        beam_profile,
+
+        screw_1,
+
+        screw_2,
+
+        (
+            f"{staple} mm"
+            if staple != "-"
+            else "-"
+        )
+    ]
+})
+
+st.dataframe(
+    system_data,
+    use_container_width=True,
+    hide_index=True
+)
+
+# ---------------------------------------------------
+# MATERIALER / MÆNGDER
+# ---------------------------------------------------
+
+st.divider()
+
+st.subheader(
+    "Materialeforbrug"
+)
+
+profile_length = st.number_input(
+    "Profil længde (meter)",
+    min_value=0.1,
+    value=6.0,
+    step=0.1
+)
+
+amount_row = apv_df[
+    (
+        apv_df["profile"]
+        .astype(str)
+        .str.strip()
+        ==
+        str(selected_profile).strip()
+    )
+    &
+    (
+        apv_df["montage"]
+        .astype(str)
+        .str.strip()
+        ==
+        str(montage).strip()
+    )
+    &
+    (
+        apv_df["sides"]
+        .astype(int)
+        ==
+        int(sides)
+    )
+]
+
+if not amount_row.empty:
+
+    amount_row = amount_row.iloc[0]
+
+    fireboard_amount = (
+        float(
+            amount_row[
+                "Antal m² fireboard pr. m profil"
+            ]
+        )
+        * profile_length
+    )
+
+    beam_amount = (
+        float(
+            amount_row[
+                "Antal bjælkeprofiler/PDP pr. m profil"
+            ]
+        )
+        * profile_length
+    )
+
+    angle_amount = (
+        float(
+            amount_row[
+                "Antal vinkelprofil pr. m profil"
+            ]
+        )
+        * profile_length
+    )
+
+    screw_amount = (
+        float(
+            amount_row[
+                "Antal skruer pr. m profil"
+            ]
+        )
+        * profile_length
+    )
+
+    staple_amount = (
+        float(
+            amount_row[
+                "Antal klammer pr. m profil"
+            ]
+        )
+        * profile_length
+    )
+
+    materials = []
+
+    materials.append({
+
+        "Materiale":
+            f"Knauf Fireboard {layer_1} mm",
+
+        "Mængde":
+            round(fireboard_amount, 2),
+
+        "Enhed":
+            "m²"
+    })
+
+    if (
+        pd.notna(layer_2)
+        and layer_2 != "-"
+    ):
+
+        materials.append({
+
+            "Materiale":
+                f"Knauf Fireboard {layer_2} mm",
+
+            "Mængde":
+                round(fireboard_amount, 2),
+
+            "Enhed":
+                "m²"
+        })
+
+    if beam_amount > 0:
+
+        materials.append({
+
+            "Materiale":
+                beam_profile,
+
+            "Mængde":
+                round(beam_amount, 0),
+
+            "Enhed":
+                "stk"
+        })
+
+    if angle_amount > 0:
+
+        materials.append({
+
+            "Materiale":
+                "Vinkelprofil",
+
+            "Mængde":
+                round(angle_amount, 0),
+
+            "Enhed":
+                "stk"
+        })
+
+    if screw_amount > 0:
+
+        materials.append({
+
+            "Materiale":
+                screw_1,
+
+            "Mængde":
+                round(screw_amount, 0),
+
+            "Enhed":
+                "stk"
+        })
+
+    if staple_amount > 0:
+
+        materials.append({
+
+            "Materiale":
+                f"Klammer {staple} mm",
+
+            "Mængde":
+                round(staple_amount, 0),
+
+            "Enhed":
+                "stk"
+        })
+
+    materials_df = pd.DataFrame(
+        materials
+    )
+
+    st.dataframe(
+        materials_df,
+        use_container_width=True,
+        hide_index=True
+    )
+
     # ---------------------------------------------------
     # BEREGNINGSDATA
     # ---------------------------------------------------
