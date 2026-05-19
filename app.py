@@ -1017,6 +1017,22 @@ def format_profile_display(category, profile):
     return f"{translated_category}\n{profile}"
 
 
+def format_sides_display(value):
+    """Return a cleaned sides label for PDF output without duplicated text."""
+    if value is None:
+        return ""
+
+    text = str(value).strip()
+    if not text:
+        return ""
+
+    translated_sides = t("sides")
+    if translated_sides and translated_sides.lower() in text.lower():
+        return text
+
+    return f"{text} {translated_sides}"
+
+
 # ---------------------------------------------------
 # LOAD DATA
 # ---------------------------------------------------
@@ -1252,8 +1268,8 @@ RESULT_Y = 192
 
 # PAGE NUMBER
 
-PAGE_X = 283
-PAGE_Y = 22
+PAGE_X = 292
+PAGE_Y = 20.4
 
 # PROFILE IMAGE
 
@@ -1328,11 +1344,15 @@ def generate_complete_pdf():
         # Language-specific coordinates: keep EN as current values,
         # restore DA to the previous placement so templates align.
         if st.session_state.language == "EN":
-            calc_y_local = CALC_Y
-            result_y_local = RESULT_Y
+            PROJECT_Y_LOCAL = 538.9
+            CALC_Y_LOCAL = CALC_Y
+            RESULT_Y_LOCAL = 187.8
+            PAGE_Y_LOCAL = 20.4
         else:
-            calc_y_local = 418.5
-            result_y_local = 220.5
+            PROJECT_Y_LOCAL = 560.7
+            CALC_Y_LOCAL = 418.5
+            RESULT_Y_LOCAL = 225.3
+            PAGE_Y_LOCAL = 20.4
 
         # ---------------------------------------------------
         # PROJECT INFO
@@ -1345,31 +1365,31 @@ def generate_complete_pdf():
 
         can.drawString(
             PROJECT_X,
-            PROJECT_Y,
+            PROJECT_Y_LOCAL,
             str(st.session_state.project_name)
         )
 
         can.drawString(
             PROJECT_X,
-            PROJECT_Y - PROJECT_LINE_HEIGHT,
+            PROJECT_Y_LOCAL - PROJECT_LINE_HEIGHT,
             str(st.session_state.prepared_by)
         )
 
         can.drawString(
             PROJECT_X,
-            PROJECT_Y - (PROJECT_LINE_HEIGHT * 2),
+            PROJECT_Y_LOCAL - (PROJECT_LINE_HEIGHT * 2),
             str(st.session_state.company)
         )
 
         can.drawString(
             PROJECT_X,
-            PROJECT_Y - (PROJECT_LINE_HEIGHT * 3),
+            PROJECT_Y_LOCAL - (PROJECT_LINE_HEIGHT * 3),
             datetime.now().strftime("%d-%m-%Y")
         )
 
         can.drawString(
             PROJECT_X,
-            PROJECT_Y - (PROJECT_LINE_HEIGHT * 4),
+            PROJECT_Y_LOCAL - (PROJECT_LINE_HEIGHT * 4),
             str(st.session_state.description)
         )
 
@@ -1384,13 +1404,13 @@ def generate_complete_pdf():
 
         can.drawString(
             CALC_X,
-            calc_y_local,
+            CALC_Y_LOCAL,
             get_translated_category(calc["category"])
         )
 
         can.drawString(
             CALC_X,
-            calc_y_local - CALC_LINE_HEIGHT,
+            CALC_Y_LOCAL - CALC_LINE_HEIGHT,
             str(calc["profile"])
         )
 
@@ -1399,31 +1419,31 @@ def generate_complete_pdf():
         # sides (cladding), fire time, temperature, apv.
         can.drawString(
             CALC_X,
-            calc_y_local - (CALC_LINE_HEIGHT * 2),
+            CALC_Y_LOCAL - (CALC_LINE_HEIGHT * 2),
             str(get_display_text(calc["montage"]))
         )
 
         can.drawString(
             CALC_X,
-            calc_y_local - (CALC_LINE_HEIGHT * 3),
-            f"{calc['sides']} {t('sides')}"
+            CALC_Y_LOCAL - (CALC_LINE_HEIGHT * 3),
+            format_sides_display(calc['sides'])
         )
 
         can.drawString(
             CALC_X,
-            calc_y_local - (CALC_LINE_HEIGHT * 4),
+            CALC_Y_LOCAL - (CALC_LINE_HEIGHT * 4),
             f"{calc['fire_time']} {t('minutes')}"
         )
 
         can.drawString(
             CALC_X,
-            calc_y_local - (CALC_LINE_HEIGHT * 5),
+            CALC_Y_LOCAL - (CALC_LINE_HEIGHT * 5),
             f"{calc['temperature']} °C"
         )
 
         can.drawString(
             CALC_X,
-            calc_y_local - (CALC_LINE_HEIGHT * 6),
+            CALC_Y_LOCAL - (CALC_LINE_HEIGHT * 6),
             f"{calc['apv']} m²/m³"
         )
 
@@ -1505,7 +1525,7 @@ def generate_complete_pdf():
 
         can.drawCentredString(
             RESULT_X,
-            result_y_local,
+            RESULT_Y_LOCAL,
             result_text
         )
 
@@ -1526,7 +1546,7 @@ def generate_complete_pdf():
 
         can.drawString(
             PAGE_X,
-            PAGE_Y,
+            PAGE_Y_LOCAL,
             f"{page_number}"
         )
 
@@ -1588,11 +1608,15 @@ def generate_single_pdf(calc):
     # Language-specific coordinates: keep EN as current values,
     # restore DA to the previous placement so templates align.
     if st.session_state.language == "EN":
-        calc_y_local = CALC_Y
-        result_y_local = RESULT_Y
+        PROJECT_Y_LOCAL = 538.9
+        CALC_Y_LOCAL = CALC_Y
+        RESULT_Y_LOCAL = 187.8
+        PAGE_Y_LOCAL = 20.4
     else:
-        calc_y_local = 418.5
-        result_y_local = 220.5
+        PROJECT_Y_LOCAL = 560.7
+        CALC_Y_LOCAL = 418.5
+        RESULT_Y_LOCAL = 225.3
+        PAGE_Y_LOCAL = 20.4
 
     # ---------------------------------------------------
     # PROJECT INFO
@@ -1605,31 +1629,31 @@ def generate_single_pdf(calc):
 
     can.drawString(
         PROJECT_X,
-        PROJECT_Y,
+        PROJECT_Y_LOCAL,
         str(st.session_state.project_name)
     )
 
     can.drawString(
         PROJECT_X,
-        PROJECT_Y - PROJECT_LINE_HEIGHT,
+        PROJECT_Y_LOCAL - PROJECT_LINE_HEIGHT,
         str(st.session_state.prepared_by)
     )
 
     can.drawString(
         PROJECT_X,
-        PROJECT_Y - (PROJECT_LINE_HEIGHT * 2),
+        PROJECT_Y_LOCAL - (PROJECT_LINE_HEIGHT * 2),
         str(st.session_state.company)
     )
 
     can.drawString(
         PROJECT_X,
-        PROJECT_Y - (PROJECT_LINE_HEIGHT * 3),
+        PROJECT_Y_LOCAL - (PROJECT_LINE_HEIGHT * 3),
         datetime.now().strftime("%d-%m-%Y")
     )
 
     can.drawString(
         PROJECT_X,
-        PROJECT_Y - (PROJECT_LINE_HEIGHT * 4),
+        PROJECT_Y_LOCAL - (PROJECT_LINE_HEIGHT * 4),
         str(st.session_state.description)
     )
 
@@ -1644,13 +1668,13 @@ def generate_single_pdf(calc):
 
     can.drawString(
         CALC_X,
-        calc_y_local,
+        CALC_Y_LOCAL,
         get_translated_category(calc["category"])
     )
 
     can.drawString(
         CALC_X,
-        calc_y_local - CALC_LINE_HEIGHT,
+        CALC_Y_LOCAL - CALC_LINE_HEIGHT,
         str(calc["profile"])
     )
 
@@ -1659,31 +1683,31 @@ def generate_single_pdf(calc):
     # sides (cladding), fire time, temperature, apv.
     can.drawString(
         CALC_X,
-        calc_y_local - (CALC_LINE_HEIGHT * 2),
+        CALC_Y_LOCAL - (CALC_LINE_HEIGHT * 2),
         str(get_display_text(calc["montage"]))
     )
 
     can.drawString(
         CALC_X,
-        calc_y_local - (CALC_LINE_HEIGHT * 3),
-        f"{calc['sides']} {t('sides')}"
+        CALC_Y_LOCAL - (CALC_LINE_HEIGHT * 3),
+        format_sides_display(calc['sides'])
     )
 
     can.drawString(
         CALC_X,
-        calc_y_local - (CALC_LINE_HEIGHT * 4),
+        CALC_Y_LOCAL - (CALC_LINE_HEIGHT * 4),
         f"{calc['fire_time']} {t('minutes')}"
     )
 
     can.drawString(
         CALC_X,
-        calc_y_local - (CALC_LINE_HEIGHT * 5),
+        CALC_Y_LOCAL - (CALC_LINE_HEIGHT * 5),
         f"{calc['temperature']} °C"
     )
 
     can.drawString(
         CALC_X,
-        calc_y_local - (CALC_LINE_HEIGHT * 6),
+        CALC_Y_LOCAL - (CALC_LINE_HEIGHT * 6),
         f"{calc['apv']} m²/m³"
     )
 
@@ -1765,7 +1789,7 @@ def generate_single_pdf(calc):
 
     can.drawCentredString(
         RESULT_X,
-        result_y_local,
+        RESULT_Y_LOCAL,
         result_text
     )
 
@@ -1786,7 +1810,7 @@ def generate_single_pdf(calc):
 
     can.drawString(
         PAGE_X,
-        PAGE_Y,
+        PAGE_Y_LOCAL,
         "1"
     )
 
