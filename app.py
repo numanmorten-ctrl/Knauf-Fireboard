@@ -947,63 +947,34 @@ NUMBER INPUT
     background: transparent !important;
 }
 /* ---------------------------------------------------
-STREAMLIT GLIDE DATA GRID FIX
+DATAFRAMES CLEAN STYLE
 --------------------------------------------------- */
 
-[data-testid="stDataFrame"] * {
+[data-testid="stDataFrame"] {
 
-    background-color: white !important;
+    background: white !important;
 
-    color: #364650 !important;
+    border: 1px solid #d9dde3 !important;
+
+    border-radius: 0 !important;
 }
+
+/* header */
 
 [data-testid="stDataFrame"] [role="columnheader"] {
 
-    background: #f7f8fa !important;
+    background-color: #f7f8fa !important;
 
     color: #364650 !important;
 
     font-weight: 600 !important;
-
-    border-bottom: 1px solid #d9dde3 !important;
 }
+
+/* celler */
 
 [data-testid="stDataFrame"] [role="gridcell"] {
 
-    background: white !important;
-
-    color: #364650 !important;
-
-    border-bottom: 1px solid #eef1f4 !important;
-}
-
-[data-testid="stDataFrame"] canvas {
-
-    background: white !important;
-}
-
-
-/* ---------------------------------------------------
-DATAFRAME TEXT FIX
---------------------------------------------------- */
-
-[data-testid="stDataFrame"] div {
-
-    color: #364650 !important;
-}
-
-/* Header tekst */
-
-[data-testid="stDataFrame"] [role="columnheader"] div {
-
-    color: #364650 !important;
-
-    font-weight: 600 !important;
-}
-
-/* Celle tekst */
-
-[data-testid="stDataFrame"] [role="gridcell"] div {
+    background-color: white !important;
 
     color: #364650 !important;
 }
