@@ -982,7 +982,14 @@ DATAFRAMES CLEAN STYLE
 GLIDE DATA EDITOR FIX
 --------------------------------------------------- */
 
-/* Hele tabellen */
+[data-testid="stDataFrame"] {
+
+    background: white !important;
+
+    border: 1px solid #d9dde3 !important;
+
+    border-radius: 0 !important;
+}
 
 [data-testid="stDataFrame"] [data-testid="stStyledDataFrame"] {
 
@@ -1007,21 +1014,6 @@ GLIDE DATA EDITOR FIX
     background-color: white !important;
 
     color: #364650 !important;
-}
-
-/* Indre tekst */
-
-[data-testid="stDataFrame"] span,
-[data-testid="stDataFrame"] div {
-
-    color: #364650 !important;
-}
-
-/* Canvas layer */
-
-[data-testid="stDataFrame"] canvas {
-
-    filter: brightness(100%) !important;
 }
 </style>
 """, unsafe_allow_html=True)
