@@ -1373,11 +1373,15 @@ def generate_complete_pdf():
             CALC_FONT
         )
 
+        # PROFILE CATEGORY
+
         can.drawString(
             CALC_X,
             CALC_Y,
             get_translated_category(calc["category"])
         )
+
+        # PROFILE
 
         can.drawString(
             CALC_X,
@@ -1385,20 +1389,23 @@ def generate_complete_pdf():
             str(calc["profile"])
         )
 
-        # Note: keep the same row/value order as the Danish PDF.
-        # The correct order is: category, profile, montage (clamping),
-        # sides (cladding), fire time, temperature, apv.
+        # CLADDING (3 sides / 4 sides)
+
         can.drawString(
             CALC_X,
             CALC_Y - (CALC_LINE_HEIGHT * 2),
-            str(get_display_text(calc["montage"]))
+            f"{calc['sides']} {t('sides')}"
         )
+
+        # CLADDING TYPE (Clamping solution)
 
         can.drawString(
             CALC_X,
             CALC_Y - (CALC_LINE_HEIGHT * 3),
-            f"{calc['sides']} {t('sides')}"
+            str(get_display_text(calc["montage"]))
         )
+
+        # FIRE PROTECTION TIME
 
         can.drawString(
             CALC_X,
@@ -1406,11 +1413,15 @@ def generate_complete_pdf():
             f"{calc['fire_time']} {t('minutes')}"
         )
 
+        # TEMPERATURE
+
         can.drawString(
             CALC_X,
             CALC_Y - (CALC_LINE_HEIGHT * 5),
             f"{calc['temperature']} °C"
         )
+
+        # APV
 
         can.drawString(
             CALC_X,
@@ -1442,25 +1453,30 @@ def generate_complete_pdf():
                 colors.HexColor("#2d343c")
             )
 
-            # Draw category and profile size on separate lines
-            translated_category = get_translated_category(calc["category"])
-            
-            # Category text - smaller font for visual hierarchy
+            translated_category = get_translated_category(
+                calc["category"]
+            )
+
+            # CATEGORY TEXT
+
             can.setFont(
                 "Helvetica",
                 PROFILE_CATEGORY_FONT
             )
+
             can.drawCentredString(
                 PROFILE_TEXT_X,
                 PROFILE_CATEGORY_TEXT_Y,
                 translated_category
             )
-            
-            # Profile size text - larger font for emphasis
+
+            # PROFILE SIZE
+
             can.setFont(
                 "Helvetica-Bold",
                 PROFILE_TEXT_FONT
             )
+
             can.drawCentredString(
                 PROFILE_TEXT_X,
                 PROFILE_TEXT_Y,
@@ -1482,9 +1498,10 @@ def generate_complete_pdf():
             RESULT_FONT
         )
 
-        # Render result text safely (some values can be strings/floats).
         try:
-            thickness_val = int(float(calc.get("thickness", 0)))
+            thickness_val = int(
+                float(calc.get("thickness", 0))
+            )
         except Exception:
             thickness_val = 0
 
@@ -1624,11 +1641,15 @@ def generate_single_pdf(calc):
         CALC_FONT
     )
 
+    # PROFILE CATEGORY
+
     can.drawString(
         CALC_X,
         CALC_Y,
         get_translated_category(calc["category"])
     )
+
+    # PROFILE
 
     can.drawString(
         CALC_X,
@@ -1636,20 +1657,23 @@ def generate_single_pdf(calc):
         str(calc["profile"])
     )
 
-    # Note: keep the same row/value order as the Danish PDF.
-    # The correct order is: category, profile, montage (clamping),
-    # sides (cladding), fire time, temperature, apv.
+    # CLADDING (3 sides / 4 sides)
+
     can.drawString(
         CALC_X,
         CALC_Y - (CALC_LINE_HEIGHT * 2),
-        str(get_display_text(calc["montage"]))
+        f"{calc['sides']} {t('sides')}"
     )
+
+    # CLADDING TYPE (Clamping solution)
 
     can.drawString(
         CALC_X,
         CALC_Y - (CALC_LINE_HEIGHT * 3),
-        f"{calc['sides']} {t('sides')}"
+        str(get_display_text(calc["montage"]))
     )
+
+    # FIRE PROTECTION TIME
 
     can.drawString(
         CALC_X,
@@ -1657,11 +1681,15 @@ def generate_single_pdf(calc):
         f"{calc['fire_time']} {t('minutes')}"
     )
 
+    # TEMPERATURE
+
     can.drawString(
         CALC_X,
         CALC_Y - (CALC_LINE_HEIGHT * 5),
         f"{calc['temperature']} °C"
     )
+
+    # APV
 
     can.drawString(
         CALC_X,
@@ -1693,25 +1721,30 @@ def generate_single_pdf(calc):
             colors.HexColor("#2d343c")
         )
 
-        # Draw category and profile size on separate lines
-        translated_category = get_translated_category(calc["category"])
-        
-        # Category text - smaller font for visual hierarchy
+        translated_category = get_translated_category(
+            calc["category"]
+        )
+
+        # CATEGORY TEXT
+
         can.setFont(
             "Helvetica",
             PROFILE_CATEGORY_FONT
         )
+
         can.drawCentredString(
             PROFILE_TEXT_X,
             PROFILE_CATEGORY_TEXT_Y,
             translated_category
         )
-        
-        # Profile size text - larger font for emphasis
+
+        # PROFILE SIZE
+
         can.setFont(
             "Helvetica-Bold",
             PROFILE_TEXT_FONT
         )
+
         can.drawCentredString(
             PROFILE_TEXT_X,
             PROFILE_TEXT_Y,
@@ -1733,9 +1766,10 @@ def generate_single_pdf(calc):
         RESULT_FONT
     )
 
-    # Render result text safely (some values can be strings/floats).
     try:
-        thickness_val = int(float(calc.get("thickness", 0)))
+        thickness_val = int(
+            float(calc.get("thickness", 0))
+        )
     except Exception:
         thickness_val = 0
 
@@ -1769,7 +1803,7 @@ def generate_single_pdf(calc):
     can.drawString(
         PAGE_X,
         PAGE_Y,
-        f"{t('page')} 1"
+        "1"
     )
 
     can.save()
