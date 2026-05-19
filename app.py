@@ -1027,6 +1027,61 @@ apv_df = pd.read_csv(
 )
 
 # ---------------------------------------------------
+# CLEAN APV DATA
+# ---------------------------------------------------
+
+apv_df.columns = (
+    apv_df.columns
+    .str.strip()
+)
+
+# tekstfelter
+
+text_cols = [
+    "profile",
+    "montage",
+    "profile_category"
+]
+
+for col in text_cols:
+
+    apv_df[col] = (
+        apv_df[col]
+        .astype(str)
+        .str.strip()
+    )
+
+# numeriske felter
+
+numeric_cols = [
+
+    "sides",
+    "apv",
+
+    "Antal m² fireboard pr. m profil",
+    "Antal bjælkeprofiler/PDP pr. m profil",
+    "Antal vinkelprofil pr. m profil",
+    "Antal skruer pr. m profil",
+    "Antal klammer pr. m profil"
+]
+
+for col in numeric_cols:
+
+    if col in apv_df.columns:
+
+        apv_df[col] = (
+            apv_df[col]
+            .astype(str)
+            .str.replace(",", ".")
+            .str.strip()
+        )
+
+        apv_df[col] = pd.to_numeric(
+            apv_df[col],
+            errors="coerce"
+        )
+
+# ---------------------------------------------------
 # FIREBOARD TABLES
 # ---------------------------------------------------
 
@@ -2990,7 +3045,7 @@ if current_step == 2:
     fire_options = [30, 60, 90, 120]
 
     saved_fire_time = st.session_state.get(
-    "fire_time"
+        "fire_time"
     )
 
     if saved_fire_time not in fire_options:
@@ -3071,6 +3126,7 @@ if current_step == 2:
             st.session_state.current_step = 3
 
             st.rerun()
+
 # ---------------------------------------------------
 # FIND AP/V + TYKKELSE
 # ---------------------------------------------------
@@ -3087,6 +3143,45 @@ if (
 ):
 
     # ---------------------------------------------------
+    # CLEAN APV DATA
+    # ---------------------------------------------------
+
+    apv_df.columns = (
+        apv_df.columns
+        .str.strip()
+    )
+
+    text_cols = [
+        "profile",
+        "montage",
+        "profile_category"
+    ]
+
+    for col in text_cols:
+
+        if col in apv_df.columns:
+
+            apv_df[col] = (
+                apv_df[col]
+                .astype(str)
+                .str.strip()
+            )
+
+    numeric_cols = [
+        "sides",
+        "apv"
+    ]
+
+    for col in numeric_cols:
+
+        if col in apv_df.columns:
+
+            apv_df[col] = pd.to_numeric(
+                apv_df[col],
+                errors="coerce"
+            )
+
+    # ---------------------------------------------------
     # STANDARD PROFILER
     # ---------------------------------------------------
 
@@ -3095,17 +3190,25 @@ if (
         row = apv_df[
             (
                 apv_df["profile"]
-                == selected_profile
+                .astype(str)
+                .str.strip()
+                ==
+                str(selected_profile).strip()
             )
             &
             (
                 apv_df["montage"]
-                == montage
+                .astype(str)
+                .str.strip()
+                ==
+                str(montage).strip()
             )
             &
             (
                 apv_df["sides"]
-                == int(sides)
+                .astype(int)
+                ==
+                int(sides)
             )
         ]
 
@@ -3113,6 +3216,50 @@ if (
 
             st.error(
                 "Denne kombination er ikke mulig"
+            )
+
+            st.write("DEBUG")
+
+            st.write(
+                "selected_profile:",
+                selected_profile
+            )
+
+            st.write(
+                "montage:",
+                montage
+            )
+
+            st.write(
+                "sides:",
+                sides
+            )
+
+            st.write(
+                "Profiler i CSV:"
+            )
+
+            st.write(
+                apv_df["profile"]
+                .unique()
+            )
+
+            st.write(
+                "Montage i CSV:"
+            )
+
+            st.write(
+                apv_df["montage"]
+                .unique()
+            )
+
+            st.write(
+                "Sides i CSV:"
+            )
+
+            st.write(
+                apv_df["sides"]
+                .unique()
             )
 
             st.stop()
