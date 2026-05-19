@@ -217,7 +217,7 @@ div[data-baseweb="select"] > div,
 }
 
 /* ---------------------------------------------------
-INPUT INNER
+INPUT FIELDS
 --------------------------------------------------- */
 
 .stTextInput input,
@@ -226,17 +226,21 @@ INPUT INNER
 
     background: white !important;
 
-    color: #2d343c !important;
+    border: 1px solid #c5cbd3 !important;
 
-    -webkit-text-fill-color: #2d343c !important;
+    border-radius: 0px !important;
 
-    caret-color: #003b7a !important;
+    color: #364650 !important;
 
-    border: none !important;
+    -webkit-text-fill-color: #364650 !important;
 
-    outline: none !important;
+    caret-color: #00549f !important;
+
+    padding: 0.5rem !important;
 
     box-shadow: none !important;
+
+    outline: none !important;
 
     appearance: none !important;
 
@@ -245,6 +249,16 @@ INPUT INNER
     -moz-appearance: none !important;
 }
 
+.stTextInput input:focus,
+.stTextArea textarea:focus,
+.stNumberInput input:focus {
+
+    border-color: #00549f !important;
+
+    box-shadow: none !important;
+
+    outline: none !important;
+}
 /* ---------------------------------------------------
 INPUT FOCUS
 --------------------------------------------------- */
@@ -903,6 +917,31 @@ NUMBER INPUT
 [data-testid="stNumberInput"] > div {
 
     background: transparent !important;
+}
+/* ---------------------------------------------------
+TABLE STYLE
+--------------------------------------------------- */
+
+table {
+    width: 100% !important;
+    border-collapse: collapse !important;
+    background: white !important;
+}
+
+table th {
+    background: #f7f8fa !important;
+    color: #364650 !important;
+    border: 1px solid #d9dde3 !important;
+    padding: 10px !important;
+    text-align: left !important;
+    font-weight: 600 !important;
+}
+
+table td {
+    border: 1px solid #d9dde3 !important;
+    padding: 10px !important;
+    color: #364650 !important;
+    background: white !important;
 }
 </style>
 """, unsafe_allow_html=True)
