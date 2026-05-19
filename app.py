@@ -818,6 +818,142 @@ div[data-baseweb="select"] > div {
 
     border-left: none !important;
 }
+
+/* ---------------------------------------------------
+EXPANDERS AND SECTION CARDS
+--------------------------------------------------- */
+
+div[data-testid="stExpander"] {
+
+    margin-bottom: 1.1rem !important;
+}
+
+div[data-testid="stExpander"] > div > button,
+button[aria-expanded] {
+
+    width: 100% !important;
+    text-align: left !important;
+    background: #ffffff !important;
+    color: #003b82 !important;
+    border: 1px solid #d1d5db !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.07) !important;
+    border-radius: 12px !important;
+    padding: 1rem 1.1rem !important;
+    font-weight: 600 !important;
+    min-height: 52px !important;
+}
+
+button[aria-expanded]:hover {
+
+    background: #f3f4f6 !important;
+    border-color: #cfd6dd !important;
+}
+
+button[aria-expanded="true"] {
+
+    background: #f8fbff !important;
+}
+
+div[data-testid="stExpander"] section,
+div[data-testid="stExpander"] div[aria-hidden="true"],
+div[data-testid="stExpander"] div[data-testid="stExpanderContent"] {
+
+    margin-top: 0.6rem !important;
+    background: #ffffff !important;
+    border: 1px solid #d1d5db !important;
+    border-top: none !important;
+    border-bottom-left-radius: 12px !important;
+    border-bottom-right-radius: 12px !important;
+    padding: 1rem 1.25rem 1.25rem 1.25rem !important;
+}
+
+/* ---------------------------------------------------
+INPUTS AND BUTTONS
+--------------------------------------------------- */
+
+.stTextInput > div > div,
+.stTextArea > div > div,
+.stNumberInput > div > div,
+.stSelectbox > div > div,
+div[data-baseweb="select"] > div {
+
+    border-radius: 10px !important;
+    padding: 0.85rem !important;
+}
+
+.stTextInput input,
+.stTextArea textarea,
+.stNumberInput input,
+div[data-baseweb="select"] input {
+
+    background: transparent !important;
+    color: #2d343c !important;
+}
+
+div.stButton > button,
+div.stDownloadButton > button {
+
+    border-radius: 10px !important;
+    padding: 0.95rem 1rem !important;
+    min-height: 46px !important;
+}
+
+button[kind="primary"] {
+
+    border-radius: 10px !important;
+    background-color: #003b82 !important;
+    border-color: #003b82 !important;
+    color: white !important;
+}
+
+button[kind="primary"]:hover {
+
+    background-color: #002e5f !important;
+    border-color: #002e5f !important;
+}
+
+/* ---------------------------------------------------
+SECTION SPACING
+--------------------------------------------------- */
+
+div[data-testid="stVerticalBlock"] {
+
+    gap: 1rem !important;
+}
+
+.element-container {
+
+    margin-bottom: 1rem !important;
+}
+
+hr {
+
+    margin-top: 1rem !important;
+    margin-bottom: 1rem !important;
+}
+
+button[role="tab"] {
+
+    border: 1px solid #d1d5db !important;
+    border-radius: 999px !important;
+    background: #ffffff !important;
+    color: #3e4650 !important;
+    padding: 0.6rem 1rem !important;
+    margin-right: 0.5rem !important;
+    box-shadow: none !important;
+}
+
+button[role="tab"][aria-selected="true"] {
+
+    background: #003b82 !important;
+    border-color: #003b82 !important;
+    color: #ffffff !important;
+}
+
+button[role="tab"]:hover {
+
+    background: #f3f4f6 !important;
+}
 </style>
 """, unsafe_allow_html=True)
 
