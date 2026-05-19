@@ -3573,33 +3573,33 @@ if current_step == 3:
         profile_length = 0
 
     amount_row = apv_df[
-            (
-                apv_df["profile"]
-                .map(clean_text)
-                ==
-                clean_text(selected_profile)
-            )
-            &
-            (
-                apv_df["montage"]
-                .map(clean_text)
-                ==
-                clean_text(montage)
-            )
-            &
-            (
-                apv_df["sides"]
-                .map(clean_numeric)
-                .fillna(0)
-                .astype(int)
-                ==
-                int(sides)
-            )
-        ]
+        (
+            apv_df["profile"]
+            .map(clean_text)
+            ==
+            clean_text(selected_profile)
+        )
+        &
+        (
+            apv_df["montage"]
+            .map(clean_text)
+            ==
+            clean_text(montage)
+        )
+        &
+        (
+            apv_df["sides"]
+            .map(clean_numeric)
+            .fillna(0)
+            .astype(int)
+            ==
+            int(sides)
+        )
+    ]
 
-        if not amount_row.empty:
+    if not amount_row.empty:
 
-            amount_row = amount_row.iloc[0]
+        amount_row = amount_row.iloc[0]
 
             fireboard_amount = (
                 (clean_numeric(
