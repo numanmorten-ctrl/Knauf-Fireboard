@@ -8,11 +8,8 @@ import streamlit as st
 import pandas as pd
 import requests
 
-import streamlit as st
-import pandas as pd
-import requests
-
 from translations import translations
+from utils.data_loader import clean_text, clean_numeric, load_and_clean_csv
 
 from reportlab.platypus import (
     SimpleDocTemplate,
@@ -1037,7 +1034,7 @@ def format_sides_display(value):
 # LOAD DATA
 # ---------------------------------------------------
 
-apv_df = pd.read_csv(
+apv_df = load_and_clean_csv(
     "data/apv.csv",
     sep=";"
 )
@@ -1046,9 +1043,10 @@ apv_df = pd.read_csv(
 # FIREBOARD TABLES
 # ---------------------------------------------------
 
+@st.cache_data
 def load_fireboard(path):
 
-    df = pd.read_csv(
+    df = load_and_clean_csv(
         path,
         sep=";"
     )
@@ -1062,37 +1060,16 @@ def load_fireboard(path):
         inplace=True
     )
 
-    df["temperature"] = (
-        df["temperature"]
-        .astype(str)
-        .str.strip()
-    )
-
-    df["temperature"] = pd.to_numeric(
-        df["temperature"],
-        errors="coerce"
-    )
-
-    df = df.dropna(
-        subset=["temperature"]
-    )
-
-    df["temperature"] = (
-        df["temperature"]
-        .astype(int)
-    )
+    df["temperature"] = df["temperature"].map(clean_numeric)
+    df = df.dropna(subset=["temperature"])
+    df["temperature"] = df["temperature"].astype(int)
 
     df.set_index(
         "temperature",
         inplace=True
     )
 
-    df.columns = (
-        pd.Series(df.columns)
-        .astype(str)
-        .str.strip()
-    )
-
+    df.columns = [clean_text(column) for column in df.columns]
     df.columns = pd.to_numeric(
         df.columns,
         errors="coerce"
@@ -1103,9 +1080,13 @@ def load_fireboard(path):
         df.columns.notna()
     ]
 
-    df.columns = (
-        df.columns.astype(int)
-    )
+    df.columns = df.columns.astype(int)
+
+    df = df.apply(lambda column: column.map(clean_numeric))
+    df = df.apply(pd.to_numeric, errors="coerce")
+
+    if not df.empty:
+        df = df.round(0).astype("Int64")
 
     return df
 
@@ -2554,7 +2535,6 @@ if current_step == 0:
 
             filtered_df = filtered_df[
                 filtered_df["profile"]
-                .astype(str)
                 .str.startswith(selected_type)
             ]
 
@@ -2566,11 +2546,7 @@ if current_step == 0:
         profiles = sorted(
             profiles,
             key=lambda x: [
-
-                float(
-                    v.replace(",", ".")
-                )
-
+                clean_numeric(v) or 0
                 for v in (
                     x.replace("HEB", "")
                      .replace("HEA", "")
@@ -2716,21 +2692,12 @@ if current_step == 0:
                 )
             )
 
-            try:
-
-                custom_apv = int(
-                    float(
-                        custom_apv.replace(",", ".")
-                    )
-                )
-
-                st.session_state.custom_apv = (
-                    custom_apv
-                )
-
-            except:
-
-                st.session_state.custom_apv = None
+            numeric_apv = clean_numeric(custom_apv)
+            st.session_state.custom_apv = (
+                int(numeric_apv)
+                if numeric_apv is not None
+                else None
+            )
 
         # ---------------------------------------------------
         # BEREGN AP/V
@@ -2766,15 +2733,16 @@ if current_step == 0:
 
             if calculate_clicked:
 
-                try:
+                ap = clean_numeric(ap_input)
+                v = clean_numeric(v_input)
 
-                    ap = float(
-                        ap_input.replace(",", ".")
+                if ap is None or v is None or v == 0:
+
+                    st.error(
+                        t("invalid_numbers")
                     )
 
-                    v = float(
-                        v_input.replace(",", ".")
-                    )
+                else:
 
                     calculated_apv = round(
                         (ap * 1000) / v
@@ -2790,12 +2758,6 @@ if current_step == 0:
 
                     st.session_state.custom_apv = (
                         calculated_apv
-                    )
-
-                except:
-
-                    st.error(
-                       t("invalid_numbers")
                     )
 
             if st.session_state.custom_apv:
