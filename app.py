@@ -2560,24 +2560,23 @@ if current_step == 0:
             key=lambda x: [
 
                 float(
-                    v.replace(",", ".")
                     v.lower()
-                     .replace("mm", "")
-                     .replace(" ", "")
-                     .replace(",", ".")
+                    .replace("mm", "")
+                    .replace(" ", "")
+                    .replace(",", ".")
                 )
 
                 for v in (
                     x.replace("HEB", "")
-                     .replace("HEA", "")
-                     .replace("HEM", "")
-                     .replace("IPE", "")
-                     .replace("INP", "")
-                     .replace("UNP", "")
-                     .split("x")
+                    .replace("HEA", "")
+                    .replace("HEM", "")
+                    .replace("IPE", "")
+                    .replace("INP", "")
+                    .replace("UNP", "")
+                    .split("x")
                 )
             ]
-        )
+
 
         if len(profiles) == 0:
 
@@ -2716,7 +2715,7 @@ if current_step == 0:
 
                 custom_apv = int(
                     float(
-                        custom_apv.replace(",", "."),
+                        custom_apv.replace(",", ".")
                     )
                 )
 
