@@ -1030,6 +1030,23 @@ def format_sides_display(value):
     return f"{text} {translated_sides}"
 
 
+def display_value(value):
+    if value is None:
+        return "-"
+
+    if isinstance(value, float) and pd.isna(value):
+        return "-"
+
+    text = str(value).strip()
+    if not text:
+        return "-"
+
+    if text.lower() in {"none", "nan"}:
+        return "-"
+
+    return text
+
+
 # ---------------------------------------------------
 # LOAD DATA
 # ---------------------------------------------------
@@ -3413,25 +3430,7 @@ if current_step == 3:
         )
 
     selected_profile_key = clean_text(selected_profile)
-    montage_key = clean_text(montage)
-    sides_key = clean_numeric(sides)
     thickness_key = clean_numeric(thickness)
-
-    st.write(
-        "DEBUG: lookup inputs",
-        {
-            "selected_profile": selected_profile,
-            "selected_profile_key": selected_profile_key,
-            "montage": montage,
-            "montage_key": montage_key,
-            "sides": sides,
-            "sides_key": sides_key,
-            "thickness": thickness,
-            "thickness_key": thickness_key,
-            "layer_1": layer_1,
-            "layer_2": layer_2,
-        }
-    )
 
     # ---------------------------------------------------
     # BJÆLKEPROFIL
@@ -3452,26 +3451,11 @@ if current_step == 3:
         if "bj_profile" in csv3_df.columns:
             csv3_df["bj_profile"] = csv3_df["bj_profile"].map(clean_text)
 
-        st.write(
-            "DEBUG: beam lookup",
-            {
-                "selected_profile": selected_profile,
-                "selected_profile_key": selected_profile_key,
-                "csv3_columns": list(csv3_df.columns),
-            }
-        )
-
         profile_match = csv3_df[
             csv3_df["profile"]
             ==
             selected_profile_key
         ]
-
-        st.write(
-            "DEBUG: beam profile filtered rows",
-            len(profile_match),
-            profile_match.head(5)
-        )
 
         if not profile_match.empty:
 
@@ -3480,8 +3464,7 @@ if current_step == 3:
                 .iloc[0]["bj_profile"]
             ) or "-"
 
-    except Exception as e:
-        st.write("DEBUG: beam lookup error", e)
+    except Exception:
         pass
 
     # ---------------------------------------------------
@@ -3509,26 +3492,11 @@ if current_step == 3:
 
         thickness_key = clean_numeric(thickness)
 
-        st.write(
-            "DEBUG: screw lookup",
-            {
-                "thickness": thickness,
-                "thickness_key": thickness_key,
-                "csv2_columns": list(csv2_df.columns),
-            }
-        )
-
         screw_row = csv2_df[
             csv2_df["thickness_mm"]
             ==
             thickness_key
         ]
-
-        st.write(
-            "DEBUG: screw filtered rows",
-            len(screw_row),
-            screw_row.head(5)
-        )
 
         if not screw_row.empty:
 
@@ -3542,8 +3510,7 @@ if current_step == 3:
                 .iloc[0]["layer2_screw"]
             ) or "-"
 
-    except Exception as e:
-        st.write("DEBUG: screw lookup error", e)
+    except Exception:
         pass
 
     # ---------------------------------------------------
@@ -3569,26 +3536,11 @@ if current_step == 3:
 
             layer1_key = clean_numeric(layer_1)
 
-            st.write(
-                "DEBUG: staple lookup",
-                {
-                    "layer_1": layer_1,
-                    "layer1_key": layer1_key,
-                    "csv4_columns": list(csv4_df.columns),
-                }
-            )
-
             staple_row = csv4_df[
                 csv4_df["board_thickness_mm"]
                 ==
                 layer1_key
             ]
-
-            st.write(
-                "DEBUG: staple filtered rows",
-                len(staple_row),
-                staple_row.head(5)
-            )
 
             if not staple_row.empty:
 
@@ -3597,8 +3549,7 @@ if current_step == 3:
                     .iloc[0]["clamp_length_mm"]
                 ) or "-"
 
-        except Exception as e:
-            st.write("DEBUG: staple lookup error", e)
+        except Exception:
             pass
 
     # ---------------------------------------------------
@@ -3619,28 +3570,33 @@ if current_step == 3:
 
         "Værdi": [
 
-            f"{layer_1} mm",
+        (
+            f"{layer_1} mm"
+            if display_value(layer_1) != "-"
+            else "-"
+        ),
 
-            (
-                f"{layer_2} mm"
-                if pd.notna(layer_2)
-                and layer_2 != "-"
-                else "-"
-            ),
+        (
+            f"{layer_2} mm"
+            if pd.notna(layer_2)
+            and layer_2 != "-"
+            and display_value(layer_2) != "-"
+            else "-"
+        ),
 
-            beam_profile,
+        display_value(beam_profile),
 
-            screw_1,
+        display_value(screw_1),
 
-            screw_2,
+        display_value(screw_2),
 
-            (
-                f"{staple} mm"
-                if staple != "-"
-                else "-"
-            )
-        ]
-    })
+        (
+            f"{staple} mm"
+            if display_value(staple) != "-"
+            else "-"
+        )
+    ]
+})
 
     st.dataframe(
         system_data,
@@ -3775,13 +3731,13 @@ if current_step == 3:
             materials.append({
 
                 "Materiale":
-                    beam_profile,
+                    display_value(beam_profile),
 
                 "Mængde":
                     round(beam_amount, 0),
 
                 "Enhed":
-                    "stk"
+                    "m"
             })
 
         if angle_amount > 0:
@@ -3795,7 +3751,7 @@ if current_step == 3:
                     round(angle_amount, 0),
 
                 "Enhed":
-                    "stk"
+                    "m"
             })
 
         if screw_amount > 0:
@@ -3803,7 +3759,7 @@ if current_step == 3:
             materials.append({
 
                 "Materiale":
-                    screw_1,
+                    display_value(screw_1),
 
                 "Mængde":
                     round(screw_amount, 0),
@@ -3814,10 +3770,16 @@ if current_step == 3:
 
         if staple_amount > 0:
 
+            staple_label = display_value(staple)
+
             materials.append({
 
                 "Materiale":
-                    f"Klammer {staple} mm",
+                    (
+                        f"Klammer {staple_label} mm"
+                        if staple_label != "-"
+                        else "-"
+                    ),
 
                 "Mængde":
                     round(staple_amount, 0),
