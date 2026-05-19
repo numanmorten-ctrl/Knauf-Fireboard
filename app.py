@@ -885,6 +885,10 @@ DATAFRAMES / TABLES
 
     background: white !important;
 }
+[data-testid="stDataFrame"] div[role="grid"] {
+
+    background: white !important;
+}
 
 /* TABLE HEADER */
 
@@ -897,9 +901,9 @@ DATAFRAMES / TABLES
 
 [data-testid="stDataFrame"] tbody tr td {
 
-    background: white !important;
+    background: #ffffff !important;
 
-    color: #2d343c !important;
+    color: #364650 !important;
 
     border-bottom: 1px solid #eef1f4 !important;
 }
@@ -909,6 +913,33 @@ DATAFRAMES / TABLES
 [data-testid="stDataFrame"] {
 
     background: white !important;
+}
+/* ---------------------------------------------------
+NUMBER INPUT
+--------------------------------------------------- */
+
+[data-testid="stNumberInput"] input {
+
+    background: white !important;
+
+    border: 1px solid #c5cbd3 !important;
+
+    border-radius: 0px !important;
+
+    color: #364650 !important;
+
+    height: 46px !important;
+
+    font-size: 16px !important;
+
+    box-shadow: none !important;
+}
+
+/* REMOVE DARK WRAPPER */
+
+[data-testid="stNumberInput"] > div {
+
+    background: transparent !important;
 }
 </style>
 """, unsafe_allow_html=True)
