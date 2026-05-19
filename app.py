@@ -3660,7 +3660,7 @@ if current_step == 3:
         materials = []
 
         materials.append({
-            "Materiale": "Knauf Fireboard",
+            "Materiale": f"Knauf Fireboard {int(thickness)} mm",
             "Mængde": fireboard_amount,
             "Enhed": "m²"
         })
@@ -3668,6 +3668,12 @@ if current_step == 3:
         materials.append({
             "Materiale": "Vinkelprofil",
             "Mængde": angle_amount,
+            "Enhed": "m"
+        })
+
+        materials.append({
+            "Materiale": "Bjælkeprofil / PDP",
+            "Mængde": beam_amount,
             "Enhed": "m"
         })
 
