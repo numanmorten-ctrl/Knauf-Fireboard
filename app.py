@@ -946,6 +946,49 @@ NUMBER INPUT
 
     background: transparent !important;
 }
+/* ---------------------------------------------------
+STREAMLIT GLIDE DATA GRID FIX
+--------------------------------------------------- */
+
+/* Hele dataframe baggrund */
+
+[data-testid="stDataFrame"] * {
+
+    background-color: white !important;
+
+    color: #364650 !important;
+}
+
+/* Header */
+
+[data-testid="stDataFrame"] [role="columnheader"] {
+
+    background: #f7f8fa !important;
+
+    color: #364650 !important;
+
+    font-weight: 600 !important;
+
+    border-bottom: 1px solid #d9dde3 !important;
+}
+
+/* Cell backgrounds */
+
+[data-testid="stDataFrame"] [role="gridcell"] {
+
+    background: white !important;
+
+    color: #364650 !important;
+
+    border-bottom: 1px solid #eef1f4 !important;
+}
+
+/* Fjerner mørk canvas */
+
+[data-testid="stDataFrame"] canvas {
+
+    background: white !important;
+}
 </style>
 """, unsafe_allow_html=True)
 
