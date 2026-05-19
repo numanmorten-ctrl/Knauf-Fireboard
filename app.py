@@ -916,14 +916,16 @@ NUMBER INPUT CLEAN FIX
 
     box-shadow: none !important;
 
-    min-height: 46px !important;
+    min-height: 44px !important;
+
+    padding: 0 !important;
 }
 
 /* INPUT */
 
 [data-testid="stNumberInput"] input {
 
-    background: transparent !important;
+    background: white !important;
 
     border: none !important;
 
@@ -938,6 +940,8 @@ NUMBER INPUT CLEAN FIX
     box-shadow: none !important;
 
     outline: none !important;
+
+    width: 100% !important;
 }
 
 /* FOCUS */
