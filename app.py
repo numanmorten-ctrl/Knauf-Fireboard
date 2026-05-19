@@ -825,7 +825,7 @@ EXPANDERS AND SECTION CARDS
 
 div[data-testid="stExpander"] {
 
-    margin-bottom: 1.1rem !important;
+    margin-bottom: 0.9rem !important;
 }
 
 div[data-testid="stExpander"] > div > button,
@@ -835,36 +835,36 @@ button[aria-expanded] {
     text-align: left !important;
     background: #ffffff !important;
     color: #003b82 !important;
-    border: 1px solid #d1d5db !important;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.07) !important;
-    border-radius: 12px !important;
-    padding: 1rem 1.1rem !important;
+    border: 1px solid #c5cbd3 !important;
+    box-shadow: none !important;
+    border-radius: 4px !important;
+    padding: 0.75rem 0.95rem !important;
     font-weight: 600 !important;
-    min-height: 52px !important;
+    min-height: 44px !important;
 }
 
 button[aria-expanded]:hover {
 
     background: #f3f4f6 !important;
-    border-color: #cfd6dd !important;
+    border-color: #b8c2cc !important;
 }
 
 button[aria-expanded="true"] {
 
-    background: #f8fbff !important;
+    background: #ffffff !important;
 }
 
 div[data-testid="stExpander"] section,
 div[data-testid="stExpander"] div[aria-hidden="true"],
 div[data-testid="stExpander"] div[data-testid="stExpanderContent"] {
 
-    margin-top: 0.6rem !important;
+    margin-top: 0.45rem !important;
     background: #ffffff !important;
-    border: 1px solid #d1d5db !important;
+    border: 1px solid #c5cbd3 !important;
     border-top: none !important;
-    border-bottom-left-radius: 12px !important;
-    border-bottom-right-radius: 12px !important;
-    padding: 1rem 1.25rem 1.25rem 1.25rem !important;
+    border-bottom-left-radius: 4px !important;
+    border-bottom-right-radius: 4px !important;
+    padding: 0.75rem 1rem 1rem 1rem !important;
 }
 
 /* ---------------------------------------------------
@@ -877,8 +877,8 @@ INPUTS AND BUTTONS
 .stSelectbox > div > div,
 div[data-baseweb="select"] > div {
 
-    border-radius: 10px !important;
-    padding: 0.85rem !important;
+    border-radius: 4px !important;
+    padding: 0.65rem !important;
 }
 
 .stTextInput input,
@@ -893,14 +893,14 @@ div[data-baseweb="select"] input {
 div.stButton > button,
 div.stDownloadButton > button {
 
-    border-radius: 10px !important;
-    padding: 0.95rem 1rem !important;
-    min-height: 46px !important;
+    border-radius: 4px !important;
+    padding: 0.75rem 0.95rem !important;
+    min-height: 42px !important;
 }
 
 button[kind="primary"] {
 
-    border-radius: 10px !important;
+    border-radius: 4px !important;
     background-color: #003b82 !important;
     border-color: #003b82 !important;
     color: white !important;
@@ -918,28 +918,28 @@ SECTION SPACING
 
 div[data-testid="stVerticalBlock"] {
 
-    gap: 1rem !important;
+    gap: 0.9rem !important;
 }
 
 .element-container {
 
-    margin-bottom: 1rem !important;
+    margin-bottom: 0.9rem !important;
 }
 
 hr {
 
-    margin-top: 1rem !important;
-    margin-bottom: 1rem !important;
+    margin-top: 0.8rem !important;
+    margin-bottom: 0.8rem !important;
 }
 
 button[role="tab"] {
 
-    border: 1px solid #d1d5db !important;
-    border-radius: 999px !important;
+    border: 1px solid #c5cbd3 !important;
+    border-radius: 4px !important;
     background: #ffffff !important;
     color: #3e4650 !important;
-    padding: 0.6rem 1rem !important;
-    margin-right: 0.5rem !important;
+    padding: 0.55rem 0.9rem !important;
+    margin-right: 0.35rem !important;
     box-shadow: none !important;
 }
 
