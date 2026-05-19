@@ -196,7 +196,6 @@ INPUTS
 
 .stTextInput > div > div,
 .stTextArea > div > div,
-.stNumberInput > div > div,
 .stSelectbox > div > div,
 div[data-baseweb="select"] > div,
 [data-baseweb="input"],
@@ -287,15 +286,6 @@ input:invalid,
 textarea:invalid {
 
     box-shadow: none !important;
-}
-
-/* ---------------------------------------------------
-HIDE NUMBER BUTTONS
---------------------------------------------------- */
-
-.stNumberInput button {
-
-    display: none !important;
 }
 
 /* ---------------------------------------------------
@@ -472,7 +462,6 @@ UNIFY ALL BORDERS
 .stDownloadButton > button,
 .stTextInput > div > div,
 .stTextArea > div > div,
-.stNumberInput > div > div,
 .stSelectbox > div > div,
 div[data-baseweb="select"] > div,
 [data-baseweb="input"],
@@ -496,7 +485,6 @@ div[data-baseweb="select"] > div,
 
 .stTextInput,
 .stTextArea,
-.stNumberInput,
 .stSelectbox,
 .stButton,
 .stDownloadButton {
@@ -518,7 +506,6 @@ FINAL BASEWEB INPUT FIX
 --------------------------------------------------- */
 
 .stTextInput > div,
-.stNumberInput > div,
 .stTextArea > div {
 
     border: none !important;
@@ -529,7 +516,6 @@ FINAL BASEWEB INPUT FIX
 }
 
 .stTextInput > div > div,
-.stNumberInput > div > div,
 .stTextArea > div > div {
 
     margin: 0 !important;
@@ -819,138 +805,11 @@ div[data-baseweb="select"] > div {
 
     border-left: none !important;
 }
-/* ---------------------------------------------------
-EXPANDERS
---------------------------------------------------- */
-
-[data-testid="stExpander"] {
-
-    border: none !important;
-
-    border-radius: 0px !important;
-
-    background: transparent !important;
-
-    overflow: hidden !important;
-
-    margin-bottom: 1rem !important;
-
-    box-shadow: none !important;
-}
-/* HEADER */
-
-[data-testid="stExpander"] summary {
-
-    background: white !important;
-
-    color: #364650 !important;
-
-    font-weight: 600 !important;
-
-    padding: 0.75rem 1rem !important;
-
-    border: 1px solid #c5cbd3 !important;
-
-    border-radius: 0px !important;
-
-    transition: all 0.15s ease;
-}
-
-/* HOVER */
-
-[data-testid="stExpander"] summary:hover {
-
-    background: #f5f7fa !important;
-}
-
-/* CONTENT */
-
-[data-testid="stExpanderDetails"] {
-
-    background: white !important;
-
-    padding: 1rem !important;
-}
-
 /* DATAFRAME BG */
 
 [data-testid="stDataFrame"] {
 
     background: white !important;
-}
-/* ---------------------------------------------------
-NUMBER INPUT CLEAN FIX
---------------------------------------------------- */
-
-[data-testid="stNumberInput"] {
-
-    border: none !important;
-
-    box-shadow: none !important;
-
-    background: transparent !important;
-}
-
-/* OUTER WRAPPER */
-
-[data-testid="stNumberInput"] > div {
-
-    border: none !important;
-
-    background: transparent !important;
-
-    box-shadow: none !important;
-
-    padding: 0 !important;
-}
-
-/* INNER WRAPPER */
-
-[data-testid="stNumberInput"] > div > div {
-
-    background: white !important;
-
-    border: 1px solid #c5cbd3 !important;
-
-    border-radius: 0px !important;
-
-    box-shadow: none !important;
-
-    min-height: 44px !important;
-
-    padding: 0 !important;
-}
-
-/* INPUT */
-
-[data-testid="stNumberInput"] input {
-
-    background: white !important;
-
-    border: none !important;
-
-    color: #364650 !important;
-
-    height: 44px !important;
-
-    font-size: 16px !important;
-
-    padding: 0 12px !important;
-
-    box-shadow: none !important;
-
-    outline: none !important;
-
-    width: 100% !important;
-}
-
-/* FOCUS */
-
-[data-testid="stNumberInput"] > div > div:focus-within {
-
-    border: 1px solid #009fe3 !important;
-
-    box-shadow: none !important;
 }
 
 /* HIDE +/- BUTTONS */
@@ -984,71 +843,7 @@ table td {
     color: #364650 !important;
     background: white !important;
 }
-/* FORCE NUMBER INPUT INSIDE EXPANDERS */
 
-[data-testid="stExpander"] [data-testid="stNumberInput"] input {
-
-    background: white !important;
-
-    border: none !important;
-
-    color: #364650 !important;
-
-    height: 44px !important;
-
-    font-size: 16px !important;
-
-    padding: 0 12px !important;
-
-    box-shadow: none !important;
-
-    outline: none !important;
-}
-
-[data-testid="stExpander"] [data-testid="stNumberInput"] > div > div {
-
-    background: white !important;
-
-    border: 1px solid #c5cbd3 !important;
-
-    min-height: 44px !important;
-
-    box-shadow: none !important;
-
-    padding: 0 !important;
-}
-/* FIX NUMBER INPUT WIDTH / SPINNER SPACE */
-
-[data-testid="stNumberInput"] div[data-baseweb="input"] {
-
-    display: flex !important;
-
-    align-items: center !important;
-
-    width: 100% !important;
-}
-
-[data-testid="stNumberInput"] div[data-baseweb="input"] > div {
-
-    width: 100% !important;
-
-    flex: 1 1 auto !important;
-}
-
-/* REMOVE EMPTY +/- AREAS */
-
-[data-testid="stNumberInput"] button {
-
-    display: none !important;
-
-    width: 0 !important;
-
-    min-width: 0 !important;
-
-    padding: 0 !important;
-
-    margin: 0 !important;
-}
 </style>
 """, unsafe_allow_html=True)
 
@@ -3765,211 +3560,17 @@ if current_step == 3:
     # ADVANCED TECHNICAL SECTIONS (collapsed by default)
     # ---------------------------------------------------
 
-    with st.expander("Systemopbygning", expanded=False):
+    st.header("Materialeforbrug")
 
-        st.divider()
-
-        # FIREBOARD LAG
-        fireboard_csv = pd.read_csv(
-            f"data/fireboard_{fire_time}.csv",
-            sep=";"
-        )
-
-        fireboard_csv.columns = (
-            fireboard_csv.columns
-            .str.strip()
-        )
-
-        thickness_col = fireboard_csv.columns[0]
-
-        fireboard_row = fireboard_csv[
-            pd.to_numeric(
-                fireboard_csv[thickness_col],
-                errors="coerce"
-            )
-            ==
-            thickness
-        ]
-
-        layer_1 = thickness
-        layer_2 = None
-
-        if not fireboard_row.empty:
-
-            layer_1 = (
-                fireboard_row
-                .iloc[0]["Lag 1"]
-            )
-
-            layer_2 = (
-                fireboard_row
-                .iloc[0]["Lag 2"]
-            )
-
-        selected_profile_key = clean_text(selected_profile)
-        thickness_key = clean_numeric(thickness)
-
-        # BJÆLKEPROFIL
-        beam_profile = ""
-
-        try:
-
-            csv3_df = load_and_clean_csv(
-                "data/CSV_3.csv",
-                sep=",")
-
-            if "profile" in csv3_df.columns:
-                csv3_df["profile"] = csv3_df["profile"].map(clean_text)
-
-            if "bj_profile" in csv3_df.columns:
-                csv3_df["bj_profile"] = csv3_df["bj_profile"].map(clean_text)
-
-            profile_match = csv3_df[
-                csv3_df["profile"]
-                ==
-                selected_profile_key
-            ]
-
-            if not profile_match.empty:
-
-                beam_profile = (
-                    profile_match
-                    .iloc[0]["bj_profile"]
-                ) or "-"
-
-        except Exception:
-            pass
-
-        # SKRUER
-        screw_1 = ""
-        screw_2 = ""
-
-        try:
-
-            csv2_df = load_and_clean_csv(
-                "data/CSV_2.csv",
-                sep=",")
-
-            if "thickness_mm" in csv2_df.columns:
-                csv2_df["thickness_mm"] = csv2_df["thickness_mm"].map(clean_numeric)
-
-            if "layer1_screw" in csv2_df.columns:
-                csv2_df["layer1_screw"] = csv2_df["layer1_screw"].map(clean_text)
-
-            if "layer2_screw" in csv2_df.columns:
-                csv2_df["layer2_screw"] = csv2_df["layer2_screw"].map(clean_text)
-
-            thickness_key = clean_numeric(thickness)
-
-            screw_row = csv2_df[
-                csv2_df["thickness_mm"]
-                ==
-                thickness_key
-            ]
-
-            if not screw_row.empty:
-
-                screw_1 = (
-                    screw_row
-                    .iloc[0]["layer1_screw"]
-                ) or "-"
-
-                screw_2 = (
-                    screw_row
-                    .iloc[0]["layer2_screw"]
-                ) or "-"
-
-        except Exception:
-            pass
-
-        # KLAMMER
-        staple = ""
-
-        if clean_text(montage) == clean_text("Klammeløsning"):
-
-            try:
-
-                csv4_df = load_and_clean_csv(
-                    "data/CSV_4.csv",
-                    sep=",")
-
-                if "board_thickness_mm" in csv4_df.columns:
-                    csv4_df["board_thickness_mm"] = csv4_df["board_thickness_mm"].map(clean_numeric)
-
-                if "clamp_length_mm" in csv4_df.columns:
-                    csv4_df["clamp_length_mm"] = csv4_df["clamp_length_mm"].map(clean_text)
-
-                layer1_key = clean_numeric(layer_1)
-
-                staple_row = csv4_df[
-                    csv4_df["board_thickness_mm"]
-                    ==
-                    layer1_key
-                ]
-
-                if not staple_row.empty:
-
-                    staple = (
-                        staple_row
-                        .iloc[0]["clamp_length_mm"]
-                    ) or "-"
-
-            except Exception:
-                pass
-
-        # VIS SYSTEM
-        system_data = pd.DataFrame({
-
-            "Komponent": [
-
-                "Fireboard lag 1",
-                "Fireboard lag 2",
-                "Bjælkeprofil",
-                "Skrue lag 1",
-                "Skrue lag 2",
-                "Klammer"
-            ],
-
-            "Værdi": [
-
-            (
-                f"{layer_1} mm"
-                if display_value(layer_1) != "-"
-                else ""
-            ),
-
-            (
-                f"{layer_2} mm"
-                if pd.notna(layer_2)
-                and layer_2 != "-"
-                and display_value(layer_2) != "-"
-                else ""
-            ),
-
-            display_value(beam_profile),
-
-            display_value(screw_1),
-
-            display_value(screw_2),
-
-            (
-                f"{staple} mm"
-                if display_value(staple) != "-"
-                else ""
-            )
-        ]
-    })
-
-        st.table(system_data)
-
-    with st.expander("Materialeforbrug", expanded=False):
-
-        profile_length = st.number_input(
+        profile_length = st.text_input(
             "Profil længde (meter)",
-            min_value=0.1,
-            value=6.0,
-            step=0.1
+            value="6,0"
         )
+
+        profile_length = clean_numeric(profile_length)
+
+        if profile_length is None:
+            profile_length = 0
 
         amount_row = apv_df[
             (
