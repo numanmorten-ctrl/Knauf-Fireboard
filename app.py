@@ -3657,85 +3657,31 @@ if current_step == 3:
             * profile_length
         )
 
-        layer_1 = amount_row.get("Fireboard lag 1", "")
-        layer_2 = amount_row.get("Fireboard lag 2", "")
-
-        beam_profile = amount_row.get("Bjælkeprofil", "")
-        screw_1 = amount_row.get("Skrue lag 1", "")
-        staple = amount_row.get("Klammer", "")
-
         materials = []
 
         materials.append({
-
-            "Materiale":
-                f"Knauf Fireboard {layer_1} mm",
-
-            "Mængde":
-                round(fireboard_amount, 2),
-
-            "Enhed":
-                "m²"
+            "Materiale": "Knauf Fireboard",
+            "Mængde": fireboard_amount,
+            "Enhed": "m²"
         })
 
-        if (
-            pd.notna(layer_2)
-            and layer_2 != "-"
-        ):
+        materials.append({
+            "Materiale": "Vinkelprofil",
+            "Mængde": beam_amount,
+            "Enhed": "m"
+        })
 
-            materials.append({
+        materials.append({
+            "Materiale": "Skruer",
+            "Mængde": screw_amount,
+            "Enhed": "stk"
+        })
 
-                "Materiale":
-                    f"Knauf Fireboard {layer_2} mm",
-
-                "Mængde":
-                    round(fireboard_amount, 2),
-
-                "Enhed":
-                    "m²"
-            })
-
-        if beam_amount > 0:
-
-            materials.append({
-
-                "Materiale":
-                    display_value(beam_profile),
-
-                "Mængde":
-                    round(beam_amount, 0),
-
-                "Enhed":
-                    "m"
-            })
-
-        if angle_amount > 0:
-
-            materials.append({
-
-                "Materiale":
-                    "Vinkelprofil",
-
-                "Mængde":
-                    round(angle_amount, 0),
-
-                "Enhed":
-                    "m"
-            })
-
-        if screw_amount > 0:
-
-            materials.append({
-
-                "Materiale":
-                    display_value(screw_1),
-
-                "Mængde":
-                    round(screw_amount, 0),
-
-                "Enhed":
-                    "stk"
-            })
+        materials.append({
+            "Materiale": "Klammer",
+            "Mængde": staple_amount,
+            "Enhed": "stk"
+        })
 
         if staple_amount > 0:
 
