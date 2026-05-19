@@ -3381,452 +3381,466 @@ if current_step == 3:
 
     # Systemopbygning and Materialeforbrug moved below inside collapsed expanders
 
-        # ---------------------------------------------------
-        # BEREGNINGSDATA
-        # ---------------------------------------------------
+    # ---------------------------------------------------
+    # BEREGNINGSDATA
+    # ---------------------------------------------------
 
-        calculation_data = {
+    calculation_data = {
 
-            "category": category,
-            "profile": selected_profile,
-            "montage": montage,
-            "sides": sides,
+        "category": category,
+        "profile": selected_profile,
+        "montage": montage,
+        "sides": sides,
 
-            "fire_time": fire_time,
-            "temperature": temperature,
+        "fire_time": fire_time,
+        "temperature": temperature,
 
-            "apv": apv,
-            "thickness": thickness,
+        "apv": apv,
+        "thickness": thickness,
 
-             # ANDRE PROFILER
-            "apv_method": st.session_state.get("apv_method"),
-            "custom_apv": st.session_state.get("custom_apv"),
-            "surface_area": st.session_state.get("surface_area"),
-            "steel_area": st.session_state.get("steel_area"),
-        }
+         # ANDRE PROFILER
+        "apv_method": st.session_state.get("apv_method"),
+        "custom_apv": st.session_state.get("custom_apv"),
+        "surface_area": st.session_state.get("surface_area"),
+        "steel_area": st.session_state.get("steel_area"),
+    }
 
-        # ---------------------------------------------------
-        # PROJEKTOPLYSNINGER
-        # ---------------------------------------------------
+    # ---------------------------------------------------
+    # PROJEKTOPLYSNINGER
+    # ---------------------------------------------------
 
-        st.divider()
+    st.divider()
 
-        st.header(
-            t("project_information")
+    st.header(
+        t("project_information")
+    )
+
+    col1, col2 = st.columns(2)
+
+    with col1:
+
+        project_name = st.text_input(
+            t("project"),
+            value=st.session_state.project_name
         )
 
-        col1, col2 = st.columns(2)
-
-        with col1:
-
-            project_name = st.text_input(
-                t("project"),
-                value=st.session_state.project_name
-            )
-
-            prepared_by = st.text_input(
-                t("prepared_by"),
-                value=st.session_state.prepared_by
-            )
-
-        with col2:
-
-            company = st.text_input(
-                t("company"),
-                value=st.session_state.company
-            )
-
-            report_date = st.text_input(
-                t("date"),
-                value=datetime.now().strftime("%d-%m-%Y")
-            )
-
-        description = st.text_area(
-            t("description"),
-            value=st.session_state.description,
-            height=120
+        prepared_by = st.text_input(
+            t("prepared_by"),
+            value=st.session_state.prepared_by
         )
 
-        st.session_state.project_name = project_name
-        st.session_state.company = company
-        st.session_state.prepared_by = prepared_by
-        st.session_state.description = description
+    with col2:
 
-        # ---------------------------------------------------
-        # DOWNLOAD DENNE BEREGNING
-        # ---------------------------------------------------
-
-        single_calc_pdf = generate_single_pdf(
-            calculation_data
+        company = st.text_input(
+            t("company"),
+            value=st.session_state.company
         )
 
-        st.download_button(
-            label=t("download_this_calculation"),
-            data=single_calc_pdf,
-            file_name=(
-                f"{selected_profile}_"
-                f"R{fire_time}.pdf"
-            ),
-            mime="application/pdf",
+        report_date = st.text_input(
+            t("date"),
+            value=datetime.now().strftime("%d-%m-%Y")
+        )
+
+    description = st.text_area(
+        t("description"),
+        value=st.session_state.description,
+        height=120
+    )
+
+    st.session_state.project_name = project_name
+    st.session_state.company = company
+    st.session_state.prepared_by = prepared_by
+    st.session_state.description = description
+
+    # ---------------------------------------------------
+    # DOWNLOAD DENNE BEREGNING
+    # ---------------------------------------------------
+
+    single_calc_pdf = generate_single_pdf(
+        calculation_data
+    )
+
+    st.download_button(
+        label=t("download_this_calculation"),
+        data=single_calc_pdf,
+        file_name=(
+            f"{selected_profile}_"
+            f"R{fire_time}.pdf"
+        ),
+        mime="application/pdf",
+        use_container_width=True
+    )
+
+    # ---------------------------------------------------
+    # NAVIGATION
+    # ---------------------------------------------------
+
+    st.divider()
+
+    col1, col2 = st.columns([1,1])
+
+    with col1:
+
+        if st.button(
+            t("previous"),
             use_container_width=True
+        ):
+
+            st.session_state.current_step = 2
+
+            st.rerun()
+
+    with col2:
+
+        button_text = (
+            t("update_calculation")
+            if st.session_state.edit_index is not None
+            else t("add_calculation")
         )
 
-        # ---------------------------------------------------
-        # NAVIGATION
-        # ---------------------------------------------------
+        if st.button(
+            button_text,
+            use_container_width=True,
+            key="save_calculation_button"
+        ):
 
-        st.divider()
+            if st.session_state.edit_index is not None:
 
-        col1, col2 = st.columns([1,1])
+                st.session_state.calculations[
+                    st.session_state.edit_index
+                ] = calculation_data
 
-        with col1:
+                st.session_state.edit_index = None
 
-            if st.button(
-                t("previous"),
-                use_container_width=True
-            ):
+                st.session_state.editing = False
 
-                st.session_state.current_step = 2
+            else:
 
-                st.rerun()
+                if not (
+                    st.session_state.calculations
+                    and st.session_state.calculations[-1]
+                    == calculation_data
+                ):
 
-        with col2:
-
-            button_text = (
-                t("update_calculation")
-                if st.session_state.edit_index is not None
-                else t("add_calculation")
-            )
-
-            if st.button(
-                button_text,
-                use_container_width=True,
-                key="save_calculation_button"
-            ):
-
-                if st.session_state.edit_index is not None:
-
-                    st.session_state.calculations[
-                        st.session_state.edit_index
-                    ] = calculation_data
-
-                    st.session_state.edit_index = None
-
-                    st.session_state.editing = False
-
-                else:
-
-                    if not (
-                        st.session_state.calculations
-                        and st.session_state.calculations[-1]
-                        == calculation_data
-                    ):
-
-                        st.session_state.calculations.append(
-                            calculation_data
-                        )
-
-                st.session_state.last_updated = datetime.now()
-
-                st.rerun()
-
-        # ---------------------------------------------------
-        # ADVANCED TECHNICAL SECTIONS (collapsed by default)
-        # ---------------------------------------------------
-
-        with st.expander("Systemopbygning", expanded=False):
-
-            st.divider()
-
-            # FIREBOARD LAG
-            fireboard_csv = pd.read_csv(
-                f"data/fireboard_{fire_time}.csv",
-                sep=";"
-            )
-
-            fireboard_csv.columns = (
-                fireboard_csv.columns
-                .str.strip()
-            )
-
-            thickness_col = fireboard_csv.columns[0]
-
-            fireboard_row = fireboard_csv[
-                pd.to_numeric(
-                    fireboard_csv[thickness_col],
-                    errors="coerce"
-                )
-                ==
-                thickness
-            ]
-
-            layer_1 = thickness
-            layer_2 = None
-
-            if not fireboard_row.empty:
-
-                layer_1 = (
-                    fireboard_row
-                    .iloc[0]["Lag 1"]
-                )
-
-                layer_2 = (
-                    fireboard_row
-                    .iloc[0]["Lag 2"]
-                )
-
-            selected_profile_key = clean_text(selected_profile)
-            thickness_key = clean_numeric(thickness)
-
-            # BJÆLKEPROFIL
-            beam_profile = "-"
-
-            try:
-
-                csv3_df = load_and_clean_csv(
-                    "data/CSV_3.csv",
-                    sep="," 
-                )
-
-                if "profile" in csv3_df.columns:
-                    csv3_df["profile"] = csv3_df["profile"].map(clean_text)
-
-                if "bj_profile" in csv3_df.columns:
-                    csv3_df["bj_profile"] = csv3_df["bj_profile"].map(clean_text)
-
-                profile_match = csv3_df[
-                    csv3_df["profile"]
-                    ==
-                    selected_profile_key
-                ]
-
-                if not profile_match.empty:
-
-                    beam_profile = (
-                        profile_match
-                        .iloc[0]["bj_profile"]
-                    ) or "-"
-
-            except Exception:
-                pass
-
-            # SKRUER
-            screw_1 = "-"
-            screw_2 = "-"
-
-            try:
-
-                csv2_df = load_and_clean_csv(
-                    "data/CSV_2.csv",
-                    sep="," 
-                )
-
-                if "thickness_mm" in csv2_df.columns:
-                    csv2_df["thickness_mm"] = csv2_df["thickness_mm"].map(clean_numeric)
-
-                if "layer1_screw" in csv2_df.columns:
-                    csv2_df["layer1_screw"] = csv2_df["layer1_screw"].map(clean_text)
-
-                if "layer2_screw" in csv2_df.columns:
-                    csv2_df["layer2_screw"] = csv2_df["layer2_screw"].map(clean_text)
-
-                thickness_key = clean_numeric(thickness)
-
-                screw_row = csv2_df[
-                    csv2_df["thickness_mm"]
-                    ==
-                    thickness_key
-                ]
-
-                if not screw_row.empty:
-
-                    screw_1 = (
-                        screw_row
-                        .iloc[0]["layer1_screw"]
-                    ) or "-"
-
-                    screw_2 = (
-                        screw_row
-                        .iloc[0]["layer2_screw"]
-                    ) or "-"
-
-            except Exception:
-                pass
-
-            # KLAMMER
-            staple = "-"
-
-            if clean_text(montage) == clean_text("Klammeløsning"):
-
-                try:
-
-                    csv4_df = load_and_clean_csv(
-                        "data/CSV_4.csv",
-                        sep="," 
+                    st.session_state.calculations.append(
+                        calculation_data
                     )
 
-                    if "board_thickness_mm" in csv4_df.columns:
-                        csv4_df["board_thickness_mm"] = csv4_df["board_thickness_mm"].map(clean_numeric)
+            st.session_state.last_updated = datetime.now()
 
-                    if "clamp_length_mm" in csv4_df.columns:
-                        csv4_df["clamp_length_mm"] = csv4_df["clamp_length_mm"].map(clean_text)
+            st.rerun()
 
-                    layer1_key = clean_numeric(layer_1)
+    # ---------------------------------------------------
+    # ADVANCED TECHNICAL SECTIONS (collapsed by default)
+    # ---------------------------------------------------
 
-                    staple_row = csv4_df[
-                        csv4_df["board_thickness_mm"]
-                        ==
-                        layer1_key
+    with st.expander("Systemopbygning", expanded=False):
+
+        st.divider()
+
+        # FIREBOARD LAG
+        fireboard_csv = pd.read_csv(
+            f"data/fireboard_{fire_time}.csv",
+            sep=";"
+        )
+
+        fireboard_csv.columns = (
+            fireboard_csv.columns
+            .str.strip()
+        )
+
+        thickness_col = fireboard_csv.columns[0]
+
+        fireboard_row = fireboard_csv[
+            pd.to_numeric(
+                fireboard_csv[thickness_col],
+                errors="coerce"
+            )
+            ==
+            thickness
+        ]
+
+        layer_1 = thickness
+        layer_2 = None
+
+        if not fireboard_row.empty:
+
+            layer_1 = (
+                fireboard_row
+                .iloc[0]["Lag 1"]
+            )
+
+            layer_2 = (
+                fireboard_row
+                .iloc[0]["Lag 2"]
+            )
+
+        selected_profile_key = clean_text(selected_profile)
+        thickness_key = clean_numeric(thickness)
+
+        # BJÆLKEPROFIL
+        beam_profile = "-"
+
+        try:
+
+            csv3_df = load_and_clean_csv(
+                "data/CSV_3.csv",
+                sep=",")
+
+            if "profile" in csv3_df.columns:
+                csv3_df["profile"] = csv3_df["profile"].map(clean_text)
+
+            if "bj_profile" in csv3_df.columns:
+                csv3_df["bj_profile"] = csv3_df["bj_profile"].map(clean_text)
+
+            profile_match = csv3_df[
+                csv3_df["profile"]
+                ==
+                selected_profile_key
+            ]
+
+            if not profile_match.empty:
+
+                beam_profile = (
+                    profile_match
+                    .iloc[0]["bj_profile"]
+                ) or "-"
+
+        except Exception:
+            pass
+
+        # SKRUER
+        screw_1 = "-"
+        screw_2 = "-"
+
+        try:
+
+            csv2_df = load_and_clean_csv(
+                "data/CSV_2.csv",
+                sep=",")
+
+            if "thickness_mm" in csv2_df.columns:
+                csv2_df["thickness_mm"] = csv2_df["thickness_mm"].map(clean_numeric)
+
+            if "layer1_screw" in csv2_df.columns:
+                csv2_df["layer1_screw"] = csv2_df["layer1_screw"].map(clean_text)
+
+            if "layer2_screw" in csv2_df.columns:
+                csv2_df["layer2_screw"] = csv2_df["layer2_screw"].map(clean_text)
+
+            thickness_key = clean_numeric(thickness)
+
+            screw_row = csv2_df[
+                csv2_df["thickness_mm"]
+                ==
+                thickness_key
+            ]
+
+            if not screw_row.empty:
+
+                screw_1 = (
+                    screw_row
+                    .iloc[0]["layer1_screw"]
+                ) or "-"
+
+                screw_2 = (
+                    screw_row
+                    .iloc[0]["layer2_screw"]
+                ) or "-"
+
+        except Exception:
+            pass
+
+        # KLAMMER
+        staple = "-"
+
+        if clean_text(montage) == clean_text("Klammeløsning"):
+
+            try:
+
+                csv4_df = load_and_clean_csv(
+                    "data/CSV_4.csv",
+                    sep=",")
+
+                if "board_thickness_mm" in csv4_df.columns:
+                    csv4_df["board_thickness_mm"] = csv4_df["board_thickness_mm"].map(clean_numeric)
+
+                if "clamp_length_mm" in csv4_df.columns:
+                    csv4_df["clamp_length_mm"] = csv4_df["clamp_length_mm"].map(clean_text)
+
+                layer1_key = clean_numeric(layer_1)
+
+                staple_row = csv4_df[
+                    csv4_df["board_thickness_mm"]
+                    ==
+                    layer1_key
+                ]
+
+                if not staple_row.empty:
+
+                    staple = (
+                        staple_row
+                        .iloc[0]["clamp_length_mm"]
+                    ) or "-"
+
+            except Exception:
+                pass
+
+        # VIS SYSTEM
+        system_data = pd.DataFrame({
+
+            "Komponent": [
+
+                "Fireboard lag 1",
+                "Fireboard lag 2",
+                "Bjælkeprofil",
+                "Skrue lag 1",
+                "Skrue lag 2",
+                "Klammer"
+            ],
+
+            "Værdi": [
+
+            (
+                f"{layer_1} mm"
+                if display_value(layer_1) != "-"
+                else "-"
+            ),
+
+            (
+                f"{layer_2} mm"
+                if pd.notna(layer_2)
+                and layer_2 != "-"
+                and display_value(layer_2) != "-"
+                else "-"
+            ),
+
+            display_value(beam_profile),
+
+            display_value(screw_1),
+
+            display_value(screw_2),
+
+            (
+                f"{staple} mm"
+                if display_value(staple) != "-"
+                else "-"
+            )
+        ]
+    })
+
+        st.dataframe(
+            system_data,
+            use_container_width=True,
+            hide_index=True
+        )
+
+    with st.expander("Materialeforbrug", expanded=False):
+
+        profile_length = st.number_input(
+            "Profil længde (meter)",
+            min_value=0.1,
+            value=6.0,
+            step=0.1
+        )
+
+        amount_row = apv_df[
+            (
+                apv_df["profile"]
+                .map(clean_text)
+                ==
+                clean_text(selected_profile)
+            )
+            &
+            (
+                apv_df["montage"]
+                .map(clean_text)
+                ==
+                clean_text(montage)
+            )
+            &
+            (
+                apv_df["sides"]
+                .map(clean_numeric)
+                .fillna(0)
+                .astype(int)
+                ==
+                int(sides)
+            )
+        ]
+
+        if not amount_row.empty:
+
+            amount_row = amount_row.iloc[0]
+
+            fireboard_amount = (
+                (clean_numeric(
+                    amount_row[
+                        "Antal m² fireboard pr. m profil"
                     ]
-
-                    if not staple_row.empty:
-
-                        staple = (
-                            staple_row
-                            .iloc[0]["clamp_length_mm"]
-                        ) or "-"
-
-                except Exception:
-                    pass
-
-            # VIS SYSTEM
-            system_data = pd.DataFrame({
-
-                "Komponent": [
-
-                    "Fireboard lag 1",
-                    "Fireboard lag 2",
-                    "Bjælkeprofil",
-                    "Skrue lag 1",
-                    "Skrue lag 2",
-                    "Klammer"
-                ],
-
-                "Værdi": [
-
-                (
-                    f"{layer_1} mm"
-                    if display_value(layer_1) != "-"
-                    else "-"
-                ),
-
-                (
-                    f"{layer_2} mm"
-                    if pd.notna(layer_2)
-                    and layer_2 != "-"
-                    and display_value(layer_2) != "-"
-                    else "-"
-                ),
-
-                display_value(beam_profile),
-
-                display_value(screw_1),
-
-                display_value(screw_2),
-
-                (
-                    f"{staple} mm"
-                    if display_value(staple) != "-"
-                    else "-"
-                )
-            ]
-        })
-
-            st.dataframe(
-                system_data,
-                use_container_width=True,
-                hide_index=True
+                ) or 0)
+                * profile_length
             )
 
-        with st.expander("Materialeforbrug", expanded=False):
-
-            profile_length = st.number_input(
-                "Profil længde (meter)",
-                min_value=0.1,
-                value=6.0,
-                step=0.1
+            beam_amount = (
+                (clean_numeric(
+                    amount_row[
+                        "Antal bjælkeprofiler/PDP pr. m profil"
+                    ]
+                ) or 0)
+                * profile_length
             )
 
-            amount_row = apv_df[
-                (
-                    apv_df["profile"]
-                    .map(clean_text)
-                    ==
-                    clean_text(selected_profile)
-                )
-                &
-                (
-                    apv_df["montage"]
-                    .map(clean_text)
-                    ==
-                    clean_text(montage)
-                )
-                &
-                (
-                    apv_df["sides"]
-                    .map(clean_numeric)
-                    .fillna(0)
-                    .astype(int)
-                    ==
-                    int(sides)
-                )
-            ]
+            angle_amount = (
+                (clean_numeric(
+                    amount_row[
+                        "Antal vinkelprofil pr. m profil"
+                    ]
+                ) or 0)
+                * profile_length
+            )
 
-            if not amount_row.empty:
+            screw_amount = (
+                (clean_numeric(
+                    amount_row[
+                        "Antal skruer pr. m profil"
+                    ]
+                ) or 0)
+                * profile_length
+            )
 
-                amount_row = amount_row.iloc[0]
+            staple_amount = (
+                (clean_numeric(
+                    amount_row[
+                        "Antal klammer pr. m profil"
+                    ]
+                ) or 0)
+                * profile_length
+            )
 
-                fireboard_amount = (
-                    (clean_numeric(
-                        amount_row[
-                            "Antal m² fireboard pr. m profil"
-                        ]
-                    ) or 0)
-                    * profile_length
-                )
+            materials = []
 
-                beam_amount = (
-                    (clean_numeric(
-                        amount_row[
-                            "Antal bjælkeprofiler/PDP pr. m profil"
-                        ]
-                    ) or 0)
-                    * profile_length
-                )
+            materials.append({
 
-                angle_amount = (
-                    (clean_numeric(
-                        amount_row[
-                            "Antal vinkelprofil pr. m profil"
-                        ]
-                    ) or 0)
-                    * profile_length
-                )
+                "Materiale":
+                    f"Knauf Fireboard {layer_1} mm",
 
-                screw_amount = (
-                    (clean_numeric(
-                        amount_row[
-                            "Antal skruer pr. m profil"
-                        ]
-                    ) or 0)
-                    * profile_length
-                )
+                "Mængde":
+                    round(fireboard_amount, 2),
 
-                staple_amount = (
-                    (clean_numeric(
-                        amount_row[
-                            "Antal klammer pr. m profil"
-                        ]
-                    ) or 0)
-                    * profile_length
-                )
+                "Enhed":
+                    "m²"
+            })
 
-                materials = []
+            if (
+                pd.notna(layer_2)
+                and layer_2 != "-"
+            ):
 
                 materials.append({
 
                     "Materiale":
-                        f"Knauf Fireboard {layer_1} mm",
+                        f"Knauf Fireboard {layer_2} mm",
 
                     "Mængde":
                         round(fireboard_amount, 2),
@@ -3835,91 +3849,74 @@ if current_step == 3:
                         "m²"
                 })
 
-                if (
-                    pd.notna(layer_2)
-                    and layer_2 != "-"
-                ):
+            if beam_amount > 0:
 
-                    materials.append({
+                materials.append({
 
-                        "Materiale":
-                            f"Knauf Fireboard {layer_2} mm",
+                    "Materiale":
+                        display_value(beam_profile),
 
-                        "Mængde":
-                            round(fireboard_amount, 2),
+                    "Mængde":
+                        round(beam_amount, 0),
 
-                        "Enhed":
-                            "m²"
-                    })
+                    "Enhed":
+                        "m"
+                })
 
-                if beam_amount > 0:
+            if angle_amount > 0:
 
-                    materials.append({
+                materials.append({
 
-                        "Materiale":
-                            display_value(beam_profile),
+                    "Materiale":
+                        "Vinkelprofil",
 
-                        "Mængde":
-                            round(beam_amount, 0),
+                    "Mængde":
+                        round(angle_amount, 0),
 
-                        "Enhed":
-                            "m"
-                    })
+                    "Enhed":
+                        "m"
+                })
 
-                if angle_amount > 0:
+            if screw_amount > 0:
 
-                    materials.append({
+                materials.append({
 
-                        "Materiale":
-                            "Vinkelprofil",
+                    "Materiale":
+                        display_value(screw_1),
 
-                        "Mængde":
-                            round(angle_amount, 0),
+                    "Mængde":
+                        round(screw_amount, 0),
 
-                        "Enhed":
-                            "m"
-                    })
+                    "Enhed":
+                        "stk"
+                })
 
-                if screw_amount > 0:
+            if staple_amount > 0:
 
-                    materials.append({
+                staple_label = display_value(staple)
 
-                        "Materiale":
-                            display_value(screw_1),
+                materials.append({
 
-                        "Mængde":
-                            round(screw_amount, 0),
+                    "Materiale":
+                        (
+                            f"Klammer {staple_label} mm"
+                            if staple_label != "-"
+                            else "-"
+                        ),
 
-                        "Enhed":
-                            "stk"
-                    })
+                    "Mængde":
+                        round(staple_amount, 0),
 
-                if staple_amount > 0:
+                    "Enhed":
+                        "stk"
+                })
 
-                    staple_label = display_value(staple)
+            materials_df = pd.DataFrame(
+                materials
+            )
 
-                    materials.append({
-
-                        "Materiale":
-                            (
-                                f"Klammer {staple_label} mm"
-                                if staple_label != "-"
-                                else "-"
-                            ),
-
-                        "Mængde":
-                            round(staple_amount, 0),
-
-                        "Enhed":
-                            "stk"
-                    })
-
-                materials_df = pd.DataFrame(
-                    materials
-                )
-
-                st.dataframe(
-                    materials_df,
-                    use_container_width=True,
-                    hide_index=True
-                )
+            st.dataframe(
+                materials_df,
+                use_container_width=True,
+                hide_index=True
+            )
