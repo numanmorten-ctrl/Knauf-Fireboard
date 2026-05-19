@@ -2716,7 +2716,7 @@ if current_step == 0:
 
                 custom_apv = int(
                     float(
-                        custom_apv.replace(",", ".")
+                        custom_apv.replace(",", "."),
                     )
                 )
 
