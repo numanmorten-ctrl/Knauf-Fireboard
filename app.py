@@ -3658,35 +3658,40 @@ if current_step == 3:
 
         materials = []
 
-        materials.append({
-            "Materiale": f"Knauf Fireboard {int(thickness)} mm",
-            "Mængde": fireboard_amount,
-            "Enhed": "m²"
-        })
+        if fireboard_amount > 0:
+            materials.append({
+                "Materiale": f"Knauf Fireboard {int(thickness)} mm",
+                "Mængde": fireboard_amount,
+                "Enhed": "m²"
+            })
 
-        materials.append({
-            "Materiale": "Vinkelprofil",
-            "Mængde": angle_amount,
-            "Enhed": "m"
-        })
+        if angle_amount > 0:
+            materials.append({
+                "Materiale": "Vinkelprofil",
+                "Mængde": angle_amount,
+                "Enhed": "m"
+            })
 
-        materials.append({
-            "Materiale": "Bjælkeprofil / PDP",
-            "Mængde": beam_amount,
-            "Enhed": "m"
-        })
+        if beam_amount > 0:
+            materials.append({
+                "Materiale": "Bjælkeprofil / PDP",
+                "Mængde": beam_amount,
+                "Enhed": "m"
+            })
 
-        materials.append({
-            "Materiale": "Skruer",
-            "Mængde": screw_amount,
-            "Enhed": "stk"
-        })
+        if screw_amount > 0:
+            materials.append({
+                "Materiale": "Skruer",
+                "Mængde": screw_amount,
+                "Enhed": "stk"
+            })
 
-        materials.append({
-            "Materiale": "Klammer",
-            "Mængde": staple_amount,
-            "Enhed": "stk"
-        })
+        if staple_amount > 0:
+            materials.append({
+                "Materiale": "Klammer",
+                "Mængde": staple_amount,
+                "Enhed": "stk"
+            })
 
         materials_df = pd.DataFrame(materials)
 
