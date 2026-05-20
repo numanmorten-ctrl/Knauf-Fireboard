@@ -3630,6 +3630,10 @@ if current_step == 3:
             * profile_length
         )
 
+        st.write("BEAM DF COLUMNS:")
+        st.write(beam_df.columns.tolist())
+        st.stop()
+
         beam_lookup = beam_df[
             beam_df["profile"]
             .map(clean_text)
