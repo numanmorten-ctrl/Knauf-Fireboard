@@ -3680,27 +3680,51 @@ if current_step == 3:
 
         amount_row = amount_row.iloc[0]
 
-        fireboard_amount = (
-            (
-                clean_numeric(
-                    amount_row[
-                        "Antal m² fireboard pr. m profil"
-                    ]
-                ) or 0
-            )
-            * profile_length
+        fireboard_rate = (
+            clean_numeric(
+                amount_row[
+                    "Antal m² fireboard pr. m profil"
+                ]
+            ) or 0
         )
 
-        beam_amount = (
-            (
-                clean_numeric(
-                    amount_row[
-                        "Antal bjælkeprofiler/PDP pr. m profil"
-                    ]
-                ) or 0
-            )
-            * profile_length
+        beam_rate = (
+            clean_numeric(
+                amount_row[
+                    "Antal bjælkeprofiler/PDP pr. m profil"
+                ]
+            ) or 0
         )
+
+        angle_rate = (
+            clean_numeric(
+                amount_row[
+                    "Antal vinkelprofil pr. m profil"
+                ]
+            ) or 0
+        )
+
+        screw_rate = (
+            clean_numeric(
+                amount_row[
+                    "Antal skruer pr. m profil"
+                ]
+            ) or 0
+        )
+
+        staple_rate = (
+            clean_numeric(
+                amount_row[
+                    "Antal klammer pr. m profil"
+                ]
+            ) or 0
+        )
+
+        fireboard_amount = fireboard_rate * profile_length
+        beam_amount = beam_rate * profile_length
+        angle_amount = angle_rate * profile_length
+        screw_amount = screw_rate * profile_length
+        staple_amount = staple_rate * profile_length
 
         beam_lookup = beam_df[
             beam_df["profile"]
@@ -3717,39 +3741,6 @@ if current_step == 3:
         else:
             beam_text = "PDP profil"
 
-        angle_amount = (
-            (
-                clean_numeric(
-                    amount_row[
-                        "Antal vinkelprofil pr. m profil"
-                    ]
-                ) or 0
-            )
-            * profile_length
-        )
-
-        screw_amount = (
-            (
-                clean_numeric(
-                    amount_row[
-                        "Antal skruer pr. m profil"
-                    ]
-                ) or 0
-            )
-            * profile_length
-        )
-
-        staple_amount = (
-            (
-                clean_numeric(
-                    amount_row[
-                        "Antal klammer pr. m profil"
-                    ]
-                ) or 0
-            )
-            * profile_length
-        )
-
         materials = []
 
         if fireboard_amount > 0:
@@ -3759,7 +3750,7 @@ if current_step == 3:
                     [f"{int(thickness)} mm", "fireboard"],
                     fallback=f"Knauf Fireboard {int(thickness)} mm"
                 ),
-                "Mængde": fireboard_amount,
+                "Mængde": fireboard_rate,
                 "Enhed": "m²"
             })
 
@@ -3770,7 +3761,7 @@ if current_step == 3:
                     ["vinkelprofil"],
                     fallback="Vinkelprofil"
                 ),
-                "Mængde": angle_amount,
+                "Mængde": angle_rate,
                 "Enhed": "m"
             })
 
@@ -3781,7 +3772,7 @@ if current_step == 3:
                     [beam_text, "bjælkeprofil", "pdp profil", "pdp"],
                     fallback=beam_text
                 ),
-                "Mængde": beam_amount,
+                "Mængde": beam_rate,
                 "Enhed": "m"
             })
 
@@ -3792,7 +3783,7 @@ if current_step == 3:
                     ["skruer", "skrue"],
                     fallback="Skruer"
                 ),
-                "Mængde": screw_amount,
+                "Mængde": screw_rate,
                 "Enhed": "stk"
             })
 
@@ -3803,7 +3794,7 @@ if current_step == 3:
                     ["klammer"],
                     fallback="Klammer"
                 ),
-                "Mængde": staple_amount,
+                "Mængde": staple_rate,
                 "Enhed": "stk"
             })
 
@@ -3840,19 +3831,40 @@ if current_step == 3:
 
             return None
 
+        def format_number(value):
+            try:
+                value = float(value)
+            except Exception:
+                return ""
+            return f"{value:.2f}".replace(".", ",")
+
+        def format_db_nr(value):
+            if value is None:
+                return ""
+            text = str(value).strip()
+            if not text or text.lower() in {"nan", "none"}:
+                return ""
+            text = text.replace(" ", "")
+            text = text.replace(",", "")
+            if "." in text:
+                text = text.split(".", 1)[0]
+            return text
+
         def build_material_row(row):
             match = lookup_material_info(row.get("Materiale", ""))
+            per_meter = row.get("Mængde", 0)
+            total = per_meter * profile_length
             return {
                 "ART.NR.": match["ART.NR."] if match is not None else "",
-                "DB_NR": match["DB_NR."] if match is not None else "",
+                "DB_NR": format_db_nr(match["DB_NR."]) if match is not None else "",
                 "PRODUCENT": match["PRODUCENT"] if match is not None else "",
                 "BESKRIVELSE": (
                     match["BESKRIVELSE_DK"] if match is not None else row.get("Materiale", "")
                 ),
-                "FORBRUG": row.get("Mængde", 0),
+                "FORBRUG": format_number(per_meter),
                 "ENHED": row.get("Enhed", ""),
                 "SPILDPROCENT": "",
-                "SAMLET FORBRUG": row.get("Mængde", 0)
+                "SAMLET FORBRUG": format_number(total)
             }
 
         materials_df = pd.DataFrame(
