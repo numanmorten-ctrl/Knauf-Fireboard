@@ -1089,53 +1089,6 @@ beam_df = pd.read_csv(
     DATA_DIR / "CSV_3.csv",
     sep=",")
 
-materials_csv_path = DATA_DIR / "materials.csv"
-if materials_csv_path.exists():
-    materials_df = load_and_clean_csv(
-        materials_csv_path,
-        sep=";",
-        dtype=str,
-    )
-    materials_df.columns = materials_df.columns.str.strip()
-else:
-    materials_df = pd.DataFrame()
-
-
-def get_material_label(materials_df, search_terms, fallback):
-    if materials_df.empty:
-        return fallback
-
-    search_terms = [clean_text(term) for term in search_terms if term is not None]
-    search_terms = [term for term in search_terms if term]
-    if not search_terms:
-        return fallback
-
-    for term in search_terms:
-        search = term.lower()
-        matches = pd.Series(False, index=materials_df.index)
-        for column in ["BESKRIVELSE_DK", "BESKRIVELSE_EN", "PRODUCENT"]:
-            if column in materials_df.columns:
-                matches = (
-                    matches
-                    | materials_df[column]
-                    .fillna("")
-                    .astype(str)
-                    .str.lower()
-                    .str.contains(search, na=False)
-                )
-        if matches.any():
-            row = materials_df.loc[matches].iloc[0]
-            art_nr = display_value(row.get("ART.NR."))
-            db_nr = display_value(row.get("DB_NR."))
-            description = display_value(row.get("BESKRIVELSE_DK"))
-            if art_nr and db_nr and description:
-                return f"{art_nr} · {db_nr} · {description}"
-            if description:
-                return description
-            return fallback
-
-    return fallback
-
 # ---------------------------------------------------
 # CLEAN APV DATA
 # ---------------------------------------------------
