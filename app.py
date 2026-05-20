@@ -1089,6 +1089,42 @@ beam_df = pd.read_csv(
     DATA_DIR / "CSV_3.csv",
     sep=",")
 
+materials_lookup_path = DATA_DIR / "materials.csv"
+if materials_lookup_path.exists():
+    materials_lookup_df = pd.read_csv(
+        materials_lookup_path,
+        sep=";"
+    )
+else:
+    materials_lookup_df = pd.DataFrame()
+
+
+def get_material_label(df, search_terms, fallback="Ukendt materiale"):
+    if "BESKRIVELSE_DK" not in df.columns:
+        return fallback
+
+    df["search_text"] = (
+        df["BESKRIVELSE_DK"]
+        .astype(str)
+        .str.lower()
+    )
+
+    for term in search_terms:
+        matches = df[
+            df["search_text"]
+            .str.contains(str(term).lower(), na=False)
+        ]
+
+        if not matches.empty:
+            row = matches.iloc[0]
+            return (
+                f"{row['ART.NR.']} · "
+                f"{row['DB_NR.']} · "
+                f"{row['BESKRIVELSE_DK']}"
+            )
+
+    return fallback
+
 # ---------------------------------------------------
 # CLEAN APV DATA
 # ---------------------------------------------------
@@ -3683,7 +3719,7 @@ if current_step == 3:
         if fireboard_amount > 0:
             materials.append({
                 "Materiale": get_material_label(
-                    materials_df,
+                    materials_lookup_df,
                     [f"{int(thickness)} mm", "fireboard"],
                     fallback=f"Knauf Fireboard {int(thickness)} mm"
                 ),
@@ -3694,7 +3730,7 @@ if current_step == 3:
         if angle_amount > 0:
             materials.append({
                 "Materiale": get_material_label(
-                    materials_df,
+                    materials_lookup_df,
                     ["vinkelprofil"],
                     fallback="Vinkelprofil"
                 ),
@@ -3705,7 +3741,7 @@ if current_step == 3:
         if beam_amount > 0:
             materials.append({
                 "Materiale": get_material_label(
-                    materials_df,
+                    materials_lookup_df,
                     [beam_text, "bjælkeprofil", "pdp profil", "pdp"],
                     fallback=beam_text
                 ),
@@ -3716,7 +3752,7 @@ if current_step == 3:
         if screw_amount > 0:
             materials.append({
                 "Materiale": get_material_label(
-                    materials_df,
+                    materials_lookup_df,
                     ["skruer", "skrue"],
                     fallback="Skruer"
                 ),
@@ -3727,7 +3763,7 @@ if current_step == 3:
         if staple_amount > 0:
             materials.append({
                 "Materiale": get_material_label(
-                    materials_df,
+                    materials_lookup_df,
                     ["klammer"],
                     fallback="Klammer"
                 ),
