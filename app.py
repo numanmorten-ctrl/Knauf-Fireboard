@@ -3807,6 +3807,66 @@ if current_step == 3:
                 "Enhed": "stk"
             })
 
-        materials_df = pd.DataFrame(materials)
+        def lookup_material_info(label):
+            if not isinstance(label, str):
+                return None
+
+            label = label.strip()
+            if " · " in label:
+                parts = [part.strip() for part in label.split("·")]
+                if len(parts) >= 3:
+                    art_nr, db_nr, description = parts[0], parts[1], parts[2]
+                    match = materials_lookup_df[
+                        (
+                            materials_lookup_df["ART.NR."].astype(str).str.strip() == art_nr
+                        )
+                        | (
+                            materials_lookup_df["DB_NR."].astype(str).str.strip() == db_nr
+                        )
+                        | (
+                            materials_lookup_df["BESKRIVELSE_DK"].astype(str).str.strip().str.lower() == description.lower()
+                        )
+                    ]
+                    if not match.empty:
+                        return match.iloc[0]
+
+            search = label.lower()
+            if search:
+                match = materials_lookup_df[
+                    materials_lookup_df["BESKRIVELSE_DK"].astype(str).str.lower().str.contains(search, na=False)
+                ]
+                if not match.empty:
+                    return match.iloc[0]
+
+            return None
+
+        def build_material_row(row):
+            match = lookup_material_info(row.get("Materiale", ""))
+            return {
+                "ART.NR.": match["ART.NR."] if match is not None else "",
+                "DB_NR": match["DB_NR."] if match is not None else "",
+                "PRODUCENT": match["PRODUCENT"] if match is not None else "",
+                "BESKRIVELSE": (
+                    match["BESKRIVELSE_DK"] if match is not None else row.get("Materiale", "")
+                ),
+                "FORBRUG": row.get("Mængde", 0),
+                "ENHED": row.get("Enhed", ""),
+                "SPILDPROCENT": "",
+                "SAMLET FORBRUG": row.get("Mængde", 0)
+            }
+
+        materials_df = pd.DataFrame(
+            [build_material_row(row) for _, row in pd.DataFrame(materials).iterrows()],
+            columns=[
+                "ART.NR.",
+                "DB_NR",
+                "PRODUCENT",
+                "BESKRIVELSE",
+                "FORBRUG",
+                "ENHED",
+                "SPILDPROCENT",
+                "SAMLET FORBRUG"
+            ]
+        )
 
         st.table(materials_df)
