@@ -1087,7 +1087,7 @@ apv_df = load_and_clean_csv(
 
 beam_df = pd.read_csv(
     DATA_DIR / "CSV_3.csv",
-    sep=",")
+    sep=";")
 st.write(beam_df.columns.tolist())
 # ---------------------------------------------------
 # CLEAN APV DATA
