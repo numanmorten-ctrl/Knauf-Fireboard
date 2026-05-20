@@ -1,6 +1,7 @@
 import base64
 from io import BytesIO
 from datetime import datetime
+from pathlib import Path
 from reportlab.pdfgen import canvas
 from pypdf import PdfReader, PdfWriter
 
@@ -1077,10 +1078,16 @@ def display_value(value):
 # LOAD DATA
 # ---------------------------------------------------
 
+DATA_DIR = Path("data")
+
 apv_df = load_and_clean_csv(
     "data/apv.csv",
     sep=";"
 )
+
+beam_df = pd.read_csv(
+    DATA_DIR / "CSV_3.csv",
+    sep=",")
 
 # ---------------------------------------------------
 # CLEAN APV DATA
@@ -3623,6 +3630,21 @@ if current_step == 3:
             * profile_length
         )
 
+        beam_lookup = beam_df[
+            beam_df["profile"]
+            .map(clean_text)
+            ==
+            clean_text(selected_profile)
+        ]
+
+        if not beam_lookup.empty:
+            beam_text = (
+                f"{beam_lookup.iloc[0]['bj_profile']} "
+                f"{beam_lookup.iloc[0]['color']}"
+            ).strip()
+        else:
+            beam_text = "PDP profil"
+
         angle_amount = (
             (
                 clean_numeric(
@@ -3674,7 +3696,7 @@ if current_step == 3:
 
         if beam_amount > 0:
             materials.append({
-                "Materiale": "Bjælkeprofil / PDP",
+                "Materiale": beam_text,
                 "Mængde": beam_amount,
                 "Enhed": "m"
             })
