@@ -1085,9 +1085,45 @@ apv_df = load_and_clean_csv(
     sep=";"
 )
 
-beam_df = pd.read_csv(
-    DATA_DIR / "CSV_3.csv",
-    sep=",")
+# Robustly load CSV_3.csv: handle cases where the file was read
+# as a single column containing comma-separated values (e.g.
+# header like "profile,bj_profile,color"). Read the raw text,
+# parse with the csv module and ensure column names are split
+# and stripped.
+beam_path = DATA_DIR / "CSV_3.csv"
+try:
+    raw_text = beam_path.read_text(encoding="utf-8-sig")
+except Exception:
+    raw_text = beam_path.read_text(encoding="utf-8", errors="replace")
+
+import csv
+
+lines = [ln for ln in raw_text.splitlines() if ln.strip() != ""]
+if not lines:
+    beam_df = pd.DataFrame()
+else:
+    reader = csv.reader(lines, delimiter=',')
+    rows = list(reader)
+    if not rows:
+        beam_df = pd.DataFrame()
+    else:
+        header = rows[0]
+        data_rows = rows[1:]
+
+        # If header was parsed as a single field containing commas,
+        # split it manually and do the same for data rows.
+        if len(header) == 1 and ',' in header[0]:
+            header = [h.strip() for h in header[0].split(',')]
+            fixed_data = []
+            for r in data_rows:
+                if len(r) == 1 and ',' in r[0]:
+                    fixed_data.append([c.strip() for c in r[0].split(',')])
+                else:
+                    fixed_data.append(r)
+            data_rows = fixed_data
+
+        header = [h.strip() for h in header]
+        beam_df = pd.DataFrame(data_rows, columns=header)
 
 materials_lookup_path = DATA_DIR / "materials.csv"
 if materials_lookup_path.exists():
