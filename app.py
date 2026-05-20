@@ -3850,12 +3850,23 @@ if current_step == 3:
                 text = text.split(".", 1)[0]
             return text
 
+        def format_art_nr(value):
+            if value is None:
+                return ""
+            text = str(value).strip()
+            if not text or text.lower() in {"nan", "none"}:
+                return ""
+            text = text.replace(" ", "")
+            if "." in text:
+                text = text.split(".", 1)[0]
+            return text.zfill(8)
+
         def build_material_row(row):
             match = lookup_material_info(row.get("Materiale", ""))
             per_meter = row.get("Mængde", 0)
             total = per_meter * profile_length
             return {
-                "ART.NR.": match["ART.NR."] if match is not None else "",
+                "ART.NR.": format_art_nr(match["ART.NR."]) if match is not None else "",
                 "DB_NR": format_db_nr(match["DB_NR."]) if match is not None else "",
                 "PRODUCENT": match["PRODUCENT"] if match is not None else "",
                 "BESKRIVELSE": (
@@ -3881,4 +3892,9 @@ if current_step == 3:
             ]
         )
 
-        st.table(materials_df)
+        st.table(
+            materials_df.style.set_properties(
+                subset=["ART.NR."],
+                **{"text-align": "right"}
+            )
+        )
