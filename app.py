@@ -1089,6 +1089,53 @@ beam_df = pd.read_csv(
     DATA_DIR / "CSV_3.csv",
     sep=",")
 
+materials_csv_path = DATA_DIR / "materials.csv"
+if materials_csv_path.exists():
+    materials_df = load_and_clean_csv(
+        materials_csv_path,
+        sep=";",
+        dtype=str,
+    )
+    materials_df.columns = materials_df.columns.str.strip()
+else:
+    materials_df = pd.DataFrame()
+
+
+def get_material_label(materials_df, search_terms, fallback):
+    if materials_df.empty:
+        return fallback
+
+    search_terms = [clean_text(term) for term in search_terms if term is not None]
+    search_terms = [term for term in search_terms if term]
+    if not search_terms:
+        return fallback
+
+    for term in search_terms:
+        search = term.lower()
+        matches = pd.Series(False, index=materials_df.index)
+        for column in ["BESKRIVELSE_DK", "BESKRIVELSE_EN", "PRODUCENT"]:
+            if column in materials_df.columns:
+                matches = (
+                    matches
+                    | materials_df[column]
+                    .fillna("")
+                    .astype(str)
+                    .str.lower()
+                    .str.contains(search, na=False)
+                )
+        if matches.any():
+            row = materials_df.loc[matches].iloc[0]
+            art_nr = display_value(row.get("ART.NR."))
+            db_nr = display_value(row.get("DB_NR."))
+            description = display_value(row.get("BESKRIVELSE_DK"))
+            if art_nr and db_nr and description:
+                return f"{art_nr} · {db_nr} · {description}"
+            if description:
+                return description
+            return fallback
+
+    return fallback
+
 # ---------------------------------------------------
 # CLEAN APV DATA
 # ---------------------------------------------------
@@ -3682,35 +3729,55 @@ if current_step == 3:
 
         if fireboard_amount > 0:
             materials.append({
-                "Materiale": f"Knauf Fireboard {int(thickness)} mm",
+                "Materiale": get_material_label(
+                    materials_df,
+                    [f"{int(thickness)} mm", "fireboard"],
+                    fallback=f"Knauf Fireboard {int(thickness)} mm"
+                ),
                 "Mængde": fireboard_amount,
                 "Enhed": "m²"
             })
 
         if angle_amount > 0:
             materials.append({
-                "Materiale": "Vinkelprofil",
+                "Materiale": get_material_label(
+                    materials_df,
+                    ["vinkelprofil"],
+                    fallback="Vinkelprofil"
+                ),
                 "Mængde": angle_amount,
                 "Enhed": "m"
             })
 
         if beam_amount > 0:
             materials.append({
-                "Materiale": beam_text,
+                "Materiale": get_material_label(
+                    materials_df,
+                    [beam_text, "bjælkeprofil", "pdp profil", "pdp"],
+                    fallback=beam_text
+                ),
                 "Mængde": beam_amount,
                 "Enhed": "m"
             })
 
         if screw_amount > 0:
             materials.append({
-                "Materiale": "Skruer",
+                "Materiale": get_material_label(
+                    materials_df,
+                    ["skruer", "skrue"],
+                    fallback="Skruer"
+                ),
                 "Mængde": screw_amount,
                 "Enhed": "stk"
             })
 
         if staple_amount > 0:
             materials.append({
-                "Materiale": "Klammer",
+                "Materiale": get_material_label(
+                    materials_df,
+                    ["klammer"],
+                    fallback="Klammer"
+                ),
                 "Mængde": staple_amount,
                 "Enhed": "stk"
             })
