@@ -19,12 +19,10 @@ from utils.material_helpers import (
     format_number,
     format_db_nr,
     format_art_nr,
-    build_material_row
-)
-from utils.material_helpers import (
-    ...
+    build_material_row,
     build_materials_dataframe
 )
+
 
 from reportlab.platypus import (
     SimpleDocTemplate,
