@@ -3473,6 +3473,12 @@ if (
         apv
     ]
 
+    if pd.isna(thickness):
+       st.error(
+           "Profilet kan ikke inddækkes, vælg et andet eller større profil"
+       )
+       st.stop()
+
 # --------------------------------------------------
 # TAB 4 - RESULTAT
 # ---------------------------------------------------
