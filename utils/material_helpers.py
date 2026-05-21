@@ -1,184 +1,391 @@
-        # ---------------------------------------------------
-        # HELPER: Resolve screw/clamp for a single layer
-        # ---------------------------------------------------
-        def resolve_screw_clamp_by_layer(layer_no_val, board_mm_val, screw_rate_qty, staple_rate_qty):
-            """
-            For a given layer and board thickness, resolve and return screws/clamps.
-            
-            Args:
-                layer_no_val: The layer number to match
-                board_mm_val: The board thickness in mm
-                screw_rate_qty: Per-meter quantity of screws to use if found
-                staple_rate_qty: Per-meter quantity of clamps to use if found
-            
-            Returns:
-                List of dictionaries with resolved screw/clamp materials
-            """
-            resolved_materials = []
-            # Find the screw/clamp definition for this layer and thickness
-            screw_clamp_lookup = screw_clamp_logic_df[
-                (screw_clamp_logic_df["layer_no"]
-                    .map(clean_numeric)
-                    .fillna(0)
-                    ==
-                    layer_no_val
-                )
-                &
-                (screw_clamp_logic_df["board_mm"]
-                    .map(clean_numeric)
-                    .fillna(0)
-                    .astype(int)
-                    ==
-                    int(board_mm_val)
-                )
-            ]
+import pandas as pd
 
-            if screw_clamp_lookup.empty:
-                return resolved_materials
-            screw_code = screw_clamp_lookup.iloc[0]["screw"]
-            clamp_code = screw_clamp_lookup.iloc[0]["clamp"]
+from utils.data_loader import clean_numeric
 
-            # Resolve screw if present
-            if screw_rate_qty > 0 and not pd.isna(screw_code) and str(screw_code).strip():
-                screw_material = lookup_material_by_code(str(screw_code).strip())
-                if screw_material is not None:
-                    resolved_materials.append({
-                        "Materiale": screw_material["BESKRIVELSE_DK"],
-                        "Mængde": screw_rate_qty,
-                        "Enhed": "stk"
-                    })
 
-            # Resolve clamp if present
-            if staple_rate_qty > 0 and not pd.isna(clamp_code) and str(clamp_code).strip():
-                clamp_material = lookup_material_by_code(str(clamp_code).strip())
-                if clamp_material is not None:
-                    resolved_materials.append({
-                        "Materiale": clamp_material["BESKRIVELSE_DK"],
-                        "Mængde": staple_rate_qty,
-                        "Enhed": "stk"
-                    })
+# ---------------------------------------------------
+# HELPER: Resolve screw/clamp for a single layer
+# ---------------------------------------------------
 
-            return resolved_materials
-        # ---------------------------------------------------
-        # HELPER: Lookup material by ART.NR. or DB_NR.
-        # ---------------------------------------------------
-        def lookup_material_by_code(code):
-            """
-            Lookup a material by article number (ART.NR.) or database number (DB_NR.).
-            Tries ART.NR. first, then falls back to DB_NR.
-            
-            Args:
-                code: The article code to search for
-            
-            Returns:
-                Material row dict or None if not found
-            """
-            if not code or not isinstance(code, str):
-                return None
+def resolve_screw_clamp_by_layer(
+    layer_no_val,
+    board_mm_val,
+    screw_rate_qty,
+    staple_rate_qty,
+    screw_clamp_logic_df,
+    materials_by_artnr,
+    materials_by_dbnr
+):
+    """
+    For a given layer and board thickness,
+    resolve and return screws/clamps.
+    """
 
-            code = str(code).strip()
-            if not code:
-                return None
+    resolved_materials = []
 
-            # Try ART.NR. first
-            if code in materials_by_artnr:
-                return materials_by_artnr[code]
+    # Find matching screw/clamp definition
 
-            # Fallback to DB_NR.
-            if code in materials_by_dbnr:
-                return materials_by_dbnr[code]
+    screw_clamp_lookup = screw_clamp_logic_df[
+        (
+            screw_clamp_logic_df["layer_no"]
+            .map(clean_numeric)
+            .fillna(0)
+            ==
+            layer_no_val
+        )
+        &
+        (
+            screw_clamp_logic_df["board_mm"]
+            .map(clean_numeric)
+            .fillna(0)
+            .astype(int)
+            ==
+            int(board_mm_val)
+        )
+    ]
 
-            return None
+    if screw_clamp_lookup.empty:
+        return resolved_materials
 
-        def deduplicate_materials(materials_list):
-            """
-            Group materials by ART.NR. (if available) and unit, sum quantities.
-            This ensures screws/clamps from multiple layers are merged.
-            
-            Args:
-                materials_list: List of material dicts with Materiale, Mængde, Enhed
-            
-            Returns:
-                List of deduplicated material dicts
-            """
-            if not materials_list:
-                return []
+    screw_code = screw_clamp_lookup.iloc[0]["screw"]
+    clamp_code = screw_clamp_lookup.iloc[0]["clamp"]
 
-            deduplicated = {}
+    # Resolve screw
 
-            for material in materials_list:
-                label = str(material.get("Materiale", "")).strip()
-                quantity = clean_numeric(material.get("Mængde", 0)) or 0
-                unit = str(material.get("Enhed", "")).strip()
+    if (
+        screw_rate_qty > 0
+        and not pd.isna(screw_code)
+        and str(screw_code).strip()
+    ):
 
-                mat_info = lookup_material_info(label)
-                primary_code = ""
-                if mat_info is not None:
-                    primary_code = str(mat_info.get("ART.NR.", "")).strip()
-                    if not primary_code:
-                        primary_code = str(mat_info.get("DB_NR.", "")).strip()
+        screw_material = lookup_material_by_code(
+            str(screw_code).strip(),
+            materials_by_artnr,
+            materials_by_dbnr
+        )
 
-                if primary_code:
-                    group_key = (primary_code, unit)
-                else:
-                    normalized_label = " ".join(label.split()).lower()
-                    group_key = (normalized_label, unit)
+        if screw_material is not None:
 
-                if group_key not in deduplicated:
-                    deduplicated[group_key] = {
-                        "Materiale": label,
-                        "Mængde": quantity,
-                        "Enhed": unit
-                    }
-                else:
-                    existing_qty = clean_numeric(deduplicated[group_key]["Mængde"]) or 0
-                    deduplicated[group_key]["Mængde"] = existing_qty + quantity
+            resolved_materials.append({
+                "Materiale": screw_material["BESKRIVELSE_DK"],
+                "Mængde": screw_rate_qty,
+                "Enhed": "stk"
+            })
 
-            return list(deduplicated.values())
+    # Resolve clamp
 
-        def format_number(value):
-            try:
-                value = float(value)
-            except Exception:
-                return ""
-            return f"{value:.2f}".replace(".", ",")
+    if (
+        staple_rate_qty > 0
+        and not pd.isna(clamp_code)
+        and str(clamp_code).strip()
+    ):
 
-        def format_db_nr(value):
-            if value is None:
-                return ""
-            text = str(value).strip()
-            if not text or text.lower() in {"nan", "none"}:
-                return ""
-            text = text.replace(" ", "")
-            text = text.replace(",", "")
-            if "." in text:
-                text = text.split(".", 1)[0]
-            return text
+        clamp_material = lookup_material_by_code(
+            str(clamp_code).strip(),
+            materials_by_artnr,
+            materials_by_dbnr
+        )
 
-        def format_art_nr(value):
-            if value is None:
-                return ""
-            text = str(value).strip()
-            if not text or text.lower() in {"nan", "none"}:
-                return ""
-            text = text.replace(" ", "")
-            if "." in text:
-                text = text.split(".", 1)[0]
-            return text.zfill(8)
+        if clamp_material is not None:
 
-        def build_material_row(row):
-            match = lookup_material_info(row.get("Materiale", ""))
-            per_meter = row.get("Mængde", 0)
-            total = per_meter * profile_length
-            return {
-                "ART.NR.": format_art_nr(match["ART.NR."]) if match is not None else "",
-                "DB_NR": format_db_nr(match["DB_NR."]) if match is not None else "",
-                "PRODUCENT": match["PRODUCENT"] if match is not None else "",
-                "BESKRIVELSE": (
-                    match["BESKRIVELSE_DK"] if match is not None else row.get("Materiale", "")
-                ),
-                "FORBRUG": format_number(per_meter),
-                "ENHED": row.get("Enhed", ""),
-                "SPILDPROCENT": "",
-                "SAMLET FORBRUG": format_number(total)
+            resolved_materials.append({
+                "Materiale": clamp_material["BESKRIVELSE_DK"],
+                "Mængde": staple_rate_qty,
+                "Enhed": "stk"
+            })
+
+    return resolved_materials
+
+
+# ---------------------------------------------------
+# HELPER: Lookup material by ART.NR. or DB_NR.
+# ---------------------------------------------------
+
+def lookup_material_by_code(
+    code,
+    materials_by_artnr,
+    materials_by_dbnr
+):
+    """
+    Lookup a material by article number or DB number.
+    """
+
+    if not code or not isinstance(code, str):
+        return None
+
+    code = str(code).strip()
+
+    if not code:
+        return None
+
+    # Try ART.NR first
+
+    if code in materials_by_artnr:
+        return materials_by_artnr[code]
+
+    # Fallback DB_NR
+
+    if code in materials_by_dbnr:
+        return materials_by_dbnr[code]
+
+    return None
+
+
+# ---------------------------------------------------
+# HELPER: Lookup material info
+# ---------------------------------------------------
+
+def lookup_material_info(
+    label,
+    materials_by_artnr,
+    materials_by_dbnr,
+    materials_by_description
+):
+    """
+    Lookup full material info from label.
+    """
+
+    if not isinstance(label, str):
+        return None
+
+    label = label.strip()
+
+    if not label:
+        return None
+
+    # Formatted label
+
+    if " · " in label:
+
+        parts = [part.strip() for part in label.split("·")]
+
+        if len(parts) >= 3:
+
+            art_nr = parts[0]
+            db_nr = parts[1]
+            description = parts[2]
+
+            if art_nr and art_nr in materials_by_artnr:
+                return materials_by_artnr[art_nr]
+
+            if db_nr and db_nr in materials_by_dbnr:
+                return materials_by_dbnr[db_nr]
+
+            description_lower = description.lower().strip()
+
+            if description_lower in materials_by_description:
+                return materials_by_description[description_lower]
+
+    # Exact description
+
+    label_lower = label.lower()
+
+    if label_lower in materials_by_description:
+        return materials_by_description[label_lower]
+
+    # Partial search
+
+    for description_lower, row in materials_by_description.items():
+
+        if label_lower in description_lower:
+            return row
+
+    return None
+
+
+# ---------------------------------------------------
+# HELPER: Deduplicate materials
+# ---------------------------------------------------
+
+def deduplicate_materials(
+    materials_list,
+    materials_by_artnr,
+    materials_by_dbnr,
+    materials_by_description
+):
+    """
+    Merge identical materials and sum quantities.
+    """
+
+    if not materials_list:
+        return []
+
+    deduplicated = {}
+
+    for material in materials_list:
+
+        label = str(material.get("Materiale", "")).strip()
+
+        quantity = (
+            clean_numeric(material.get("Mængde", 0))
+            or 0
+        )
+
+        unit = str(material.get("Enhed", "")).strip()
+
+        mat_info = lookup_material_info(
+            label,
+            materials_by_artnr,
+            materials_by_dbnr,
+            materials_by_description
+        )
+
+        primary_code = ""
+
+        if mat_info is not None:
+
+            primary_code = str(
+                mat_info.get("ART.NR.", "")
+            ).strip()
+
+            if not primary_code:
+
+                primary_code = str(
+                    mat_info.get("DB_NR.", "")
+                ).strip()
+
+        if primary_code:
+
+            group_key = (primary_code, unit)
+
+        else:
+
+            normalized_label = (
+                " ".join(label.split()).lower()
+            )
+
+            group_key = (normalized_label, unit)
+
+        if group_key not in deduplicated:
+
+            deduplicated[group_key] = {
+                "Materiale": label,
+                "Mængde": quantity,
+                "Enhed": unit
             }
+
+        else:
+
+            existing_qty = (
+                clean_numeric(
+                    deduplicated[group_key]["Mængde"]
+                )
+                or 0
+            )
+
+            deduplicated[group_key]["Mængde"] = (
+                existing_qty + quantity
+            )
+
+    return list(deduplicated.values())
+
+
+# ---------------------------------------------------
+# FORMAT HELPERS
+# ---------------------------------------------------
+
+def format_number(value):
+
+    try:
+        value = float(value)
+
+    except Exception:
+        return ""
+
+    return f"{value:.2f}".replace(".", ",")
+
+
+def format_db_nr(value):
+
+    if value is None:
+        return ""
+
+    text = str(value).strip()
+
+    if not text or text.lower() in {"nan", "none"}:
+        return ""
+
+    text = text.replace(" ", "")
+    text = text.replace(",", "")
+
+    if "." in text:
+        text = text.split(".", 1)[0]
+
+    return text
+
+
+def format_art_nr(value):
+
+    if value is None:
+        return ""
+
+    text = str(value).strip()
+
+    if not text or text.lower() in {"nan", "none"}:
+        return ""
+
+    text = text.replace(" ", "")
+
+    if "." in text:
+        text = text.split(".", 1)[0]
+
+    return text.zfill(8)
+
+
+# ---------------------------------------------------
+# BUILD MATERIAL ROW
+# ---------------------------------------------------
+
+def build_material_row(
+    row,
+    profile_length,
+    materials_by_artnr,
+    materials_by_dbnr,
+    materials_by_description
+):
+
+    match = lookup_material_info(
+        row.get("Materiale", ""),
+        materials_by_artnr,
+        materials_by_dbnr,
+        materials_by_description
+    )
+
+    per_meter = row.get("Mængde", 0)
+
+    total = per_meter * profile_length
+
+    return {
+
+        "ART.NR.": (
+            format_art_nr(match["ART.NR."])
+            if match is not None
+            else ""
+        ),
+
+        "DB_NR": (
+            format_db_nr(match["DB_NR."])
+            if match is not None
+            else ""
+        ),
+
+        "PRODUCENT": (
+            match["PRODUCENT"]
+            if match is not None
+            else ""
+        ),
+
+        "BESKRIVELSE": (
+            match["BESKRIVELSE_DK"]
+            if match is not None
+            else row.get("Materiale", "")
+        ),
+
+        "FORBRUG": format_number(per_meter),
+
+        "ENHED": row.get("Enhed", ""),
+
+        "SPILDPROCENT": "",
+
+        "SAMLET FORBRUG": format_number(total)
+    }
