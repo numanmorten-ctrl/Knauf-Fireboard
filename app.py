@@ -3787,7 +3787,7 @@ if current_step == 3:
         if fireboard_amount > 0:
             if not layer_rows.empty:
                 for _, layer_row in layer_rows.iterrows():
-                    board_mm = clean_numeric(layer_row["borad_mm"]) or 0
+                    board_mm = clean_numeric(layer_row["board_mm"]) or 0
                     materials.append({
                         "Materiale": get_material_label(
                             materials_lookup_df,
@@ -3811,7 +3811,7 @@ if current_step == 3:
         if not layer_rows.empty:
             for _, layer_row in layer_rows.iterrows():
                 layer_no = clean_numeric(layer_row["layer_no"]) or 0
-                board_mm = clean_numeric(layer_row["borad_mm"]) or 0
+                board_mm = clean_numeric(layer_row["board_mm"]) or 0
 
                 screw_clamp_lookup = screw_clamp_logic_df[
                     (screw_clamp_logic_df["layer_no"]
@@ -3964,6 +3964,41 @@ if current_step == 3:
 
             return None
 
+        def deduplicate_materials(materials_list):
+            """Group materials by ART.NR. (if available) or BESKRIVELSE and sum quantities."""
+            if not materials_list:
+                return []
+
+            deduplicated = {}
+
+            for material in materials_list:
+                label = material.get("Materiale", "")
+                quantity = clean_numeric(material.get("Mængde", 0)) or 0
+                unit = material.get("Enhed", "")
+
+                mat_info = lookup_material_info(label)
+                art_nr = ""
+
+                if mat_info is not None:
+                    art_nr = str(mat_info.get("ART.NR.", "")).strip()
+
+                group_key = (art_nr, label, unit) if art_nr else (label, unit)
+
+                if group_key not in deduplicated:
+                    deduplicated[group_key] = {
+                        "Materiale": label,
+                        "Mængde": quantity,
+                        "Enhed": unit
+                    }
+                else:
+                    deduplicated[group_key]["Mængde"] = (
+                        clean_numeric(deduplicated[group_key]["Mængde"]) or 0
+                    ) + quantity
+
+            return list(deduplicated.values())
+
+        materials_deduplicated = deduplicate_materials(materials)
+
         def format_number(value):
             try:
                 value = float(value)
@@ -4012,7 +4047,7 @@ if current_step == 3:
             }
 
         materials_df = pd.DataFrame(
-            [build_material_row(row) for _, row in pd.DataFrame(materials).iterrows()],
+            [build_material_row(row) for _, row in pd.DataFrame(materials_deduplicated).iterrows()],
             columns=[
                 "ART.NR.",
                 "DB_NR",
