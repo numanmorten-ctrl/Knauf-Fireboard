@@ -3950,53 +3950,6 @@ if current_step == 3:
                 "Enhed": "stk"
             })
 
-        def lookup_material_info(label):
-            """
-            Lookup complete material info from a material label/description.
-            Supports three formats:
-            1. Formatted label: "ART.NR. · DB_NR. · DESCRIPTION"
-            2. Direct description from materials_lookup_df
-            3. Partial text search
-            
-            Args:
-                label: The material label to look up
-            
-            Returns:
-                Material row dict or None if not found
-            """
-            if not isinstance(label, str):
-                return None
-
-            label = label.strip()
-            if not label:
-                return None
-
-            # Try formatted label first (e.g., "2906 · 5959671 · 15 mm Fireboard 1250x2000")
-            if " · " in label:
-                parts = [part.strip() for part in label.split("·")]
-                if len(parts) >= 3:
-                    art_nr, db_nr, description = parts[0], parts[1], parts[2]
-                    if art_nr and art_nr in materials_by_artnr:
-                        return materials_by_artnr[art_nr]
-                    if db_nr and db_nr in materials_by_dbnr:
-                        return materials_by_dbnr[db_nr]
-                    description_lower = description.lower().strip()
-                    if description_lower in materials_by_description:
-                        return materials_by_description[description_lower]
-
-            # Try exact match on BESKRIVELSE_DK
-            label_lower = label.lower()
-            if label_lower in materials_by_description:
-                return materials_by_description[label_lower]
-
-            # Fallback to partial text search
-            if label_lower:
-                for description_lower, row in materials_by_description.items():
-                    if label_lower in description_lower:
-                        return row
-
-            return None
-
         materials_deduplicated = deduplicate_materials(
             materials,
             materials_by_artnr,
