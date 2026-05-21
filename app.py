@@ -3997,7 +3997,12 @@ if current_step == 3:
 
             return None
 
-        materials_deduplicated = deduplicate_materials(materials)
+        materials_deduplicated = deduplicate_materials(
+            materials,
+            materials_by_artnr,
+            materials_by_dbnr,
+            materials_by_description
+        )
 
         materials_df = pd.DataFrame(
             [build_material_row(row) for _, row in pd.DataFrame(materials_deduplicated).iterrows()],
