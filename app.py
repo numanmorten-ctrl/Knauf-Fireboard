@@ -14,11 +14,12 @@ from utils.data_loader import clean_text, clean_numeric, load_and_clean_csv
 from utils.material_helpers import (
     resolve_screw_clamp_by_layer,
     lookup_material_by_code,
+    lookup_material_info,
     deduplicate_materials,
     format_number,
     format_db_nr,
     format_art_nr,
-    build_material_row,
+    build_material_row
 )
 
 from reportlab.platypus import (
