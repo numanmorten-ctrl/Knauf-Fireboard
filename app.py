@@ -20,8 +20,8 @@ from utils.material_helpers import (
     format_db_nr,
     format_art_nr,
     build_material_row,
-    build_materials_dataframe
-    get_material_label,
+    build_materials_dataframe,
+    get_material_label
 )
 
 from reportlab.platypus import (
