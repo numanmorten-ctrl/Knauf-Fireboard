@@ -3906,6 +3906,9 @@ if current_step == 3:
             else:
                 beam_keywords = [beam_text]
 
+            st.write("beam_text:", beam_text)
+            st.write("beam_keywords:", beam_keywords)
+
             materials.append({
                 "Materiale": get_material_label(
                     materials_lookup_df,
@@ -3937,6 +3940,12 @@ if current_step == 3:
                 "Mængde": staple_rate,
                 "Enhed": "stk"
             })
+
+        st.write(
+            materials_lookup_df["BESKRIVELSE_DK"]
+            .dropna()
+            .head(50)
+        )
 
         materials_df = build_materials_dataframe(
             materials,
