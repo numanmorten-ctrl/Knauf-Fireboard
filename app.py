@@ -3808,70 +3808,120 @@ if current_step == 3:
                     "Enhed": "m²"
                 })
 
+        # ---------------------------------------------------
+        # HELPER: Resolve screw/clamp for a single layer
+        # ---------------------------------------------------
+        def resolve_screw_clamp_by_layer(layer_no_val, board_mm_val, screw_amount_qty, staple_amount_qty):
+            """
+            For a given layer and board thickness, resolve and return screws/clamps.
+            
+            Args:
+                layer_no_val: The layer number to match
+                board_mm_val: The board thickness in mm
+                screw_amount_qty: Quantity of screws to use if found
+                staple_amount_qty: Quantity of clamps to use if found
+            
+            Returns:
+                List of dictionaries with resolved screw/clamp materials
+            """
+            resolved_materials = []
+            
+            # Find the screw/clamp definition for this layer and thickness
+            screw_clamp_lookup = screw_clamp_logic_df[
+                (screw_clamp_logic_df["layer_no"]
+                    .map(clean_numeric)
+                    .fillna(0)
+                    ==
+                    layer_no_val
+                )
+                &
+                (screw_clamp_logic_df["board_mm"]
+                    .map(clean_numeric)
+                    .fillna(0)
+                    ==
+                    board_mm_val
+                )
+            ]
+
+            if screw_clamp_lookup.empty:
+                return resolved_materials
+
+            screw_code = screw_clamp_lookup.iloc[0]["screw"]
+            clamp_code = screw_clamp_lookup.iloc[0]["clamp"]
+
+            # Resolve screw if present
+            if screw_amount_qty > 0 and not pd.isna(screw_code) and str(screw_code).strip():
+                screw_material = lookup_material_by_code(str(screw_code).strip())
+                if screw_material is not None:
+                    resolved_materials.append({
+                        "Materiale": screw_material["BESKRIVELSE_DK"],
+                        "Mængde": screw_amount_qty,
+                        "Enhed": "stk"
+                    })
+
+            # Resolve clamp if present
+            if staple_amount_qty > 0 and not pd.isna(clamp_code) and str(clamp_code).strip():
+                clamp_material = lookup_material_by_code(str(clamp_code).strip())
+                if clamp_material is not None:
+                    resolved_materials.append({
+                        "Materiale": clamp_material["BESKRIVELSE_DK"],
+                        "Mængde": staple_amount_qty,
+                        "Enhed": "stk"
+                    })
+
+            return resolved_materials
+
+        # ---------------------------------------------------
+        # HELPER: Lookup material by ART.NR. or DB_NR.
+        # ---------------------------------------------------
+        def lookup_material_by_code(code):
+            """
+            Lookup a material by article number (ART.NR.) or database number (DB_NR.).
+            Tries ART.NR. first, then falls back to DB_NR.
+            
+            Args:
+                code: The article code to search for
+            
+            Returns:
+                Material row dict or None if not found
+            """
+            if not code or not isinstance(code, str):
+                return None
+
+            code = str(code).strip()
+            if not code:
+                return None
+
+            # Try ART.NR. first
+            art_match = materials_lookup_df[
+                materials_lookup_df["ART.NR."].astype(str).str.strip() == code
+            ]
+            if not art_match.empty:
+                return art_match.iloc[0].to_dict()
+
+            # Fallback to DB_NR.
+            db_match = materials_lookup_df[
+                materials_lookup_df["DB_NR."].astype(str).str.strip() == code
+            ]
+            if not db_match.empty:
+                return db_match.iloc[0].to_dict()
+
+            return None
+
+        # Process all layers to resolve screws and clamps
         if not layer_rows.empty:
             for _, layer_row in layer_rows.iterrows():
                 layer_no = clean_numeric(layer_row["layer_no"]) or 0
                 board_mm = clean_numeric(layer_row["board_mm"]) or 0
 
-                screw_clamp_lookup = screw_clamp_logic_df[
-                    (screw_clamp_logic_df["layer_no"]
-                        .map(clean_numeric)
-                        .fillna(0)
-                        ==
-                        layer_no
-                    )
-                    &
-                    (screw_clamp_logic_df["board_mm"]
-                        .map(clean_numeric)
-                        .fillna(0)
-                        ==
-                        board_mm
-                    )
-                ]
-
-                if screw_clamp_lookup.empty:
-                    continue
-
-                screw_code = screw_clamp_lookup.iloc[0]["screw"]
-                clamp_code = screw_clamp_lookup.iloc[0]["clamp"]
-
-                if screw_amount > 0 and not pd.isna(screw_code) and str(screw_code).strip():
-                    screw_match = materials_lookup_df[
-                        materials_lookup_df["ART.NR."].astype(str).str.strip()
-                        ==
-                        str(screw_code).strip()
-                    ]
-                    if screw_match.empty:
-                        screw_match = materials_lookup_df[
-                            materials_lookup_df["DB_NR."].astype(str).str.strip()
-                            ==
-                            str(screw_code).strip()
-                        ]
-                    if not screw_match.empty:
-                        materials.append({
-                            "Materiale": screw_match.iloc[0]["BESKRIVELSE_DK"],
-                            "Mængde": screw_rate,
-                            "Enhed": "stk"
-                        })
-
-                if staple_amount > 0 and not pd.isna(clamp_code) and str(clamp_code).strip():
-                    clamp_match = materials_lookup_df[
-                        materials_lookup_df["ART.NR."].astype(str).str.strip()
-                        ==
-                        str(clamp_code).strip()
-                    ]
-                    if clamp_match.empty:
-                        clamp_match = materials_lookup_df[
-                            materials_lookup_df["DB_NR."].astype(str).str.strip()
-                            ==
-                            str(clamp_code).strip()
-                        ]
-                    if not clamp_match.empty:
-                        materials.append({
-                            "Materiale": clamp_match.iloc[0]["BESKRIVELSE_DK"],
-                            "Mængde": staple_rate,
-                            "Enhed": "stk"
-                        })
+                # Resolve screws/clamps for this specific layer
+                layer_materials = resolve_screw_clamp_by_layer(
+                    layer_no,
+                    board_mm,
+                    screw_amount,
+                    staple_amount
+                )
+                materials.extend(layer_materials)
 
         angle_lookup = angle_profile_logic_df[
             angle_profile_logic_df["sides"]
@@ -3932,10 +3982,27 @@ if current_step == 3:
             })
 
         def lookup_material_info(label):
+            """
+            Lookup complete material info from a material label/description.
+            Supports three formats:
+            1. Formatted label: "ART.NR. · DB_NR. · DESCRIPTION"
+            2. Direct description from materials_lookup_df
+            3. Partial text search
+            
+            Args:
+                label: The material label to look up
+            
+            Returns:
+                Material row dict or None if not found
+            """
             if not isinstance(label, str):
                 return None
 
             label = label.strip()
+            if not label:
+                return None
+
+            # Try formatted label first (e.g., "2906 · 5959671 · 15 mm Fireboard 1250x2000")
             if " · " in label:
                 parts = [part.strip() for part in label.split("·")]
                 if len(parts) >= 3:
@@ -3954,6 +4021,14 @@ if current_step == 3:
                     if not match.empty:
                         return match.iloc[0]
 
+            # Try exact match on BESKRIVELSE_DK
+            exact_match = materials_lookup_df[
+                materials_lookup_df["BESKRIVELSE_DK"].astype(str).str.strip().str.lower() == label.lower()
+            ]
+            if not exact_match.empty:
+                return exact_match.iloc[0]
+
+            # Fallback to partial text search
             search = label.lower()
             if search:
                 match = materials_lookup_df[
@@ -3965,7 +4040,16 @@ if current_step == 3:
             return None
 
         def deduplicate_materials(materials_list):
-            """Group materials by ART.NR. (if available) or BESKRIVELSE and sum quantities."""
+            """
+            Group materials by ART.NR. (if available) and unit, sum quantities.
+            This ensures screws/clamps from multiple layers are merged.
+            
+            Args:
+                materials_list: List of material dicts with Materiale, Mængde, Enhed
+            
+            Returns:
+                List of deduplicated material dicts
+            """
             if not materials_list:
                 return []
 
@@ -3982,7 +4066,9 @@ if current_step == 3:
                 if mat_info is not None:
                     art_nr = str(mat_info.get("ART.NR.", "")).strip()
 
-                group_key = (art_nr, label, unit) if art_nr else (label, unit)
+                # Group by ART.NR. if available, otherwise by label + unit
+                # This ensures identical screws/clamps across layers are merged
+                group_key = (art_nr, unit) if art_nr else (label, unit)
 
                 if group_key not in deduplicated:
                     deduplicated[group_key] = {
@@ -3991,9 +4077,9 @@ if current_step == 3:
                         "Enhed": unit
                     }
                 else:
-                    deduplicated[group_key]["Mængde"] = (
-                        clean_numeric(deduplicated[group_key]["Mængde"]) or 0
-                    ) + quantity
+                    # Accumulate quantities for the same material
+                    existing_qty = clean_numeric(deduplicated[group_key]["Mængde"]) or 0
+                    deduplicated[group_key]["Mængde"] = existing_qty + quantity
 
             return list(deduplicated.values())
 
