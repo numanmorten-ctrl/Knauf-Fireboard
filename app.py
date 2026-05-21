@@ -21,7 +21,8 @@ from utils.material_helpers import (
     format_art_nr,
     build_material_row,
     build_materials_dataframe,
-    get_material_label
+    get_material_label,
+    resolve_beam_text
 )
 
 from reportlab.platypus import (
@@ -3756,36 +3757,11 @@ if current_step == 3:
             ) or 0
         )
 
-        beam_lookup = beam_profile_logic_df[
-            beam_profile_logic_df["profile"]
-            .map(clean_text)
-            ==
-            clean_text(selected_profile)
-        ]
-
-        if not beam_lookup.empty:
-
-            beam_row = beam_lookup.iloc[0]
-
-            bj_value = clean_text(beam_row.get("bj", ""))
-            color_value = clean_text(beam_row.get("color", ""))
-            pdp_value = clean_text(beam_row.get("pdp", ""))
-
-            if bj_value and bj_value.lower() != "nan":
-
-                beam_text = f"{bj_value} {color_value}".strip()
-
-            elif pdp_value and pdp_value.lower() != "nan":
-
-                beam_text = "PDP"
-
-            else:
-
-                beam_text = "PDP"
-
-        else:
-
-            beam_text = "PDP"
+        beam_text = resolve_beam_text(
+            beam_profile_logic_df,
+            beam_type,
+            clean_text
+        )
 
         materials = []
 
