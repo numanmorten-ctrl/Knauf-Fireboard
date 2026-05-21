@@ -11,6 +11,15 @@ import requests
 
 from translations import translations
 from utils.data_loader import clean_text, clean_numeric, load_and_clean_csv
+from utils.material_helpers import (
+    resolve_screw_clamp_by_layer,
+    lookup_material_by_code,
+    deduplicate_materials,
+    format_number,
+    format_db_nr,
+    format_art_nr,
+    build_material_row,
+)
 
 from reportlab.platypus import (
     SimpleDocTemplate,
@@ -3864,28 +3873,6 @@ if current_step == 3:
                     "Mængde": fireboard_rate,
                     "Enhed": "m²"
                 })
-
-            
-            # Find the screw/clamp definition for this layer and thickness
-            screw_clamp_lookup = screw_clamp_logic_df[
-                (screw_clamp_logic_df["layer_no"]
-                    .map(clean_numeric)
-                    .fillna(0)
-                    ==
-                    layer_no_val
-                )
-                &
-                (screw_clamp_logic_df["board_mm"]
-                    .map(clean_numeric)
-                    .fillna(0)
-                    .astype(int)
-                    ==
-                    int(board_mm_val)
-                )
-            ]
-
-            if screw_clamp_lookup.empty:
-                return resolved_materials
 
             screw_code = screw_clamp_lookup.iloc[0]["screw"]
             clamp_code = screw_clamp_lookup.iloc[0]["clamp"]
