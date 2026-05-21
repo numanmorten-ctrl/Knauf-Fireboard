@@ -4005,7 +4005,16 @@ if current_step == 3:
         )
 
         materials_df = pd.DataFrame(
-            [build_material_row(row) for _, row in pd.DataFrame(materials_deduplicated).iterrows()],
+            [
+                build_material_row(
+                    row,
+                    profile_length,
+                    materials_by_artnr,
+                    materials_by_dbnr,
+                    materials_by_description
+                )
+                for _, row in pd.DataFrame(materials_deduplicated).iterrows()
+            ]
             columns=[
                 "ART.NR.",
                 "DB_NR",
