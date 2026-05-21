@@ -21,6 +21,7 @@ from utils.material_helpers import (
     format_art_nr,
     build_material_row,
     build_materials_dataframe
+    get_material_label,
 )
 
 from reportlab.platypus import (
@@ -1189,34 +1190,7 @@ if not materials_lookup_df.empty:
             materials_by_description[description_lower] = row
 
         materials_lookup_records.append(row)
-
-
-def get_material_label(df, search_terms, fallback="Ukendt materiale"):
-    if "BESKRIVELSE_DK" not in df.columns:
-        return fallback
-
-    df["search_text"] = (
-        df["BESKRIVELSE_DK"]
-        .astype(str)
-        .str.lower()
-    )
-
-    for term in search_terms:
-        matches = df[
-            df["search_text"]
-            .str.contains(str(term).lower(), na=False)
-        ]
-
-        if not matches.empty:
-            row = matches.iloc[0]
-            return (
-                f"{row['ART.NR.']} · "
-                f"{row['DB_NR.']} · "
-                f"{row['BESKRIVELSE_DK']}"
-            )
-
-    return fallback
-
+        
 # ---------------------------------------------------
 # CLEAN APV DATA
 # ---------------------------------------------------
