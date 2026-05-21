@@ -3962,19 +3962,6 @@ if current_step == 3:
             materials_by_dbnr,
             materials_by_description
         )
-                for _, row in pd.DataFrame(materials_deduplicated).iterrows()
-            ],
-            columns=[
-                "ART.NR.",
-                "DB_NR",
-                "PRODUCENT",
-                "BESKRIVELSE",
-                "FORBRUG",
-                "ENHED",
-                "SPILDPROCENT",
-                "SAMLET FORBRUG"
-            ]
-        )
 
         st.table(
             materials_df.style.set_properties(
