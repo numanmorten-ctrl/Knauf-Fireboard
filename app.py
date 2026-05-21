@@ -3751,44 +3751,152 @@ if current_step == 3:
         screw_amount = screw_rate * profile_length
         staple_amount = staple_rate * profile_length
 
-        beam_lookup = beam_df[
-            beam_df["profile"]
+        beam_lookup = beam_profile_logic_df[
+            beam_profile_logic_df["profile"]
             .map(clean_text)
             ==
             clean_text(selected_profile)
         ]
 
         if not beam_lookup.empty:
-            beam_text = (
-                f"{beam_lookup.iloc[0]['bj_profile']} "
-                f"{beam_lookup.iloc[0]['color']}"
-            ).strip()
+            beam_row = beam_lookup.iloc[0]
+            if str(beam_row.get("bj", "")).strip():
+                beam_text = (
+                    f"{beam_row['bj']} "
+                    f"{beam_row['color']}"
+                ).strip()
+            else:
+                beam_text = (
+                    beam_row.get("pdp")
+                    or "PDP profil"
+                )
         else:
             beam_text = "PDP profil"
 
         materials = []
 
+        current_thickness = clean_numeric(thickness) or 0
+        layer_rows = layer_logic_df[
+            layer_logic_df["total_mm"]
+            .map(clean_numeric)
+            .fillna(0)
+            ==
+            current_thickness
+        ]
+
         if fireboard_amount > 0:
-            materials.append({
-                "Materiale": get_material_label(
-                    materials_lookup_df,
-                    [f"{int(thickness)} mm", "fireboard"],
-                    fallback=f"Knauf Fireboard {int(thickness)} mm"
-                ),
-                "Mængde": fireboard_rate,
-                "Enhed": "m²"
-            })
+            if not layer_rows.empty:
+                for _, layer_row in layer_rows.iterrows():
+                    board_mm = clean_numeric(layer_row["borad_mm"]) or 0
+                    materials.append({
+                        "Materiale": get_material_label(
+                            materials_lookup_df,
+                            [f"{int(board_mm)} mm", "fireboard"],
+                            fallback=f"Knauf Fireboard {int(board_mm)} mm"
+                        ),
+                        "Mængde": fireboard_rate,
+                        "Enhed": "m²"
+                    })
+            else:
+                materials.append({
+                    "Materiale": get_material_label(
+                        materials_lookup_df,
+                        [f"{int(thickness)} mm", "fireboard"],
+                        fallback=f"Knauf Fireboard {int(thickness)} mm"
+                    ),
+                    "Mængde": fireboard_rate,
+                    "Enhed": "m²"
+                })
+
+        if not layer_rows.empty:
+            for _, layer_row in layer_rows.iterrows():
+                layer_no = clean_numeric(layer_row["layer_no"]) or 0
+                board_mm = clean_numeric(layer_row["borad_mm"]) or 0
+
+                screw_clamp_lookup = screw_clamp_logic_df[
+                    (screw_clamp_logic_df["layer_no"]
+                        .map(clean_numeric)
+                        .fillna(0)
+                        ==
+                        layer_no
+                    )
+                    &
+                    (screw_clamp_logic_df["board_mm"]
+                        .map(clean_numeric)
+                        .fillna(0)
+                        ==
+                        board_mm
+                    )
+                ]
+
+                if screw_clamp_lookup.empty:
+                    continue
+
+                screw_code = screw_clamp_lookup.iloc[0]["screw"]
+                clamp_code = screw_clamp_lookup.iloc[0]["clamp"]
+
+                if screw_amount > 0 and not pd.isna(screw_code) and str(screw_code).strip():
+                    screw_match = materials_lookup_df[
+                        materials_lookup_df["ART.NR."].astype(str).str.strip()
+                        ==
+                        str(screw_code).strip()
+                    ]
+                    if screw_match.empty:
+                        screw_match = materials_lookup_df[
+                            materials_lookup_df["DB_NR."].astype(str).str.strip()
+                            ==
+                            str(screw_code).strip()
+                        ]
+                    if not screw_match.empty:
+                        materials.append({
+                            "Materiale": screw_match.iloc[0]["BESKRIVELSE_DK"],
+                            "Mængde": screw_rate,
+                            "Enhed": "stk"
+                        })
+
+                if staple_amount > 0 and not pd.isna(clamp_code) and str(clamp_code).strip():
+                    clamp_match = materials_lookup_df[
+                        materials_lookup_df["ART.NR."].astype(str).str.strip()
+                        ==
+                        str(clamp_code).strip()
+                    ]
+                    if clamp_match.empty:
+                        clamp_match = materials_lookup_df[
+                            materials_lookup_df["DB_NR."].astype(str).str.strip()
+                            ==
+                            str(clamp_code).strip()
+                        ]
+                    if not clamp_match.empty:
+                        materials.append({
+                            "Materiale": clamp_match.iloc[0]["BESKRIVELSE_DK"],
+                            "Mængde": staple_rate,
+                            "Enhed": "stk"
+                        })
+
+        angle_lookup = angle_profile_logic_df[
+            angle_profile_logic_df["sides"]
+            .map(clean_numeric)
+            .fillna(0)
+            ==
+            int(sides)
+        ]
 
         if angle_amount > 0:
-            materials.append({
-                "Materiale": get_material_label(
-                    materials_lookup_df,
-                    ["vinkelprofil"],
-                    fallback="Vinkelprofil"
-                ),
-                "Mængde": angle_rate,
-                "Enhed": "m"
-            })
+            angle_profile_amount = 0
+            if not angle_lookup.empty:
+                angle_profile_amount = clean_numeric(
+                    angle_lookup.iloc[0]["angle_profile_m_per_m"]
+                ) or 0
+            if angle_profile_amount > 0 or angle_lookup.empty:
+                materials.append({
+                    "Materiale": get_material_label(
+                        materials_lookup_df,
+                        ["vinkelprofil"],
+                        fallback="Vinkelprofil"
+                    ),
+                    "Mængde": angle_rate,
+                    "Enhed": "m"
+                })
 
         if beam_amount > 0:
             materials.append({
@@ -3801,7 +3909,7 @@ if current_step == 3:
                 "Enhed": "m"
             })
 
-        if screw_amount > 0:
+        if screw_amount > 0 and layer_rows.empty:
             materials.append({
                 "Materiale": get_material_label(
                     materials_lookup_df,
@@ -3812,7 +3920,7 @@ if current_step == 3:
                 "Enhed": "stk"
             })
 
-        if staple_amount > 0:
+        if staple_amount > 0 and layer_rows.empty:
             materials.append({
                 "Materiale": get_material_label(
                     materials_lookup_df,
