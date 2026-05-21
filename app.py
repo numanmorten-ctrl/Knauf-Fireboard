@@ -3885,7 +3885,10 @@ if current_step == 3:
                     layer_no,
                     board_mm,
                     screw_rate,
-                    staple_rate
+                    staple_rate,
+                    screw_clamp_logic_df,
+                    materials_by_artnr,
+                    materials_by_dbnr
                 )
                 materials.extend(layer_materials)
 
