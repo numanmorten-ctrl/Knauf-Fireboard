@@ -1085,6 +1085,31 @@ apv_df = load_and_clean_csv(
     sep=";"
 )
 
+layer_logic_df = pd.read_csv(
+    DATA_DIR / "layer_logic.csv",
+    sep=";"
+)
+
+screw_clamp_logic_df = pd.read_csv(
+    DATA_DIR / "screw_clamp_logic.csv",
+    sep=";"
+)
+
+angle_profile_logic_df = pd.read_csv(
+    DATA_DIR / "angle_profile_logic.csv",
+    sep=";"
+)
+
+beam_profile_logic_df = pd.read_csv(
+    DATA_DIR / "beam_profile_logic.csv",
+    sep=";"
+)
+
+materials_df = pd.read_csv(
+    DATA_DIR / "materials.csv",
+    sep=";"
+)
+
 # Robustly load CSV_3.csv: handle cases where the file was read
 # as a single column containing comma-separated values (e.g.
 # header like "profile,bj_profile,color"). Read the raw text,
