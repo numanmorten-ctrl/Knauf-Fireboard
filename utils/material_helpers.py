@@ -390,3 +390,42 @@ def build_material_row(
         "SAMLET FORBRUG": format_number(total)
     }
 
+def build_materials_dataframe(
+    materials,
+    profile_length,
+    materials_by_artnr,
+    materials_by_dbnr,
+    materials_by_description
+):
+
+    materials_deduplicated = deduplicate_materials(
+        materials,
+        materials_by_artnr,
+        materials_by_dbnr,
+        materials_by_description
+    )
+
+    materials_df = pd.DataFrame(
+        [
+            build_material_row(
+                row,
+                profile_length,
+                materials_by_artnr,
+                materials_by_dbnr,
+                materials_by_description
+            )
+            for _, row in pd.DataFrame(materials_deduplicated).iterrows()
+        ],
+        columns=[
+            "ART.NR.",
+            "DB_NR",
+            "PRODUCENT",
+            "BESKRIVELSE",
+            "FORBRUG",
+            "ENHED",
+            "SPILDPROCENT",
+            "SAMLET FORBRUG"
+        ]
+    )
+
+    return materials_df
