@@ -3784,6 +3784,43 @@ if current_step == 3:
             current_thickness
         ]
 
+        def build_variant_label(rows):
+            board_values = [
+                int(clean_numeric(value) or 0)
+                for value in rows["board_mm"].map(clean_numeric).dropna().tolist()
+                if clean_numeric(value) is not None
+            ]
+            if not board_values:
+                return "Fireboard"
+
+            counts = {}
+            for thickness_value in board_values:
+                counts[thickness_value] = counts.get(thickness_value, 0) + 1
+
+            label_parts = [
+                f"{count} × {thickness} mm"
+                for thickness, count in sorted(counts.items(), key=lambda item: (-item[0], item[0]))
+            ]
+            return " + ".join(label_parts) + " Fireboard"
+
+        if "variant" in layer_rows.columns:
+            available_variants = layer_rows["variant"].dropna().unique().tolist()
+            if len(available_variants) > 1:
+                variant_labels = {
+                    variant: build_variant_label(
+                        layer_rows[layer_rows["variant"] == variant]
+                    )
+                    for variant in available_variants
+                }
+                selected_variant = st.selectbox(
+                    "Vælg lagopbygning",
+                    available_variants,
+                    format_func=lambda variant: variant_labels.get(variant, variant),
+                )
+                layer_rows = layer_rows[layer_rows["variant"] == selected_variant]
+            elif len(available_variants) == 1:
+                layer_rows = layer_rows[layer_rows["variant"] == available_variants[0]]
+
         if fireboard_amount > 0:
             if not layer_rows.empty:
                 for _, layer_row in layer_rows.iterrows():
@@ -3811,15 +3848,15 @@ if current_step == 3:
         # ---------------------------------------------------
         # HELPER: Resolve screw/clamp for a single layer
         # ---------------------------------------------------
-        def resolve_screw_clamp_by_layer(layer_no_val, board_mm_val, screw_amount_qty, staple_amount_qty):
+        def resolve_screw_clamp_by_layer(layer_no_val, board_mm_val, screw_rate_qty, staple_rate_qty):
             """
             For a given layer and board thickness, resolve and return screws/clamps.
             
             Args:
                 layer_no_val: The layer number to match
                 board_mm_val: The board thickness in mm
-                screw_amount_qty: Quantity of screws to use if found
-                staple_amount_qty: Quantity of clamps to use if found
+                screw_rate_qty: Per-meter quantity of screws to use if found
+                staple_rate_qty: Per-meter quantity of clamps to use if found
             
             Returns:
                 List of dictionaries with resolved screw/clamp materials
@@ -3850,22 +3887,22 @@ if current_step == 3:
             clamp_code = screw_clamp_lookup.iloc[0]["clamp"]
 
             # Resolve screw if present
-            if screw_amount_qty > 0 and not pd.isna(screw_code) and str(screw_code).strip():
+            if screw_rate_qty > 0 and not pd.isna(screw_code) and str(screw_code).strip():
                 screw_material = lookup_material_by_code(str(screw_code).strip())
                 if screw_material is not None:
                     resolved_materials.append({
                         "Materiale": screw_material["BESKRIVELSE_DK"],
-                        "Mængde": screw_amount_qty,
+                        "Mængde": screw_rate_qty,
                         "Enhed": "stk"
                     })
 
             # Resolve clamp if present
-            if staple_amount_qty > 0 and not pd.isna(clamp_code) and str(clamp_code).strip():
+            if staple_rate_qty > 0 and not pd.isna(clamp_code) and str(clamp_code).strip():
                 clamp_material = lookup_material_by_code(str(clamp_code).strip())
                 if clamp_material is not None:
                     resolved_materials.append({
                         "Materiale": clamp_material["BESKRIVELSE_DK"],
-                        "Mængde": staple_amount_qty,
+                        "Mængde": staple_rate_qty,
                         "Enhed": "stk"
                     })
 
@@ -3918,8 +3955,8 @@ if current_step == 3:
                 layer_materials = resolve_screw_clamp_by_layer(
                     layer_no,
                     board_mm,
-                    screw_amount,
-                    staple_amount
+                    screw_rate,
+                    staple_rate
                 )
                 materials.extend(layer_materials)
 
