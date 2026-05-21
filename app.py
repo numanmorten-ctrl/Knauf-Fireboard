@@ -3764,19 +3764,28 @@ if current_step == 3:
         ]
 
         if not beam_lookup.empty:
+
             beam_row = beam_lookup.iloc[0]
-            if str(beam_row.get("bj", "")).strip():
-                beam_text = (
-                    f"{beam_row['bj']} "
-                    f"{beam_row['color']}"
-                ).strip()
+
+            bj_value = clean_text(beam_row.get("bj", ""))
+            color_value = clean_text(beam_row.get("color", ""))
+            pdp_value = clean_text(beam_row.get("pdp", ""))
+
+            if bj_value and bj_value.lower() != "nan":
+
+                beam_text = f"{bj_value} {color_value}".strip()
+
+            elif pdp_value and pdp_value.lower() != "nan":
+
+                beam_text = "PDP"
+
             else:
-                beam_text = (
-                    beam_row.get("pdp")
-                    or "PDP profil"
-                )
+
+                beam_text = "PDP"
+
         else:
-            beam_text = "PDP profil"
+
+            beam_text = "PDP"
 
         materials = []
 
