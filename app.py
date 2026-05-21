@@ -3745,12 +3745,6 @@ if current_step == 3:
             ) or 0
         )
 
-        fireboard_amount = fireboard_rate * profile_length
-        beam_amount = beam_rate * profile_length
-        angle_amount = angle_rate * profile_length
-        screw_amount = screw_rate * profile_length
-        staple_amount = staple_rate * profile_length
-
         beam_lookup = beam_profile_logic_df[
             beam_profile_logic_df["profile"]
             .map(clean_text)
@@ -3821,7 +3815,7 @@ if current_step == 3:
             elif len(available_variants) == 1:
                 layer_rows = layer_rows[layer_rows["variant"] == available_variants[0]]
 
-        if fireboard_amount > 0:
+        if fireboard_rate > 0:
             if not layer_rows.empty:
                 for _, layer_row in layer_rows.iterrows():
                     board_mm = clean_numeric(layer_row["board_mm"]) or 0
@@ -3968,7 +3962,7 @@ if current_step == 3:
             int(sides)
         ]
 
-        if angle_amount > 0:
+        if angle_rate > 0:
             angle_profile_amount = 0
             if not angle_lookup.empty:
                 angle_profile_amount = clean_numeric(
@@ -3985,7 +3979,7 @@ if current_step == 3:
                     "Enhed": "m"
                 })
 
-        if beam_amount > 0:
+        if beam_rate > 0:
             materials.append({
                 "Materiale": get_material_label(
                     materials_lookup_df,
@@ -3996,7 +3990,7 @@ if current_step == 3:
                 "Enhed": "m"
             })
 
-        if screw_amount > 0 and layer_rows.empty:
+        if screw_rate > 0 and layer_rows.empty:
             materials.append({
                 "Materiale": get_material_label(
                     materials_lookup_df,
@@ -4007,7 +4001,7 @@ if current_step == 3:
                 "Enhed": "stk"
             })
 
-        if staple_amount > 0 and layer_rows.empty:
+        if staple_rate > 0 and layer_rows.empty:
             materials.append({
                 "Materiale": get_material_label(
                     materials_lookup_df,
