@@ -3898,10 +3898,10 @@ if current_step == 3:
             beam_keywords = []
 
             if beam_text.upper() == "PDP":
-                beam_keywords = ["pdp profil", "pdp"]
+                beam_keywords = ["pdp"]
 
             elif beam_text.upper() == "BJ":
-                beam_keywords = ["bjælkeprofil", "bj"]
+                beam_keywords = ["bjælkeprofil"]
 
             else:
                 beam_keywords = [beam_text]
