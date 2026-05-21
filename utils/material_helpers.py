@@ -15,6 +15,26 @@
                 List of dictionaries with resolved screw/clamp materials
             """
             resolved_materials = []
+            # Find the screw/clamp definition for this layer and thickness
+            screw_clamp_lookup = screw_clamp_logic_df[
+                (screw_clamp_logic_df["layer_no"]
+                    .map(clean_numeric)
+                    .fillna(0)
+                    ==
+                    layer_no_val
+                )
+                &
+                (screw_clamp_logic_df["board_mm"]
+                    .map(clean_numeric)
+                    .fillna(0)
+                    .astype(int)
+                    ==
+                    int(board_mm_val)
+                )
+            ]
+
+            if screw_clamp_lookup.empty:
+                return resolved_materials
 
         # ---------------------------------------------------
         # HELPER: Lookup material by ART.NR. or DB_NR.
