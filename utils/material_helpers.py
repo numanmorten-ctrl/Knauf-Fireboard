@@ -455,3 +455,51 @@ def get_material_label(df, search_terms, fallback="Ukendt materiale"):
             )
 
     return fallback
+
+def resolve_beam_text(
+    beam_profile_logic_df,
+    beam_type,
+    clean_text
+):
+    """
+    Resolve beam profile text from beam profile logic table.
+
+    Returns:
+        "PDP"
+        or
+        "BJ xx-xx color"
+    """
+
+    beam_lookup = beam_profile_logic_df[
+        beam_profile_logic_df["profile"]
+        .astype(str)
+        .str.upper()
+        ==
+        str(beam_type).upper()
+    ]
+
+    if not beam_lookup.empty:
+
+        beam_row = beam_lookup.iloc[0]
+
+        bj_value = clean_text(
+            beam_row.get("bj", "")
+        )
+
+        color_value = clean_text(
+            beam_row.get("color", "")
+        )
+
+        pdp_value = clean_text(
+            beam_row.get("pdp", "")
+        )
+
+        if bj_value and bj_value.lower() != "nan":
+
+            return f"{bj_value} {color_value}".strip()
+
+        elif pdp_value and pdp_value.lower() != "nan":
+
+            return "PDP"
+
+    return "PDP"
