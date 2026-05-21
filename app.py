@@ -4087,19 +4087,22 @@ if current_step == 3:
             deduplicated = {}
 
             for material in materials_list:
-                label = material.get("Materiale", "")
+                label = str(material.get("Materiale", "")).strip()
                 quantity = clean_numeric(material.get("Mængde", 0)) or 0
-                unit = material.get("Enhed", "")
+                unit = str(material.get("Enhed", "")).strip()
 
                 mat_info = lookup_material_info(label)
-                art_nr = ""
-
+                primary_code = ""
                 if mat_info is not None:
-                    art_nr = str(mat_info.get("ART.NR.", "")).strip()
+                    primary_code = str(mat_info.get("ART.NR.", "")).strip()
+                    if not primary_code:
+                        primary_code = str(mat_info.get("DB_NR.", "")).strip()
 
-                # Group by ART.NR. if available, otherwise by label + unit
-                # This ensures identical screws/clamps across layers are merged
-                group_key = (art_nr, unit) if art_nr else (label, unit)
+                if primary_code:
+                    group_key = (primary_code, unit)
+                else:
+                    normalized_label = " ".join(label.split()).lower()
+                    group_key = (normalized_label, unit)
 
                 if group_key not in deduplicated:
                     deduplicated[group_key] = {
@@ -4108,7 +4111,6 @@ if current_step == 3:
                         "Enhed": unit
                     }
                 else:
-                    # Accumulate quantities for the same material
                     existing_qty = clean_numeric(deduplicated[group_key]["Mængde"]) or 0
                     deduplicated[group_key]["Mængde"] = existing_qty + quantity
 
