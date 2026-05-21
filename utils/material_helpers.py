@@ -429,3 +429,29 @@ def build_materials_dataframe(
     )
 
     return materials_df
+
+def get_material_label(df, search_terms, fallback="Ukendt materiale"):
+    if "BESKRIVELSE_DK" not in df.columns:
+        return fallback
+
+    df["search_text"] = (
+        df["BESKRIVELSE_DK"]
+        .astype(str)
+        .str.lower()
+    )
+
+    for term in search_terms:
+        matches = df[
+            df["search_text"]
+            .str.contains(str(term).lower(), na=False)
+        ]
+
+        if not matches.empty:
+            row = matches.iloc[0]
+            return (
+                f"{row['ART.NR.']} · "
+                f"{row['DB_NR.']} · "
+                f"{row['BESKRIVELSE_DK']}"
+            )
+
+    return fallback
