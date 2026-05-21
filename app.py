@@ -3894,10 +3894,22 @@ if current_step == 3:
                 })
 
         if beam_rate > 0:
+
+            beam_keywords = []
+
+            if beam_text.upper() == "PDP":
+                beam_keywords = ["pdp profil", "pdp"]
+
+            elif beam_text.upper() == "BJ":
+                beam_keywords = ["bjælkeprofil", "bj"]
+
+            else:
+                beam_keywords = [beam_text]
+
             materials.append({
                 "Materiale": get_material_label(
                     materials_lookup_df,
-                    [beam_text, "bjælkeprofil", "pdp profil", "pdp"],
+                    beam_keywords,
                     fallback=beam_text
                 ),
                 "Mængde": beam_rate,
