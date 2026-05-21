@@ -496,10 +496,10 @@ def resolve_beam_text(
 
         if bj_value and bj_value.lower() != "nan":
 
-            return f"{bj_value} {color_value}".strip()
+            return f"Bjælkeprofil {bj_value} {color_value} 2000 mm".strip()
 
         elif pdp_value and pdp_value.lower() != "nan":
 
-            return "PDP"
+            return "PDP profil 25 3000 mm"
 
     return "PDP"
