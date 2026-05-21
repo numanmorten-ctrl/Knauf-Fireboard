@@ -3838,7 +3838,7 @@ if current_step == 3:
         if fireboard_rate > 0:
             if not layer_rows.empty:
                 for _, layer_row in layer_rows.iterrows():
-                    board_mm = clean_numeric(layer_row["board_mm"]) or 0
+                    board_mm = int(clean_numeric(layer_row["board_mm"]) or 0)
                     materials.append({
                         "Materiale": get_material_label(
                             materials_lookup_df,
@@ -3889,8 +3889,9 @@ if current_step == 3:
                 (screw_clamp_logic_df["board_mm"]
                     .map(clean_numeric)
                     .fillna(0)
+                    .astype(int)
                     ==
-                    board_mm_val
+                    int(board_mm_val)
                 )
             ]
 
@@ -3956,7 +3957,7 @@ if current_step == 3:
         # Process all layers to resolve screws and clamps
         if not layer_rows.empty:
             for _, layer_row in layer_rows.iterrows():
-                layer_no = clean_numeric(layer_row["layer_no"]) or 0
+                layer_no = int(clean_numeric(layer_row["layer_no"]) or 0)
                 board_mm = clean_numeric(layer_row["board_mm"]) or 0
 
                 # Resolve screws/clamps for this specific layer
