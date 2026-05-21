@@ -1159,6 +1159,26 @@ if materials_lookup_path.exists():
 else:
     materials_lookup_df = pd.DataFrame()
 
+materials_by_artnr = {}
+materials_by_dbnr = {}
+materials_by_description = {}
+materials_lookup_records = []
+if not materials_lookup_df.empty:
+    for row in materials_lookup_df.to_dict("records"):
+        art_nr = str(row.get("ART.NR.", "") or "").strip()
+        db_nr = str(row.get("DB_NR.", "") or "").strip()
+        description = str(row.get("BESKRIVELSE_DK", "") or "").strip()
+        description_lower = description.lower()
+
+        if art_nr:
+            materials_by_artnr[art_nr] = row
+        if db_nr:
+            materials_by_dbnr[db_nr] = row
+        if description_lower and description_lower not in materials_by_description:
+            materials_by_description[description_lower] = row
+
+        materials_lookup_records.append(row)
+
 
 def get_material_label(df, search_terms, fallback="Ukendt materiale"):
     if "BESKRIVELSE_DK" not in df.columns:
@@ -3924,18 +3944,12 @@ if current_step == 3:
                 return None
 
             # Try ART.NR. first
-            art_match = materials_lookup_df[
-                materials_lookup_df["ART.NR."].astype(str).str.strip() == code
-            ]
-            if not art_match.empty:
-                return art_match.iloc[0].to_dict()
+            if code in materials_by_artnr:
+                return materials_by_artnr[code]
 
             # Fallback to DB_NR.
-            db_match = materials_lookup_df[
-                materials_lookup_df["DB_NR."].astype(str).str.strip() == code
-            ]
-            if not db_match.empty:
-                return db_match.iloc[0].to_dict()
+            if code in materials_by_dbnr:
+                return materials_by_dbnr[code]
 
             return None
 
@@ -4038,35 +4052,24 @@ if current_step == 3:
                 parts = [part.strip() for part in label.split("·")]
                 if len(parts) >= 3:
                     art_nr, db_nr, description = parts[0], parts[1], parts[2]
-                    match = materials_lookup_df[
-                        (
-                            materials_lookup_df["ART.NR."].astype(str).str.strip() == art_nr
-                        )
-                        | (
-                            materials_lookup_df["DB_NR."].astype(str).str.strip() == db_nr
-                        )
-                        | (
-                            materials_lookup_df["BESKRIVELSE_DK"].astype(str).str.strip().str.lower() == description.lower()
-                        )
-                    ]
-                    if not match.empty:
-                        return match.iloc[0]
+                    if art_nr and art_nr in materials_by_artnr:
+                        return materials_by_artnr[art_nr]
+                    if db_nr and db_nr in materials_by_dbnr:
+                        return materials_by_dbnr[db_nr]
+                    description_lower = description.lower().strip()
+                    if description_lower in materials_by_description:
+                        return materials_by_description[description_lower]
 
             # Try exact match on BESKRIVELSE_DK
-            exact_match = materials_lookup_df[
-                materials_lookup_df["BESKRIVELSE_DK"].astype(str).str.strip().str.lower() == label.lower()
-            ]
-            if not exact_match.empty:
-                return exact_match.iloc[0]
+            label_lower = label.lower()
+            if label_lower in materials_by_description:
+                return materials_by_description[label_lower]
 
             # Fallback to partial text search
-            search = label.lower()
-            if search:
-                match = materials_lookup_df[
-                    materials_lookup_df["BESKRIVELSE_DK"].astype(str).str.lower().str.contains(search, na=False)
-                ]
-                if not match.empty:
-                    return match.iloc[0]
+            if label_lower:
+                for description_lower, row in materials_by_description.items():
+                    if label_lower in description_lower:
+                        return row
 
             return None
 
