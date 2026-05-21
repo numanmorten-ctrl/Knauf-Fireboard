@@ -23,7 +23,6 @@ from utils.material_helpers import (
     build_materials_dataframe
 )
 
-
 from reportlab.platypus import (
     SimpleDocTemplate,
     Paragraph,
@@ -3953,12 +3952,36 @@ if current_step == 3:
                 "Enhed": "stk"
             })
 
+        materials_deduplicated = deduplicate_materials(
         materials_df = build_materials_dataframe(
             materials,
             profile_length,
             materials_by_artnr,
             materials_by_dbnr,
             materials_by_description
+        )
+
+        materials_df = pd.DataFrame(
+            [
+                build_material_row(
+                    row,
+                    profile_length,
+                    materials_by_artnr,
+                    materials_by_dbnr,
+                    materials_by_description
+                )
+                for _, row in pd.DataFrame(materials_deduplicated).iterrows()
+            ],
+            columns=[
+                "ART.NR.",
+                "DB_NR",
+                "PRODUCENT",
+                "BESKRIVELSE",
+                "FORBRUG",
+                "ENHED",
+                "SPILDPROCENT",
+                "SAMLET FORBRUG"
+            ]
         )
 
         st.table(
