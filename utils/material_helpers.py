@@ -496,6 +496,8 @@ def resolve_beam_text(
 
         if bj_value and bj_value.lower() != "nan":
 
+            bj_formatted = bj_value.replace("BJ", "BJ ")
+
             return f"Bjælkeprofil {bj_formatted} {color_value} 2000 mm".strip()
 
         elif pdp_value and pdp_value.lower() != "nan":
