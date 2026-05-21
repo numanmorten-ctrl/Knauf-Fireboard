@@ -3759,7 +3759,7 @@ if current_step == 3:
 
         beam_text = resolve_beam_text(
             beam_profile_logic_df,
-            beam_type,
+            selected_profile,
             clean_text
         )
 
