@@ -35,7 +35,30 @@
 
             if screw_clamp_lookup.empty:
                 return resolved_materials
+            screw_code = screw_clamp_lookup.iloc[0]["screw"]
+            clamp_code = screw_clamp_lookup.iloc[0]["clamp"]
 
+            # Resolve screw if present
+            if screw_rate_qty > 0 and not pd.isna(screw_code) and str(screw_code).strip():
+                screw_material = lookup_material_by_code(str(screw_code).strip())
+                if screw_material is not None:
+                    resolved_materials.append({
+                        "Materiale": screw_material["BESKRIVELSE_DK"],
+                        "Mængde": screw_rate_qty,
+                        "Enhed": "stk"
+                    })
+
+            # Resolve clamp if present
+            if staple_rate_qty > 0 and not pd.isna(clamp_code) and str(clamp_code).strip():
+                clamp_material = lookup_material_by_code(str(clamp_code).strip())
+                if clamp_material is not None:
+                    resolved_materials.append({
+                        "Materiale": clamp_material["BESKRIVELSE_DK"],
+                        "Mængde": staple_rate_qty,
+                        "Enhed": "stk"
+                    })
+
+            return resolved_materials
         # ---------------------------------------------------
         # HELPER: Lookup material by ART.NR. or DB_NR.
         # ---------------------------------------------------
