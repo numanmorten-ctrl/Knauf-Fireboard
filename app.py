@@ -3889,7 +3889,7 @@ if current_step == 3:
                 beam_keywords = ["bjælkeprofil"]
 
             else:
-                beam_keywords = clean_text(beam_text).split()
+                beam_keywords = [beam_text]
                 
             materials.append({
                 "Materiale": get_material_label(
