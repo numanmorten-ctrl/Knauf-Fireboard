@@ -79,8 +79,10 @@ CALC_FONT = 9
 RESULT_FONT = 14
 PAGE_FONT = 10
 
-def generate_single_pdf():
-    pass
+def generate_single_pdf(calc):
+    output = PdfWriter()
+
+    return output
 
 def get_translated_category(category):
     return category
