@@ -273,7 +273,18 @@ def get_translated_category(category):
     return category
 
 
-def get_display_text(value):
+def get_display_text(value, t):
+
+    mapping = {
+        "Klammeløsning": "clamping_solution",
+        "Bjælkeprofil eller PDP profil": "beam_or_pdp_profile"
+    }
+
+    translation_key = mapping.get(value)
+
+    if translation_key:
+        return t(translation_key)
+
     return value
 
     return translations.get(value, value)
