@@ -79,9 +79,50 @@ CALC_FONT = 9
 RESULT_FONT = 14
 PAGE_FONT = 10
 
-def generate_single_pdf(calc):
+def generate_single_pdf(
+    calc,
+    language,
+    translations,
+    session_state,
+    PROFILE_IMAGE_MAP,
+
+    PROJECT_X,
+    PROJECT_Y,
+    PROJECT_LINE_HEIGHT,
+
+    CALC_X,
+    CALC_Y,
+    CALC_LINE_HEIGHT,
+
+    RESULT_X,
+    RESULT_Y,
+
+    PAGE_X,
+    PAGE_Y,
+
+    PROFILE_IMAGE_X,
+    PROFILE_IMAGE_Y,
+    PROFILE_IMAGE_WIDTH,
+    PROFILE_IMAGE_HEIGHT,
+
+    PROFILE_TEXT_X,
+    PROFILE_CATEGORY_TEXT_Y,
+    PROFILE_TEXT_Y,
+    PROFILE_CATEGORY_FONT,
+    PROFILE_TEXT_FONT,
+
+    PROJECT_FONT,
+    CALC_FONT,
+    RESULT_FONT,
+    PAGE_FONT
+):
 
     output = PdfWriter()
+
+    if language == "EN":
+        template_path = "PDF_template_EN.pdf"
+    else:
+        template_path = "PDF_template.pdf"
 
     packet = BytesIO()
 
@@ -90,7 +131,217 @@ def generate_single_pdf(calc):
         pagesize=A4
     )
 
-    return output
+    if language == "EN":
+        PROJECT_Y_LOCAL = 538.9
+        CALC_Y_LOCAL = CALC_Y
+        RESULT_Y_LOCAL = 187.8
+        PAGE_Y_LOCAL = 20.4
+    else:
+        PROJECT_Y_LOCAL = 560.7
+        CALC_Y_LOCAL = 418.5
+        RESULT_Y_LOCAL = 225.3
+        PAGE_Y_LOCAL = 20.4
+
+    can.setFont(
+        "Helvetica",
+        PROJECT_FONT
+    )
+
+    can.drawString(
+        PROJECT_X,
+        PROJECT_Y_LOCAL,
+        str(session_state.project_name)
+    )
+
+    can.drawString(
+        PROJECT_X,
+        PROJECT_Y_LOCAL - PROJECT_LINE_HEIGHT,
+        str(session_state.prepared_by)
+    )
+
+    can.drawString(
+        PROJECT_X,
+        PROJECT_Y_LOCAL - (PROJECT_LINE_HEIGHT * 2),
+        str(session_state.company)
+    )
+
+    can.drawString(
+        PROJECT_X,
+        PROJECT_Y_LOCAL - (PROJECT_LINE_HEIGHT * 3),
+        datetime.now().strftime("%d-%m-%Y")
+    )
+
+    can.drawString(
+        PROJECT_X,
+        PROJECT_Y_LOCAL - (PROJECT_LINE_HEIGHT * 4),
+        str(session_state.description)
+    )
+
+    can.setFont(
+        "Helvetica",
+        CALC_FONT
+    )
+
+    can.drawString(
+        CALC_X,
+        CALC_Y_LOCAL,
+        get_translated_category(calc["category"])
+    )
+
+    can.drawString(
+        CALC_X,
+        CALC_Y_LOCAL - CALC_LINE_HEIGHT,
+        str(calc["profile"])
+    )
+
+    can.drawString(
+        CALC_X,
+        CALC_Y_LOCAL - (CALC_LINE_HEIGHT * 2),
+        str(get_display_text(calc["montage"]))
+    )
+
+    can.drawString(
+        CALC_X,
+        CALC_Y_LOCAL - (CALC_LINE_HEIGHT * 3),
+        format_sides_display(calc['sides'])
+    )
+
+    can.drawString(
+        CALC_X,
+        CALC_Y_LOCAL - (CALC_LINE_HEIGHT * 4),
+        f"{calc['fire_time']} min"
+    )
+
+    can.drawString(
+        CALC_X,
+        CALC_Y_LOCAL - (CALC_LINE_HEIGHT * 5),
+        f"{calc['temperature']} °C"
+    )
+
+    can.drawString(
+        CALC_X,
+        CALC_Y_LOCAL - (CALC_LINE_HEIGHT * 6),
+        f"{calc['apv']} m²/m³"
+    )
+
+    image_path = PROFILE_IMAGE_MAP.get(
+        calc["category"]
+    )
+
+    if image_path:
+
+        can.drawImage(
+            image_path,
+            PROFILE_IMAGE_X,
+            PROFILE_IMAGE_Y,
+            width=PROFILE_IMAGE_WIDTH,
+            height=PROFILE_IMAGE_HEIGHT,
+            preserveAspectRatio=True,
+            mask='auto'
+        )
+
+        can.setFillColor(
+            colors.HexColor("#2d343c")
+        )
+
+        translated_category = get_translated_category(
+            calc["category"]
+        )
+
+        can.setFont(
+            "Helvetica",
+            PROFILE_CATEGORY_FONT
+        )
+
+        can.drawCentredString(
+            PROFILE_TEXT_X,
+            PROFILE_CATEGORY_TEXT_Y,
+            translated_category
+        )
+
+        can.setFont(
+            "Helvetica-Bold",
+            PROFILE_TEXT_FONT
+        )
+
+        can.drawCentredString(
+            PROFILE_TEXT_X,
+            PROFILE_TEXT_Y,
+            str(calc["profile"])
+        )
+
+    can.setFillColorRGB(
+        1,
+        1,
+        1
+    )
+
+    can.setFont(
+        "Helvetica-Bold",
+        RESULT_FONT
+    )
+
+    try:
+        thickness_val = int(
+            float(calc.get("thickness", 0))
+        )
+    except Exception:
+        thickness_val = 0
+
+    result_text = (
+        f"Profile must be clad with "
+        f"{thickness_val} mm "
+        f"Knauf Fireboard"
+    )
+
+    can.drawCentredString(
+        RESULT_X,
+        RESULT_Y_LOCAL,
+        result_text
+    )
+
+    can.setFillColorRGB(
+        0,
+        0.62,
+        0.89
+    )
+
+    can.setFont(
+        "Helvetica",
+        PAGE_FONT
+    )
+
+    can.drawString(
+        PAGE_X,
+        PAGE_Y_LOCAL,
+        "1"
+    )
+
+    can.save()
+
+    packet.seek(0)
+
+    overlay_pdf = PdfReader(packet)
+
+    template_pdf = PdfReader(
+        open(template_path, "rb")
+    )
+
+    base_page = template_pdf.pages[0]
+
+    base_page.merge_page(
+        overlay_pdf.pages[0]
+    )
+
+    output.add_page(base_page)
+
+    output_stream = BytesIO()
+
+    output.write(output_stream)
+
+    output_stream.seek(0)
+
+    return output_stream
 
 def get_translated_category(category):
     return category
