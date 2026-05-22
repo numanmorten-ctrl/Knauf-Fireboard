@@ -1638,7 +1638,7 @@ with st.sidebar:
 
                     st.session_state.editing = True
 
-                    st.session_state.current_step = 3
+                    st.session_state.current_step = 0
 
                     st.rerun()
 
