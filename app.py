@@ -11,6 +11,7 @@ import requests
 
 from translations import translations
 from utils.data_loader import clean_text, clean_numeric, load_and_clean_csv
+from utils.render_helpers import render_materials_table
 from utils.material_helpers import (
     resolve_screw_clamp_by_layer,
     lookup_material_by_code,
