@@ -2658,25 +2658,18 @@ if current_step == 2:
     # VALIDERING
     # ---------------------------------------------------
 
-    try:
+    validation_message = validate_temperature(
+        temperature,
+        t
+    )
 
-        temperature = int(temperature)
+    if validation_message:
 
-    except:
-
-        st.error(
-            t("temperature_must_be_integer")
-        )
-
-        st.stop()
-
-    if temperature < 350 or temperature > 750:
-
-        st.error(
-            t("temperature_must_be_between")
-        )
+        st.error(validation_message)
 
         st.stop()
+
+    temperature = int(temperature)
 
     st.session_state.fire_time = fire_time
     st.session_state.temperature = temperature
