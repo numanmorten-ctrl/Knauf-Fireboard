@@ -81,16 +81,10 @@ def generate_single_pdf(
         pagesize=A4
     )
 
-    if language == "EN":
-        PROJECT_Y_LOCAL = 538.9
-        CALC_Y_LOCAL = CALC_Y
-        RESULT_Y_LOCAL = 187.8
-        PAGE_Y_LOCAL = 20.4
-    else:
-        PROJECT_Y_LOCAL = 560.7
-        CALC_Y_LOCAL = 418.5
-        RESULT_Y_LOCAL = 225.3
-        PAGE_Y_LOCAL = 20.4
+    PROJECT_Y_LOCAL = PROJECT_Y
+    CALC_Y_LOCAL = CALC_Y
+    RESULT_Y_LOCAL = RESULT_Y
+    PAGE_Y_LOCAL = PAGE_Y
 
     can.setFont(*PROJECT_FONT)
 
@@ -214,7 +208,7 @@ def generate_single_pdf(
         1
     )
 
-    can.setFont(*PROJECT_FONT)
+    can.setFont(*RESULT_FONT)
 
     try:
         thickness_val = int(
@@ -479,7 +473,7 @@ def generate_complete_pdf(
             1
         )
 
-        can.setFont(*PROJECT_FONT)
+        can.setFont(*RESULT_FONT)
 
         try:
             thickness_val = int(
