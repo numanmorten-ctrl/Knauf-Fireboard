@@ -3818,7 +3818,7 @@ if current_step == 3:
                     materials.append({
                         "Materiale": get_material_label(
                             materials_lookup_df,
-                            [f"{int(board_mm)} mm fireboard"],
+                            [f"{int(board_mm)} mm", "fireboard"],
                             fallback=f"Knauf Fireboard {int(board_mm)} mm"
                         ),
                         "Mængde": fireboard_rate,
@@ -3828,7 +3828,7 @@ if current_step == 3:
                 materials.append({
                     "Materiale": get_material_label(
                         materials_lookup_df,
-                        [f"{int(thickness)} mm fireboard"],
+                        [f"{int(thickness)} mm", "fireboard"],
                         fallback=f"Knauf Fireboard {int(thickness)} mm"
                     ),
                     "Mængde": fireboard_rate,
