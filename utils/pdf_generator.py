@@ -150,7 +150,7 @@ def generate_single_pdf(
     can.drawString(
         CALC_X,
         CALC_Y_LOCAL - (CALC_LINE_HEIGHT * 4),
-        f"{calc['fire_time']} min"
+        f"{calc['fire_time']} {t('minutes')}"
     )
 
     can.drawString(
@@ -289,9 +289,6 @@ def get_display_text(value, t):
         return t(translation_key)
 
     return value
-
-    return translations.get(value, value)
-
 
 def format_sides_display(value):
     return str(value)
