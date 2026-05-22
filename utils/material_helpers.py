@@ -600,5 +600,53 @@ def resolve_staple_material(
         "Enhed": "stk"
     }
 
+def generate_fastener_materials(
+    screw_rate,
+    staple_rate,
+    angle_rate,
+    layer_rows,
+    angle_lookup,
+    materials_lookup_df,
+    get_material_label,
+    clean_numeric
+):
+    """
+    Generate fastening-related materials.
+    """
+
+    materials = []
+
+    screw_material = resolve_screw_material(
+        screw_rate,
+        layer_rows,
+        materials_lookup_df,
+        get_material_label
+    )
+
+    if screw_material:
+        materials.append(screw_material)
+
+    staple_material = resolve_staple_material(
+        staple_rate,
+        layer_rows,
+        materials_lookup_df,
+        get_material_label
+    )
+
+    if staple_material:
+        materials.append(staple_material)
+
+    angle_material = resolve_angle_material(
+        angle_rate,
+        angle_lookup,
+        materials_lookup_df,
+        get_material_label,
+        clean_numeric
+    )
+
+    if angle_material:
+        materials.append(angle_material)
+
+    return materials
 
 
