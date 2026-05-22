@@ -3846,6 +3846,7 @@ if current_step == 3:
                 clean_numeric,
                 clean_text
             )
+        )
         
 
         beam_material = resolve_beam_material(
