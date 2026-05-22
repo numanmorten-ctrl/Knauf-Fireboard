@@ -3572,7 +3572,41 @@ if current_step == 3:
     # ---------------------------------------------------
 
     single_calc_pdf = generate_single_pdf(
-        calculation_data
+        calc=calculation_data,
+        language=st.session_state.language,
+        translations=translations,
+        session_state=st.session_state,
+        PROFILE_IMAGE_MAP=PROFILE_IMAGE_MAP,
+
+        PROJECT_X=PROJECT_X,
+        PROJECT_Y=PROJECT_Y,
+        PROJECT_LINE_HEIGHT=PROJECT_LINE_HEIGHT,
+
+        CALC_X=CALC_X,
+        CALC_Y=CALC_Y,
+        CALC_LINE_HEIGHT=CALC_LINE_HEIGHT,
+
+        RESULT_X=RESULT_X,
+        RESULT_Y=RESULT_Y,
+
+        PAGE_X=PAGE_X,
+        PAGE_Y=PAGE_Y,
+
+        PROFILE_IMAGE_X=PROFILE_IMAGE_X,
+        PROFILE_IMAGE_Y=PROFILE_IMAGE_Y,
+        PROFILE_IMAGE_WIDTH=PROFILE_IMAGE_WIDTH,
+        PROFILE_IMAGE_HEIGHT=PROFILE_IMAGE_HEIGHT,
+
+        PROFILE_TEXT_X=PROFILE_TEXT_X,
+        PROFILE_CATEGORY_TEXT_Y=PROFILE_CATEGORY_TEXT_Y,
+        PROFILE_TEXT_Y=PROFILE_TEXT_Y,
+        PROFILE_CATEGORY_FONT=PROFILE_CATEGORY_FONT,
+        PROFILE_TEXT_FONT=PROFILE_TEXT_FONT,
+
+        PROJECT_FONT=PROJECT_FONT,
+        CALC_FONT=CALC_FONT,
+        RESULT_FONT=RESULT_FONT,
+        PAGE_FONT=PAGE_FONT
     )
 
     st.download_button(
