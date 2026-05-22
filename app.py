@@ -3820,25 +3820,23 @@ if current_step == 3:
                 layer_rows = layer_rows[layer_rows["variant"] == available_variants[0]]
 
         materials.extend(
-            generate_fireboard_materials(
+            generate_materials(
                 fireboard_rate,
                 layer_rows,
                 thickness,
-                materials_lookup_df,
-                get_material_label,
-                clean_numeric
-            )
-        )
-
-        materials.extend(
-            generate_layer_fastener_materials(
-                layer_rows,
                 screw_rate,
                 staple_rate,
+                angle_rate,
+                angle_lookup,
+                beam_rate,
+                beam_text,
                 screw_clamp_logic_df,
+                materials_lookup_df,
                 materials_by_artnr,
                 materials_by_dbnr,
-                clean_numeric
+                get_material_label,
+                clean_numeric,
+                clean_text
             )
         )
 
@@ -3849,19 +3847,6 @@ if current_step == 3:
             ==
             int(sides)
         ]
-
-        materials.extend(
-            generate_fastener_materials(
-                screw_rate,
-                staple_rate,
-                angle_rate,
-                layer_rows,
-                angle_lookup,
-                materials_lookup_df,
-                get_material_label,
-                clean_numeric
-            )
-        )
 
         beam_material = resolve_beam_material(
             beam_rate,
