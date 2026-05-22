@@ -3912,27 +3912,25 @@ if current_step == 3:
                 "Enhed": "m"
             })
 
-        if screw_rate > 0 and layer_rows.empty:
-            materials.append({
-                "Materiale": get_material_label(
-                    materials_lookup_df,
-                    ["skruer", "skrue"],
-                    fallback="Skruer"
-                ),
-                "Mængde": screw_rate,
-                "Enhed": "stk"
-            })
+        screw_material = resolve_screw_material(
+            screw_rate,
+            layer_rows,
+            materials_lookup_df,
+            get_material_label
+        )
 
-        if staple_rate > 0 and layer_rows.empty:
-            materials.append({
-                "Materiale": get_material_label(
-                    materials_lookup_df,
-                    ["klammer"],
-                    fallback="Klammer"
-                ),
-                "Mængde": staple_rate,
-                "Enhed": "stk"
-            })
+        if screw_material:
+            materials.append(screw_material)
+
+       staple_material = resolve_staple_material(
+            staple_rate,
+            layer_rows,
+            materials_lookup_df,
+            get_material_label
+        )
+
+        if staple_material:
+            materials.append(staple_material)
 
         materials_df = build_materials_dataframe(
             materials,
