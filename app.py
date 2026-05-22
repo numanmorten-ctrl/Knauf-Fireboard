@@ -2222,6 +2222,7 @@ if current_step == 0:
                 )
                 else 0
             )
+            key="profile_selectbox"
         )
 
         st.session_state.selected_profile = (
