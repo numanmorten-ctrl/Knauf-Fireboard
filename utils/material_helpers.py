@@ -860,3 +860,34 @@ def generate_materials(
         materials.append(beam_material)
 
     return materials
+
+def build_variant_label(rows, clean_numeric):
+    """
+    Build variant label from board layers.
+    """
+
+    board_values = [
+        int(clean_numeric(value) or 0)
+        for value in rows["board_mm"].map(clean_numeric).dropna().tolist()
+        if clean_numeric(value) is not None
+    ]
+
+    if not board_values:
+        return "Fireboard"
+
+    counts = {}
+
+    for thickness_value in board_values:
+        counts[thickness_value] = (
+            counts.get(thickness_value, 0) + 1
+        )
+
+    label_parts = [
+        f"{count} × {thickness} mm"
+        for thickness, count in sorted(
+            counts.items(),
+            key=lambda item: (-item[0], item[0])
+        )
+    ]
+
+    return " + ".join(label_parts) + " Fireboard"
