@@ -1863,6 +1863,8 @@ if current_step == 0:
                     label,
                     image,
                     "category",
+                    st.session_state,
+                    t,
                     value
                 )
 
