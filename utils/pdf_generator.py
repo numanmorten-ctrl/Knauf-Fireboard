@@ -142,10 +142,7 @@ def generate_single_pdf(
         RESULT_Y_LOCAL = 225.3
         PAGE_Y_LOCAL = 20.4
 
-    can.setFont(
-        "Helvetica",
-        PROJECT_FONT
-    )
+    can.setFont(*PROJECT_FONT)
 
     can.drawString(
         PROJECT_X,
@@ -177,10 +174,7 @@ def generate_single_pdf(
         str(session_state.description)
     )
 
-    can.setFont(
-        "Helvetica",
-        CALC_FONT
-    )
+    can.setFont(*PROJECT_FONT)
 
     can.drawString(
         CALC_X,
@@ -248,10 +242,7 @@ def generate_single_pdf(
             calc["category"]
         )
 
-        can.setFont(
-            "Helvetica",
-            PROFILE_CATEGORY_FONT
-        )
+        can.setFont(*PROJECT_FONT)
 
         can.drawCentredString(
             PROFILE_TEXT_X,
@@ -259,10 +250,7 @@ def generate_single_pdf(
             translated_category
         )
 
-        can.setFont(
-            "Helvetica-Bold",
-            PROFILE_TEXT_FONT
-        )
+        can.setFont(*PROJECT_FONT)
 
         can.drawCentredString(
             PROFILE_TEXT_X,
@@ -276,10 +264,7 @@ def generate_single_pdf(
         1
     )
 
-    can.setFont(
-        "Helvetica-Bold",
-        RESULT_FONT
-    )
+    can.setFont(*PROJECT_FONT)
 
     try:
         thickness_val = int(
@@ -306,10 +291,7 @@ def generate_single_pdf(
         0.89
     )
 
-    can.setFont(
-        "Helvetica",
-        PAGE_FONT
-    )
+    can.setFont(*PROJECT_FONT)
 
     can.drawString(
         PAGE_X,
@@ -425,10 +407,7 @@ def generate_complete_pdf(
 
         # PROJECT INFO
 
-        can.setFont(
-            "Helvetica",
-            PROJECT_FONT
-        )
+        can.setFont(*PROJECT_FONT)
 
         can.drawString(
             PROJECT_X,
@@ -462,10 +441,7 @@ def generate_complete_pdf(
 
         # CALCULATION
 
-        can.setFont(
-            "Helvetica",
-            CALC_FONT
-        )
+        can.setFont(*PROJECT_FONT)
 
         can.drawString(
             CALC_X,
@@ -535,10 +511,7 @@ def generate_complete_pdf(
                 calc["category"]
             )
 
-            can.setFont(
-                "Helvetica",
-                PROFILE_CATEGORY_FONT
-            )
+            can.setFont(*PROJECT_FONT)
 
             can.drawCentredString(
                 PROFILE_TEXT_X,
@@ -546,10 +519,7 @@ def generate_complete_pdf(
                 translated_category
             )
 
-            can.setFont(
-                "Helvetica-Bold",
-                PROFILE_TEXT_FONT
-            )
+            can.setFont(*PROJECT_FONT)
 
             can.drawCentredString(
                 PROFILE_TEXT_X,
@@ -565,10 +535,7 @@ def generate_complete_pdf(
             1
         )
 
-        can.setFont(
-            "Helvetica-Bold",
-            RESULT_FONT
-        )
+        can.setFont(*PROJECT_FONT)
 
         try:
             thickness_val = int(
@@ -597,10 +564,7 @@ def generate_complete_pdf(
             0.89
         )
 
-        can.setFont(
-            "Helvetica",
-            PAGE_FONT
-        )
+        can.setFont(*PROJECT_FONT)
 
         can.drawString(
             PAGE_X,
