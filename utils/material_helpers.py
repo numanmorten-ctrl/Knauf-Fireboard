@@ -548,3 +548,57 @@ def resolve_angle_material(
         }
 
     return None
+
+def resolve_screw_material(
+    screw_rate,
+    layer_rows,
+    materials_lookup_df,
+    get_material_label
+):
+    """
+    Resolve screw material.
+    """
+
+    if screw_rate <= 0:
+        return None
+
+    if not layer_rows.empty:
+        return None
+
+    return {
+        "Materiale": get_material_label(
+            materials_lookup_df,
+            ["skruer", "skrue"],
+            fallback="Skruer"
+        ),
+        "Mængde": screw_rate,
+        "Enhed": "stk"
+    }
+def resolve_staple_material(
+    staple_rate,
+    layer_rows,
+    materials_lookup_df,
+    get_material_label
+):
+    """
+    Resolve staple/clamp material.
+    """
+
+    if staple_rate <= 0:
+        return None
+
+    if not layer_rows.empty:
+        return None
+
+    return {
+        "Materiale": get_material_label(
+            materials_lookup_df,
+            ["klammer"],
+            fallback="Klammer"
+        ),
+        "Mængde": staple_rate,
+        "Enhed": "stk"
+    }
+
+
+
