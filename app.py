@@ -3817,41 +3817,16 @@ if current_step == 3:
             elif len(available_variants) == 1:
                 layer_rows = layer_rows[layer_rows["variant"] == available_variants[0]]
 
-        if fireboard_rate > 0:
-
-            if not layer_rows.empty:
-
-                for _, layer_row in layer_rows.iterrows():
-
-                    board_mm = int(
-                        clean_numeric(layer_row["board_mm"]) or 0
-                    )
-
-                    fireboard_label = get_material_label(
-                        materials_lookup_df,
-                        [f"{int(board_mm)} mm", "fireboard"],
-                        fallback=f"Knauf Fireboard {int(board_mm)} mm"
-                    )
-
-                    materials.append({
-                        "Materiale": fireboard_label,
-                        "Mængde": fireboard_rate,
-                        "Enhed": "m²"
-                    })
-
-            else:
-
-                fireboard_label = get_material_label(
-                    materials_lookup_df,
-                    [f"{int(thickness)} mm", "fireboard"],
-                    fallback=f"Knauf Fireboard {int(thickness)} mm"
-                )
-
-                materials.append({
-                    "Materiale": fireboard_label,
-                    "Mængde": fireboard_rate,
-                    "Enhed": "m²"
-                })
+        materials.extend(
+            generate_fireboard_materials(
+                fireboard_rate,
+                layer_rows,
+                thickness,
+                materials_lookup_df,
+                get_material_label,
+                clean_numeric
+            )
+        )
 
         # Process all layers to resolve screws and clamps
         if not layer_rows.empty:
