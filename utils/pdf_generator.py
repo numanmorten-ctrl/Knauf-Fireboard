@@ -354,5 +354,45 @@ def get_display_text(value):
 def format_sides_display(value):
     return str(value)
     
-def generate_complete_pdf():
-    pass
+def generate_complete_pdf(
+    calculations,
+    language,
+    session_state,
+    t,
+
+    PROFILE_IMAGE_MAP,
+
+    PROJECT_X,
+    PROJECT_Y,
+    PROJECT_LINE_HEIGHT,
+
+    CALC_X,
+    CALC_Y,
+    CALC_LINE_HEIGHT,
+
+    RESULT_X,
+    RESULT_Y,
+
+    PAGE_X,
+    PAGE_Y,
+
+    PROFILE_IMAGE_X,
+    PROFILE_IMAGE_Y,
+    PROFILE_IMAGE_WIDTH,
+    PROFILE_IMAGE_HEIGHT,
+
+    PROFILE_TEXT_X,
+    PROFILE_CATEGORY_TEXT_Y,
+    PROFILE_TEXT_Y,
+    PROFILE_CATEGORY_FONT,
+    PROFILE_TEXT_FONT,
+
+    PROJECT_FONT,
+    CALC_FONT,
+    RESULT_FONT,
+    PAGE_FONT
+):
+
+    output = PdfWriter()
+
+    return output
