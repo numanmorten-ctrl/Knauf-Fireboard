@@ -3877,16 +3877,18 @@ if current_step == 3:
             int(sides)
         ]
 
-        angle_material = resolve_angle_material(
-            angle_rate,
-            angle_lookup,
-            materials_lookup_df,
-            get_material_label,
-            clean_numeric
+        materials.extend(
+            generate_fastener_materials(
+                screw_rate,
+                staple_rate,
+                angle_rate,
+                layer_rows,
+                angle_lookup,
+                materials_lookup_df,
+                get_material_label,
+                clean_numeric
+            )
         )
-
-        if angle_material:
-            materials.append(angle_material)
 
         if beam_rate > 0:
 
@@ -3912,26 +3914,6 @@ if current_step == 3:
                 "Mængde": beam_rate,
                 "Enhed": "m"
             })
-
-        screw_material = resolve_screw_material(
-            screw_rate,
-            layer_rows,
-            materials_lookup_df,
-            get_material_label
-        )
-
-        if screw_material:
-            materials.append(screw_material)
-
-        staple_material = resolve_staple_material(
-            staple_rate,
-            layer_rows,
-            materials_lookup_df,
-            get_material_label
-        )
-
-        if staple_material:
-            materials.append(staple_material)
 
         materials_df = build_materials_dataframe(
             materials,
