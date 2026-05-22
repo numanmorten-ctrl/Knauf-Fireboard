@@ -80,7 +80,15 @@ RESULT_FONT = 14
 PAGE_FONT = 10
 
 def generate_single_pdf(calc):
+
     output = PdfWriter()
+
+    packet = BytesIO()
+
+    can = canvas.Canvas(
+        packet,
+        pagesize=A4
+    )
 
     return output
 
