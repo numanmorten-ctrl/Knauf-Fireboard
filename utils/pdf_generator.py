@@ -6,6 +6,8 @@ from reportlab.lib.pagesizes import A4
 from reportlab.lib import colors
 
 from pypdf import PdfReader, PdfWriter
+from reportlab.lib.pagesizes import A4
+from reportlab.lib import colors
 
 PROFILE_IMAGE_MAP = {
 
@@ -79,3 +81,14 @@ PAGE_FONT = 10
 
 def generate_single_pdf():
     pass
+
+def get_translated_category(category):
+    return category
+
+
+def get_display_text(value):
+    return value
+
+
+def format_sides_display(value):
+    return str(value)
