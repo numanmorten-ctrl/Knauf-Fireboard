@@ -512,3 +512,39 @@ def resolve_beam_text(
             return "PDP profil 25 3000 mm"
 
     return "PDP"
+
+def resolve_angle_material(
+    angle_rate,
+    angle_lookup,
+    materials_lookup_df,
+    get_material_label,
+    clean_numeric
+):
+    """
+    Resolve angle profile material.
+    """
+
+    if angle_rate <= 0:
+        return None
+
+    angle_profile_amount = 0
+
+    if not angle_lookup.empty:
+
+        angle_profile_amount = clean_numeric(
+            angle_lookup.iloc[0]["angle_profile_m_per_m"]
+        ) or 0
+
+    if angle_profile_amount > 0 or angle_lookup.empty:
+
+        return {
+            "Materiale": get_material_label(
+                materials_lookup_df,
+                ["vinkelprofil"],
+                fallback="Vinkelprofil"
+            ),
+            "Mængde": angle_rate,
+            "Enhed": "m"
+        }
+
+    return None
