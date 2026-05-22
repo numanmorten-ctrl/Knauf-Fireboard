@@ -3827,11 +3827,6 @@ if current_step == 3:
                         fallback=f"Knauf Fireboard {int(board_mm)} mm"
                     )
 
-                    st.write(
-                        "FIREBOARD LABEL:",
-                        fireboard_label
-                    )
-
                     materials.append({
                         "Materiale": fireboard_label,
                         "Mængde": fireboard_rate,
@@ -3844,11 +3839,6 @@ if current_step == 3:
                     materials_lookup_df,
                     [f"{int(thickness)} mm", "fireboard"],
                     fallback=f"Knauf Fireboard {int(thickness)} mm"
-                )
-
-                st.write(
-                    "FIREBOARD LABEL:",
-                    fireboard_label
                 )
 
                 materials.append({
