@@ -3819,6 +3819,14 @@ if current_step == 3:
             elif len(available_variants) == 1:
                 layer_rows = layer_rows[layer_rows["variant"] == available_variants[0]]
 
+        angle_lookup = angle_profile_logic_df[
+            angle_profile_logic_df["sides"]
+            .map(clean_numeric)
+            .fillna(0)
+            ==
+            int(sides)
+        ]
+
         materials.extend(
             generate_materials(
                 fireboard_rate,
@@ -3838,15 +3846,7 @@ if current_step == 3:
                 clean_numeric,
                 clean_text
             )
-        )
-
-        angle_lookup = angle_profile_logic_df[
-            angle_profile_logic_df["sides"]
-            .map(clean_numeric)
-            .fillna(0)
-            ==
-            int(sides)
-        ]
+        
 
         beam_material = resolve_beam_material(
             beam_rate,
