@@ -649,4 +649,44 @@ def generate_fastener_materials(
 
     return materials
 
+def resolve_beam_material(
+    beam_rate,
+    beam_text,
+    materials_lookup_df,
+    get_material_label,
+    clean_text
+):
+    """
+    Resolve beam profile material.
+    """
+
+    if beam_rate <= 0:
+        return None
+
+    beam_keywords = []
+
+    if beam_text.upper() == "PDP":
+
+        beam_keywords = ["pdp"]
+
+    elif beam_text.upper() == "BJ":
+
+        beam_keywords = ["bjælkeprofil"]
+
+    else:
+
+        beam_keywords = [
+            clean_text(beam_text)
+        ]
+
+    return {
+        "Materiale": get_material_label(
+            materials_lookup_df,
+            beam_keywords,
+            fallback=beam_text
+        ),
+        "Mængde": beam_rate,
+        "Enhed": "m"
+    }
+
 
