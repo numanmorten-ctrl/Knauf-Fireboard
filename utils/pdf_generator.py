@@ -86,6 +86,9 @@ def generate_single_pdf(
     RESULT_Y_LOCAL = RESULT_Y
     PAGE_Y_LOCAL = PAGE_Y
 
+    def t(key):
+        return translations[language].get(key, key)
+
     can.setFont(*PROJECT_FONT)
 
     can.drawString(
@@ -355,6 +358,9 @@ def generate_complete_pdf(
         CALC_Y_LOCAL = CALC_Y
         RESULT_Y_LOCAL = RESULT_Y
         PAGE_Y_LOCAL = PAGE_Y
+
+        def t(key):
+            return translations[language].get(key, key)
 
         # PROJECT INFO
 
