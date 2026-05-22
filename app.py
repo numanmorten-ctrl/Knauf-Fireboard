@@ -12,6 +12,7 @@ import requests
 from translations import translations
 from utils.data_loader import clean_text, clean_numeric, load_and_clean_csv
 from utils.render_helpers import render_materials_table
+from utils.pdf_generator import PROFILE_IMAGE_MAP
 from utils.material_helpers import (
     resolve_screw_clamp_by_layer,
     lookup_material_by_code,
@@ -1474,30 +1475,6 @@ DESCRIPTION_FONT = 9
 CALC_FONT = 9
 RESULT_FONT = 14
 PAGE_FONT = 10
-
-
-# ---------------------------------------------------
-# PROFILE IMAGE MAP
-# ---------------------------------------------------
-
-PROFILE_IMAGE_MAP = {
-
-    "H-profiler": "images/h_profiles.png",
-    "I-profiler": "images/i_profiles.png",
-    "U-profiler": "images/u_profiles.png",
-
-    "Kvadratiske rør varmvalsede": "images/shs_hot.png",
-    "Kvadratiske rør koldvalsede": "images/shs_cold.png",
-
-    "Rektangulære rør varmvalsede": "images/rhs_hot.png",
-    "Rektangulære rør koldvalsede": "images/rhs_cold.png",
-
-    "Cirkulære rør middelsvære": "images/chs_medium.png",
-    "Cirkulære rør svære": "images/chs_heavy.png",
-
-    "Andre profiler": "images/other_profiles.png",
-}
-
 
 # ---------------------------------------------------
 # GENERATE COMPLETE PDF
