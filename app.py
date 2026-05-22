@@ -1595,6 +1595,26 @@ with st.sidebar:
                         calc["profile"]
                     )
 
+                    profile_name = str(calc["profile"])
+
+                    if profile_name.startswith("HEB"):
+                        st.session_state.profile_type = "HEB"
+
+                    elif profile_name.startswith("HEA"):
+                        st.session_state.profile_type = "HEA"
+    
+                    elif profile_name.startswith("HEM"):
+                        st.session_state.profile_type = "HEM"
+
+                    elif profile_name.startswith("IPE"):
+                        st.session_state.profile_type = "IPE"
+
+                    elif profile_name.startswith("INP"):
+                        st.session_state.profile_type = "INP"
+
+                    elif profile_name.startswith("UNP"):
+                        st.session_state.profile_type = "UNP"
+
                     st.session_state.apv_method = calc.get(
                         "apv_method",
                         "Direkte"
