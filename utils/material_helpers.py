@@ -783,3 +783,80 @@ def generate_layer_fastener_materials(
         materials.extend(layer_materials)
 
     return materials
+
+def generate_materials(
+    fireboard_rate,
+    layer_rows,
+    thickness,
+    screw_rate,
+    staple_rate,
+    angle_rate,
+    angle_lookup,
+    beam_rate,
+    beam_text,
+    screw_clamp_logic_df,
+    materials_lookup_df,
+    materials_by_artnr,
+    materials_by_dbnr,
+    get_material_label,
+    clean_numeric,
+    clean_text
+):
+    """
+    Generate complete material list.
+    """
+
+    materials = []
+
+    # Fireboards
+    materials.extend(
+        generate_fireboard_materials(
+            fireboard_rate,
+            layer_rows,
+            thickness,
+            materials_lookup_df,
+            get_material_label,
+            clean_numeric
+        )
+    )
+
+    # Layer screws/clamps
+    materials.extend(
+        generate_layer_fastener_materials(
+            layer_rows,
+            screw_rate,
+            staple_rate,
+            screw_clamp_logic_df,
+            materials_by_artnr,
+            materials_by_dbnr,
+            clean_numeric
+        )
+    )
+
+    # General fasteners
+    materials.extend(
+        generate_fastener_materials(
+            screw_rate,
+            staple_rate,
+            angle_rate,
+            layer_rows,
+            angle_lookup,
+            materials_lookup_df,
+            get_material_label,
+            clean_numeric
+        )
+    )
+
+    # Beam profile
+    beam_material = resolve_beam_material(
+        beam_rate,
+        beam_text,
+        materials_lookup_df,
+        get_material_label,
+        clean_text
+    )
+
+    if beam_material:
+        materials.append(beam_material)
+
+    return materials
