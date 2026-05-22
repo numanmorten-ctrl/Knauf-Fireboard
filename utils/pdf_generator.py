@@ -135,7 +135,7 @@ def generate_single_pdf(
     can.drawString(
         CALC_X,
         CALC_Y_LOCAL - (CALC_LINE_HEIGHT * 2),
-        str(get_display_text(calc["montage"]))
+        str(get_display_text(calc["montage"], t))
     )
 
     can.drawString(
@@ -218,10 +218,10 @@ def generate_single_pdf(
         thickness_val = 0
 
     result_text = (
-        f"Profile must be clad with "
-        f"{thickness_val} mm "
-        f"Knauf Fireboard"
-    )
+    f"{t('profile_must_be_clad_with')} "
+    f"{thickness_val} {t('mm')} "
+    f"{t('knauf_fireboard')}"
+)
 
     can.drawCentredString(
         RESULT_X,
@@ -273,8 +273,14 @@ def get_translated_category(category):
     return category
 
 
-def get_display_text(value):
-    return value
+def get_display_text(value, t):
+
+    translations = {
+        "Klammeløsning": t("clamping_solution"),
+        "Bjælkeprofil eller PDP profil": t("beam_or_pdp_profile")
+    }
+
+    return translations.get(value, value)
 
 
 def format_sides_display(value):
@@ -396,7 +402,7 @@ def generate_complete_pdf(
         can.drawString(
             CALC_X,
             CALC_Y_LOCAL - (CALC_LINE_HEIGHT * 2),
-            str(get_display_text(calc["montage"]))
+            str(get_display_text(calc["montage"], t))
         )
 
         can.drawString(
