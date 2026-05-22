@@ -12,6 +12,10 @@ import requests
 from translations import translations
 from utils.data_loader import clean_text, clean_numeric, load_and_clean_csv
 from utils.render_helpers import render_materials_table
+from utils.ui_helpers import (
+    card,
+    disabled_card
+)
 from utils.validation_helpers import (
     validate_temperature,
     validate_fireboard_lookup,
