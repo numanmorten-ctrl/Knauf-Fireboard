@@ -11,5 +11,164 @@ def get_base64_image(image_path):
         ).decode()
 
 
-def placeholder():
-    pass
+def card(
+    label,
+    image_path,
+    state_key,
+    session_state,
+    t,
+    value=None
+):
+
+    compare_value = value if value else label
+
+    selected = (
+        session_state[state_key]
+        == compare_value
+    )
+
+    background = (
+        "#eef7fd"
+        if selected
+        else "white"
+    )
+
+    border = (
+        "2px solid #003b7a"
+        if selected
+        else "1px solid #d9dde3"
+    )
+
+    image_base64 = get_base64_image(
+        image_path
+    )
+
+    html = f"""
+    <html>
+    <body style="
+        margin:0;
+        padding:0;
+    ">
+    <div style="
+        border:{border};
+        background-color:{background};
+        border-radius:0px;
+        padding:10px;
+        width:calc(100% - 2px);
+        text-align:center;
+        height:170px;
+        width:100%;
+        box-sizing:border-box;
+        display:flex;
+        flex-direction:column;
+        justify-content:center;
+        align-items:center;
+        transition: all 0.15s ease;
+    ">
+
+        <img src="data:image/png;base64,{image_base64}"
+        style="
+            width:120px;
+            height:120px;
+            object-fit:contain;
+            margin-bottom:8px;
+        "/>
+
+        <div style="
+            font-size:17px;
+            font-weight:700;
+            color:#2d343c;
+            text-align:center;
+            line-height:1.25;
+        ">
+            {label}
+        </div>
+
+    </div>
+    </body>
+    </html>
+    """
+
+    st.components.v1.html(
+        html,
+        height=170
+    )
+
+    if st.button(
+        t("select"),
+        key=f"{state_key}_{label}",
+        use_container_width=True
+    ):
+
+        session_state[state_key] = compare_value
+
+        if (
+            compare_value == "Cirkulære rør middelsvære"
+            or
+            compare_value == "Cirkulære rør svære"
+        ):
+
+            session_state["sides"] = "4"
+
+        st.rerun()
+
+
+def disabled_card(
+    label,
+    image_path
+):
+
+    image_base64 = get_base64_image(
+        image_path
+    )
+
+    html = f"""
+    <html>
+    <body style="
+        margin:0;
+        padding:0;
+    ">
+    <div style="
+        border:1px solid #d9dde3;
+        background:white;
+        opacity:0.45;
+        border-radius:0px;
+        padding:10px;
+        width:calc(100% - 2px);
+        text-align:center;
+        height:170px;
+        width:100%;
+        box-sizing:border-box;
+        display:flex;
+        flex-direction:column;
+        justify-content:center;
+        align-items:center;
+    ">
+
+        <img src="data:image/png;base64,{image_base64}"
+        style="
+            width:120px;
+            height:120px;
+            object-fit:contain;
+            margin-bottom:12px;
+        "/>
+
+        <div style="
+            font-size:17px;
+            font-weight:700;
+            color:#999999;
+            text-align:center;
+            line-height:1.25;
+        ">
+            {label}
+        </div>
+
+    </div>
+    </body>
+    </html>
+    """
+
+    st.components.v1.html(
+        html,
+        height=170
+    )
