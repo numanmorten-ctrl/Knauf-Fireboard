@@ -1559,6 +1559,18 @@ with st.sidebar:
                     use_container_width=True
                 ):
 
+                    # RESET STREAMLIT WIDGET STATES
+
+                    widget_keys = [
+                        "profile_selectbox",
+                        "language_select"
+                    ]
+
+                    for key in widget_keys:
+
+                        if key in st.session_state:
+                            del st.session_state[key]
+                    
                     st.session_state.category = (
                         calc["category"]
                     )
