@@ -29,7 +29,8 @@ from utils.material_helpers import (
     resolve_beam_material,
     generate_fastener_materials,
     generate_fireboard_materials,
-    generate_layer_fastener_materials
+    generate_layer_fastener_materials,
+    generate_materials
 )
 
 from reportlab.platypus import (
