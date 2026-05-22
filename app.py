@@ -3922,7 +3922,7 @@ if current_step == 3:
         if screw_material:
             materials.append(screw_material)
 
-       staple_material = resolve_staple_material(
+        staple_material = resolve_staple_material(
             staple_rate,
             layer_rows,
             materials_lookup_df,
