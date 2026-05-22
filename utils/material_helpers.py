@@ -1,6 +1,6 @@
 import pandas as pd
 
-from utils.data_loader import clean_numeric
+from utils.data_loader import clean_numeric, clean_text
 
 
 # ---------------------------------------------------
