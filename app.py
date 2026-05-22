@@ -3891,30 +3891,16 @@ if current_step == 3:
             )
         )
 
-        if beam_rate > 0:
+        beam_material = resolve_beam_material(
+            beam_rate,
+            beam_text,
+            materials_lookup_df,
+            get_material_label,
+            clean_text
+        )
 
-            beam_keywords = []
-
-            if beam_text.upper() == "PDP":
-                beam_keywords = ["pdp"]
-
-            elif beam_text.upper() == "BJ":
-                beam_keywords = ["bjælkeprofil"]
-
-            else:
-                beam_keywords = [
-                    clean_text(beam_text)
-                ]
-                
-            materials.append({
-                "Materiale": get_material_label(
-                    materials_lookup_df,
-                    beam_keywords,
-                    fallback=beam_text
-                ),
-                "Mængde": beam_rate,
-                "Enhed": "m"
-            })
+        if beam_material:
+            materials.append(beam_material)
 
         materials_df = build_materials_dataframe(
             materials,
