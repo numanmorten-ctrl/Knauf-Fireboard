@@ -3891,6 +3891,8 @@ if current_step == 3:
             else:
                 beam_keywords = [beam_text]
 
+            st.write("FINAL beam_text:", beam_text)
+            st.write("FINAL beam_keywords:", beam_keywords)
 
             materials.append({
                 "Materiale": get_material_label(
