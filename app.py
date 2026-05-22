@@ -3829,23 +3829,17 @@ if current_step == 3:
             )
         )
 
-        # Process all layers to resolve screws and clamps
-        if not layer_rows.empty:
-            for _, layer_row in layer_rows.iterrows():
-                layer_no = int(clean_numeric(layer_row["layer_no"]) or 0)
-                board_mm = clean_numeric(layer_row["board_mm"]) or 0
-
-                # Resolve screws/clamps for this specific layer
-                layer_materials = resolve_screw_clamp_by_layer(
-                    layer_no,
-                    board_mm,
-                    screw_rate,
-                    staple_rate,
-                    screw_clamp_logic_df,
-                    materials_by_artnr,
-                    materials_by_dbnr
-                )
-                materials.extend(layer_materials)
+        materials.extend(
+            generate_layer_fastener_materials(
+                layer_rows,
+                screw_rate,
+                staple_rate,
+                screw_clamp_logic_df,
+                materials_by_artnr,
+                materials_by_dbnr,
+                clean_numeric
+            )
+        )
 
         angle_lookup = angle_profile_logic_df[
             angle_profile_logic_df["sides"]
