@@ -447,12 +447,8 @@ def get_material_label(df, search_terms, fallback="Ukendt materiale"):
     ]
 
     matches = df[
-        df["search_text"].apply(
-            lambda text: all(
-                term in text
-                for term in search_terms
-            )
-        )
+        df["search_text"]
+        .str.contains(search_terms[0], na=False)
     ]
 
     if not matches.empty:
