@@ -30,7 +30,8 @@ from utils.material_helpers import (
     generate_fastener_materials,
     generate_fireboard_materials,
     generate_layer_fastener_materials,
-    generate_materials
+    generate_materials,
+    build_variant_label,
 )
 
 from reportlab.platypus import (
