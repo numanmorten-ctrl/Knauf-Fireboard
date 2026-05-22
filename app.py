@@ -1515,30 +1515,13 @@ with st.sidebar:
         use_container_width=True
     ):
 
-        reset_keys = [
-
-            "category",
-            "profile_type",
-            "montage",
-            "sides",
-            "selected_profile",
-            "fire_time",
-            "temperature"
-        ]
-
-        for key in reset_keys:
-
-            st.session_state[key] = None
-
-        st.session_state.editing = False
-
-        st.session_state.edit_index = None
-
-        st.session_state.current_step = 0
+        reset_calculation_state(
+            st.session_state
+        )
 
         st.rerun()
 
-    st.divider()
+        st.divider()
 
     # ---------------------------------------------------
     # BEREGNINGER
