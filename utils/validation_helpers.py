@@ -44,3 +44,26 @@ def validate_fireboard_lookup(
         )
 
     return None
+
+def reset_calculation_state(session_state):
+
+    reset_keys = [
+
+        "category",
+        "profile_type",
+        "montage",
+        "sides",
+        "selected_profile",
+        "fire_time",
+        "temperature"
+    ]
+
+    for key in reset_keys:
+
+        session_state[key] = None
+
+    session_state.editing = False
+
+    session_state.edit_index = None
+
+    session_state.current_step = 0
