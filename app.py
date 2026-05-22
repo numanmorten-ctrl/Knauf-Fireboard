@@ -2310,6 +2310,8 @@ if current_step == 1:
             t("clamping_solution"),
             "images/klamme.png",
             "montage",
+            st.session_state,
+            t,
             "Klammeløsning"
         )
 
@@ -2319,6 +2321,8 @@ if current_step == 1:
             t("beam_or_pdp_profile"),
             "images/bjaelke.png",
             "montage",
+            st.session_state,
+            t,
             "Bjælkeprofil eller PDP profil"
         )
 
@@ -2375,7 +2379,9 @@ if current_step == 1:
             card(
                 "4",
                 "images/side4.png",
-                "sides"
+                "sides",
+                st.session_state,
+                t
             )
 
     else:
@@ -2385,7 +2391,9 @@ if current_step == 1:
             card(
                 "1",
                 "images/side1.png",
-                "sides"
+                "sides",
+                st.session_state,
+                t
             )
 
         with col2:
@@ -2393,7 +2401,9 @@ if current_step == 1:
             card(
                 "2",
                 "images/side2.png",
-                "sides"
+                "sides",
+                st.session_state,
+                t
             )
 
         with col3:
@@ -2401,7 +2411,9 @@ if current_step == 1:
             card(
                 "3",
                 "images/side3.png",
-                "sides"
+                "sides",
+                st.session_state,
+                t
             )
 
         with col4:
@@ -2409,7 +2421,9 @@ if current_step == 1:
             card(
                 "4",
                 "images/side4.png",
-                "sides"
+                "sides",
+                st.session_state,
+                t
             )
 
     sides = st.session_state.sides
