@@ -3847,18 +3847,6 @@ if current_step == 3:
                 clean_text
             )
         )
-        
-
-        beam_material = resolve_beam_material(
-            beam_rate,
-            beam_text,
-            materials_lookup_df,
-            get_material_label,
-            clean_text
-        )
-
-        if beam_material:
-            materials.append(beam_material)
 
         materials_df = build_materials_dataframe(
             materials,
