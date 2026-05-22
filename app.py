@@ -2221,7 +2221,7 @@ if current_step == 0:
                     in profiles
                 )
                 else 0
-            )
+            ),
             key="profile_selectbox"
         )
 
