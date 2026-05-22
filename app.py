@@ -3788,7 +3788,7 @@ if current_step == 3:
             if len(available_variants) > 1:
                 variant_labels = {
                     variant: build_variant_label(
-                        layer_rows[layer_rows["variant"] == variant]
+                        layer_rows[layer_rows["variant"] == variant],
                         clean_numeric
                     )
                     for variant in available_variants
