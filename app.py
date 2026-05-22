@@ -26,6 +26,7 @@ from utils.material_helpers import (
     resolve_angle_material,
     resolve_screw_material,
     resolve_staple_material,
+    resolve_beam_material,
     generate_fastener_materials
 )
 
