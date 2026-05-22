@@ -24,6 +24,8 @@ from utils.material_helpers import (
     get_material_label,
     resolve_beam_text,
     resolve_angle_material,
+    resolve_screw_material,
+    resolve_staple_material,
 )
 
 from reportlab.platypus import (
