@@ -3840,9 +3840,4 @@ if current_step == 3:
             materials_by_description
         )
 
-        st.table(
-            materials_df.style.set_properties(
-                subset=["ART.NR."],
-                **{"text-align": "right"}
-            )
-        )
+        render_materials_table(materials_df)
