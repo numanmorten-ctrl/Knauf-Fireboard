@@ -26,7 +26,7 @@ from utils.material_helpers import (
     resolve_angle_material,
     resolve_screw_material,
     resolve_staple_material,
-    generate_fastener_materials,
+    generate_fastener_materials
 )
 
 from reportlab.platypus import (
