@@ -48,7 +48,8 @@ from utils.pdf_generator import (
     CALC_FONT,
     RESULT_FONT,
     PAGE_FONT,
-    generate_single_pdf
+    generate_single_pdf,
+    generate_complete_pdf
 )
 from utils.material_helpers import (
     resolve_screw_clamp_by_layer,
