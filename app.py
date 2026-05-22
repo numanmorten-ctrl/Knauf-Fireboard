@@ -3823,7 +3823,7 @@ if current_step == 3:
 
                     fireboard_label = get_material_label(
                         materials_lookup_df,
-                        [clean_text(f"{int(board_mm)} mm fireboard")],
+                        [f"{int(board_mm)} mm", "fireboard"],
                         fallback=f"Knauf Fireboard {int(board_mm)} mm"
                     )
 
@@ -3842,7 +3842,7 @@ if current_step == 3:
 
                 fireboard_label = get_material_label(
                     materials_lookup_df,
-                    [clean_text(f"{int(thickness)} mm fireboard")],
+                    [f"{int(thickness)} mm", "fireboard"],
                     fallback=f"Knauf Fireboard {int(thickness)} mm"
                 )
 
