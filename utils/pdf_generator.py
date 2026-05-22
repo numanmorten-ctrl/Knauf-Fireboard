@@ -353,3 +353,6 @@ def get_display_text(value):
 
 def format_sides_display(value):
     return str(value)
+    
+def generate_complete_pdf():
+    pass
