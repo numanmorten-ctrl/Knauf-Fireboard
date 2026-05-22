@@ -23,7 +23,11 @@ from utils.validation_helpers import (
 )
 from utils.pdf_generator import (
     PROFILE_IMAGE_MAP,
+    generate_single_pdf,
+    generate_complete_pdf,
+)
 
+from utils.constants import (
     PROJECT_X,
     PROJECT_Y,
     PROJECT_LINE_HEIGHT,
@@ -49,6 +53,7 @@ from utils.pdf_generator import (
     PROFILE_TEXT_X,
     PROFILE_CATEGORY_TEXT_Y,
     PROFILE_TEXT_Y,
+
     PROFILE_CATEGORY_FONT,
     PROFILE_TEXT_FONT,
 
@@ -56,10 +61,9 @@ from utils.pdf_generator import (
     DESCRIPTION_FONT,
     CALC_FONT,
     RESULT_FONT,
-    PAGE_FONT,
-    generate_single_pdf,
-    generate_complete_pdf,
+    PAGE_FONT
 )
+
 from utils.material_helpers import (
     resolve_screw_clamp_by_layer,
     lookup_material_by_code,
