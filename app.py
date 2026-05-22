@@ -2150,6 +2150,9 @@ if current_step == 0:
 
                         st.session_state.selected_profile = None
 
+                        if "profile_selectbox" in st.session_state:
+                            del st.session_state["profile_selectbox"]
+
                         st.rerun()
 
             st.divider()
@@ -2221,8 +2224,7 @@ if current_step == 0:
                     in profiles
                 )
                 else 0
-            ),
-            key="profile_selectbox"
+            )
         )
 
         st.session_state.selected_profile = (
