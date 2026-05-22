@@ -2701,7 +2701,7 @@ if current_step == 2:
             use_container_width=True
         ):
 
-            st.session_state.current_step = 0
+            st.session_state.current_step = 3
 
             st.rerun()
 
