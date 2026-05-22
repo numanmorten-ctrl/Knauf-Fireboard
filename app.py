@@ -3783,31 +3783,13 @@ if current_step == 3:
             current_thickness
         ]
 
-        def build_variant_label(rows):
-            board_values = [
-                int(clean_numeric(value) or 0)
-                for value in rows["board_mm"].map(clean_numeric).dropna().tolist()
-                if clean_numeric(value) is not None
-            ]
-            if not board_values:
-                return "Fireboard"
-
-            counts = {}
-            for thickness_value in board_values:
-                counts[thickness_value] = counts.get(thickness_value, 0) + 1
-
-            label_parts = [
-                f"{count} × {thickness} mm"
-                for thickness, count in sorted(counts.items(), key=lambda item: (-item[0], item[0]))
-            ]
-            return " + ".join(label_parts) + " Fireboard"
-
         if "variant" in layer_rows.columns:
             available_variants = layer_rows["variant"].dropna().unique().tolist()
             if len(available_variants) > 1:
                 variant_labels = {
                     variant: build_variant_label(
                         layer_rows[layer_rows["variant"] == variant]
+                        clean_numeric
                     )
                     for variant in available_variants
                 }
