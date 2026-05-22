@@ -2878,21 +2878,15 @@ if (
     # FIND TYKKELSE
     # ---------------------------------------------------
 
-    table = fire_tables[fire_time]
+    validation_message = validate_fireboard_lookup(
+        table,
+        apv,
+        temperature
+    )
 
-    if apv not in table.columns:
+    if validation_message:
 
-        st.error(
-            "Profilforholdet (Ap/V) overstiger 380 m²/m³, vælg et andet eller større profil"
-        )
-
-        st.stop()
-
-    if int(temperature) not in table.index:
-
-        st.error(
-            "Temperaturen findes ikke"
-        )
+        st.error(validation_message)
 
         st.stop()
 
@@ -2900,12 +2894,6 @@ if (
         int(temperature),
         apv
     ]
-
-    if pd.isna(thickness):
-       st.error(
-           "Profilet kan ikke inddækkes, vælg et andet eller større profil"
-       )
-       st.stop()
 
 # --------------------------------------------------
 # TAB 4 - RESULTAT
