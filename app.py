@@ -669,7 +669,7 @@ hr {
 
 /* Mindre afstand efter headers */
 
-h1, {
+h1 {
 
     margin-top: -4rem !important;
 
@@ -918,6 +918,57 @@ table td {
     padding: 10px !important;
     color: #364650 !important;
     background: white !important;
+}
+
+/* ---------------------------------------------------
+STICKY TOP AREA
+--------------------------------------------------- */
+
+.top-controls-wrapper {
+
+    position: sticky;
+
+    top: 4.05rem;
+
+    z-index: 99990;
+
+    background: #f3f5f7;
+
+    padding-top: 0.75rem;
+
+    padding-bottom: 0.75rem;
+}
+
+/* ---------------------------------------------------
+STICKY STEP NAV
+--------------------------------------------------- */
+
+.step-nav-wrapper {
+
+    position: sticky;
+
+    top: 9.2rem;
+
+    z-index: 99989;
+
+    background: #f3f5f7;
+
+    padding-top: 0.5rem;
+
+    padding-bottom: 0.8rem;
+
+    border-bottom: 1px solid #d9dde3;
+
+    margin-bottom: 1rem;
+}
+
+/* ---------------------------------------------------
+PREVENT CONTENT JUMP
+--------------------------------------------------- */
+
+.block-container {
+
+    padding-top: 4.5rem !important;
 }
 
 </style>
@@ -1364,6 +1415,11 @@ fire_tables = {
     )
 }
 
+st.markdown(
+    '<div class="top-controls-wrapper">',
+    unsafe_allow_html=True
+)
+
 # ---------------------------------------------------
 # HEADER
 # ---------------------------------------------------
@@ -1455,6 +1511,11 @@ with col5:
         st.session_state.language = new_lang
 
         st.rerun()
+
+st.markdown(
+    '</div>',
+    unsafe_allow_html=True
+)
 
 # ---------------------------------------------------
 # SIDEBAR
@@ -1732,6 +1793,11 @@ with st.sidebar:
             use_container_width=True
         )
 
+st.markdown(
+    '<div class="step-nav-wrapper">',
+    unsafe_allow_html=True
+)
+
 # ---------------------------------------------------
 # STEP NAVIGATION
 # ---------------------------------------------------
@@ -1824,6 +1890,12 @@ for idx, step in enumerate(steps):
                 st.session_state.current_step = idx
 
                 st.rerun()
+
+st.markdown(
+    '</div>',
+    unsafe_allow_html=True
+)
+
 # ---------------------------------------------------
 # TAB 1 - PROFIL
 # ---------------------------------------------------
