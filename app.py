@@ -921,41 +921,24 @@ table td {
 }
 
 /* ---------------------------------------------------
-FREEZE HEADER ROW
+STICKY TOP AREA
 --------------------------------------------------- */
 
-div[data-testid="stHorizontalBlock"]:has(h1) {
+.sticky-top-wrapper {
 
-    position: sticky !important;
+    position: sticky;
 
-    top: 4.05rem !important;
+    top: 4.05rem;
 
-    z-index: 99999 !important;
+    z-index: 99999;
 
-    background: #f3f5f7 !important;
+    background: #f3f5f7;
 
-    padding-top: 0.4rem !important;
+    padding-top: 0.5rem;
 
-    padding-bottom: 0.5rem !important;
-}
+    padding-bottom: 0.5rem;
 
-/* ---------------------------------------------------
-FREEZE STEP TABS
---------------------------------------------------- */
-
-div[data-testid="stHorizontalBlock"]:has(button[key^="step_"]) {
-
-    position: sticky !important;
-
-    top: 9.2rem !important;
-
-    z-index: 99998 !important;
-
-    background: #f3f5f7 !important;
-
-    padding-top: 0.3rem !important;
-
-    padding-bottom: 0.5rem !important;
+    align-self: flex-start;
 }
 
 </style>
@@ -1404,6 +1387,10 @@ fire_tables = {
 # ---------------------------------------------------
 # HEADER
 # ---------------------------------------------------
+
+st.markdown("""
+<div class="sticky-top-wrapper">
+""", unsafe_allow_html=True)
 
 col1, col2, col3, col4, col5 = st.columns(
     [6, 2, 2, 0.24, 1.12],
@@ -1861,6 +1848,10 @@ for idx, step in enumerate(steps):
                 st.session_state.current_step = idx
 
                 st.rerun()
+
+st.markdown("""
+</div>
+""", unsafe_allow_html=True)
 
 # ---------------------------------------------------
 # TAB 1 - PROFIL
