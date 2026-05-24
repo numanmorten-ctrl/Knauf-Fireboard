@@ -996,6 +996,42 @@ header_html = """
 
     text-rendering: geometricPrecision;
 }
+/* ---------------------------------------------------
+STICKY TOP BAR
+--------------------------------------------------- */
+
+.sticky-top-wrapper {
+
+    position: sticky;
+
+    top: 4.05rem;
+
+    z-index: 99999;
+
+    background: #f3f5f7;
+
+    padding-top: 0.4rem;
+
+    padding-bottom: 0.6rem;
+}
+
+/* shadow under sticky area */
+
+.sticky-top-wrapper::after {
+
+    content: "";
+
+    display: block;
+
+    height: 6px;
+
+    background: linear-gradient(
+        to bottom,
+        rgba(0,0,0,0.08),
+        rgba(0,0,0,0)
+    );
+}
+
 </style>
 
 <div class="knauf-header">
@@ -1366,6 +1402,11 @@ fire_tables = {
 # ---------------------------------------------------
 # HEADER
 # ---------------------------------------------------
+
+st.markdown(
+    '<div class="sticky-top-wrapper">',
+    unsafe_allow_html=True
+)
 
 col1, col2, col3, col4, col5 = st.columns(
     [6, 2, 2, 0.24, 1.12],
@@ -1823,6 +1864,11 @@ for idx, step in enumerate(steps):
                 st.session_state.current_step = idx
 
                 st.rerun()
+
+st.markdown(
+    '</div>',
+    unsafe_allow_html=True
+)
 
 # ---------------------------------------------------
 # TAB 1 - PROFIL
