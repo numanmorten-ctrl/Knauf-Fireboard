@@ -921,48 +921,6 @@ table td {
 }
 
 /* ---------------------------------------------------
-STICKY TOP AREA
---------------------------------------------------- */
-
-.top-controls-wrapper {
-
-    position: sticky;
-
-    top: 4.05rem;
-
-    z-index: 99990;
-
-    background: #f3f5f7;
-
-    padding-top: 0.75rem;
-
-    padding-bottom: 0.75rem;
-}
-
-/* ---------------------------------------------------
-STICKY STEP NAV
---------------------------------------------------- */
-
-.step-nav-wrapper {
-
-    position: sticky;
-
-    top: 9.2rem;
-
-    z-index: 99989;
-
-    background: #f3f5f7;
-
-    padding-top: 0.5rem;
-
-    padding-bottom: 0.8rem;
-
-    border-bottom: 1px solid #d9dde3;
-
-    margin-bottom: 1rem;
-}
-
-/* ---------------------------------------------------
 PREVENT CONTENT JUMP
 --------------------------------------------------- */
 
@@ -971,6 +929,45 @@ PREVENT CONTENT JUMP
     padding-top: 4.5rem !important;
 }
 
+/* ---------------------------------------------------
+STICKY HEADER AREA
+--------------------------------------------------- */
+
+/* TOP CONTROL ROW */
+
+div[data-testid="stHorizontalBlock"]:has(div[data-testid="column"]) {
+
+    position: sticky !important;
+
+    top: 4.05rem !important;
+
+    z-index: 99990 !important;
+
+    background: #f3f5f7 !important;
+
+    padding-top: 0.75rem !important;
+
+    padding-bottom: 0.75rem !important;
+}
+
+/* ---------------------------------------------------
+STEP NAVIGATION
+--------------------------------------------------- */
+
+div.element-container:has(.step-nav-anchor) + div {
+
+    position: sticky !important;
+
+    top: 9.4rem !important;
+
+    z-index: 99989 !important;
+
+    background: #f3f5f7 !important;
+
+    padding-top: 0.5rem !important;
+
+    padding-bottom: 0.7rem !important;
+}
 </style>
 """, unsafe_allow_html=True)
 
@@ -1415,11 +1412,6 @@ fire_tables = {
     )
 }
 
-st.markdown(
-    '<div class="top-controls-wrapper">',
-    unsafe_allow_html=True
-)
-
 # ---------------------------------------------------
 # HEADER
 # ---------------------------------------------------
@@ -1511,11 +1503,6 @@ with col5:
         st.session_state.language = new_lang
 
         st.rerun()
-
-st.markdown(
-    '</div>',
-    unsafe_allow_html=True
-)
 
 # ---------------------------------------------------
 # SIDEBAR
@@ -1793,11 +1780,6 @@ with st.sidebar:
             use_container_width=True
         )
 
-st.markdown(
-    '<div class="step-nav-wrapper">',
-    unsafe_allow_html=True
-)
-
 # ---------------------------------------------------
 # STEP NAVIGATION
 # ---------------------------------------------------
@@ -1855,6 +1837,11 @@ thickness = None
 # STEP HEADER
 # ---------------------------------------------------
 
+st.markdown(
+    '<div class="step-nav-anchor"></div>',
+    unsafe_allow_html=True
+)
+
 cols = st.columns(len(steps))
 
 for idx, step in enumerate(steps):
@@ -1890,11 +1877,6 @@ for idx, step in enumerate(steps):
                 st.session_state.current_step = idx
 
                 st.rerun()
-
-st.markdown(
-    '</div>',
-    unsafe_allow_html=True
-)
 
 # ---------------------------------------------------
 # TAB 1 - PROFIL
