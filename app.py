@@ -920,6 +920,52 @@ table td {
     background: white !important;
 }
 
+/* ---------------------------------------------------
+FREEZE TOP NAV AREA
+--------------------------------------------------- */
+
+/* header + buttons + tabs */
+
+div[data-testid="stVerticalBlock"]
+div:has(> div[data-testid="column"]) {
+
+    position: sticky !important;
+
+    top: 4.05rem !important;
+
+    z-index: 99990 !important;
+
+    background: #f3f5f7 !important;
+
+    padding-top: 0.5rem !important;
+
+    padding-bottom: 0.5rem !important;
+}
+
+/* subtle shadow */
+
+div[data-testid="stVerticalBlock"]
+div:has(> div[data-testid="column"])::after {
+
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+    right: 0;
+    bottom: -6px;
+
+    height: 6px;
+
+    background: linear-gradient(
+        to bottom,
+        rgba(0,0,0,0.08),
+        rgba(0,0,0,0)
+    );
+
+    pointer-events: none;
+}
+
 </style>
 """, unsafe_allow_html=True)
 
@@ -996,43 +1042,7 @@ header_html = """
 
     text-rendering: geometricPrecision;
 }
-/* ---------------------------------------------------
-STICKY TOP BAR
---------------------------------------------------- */
-
-.sticky-top-wrapper {
-
-    position: sticky;
-
-    top: 4.05rem;
-
-    z-index: 99999;
-
-    background: #f3f5f7;
-
-    padding-top: 0.4rem;
-
-    padding-bottom: 0.6rem;
-}
-
-/* shadow under sticky area */
-
-.sticky-top-wrapper::after {
-
-    content: "";
-
-    display: block;
-
-    height: 6px;
-
-    background: linear-gradient(
-        to bottom,
-        rgba(0,0,0,0.08),
-        rgba(0,0,0,0)
-    );
-}
-
-</style>
+</s000tyle>
 
 <div class="knauf-header">
 <img class="knauf-logo" src="https://knauf.com/api/download-center/v1/assets/8355fec5-8cb9-42fe-b5d7-4e7258bf446a?download=true">
@@ -1402,11 +1412,6 @@ fire_tables = {
 # ---------------------------------------------------
 # HEADER
 # ---------------------------------------------------
-
-st.markdown(
-    '<div class="sticky-top-wrapper">',
-    unsafe_allow_html=True
-)
 
 col1, col2, col3, col4, col5 = st.columns(
     [6, 2, 2, 0.24, 1.12],
@@ -1864,11 +1869,6 @@ for idx, step in enumerate(steps):
                 st.session_state.current_step = idx
 
                 st.rerun()
-
-st.markdown(
-    '</div>',
-    unsafe_allow_html=True
-)
 
 # ---------------------------------------------------
 # TAB 1 - PROFIL
