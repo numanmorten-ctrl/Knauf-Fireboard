@@ -926,16 +926,14 @@ PREVENT CONTENT JUMP
 
 .block-container {
 
-    padding-top: 4.5rem !important;
+    padding-top: 12rem !important;
 }
 
 /* ---------------------------------------------------
-STICKY HEADER AREA
+TOP BAR STICKY
 --------------------------------------------------- */
 
-/* TOP CONTROL ROW */
-
-div[data-testid="stHorizontalBlock"]:has(div[data-testid="column"]) {
+div.element-container:has(.topbar-anchor) + div {
 
     position: sticky !important;
 
@@ -951,20 +949,20 @@ div[data-testid="stHorizontalBlock"]:has(div[data-testid="column"]) {
 }
 
 /* ---------------------------------------------------
-STEP NAVIGATION
+STEP NAVIGATION STICKY
 --------------------------------------------------- */
 
 div.element-container:has(.step-nav-anchor) + div {
 
     position: sticky !important;
 
-    top: 9.4rem !important;
+    top: 9.3rem !important;
 
     z-index: 99989 !important;
 
     background: #f3f5f7 !important;
 
-    padding-top: 0.5rem !important;
+    padding-top: 0.4rem !important;
 
     padding-bottom: 0.7rem !important;
 }
@@ -1415,6 +1413,10 @@ fire_tables = {
 # ---------------------------------------------------
 # HEADER
 # ---------------------------------------------------
+st.markdown(
+    '<div class="topbar-anchor"></div>',
+    unsafe_allow_html=True
+)
 
 col1, col2, col3, col4, col5 = st.columns(
     [6, 2, 2, 0.24, 1.12],
