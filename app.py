@@ -921,49 +921,41 @@ table td {
 }
 
 /* ---------------------------------------------------
-FREEZE TOP NAV AREA
+FREEZE HEADER ROW
 --------------------------------------------------- */
 
-/* header + buttons + tabs */
-
-div[data-testid="stVerticalBlock"]
-div:has(> div[data-testid="column"]) {
+div[data-testid="stHorizontalBlock"]:has(h1) {
 
     position: sticky !important;
 
     top: 4.05rem !important;
 
-    z-index: 99990 !important;
+    z-index: 99999 !important;
 
     background: #f3f5f7 !important;
 
-    padding-top: 0.5rem !important;
+    padding-top: 0.4rem !important;
 
     padding-bottom: 0.5rem !important;
 }
 
-/* subtle shadow */
+/* ---------------------------------------------------
+FREEZE STEP TABS
+--------------------------------------------------- */
 
-div[data-testid="stVerticalBlock"]
-div:has(> div[data-testid="column"])::after {
+div[data-testid="stHorizontalBlock"]:has(button[key^="step_"]) {
 
-    content: "";
+    position: sticky !important;
 
-    position: absolute;
+    top: 9.2rem !important;
 
-    left: 0;
-    right: 0;
-    bottom: -6px;
+    z-index: 99998 !important;
 
-    height: 6px;
+    background: #f3f5f7 !important;
 
-    background: linear-gradient(
-        to bottom,
-        rgba(0,0,0,0.08),
-        rgba(0,0,0,0)
-    );
+    padding-top: 0.3rem !important;
 
-    pointer-events: none;
+    padding-bottom: 0.5rem !important;
 }
 
 </style>
@@ -1042,7 +1034,7 @@ header_html = """
 
     text-rendering: geometricPrecision;
 }
-</s000tyle>
+</style>
 
 <div class="knauf-header">
 <img class="knauf-logo" src="https://knauf.com/api/download-center/v1/assets/8355fec5-8cb9-42fe-b5d7-4e7258bf446a?download=true">
