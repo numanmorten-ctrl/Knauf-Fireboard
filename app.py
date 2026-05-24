@@ -926,7 +926,7 @@ PREVENT CONTENT JUMP
 
 .block-container {
 
-    padding-top: 12rem !important;
+    padding-top: 4.5rem !important;
 }
 
 /* ---------------------------------------------------
@@ -948,6 +948,19 @@ div.element-container:has(.topbar-anchor) + div {
     padding-bottom: 0.75rem !important;
 }
 
+div.element-container:has(.topbar-anchor) + div::before {
+
+    content: "";
+
+    position: absolute;
+
+    inset: 0;
+
+    background: #f3f5f7;
+
+    z-index: -1;
+}
+
 /* ---------------------------------------------------
 STEP NAVIGATION STICKY
 --------------------------------------------------- */
@@ -965,6 +978,10 @@ div.element-container:has(.step-nav-anchor) + div {
     padding-top: 0.4rem !important;
 
     padding-bottom: 0.7rem !important;
+
+    overflow: visible !important;
+
+    border-top: 1px solid transparent;
 }
 </style>
 """, unsafe_allow_html=True)
