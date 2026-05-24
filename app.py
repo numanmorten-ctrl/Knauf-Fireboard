@@ -920,59 +920,6 @@ table td {
     background: white !important;
 }
 
-/* ---------------------------------------------------
-FIXED TOP CONTROL AREA
---------------------------------------------------- */
-
-/* HEADER BUTTON ROW */
-
-div[data-testid="stHorizontalBlock"]:has(div[data-testid="stSelectbox"]) {
-
-    position: fixed !important;
-
-    top: 4.05rem !important;
-
-    left: 21rem !important;
-
-    right: 1.5rem !important;
-
-    z-index: 99999 !important;
-
-    background: #f3f5f7 !important;
-
-    padding-top: 0.5rem !important;
-
-    padding-bottom: 0.4rem !important;
-}
-
-/* STEP NAVIGATION */
-
-div[data-testid="stHorizontalBlock"]:has(button[key^="step_"]) {
-
-    position: fixed !important;
-
-    top: 10.6rem !important;
-
-    left: 21rem !important;
-
-    right: 1.5rem !important;
-
-    z-index: 99998 !important;
-
-    background: #f3f5f7 !important;
-
-    padding-top: 0.4rem !important;
-
-    padding-bottom: 0.5rem !important;
-}
-
-/* PUSH PAGE CONTENT DOWN */
-
-.block-container {
-
-    padding-top: 13.5rem !important;
-}
-
 </style>
 """, unsafe_allow_html=True)
 
@@ -1049,6 +996,7 @@ header_html = """
 
     text-rendering: geometricPrecision;
 }
+
 </style>
 
 <div class="knauf-header">
@@ -1306,7 +1254,7 @@ if not materials_lookup_df.empty:
             materials_by_description[description_lower] = row
 
         materials_lookup_records.append(row)
-        
+
 # ---------------------------------------------------
 # CLEAN APV DATA
 # ---------------------------------------------------
@@ -1631,7 +1579,7 @@ with st.sidebar:
 
                         if key in st.session_state:
                             del st.session_state[key]
-                    
+
                     st.session_state.category = (
                         calc["category"]
                     )
@@ -1663,7 +1611,7 @@ with st.sidebar:
 
                     elif profile_name.startswith("HEA"):
                         st.session_state.profile_type = "HEA"
-    
+
                     elif profile_name.startswith("HEM"):
                         st.session_state.profile_type = "HEM"
 
@@ -1876,7 +1824,6 @@ for idx, step in enumerate(steps):
                 st.session_state.current_step = idx
 
                 st.rerun()
-
 # ---------------------------------------------------
 # TAB 1 - PROFIL
 # ---------------------------------------------------
@@ -2778,7 +2725,7 @@ if (
         )
 
     table = fire_tables[fire_time]
-    
+
     # ---------------------------------------------------
     # FIND TYKKELSE
     # ---------------------------------------------------
