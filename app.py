@@ -921,24 +921,56 @@ table td {
 }
 
 /* ---------------------------------------------------
-STICKY TOP AREA
+FIXED TOP CONTROL AREA
 --------------------------------------------------- */
 
-.sticky-top-wrapper {
+/* HEADER BUTTON ROW */
 
-    position: sticky;
+div[data-testid="stHorizontalBlock"]:has(div[data-testid="stSelectbox"]) {
 
-    top: 4.05rem;
+    position: fixed !important;
 
-    z-index: 99999;
+    top: 4.05rem !important;
 
-    background: #f3f5f7;
+    left: 21rem !important;
 
-    padding-top: 0.5rem;
+    right: 1.5rem !important;
 
-    padding-bottom: 0.5rem;
+    z-index: 99999 !important;
 
-    align-self: flex-start;
+    background: #f3f5f7 !important;
+
+    padding-top: 0.5rem !important;
+
+    padding-bottom: 0.4rem !important;
+}
+
+/* STEP NAVIGATION */
+
+div[data-testid="stHorizontalBlock"]:has(button[key^="step_"]) {
+
+    position: fixed !important;
+
+    top: 10.6rem !important;
+
+    left: 21rem !important;
+
+    right: 1.5rem !important;
+
+    z-index: 99998 !important;
+
+    background: #f3f5f7 !important;
+
+    padding-top: 0.4rem !important;
+
+    padding-bottom: 0.5rem !important;
+}
+
+/* PUSH PAGE CONTENT DOWN */
+
+.block-container {
+
+    padding-top: 13.5rem !important;
 }
 
 </style>
@@ -1387,10 +1419,6 @@ fire_tables = {
 # ---------------------------------------------------
 # HEADER
 # ---------------------------------------------------
-
-st.markdown("""
-<div class="sticky-top-wrapper">
-""", unsafe_allow_html=True)
 
 col1, col2, col3, col4, col5 = st.columns(
     [6, 2, 2, 0.24, 1.12],
@@ -1848,10 +1876,6 @@ for idx, step in enumerate(steps):
                 st.session_state.current_step = idx
 
                 st.rerun()
-
-st.markdown("""
-</div>
-""", unsafe_allow_html=True)
 
 # ---------------------------------------------------
 # TAB 1 - PROFIL
