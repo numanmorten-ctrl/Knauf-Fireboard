@@ -6,6 +6,7 @@ from reportlab.pdfgen import canvas
 from pypdf import PdfReader, PdfWriter
 
 import streamlit as st
+from streamlit_float import *
 import pandas as pd
 import requests
 
@@ -928,6 +929,7 @@ table td {
 
 </style>
 """, unsafe_allow_html=True)
+float_init()
 
 # ---------------------------------------------------
 # CUSTOM HEADER BRANDING
@@ -1370,97 +1372,95 @@ fire_tables = {
     )
 }
 
+topbar_container = st.container()
+
 # ---------------------------------------------------
 # HEADER
 # ---------------------------------------------------
 
-col1, col2, col3, col4, col5 = st.columns(
-    [6, 2, 2, 0.24, 1.12],
-    gap="small",
-    vertical_alignment="bottom"
-)
+with topbar_container:
 
-with col1:
-
-    st.title(
-        t("title")
+    col1, col2, col3, col4, col5 = st.columns(
+        [6, 2, 2, 0.24, 1.12],
+        gap="small",
+        vertical_alignment="bottom"
     )
 
-# ---------------------------------------------------
-# NY BEREGNING
-# ---------------------------------------------------
+    with col1:
 
-with col2:
-
-    st.write("")
-    st.write("")
-
-    if st.button(
-        f"🔄 {t('new_calculation')}",
-        use_container_width=True
-    ):
-
-        reset_calculation_state(
-            st.session_state
+        st.title(
+            t("title")
         )
 
-        st.rerun()
+    with col2:
 
-# ---------------------------------------------------
-# NYT PROJEKT
-# ---------------------------------------------------
+        st.write("")
+        st.write("")
 
-with col3:
+        if st.button(
+            f"🔄 {t('new_calculation')}",
+            use_container_width=True
+        ):
 
-    st.write("")
-    st.write("")
+            reset_calculation_state(
+                st.session_state
+            )
 
-    if st.button(
-        f"🗑️ {t('new_project')}",
-        use_container_width=True
-    ):
+            st.rerun()
 
-        st.session_state.clear()
+    with col3:
 
-        st.rerun()
+        st.write("")
+        st.write("")
 
-# ---------------------------------------------------
-# LANGUAGE ICON
-# ---------------------------------------------------
+        if st.button(
+            f"🗑️ {t('new_project')}",
+            use_container_width=True
+        ):
 
-with col4:
+            st.session_state.clear()
 
-    st.button(
-        "🌐",
-        disabled=True,
-        use_container_width=True
-    )
+            st.rerun()
 
-# ---------------------------------------------------
-# LANGUAGE SELECT
-# ---------------------------------------------------
+    with col4:
 
-with col5:
+        st.button(
+            "🌐",
+            disabled=True,
+            use_container_width=True
+        )
 
-    selected_language = st.selectbox(
-        "",
-        options=["Dansk", "English"],
-        index=0 if st.session_state.language == "DA" else 1,
-        label_visibility="collapsed",
-        key="language_select"
-    )
+    with col5:
 
-    new_lang = (
-        "DA"
-        if selected_language == "Dansk"
-        else "EN"
-    )
+        selected_language = st.selectbox(
+            "",
+            options=["Dansk", "English"],
+            index=0 if st.session_state.language == "DA" else 1,
+            label_visibility="collapsed",
+            key="language_select"
+        )
 
-    if new_lang != st.session_state.language:
+        new_lang = (
+            "DA"
+            if selected_language == "Dansk"
+            else "EN"
+        )
 
-        st.session_state.language = new_lang
+        if new_lang != st.session_state.language:
 
-        st.rerun()
+            st.session_state.language = new_lang
+
+            st.rerun()
+
+topbar_container.float(
+    css="""
+        top: 4.05rem;
+        background-color: #f3f5f7;
+        padding-top: 0.5rem;
+        padding-bottom: 0.5rem;
+        z-index: 99999;
+    """
+)
 
 # ---------------------------------------------------
 # SIDEBAR
