@@ -927,19 +927,12 @@ table td {
 }
 
 /* ---------------------------------------------------
-PREVENT CONTENT JUMP
+STICKY TOP AREA
 --------------------------------------------------- */
 
-.block-container {
+/* TOPBAR */
 
-    padding-top: 4.5rem !important;
-}
-
-/* ---------------------------------------------------
-TOP BAR STICKY
---------------------------------------------------- */
-
-div.element-container:has(.topbar-anchor) + div {
+div[data-testid="stHorizontalBlock"]:has(div[data-testid="stSelectbox"]) {
 
     position: sticky !important;
 
@@ -952,40 +945,30 @@ div.element-container:has(.topbar-anchor) + div {
     padding-top: 0.75rem !important;
 
     padding-bottom: 0.75rem !important;
-
-    isolation: isolate !important;
 }
 
-div.element-container:has(.topbar-anchor) + div::before {
+/* STEP NAVIGATION */
 
-    content: "";
+div[data-testid="stHorizontalBlock"]:has(button[key^="step_"]) {
 
-    position: absolute;
+    position: sticky !important;
 
-    inset: 0;
+    top: 9.2rem !important;
 
-    background: #f3f5f7;
+    z-index: 99989 !important;
 
-    z-index: -1;
+    background: #f3f5f7 !important;
+
+    padding-top: 0.45rem !important;
+
+    padding-bottom: 0.7rem !important;
 }
 
-/* ---------------------------------------------------
-STEP NAVIGATION STICKY
---------------------------------------------------- */
+/* PREVENT CONTENT HIDING */
 
-.step-nav-wrapper {
+.block-container {
 
-    position: sticky;
-
-    top: 8.9rem;
-
-    z-index: 99989;
-
-    background: #f3f5f7;
-
-    padding-top: 0.4rem;
-
-    padding-bottom: 0.7rem;
+    padding-top: 4.5rem !important;
 }
 
 </style>
@@ -1435,10 +1418,6 @@ fire_tables = {
 # ---------------------------------------------------
 # HEADER
 # ---------------------------------------------------
-st.markdown(
-    '<div class="topbar-anchor"></div>',
-    unsafe_allow_html=True
-)
 
 col1, col2, col3, col4, col5 = st.columns(
     [6, 2, 2, 0.24, 1.12],
@@ -1861,15 +1840,6 @@ thickness = None
 # STEP HEADER
 # ---------------------------------------------------
 
-step_nav_container = st.container()
-
-with step_nav_container:
-
-    st.markdown(
-        '<div class="step-nav-wrapper">',
-        unsafe_allow_html=True
-    )
-
     cols = st.columns(len(steps))
 
     for idx, step in enumerate(steps):
@@ -1906,10 +1876,6 @@ with step_nav_container:
 
                     st.rerun()
 
-    st.markdown(
-        '</div>',
-        unsafe_allow_html=True
-    )
 # ---------------------------------------------------
 # TAB 1 - PROFIL
 # ---------------------------------------------------
