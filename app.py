@@ -1458,10 +1458,15 @@ topbar_container.float(
         background-color: #f3f5f7;
         padding-top: 0.5rem;
         padding-bottom: 0.5rem;
+
         z-index: 99999;
 
-        width: calc(100% - 22rem);
-        left: 20.5rem;
+        left: 0;
+        right: 0;
+        width: auto;
+
+        padding-left: 21rem;
+        padding-right: 1.5rem;
 
         border-bottom: 1px solid #d9dde3;
     """
