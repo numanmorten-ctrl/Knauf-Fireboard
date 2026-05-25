@@ -973,34 +973,19 @@ div.element-container:has(.topbar-anchor) + div::before {
 STEP NAVIGATION STICKY
 --------------------------------------------------- */
 
-div.element-container:has(.step-nav-anchor) {
+.step-nav-wrapper {
 
-    position: sticky !important;
+    position: sticky;
 
-    top: 8.9rem !important;
+    top: 8.9rem;
 
-    z-index: 99989 !important;
-
-    background: #f3f5f7 !important;
-
-    padding-top: 0.4rem !important;
-
-    padding-bottom: 0.7rem !important;
-}
-
-/* background fix */
-
-div.element-container:has(.step-nav-anchor)::before {
-
-    content: "";
-
-    position: absolute;
-
-    inset: 0;
+    z-index: 99989;
 
     background: #f3f5f7;
 
-    z-index: -1;
+    padding-top: 0.4rem;
+
+    padding-bottom: 0.7rem;
 }
 
 </style>
@@ -1876,47 +1861,55 @@ thickness = None
 # STEP HEADER
 # ---------------------------------------------------
 
-st.markdown(
-    '<div class="step-nav-anchor"></div>',
-    unsafe_allow_html=True
-)
+step_nav_container = st.container()
 
-cols = st.columns(len(steps))
+with step_nav_container:
 
-for idx, step in enumerate(steps):
+    st.markdown(
+        '<div class="step-nav-wrapper">',
+        unsafe_allow_html=True
+    )
 
-    with cols[idx]:
+    cols = st.columns(len(steps))
 
-        active = idx == current_step
+    for idx, step in enumerate(steps):
 
-        if active:
+        with cols[idx]:
 
-            st.markdown(f"""
-            <div style="
-                background-color:#003b7a;
-                color:white;
-                padding:8px;
-                border-radius:0px;
-                text-align:center;
-                font-weight:700;
-                border:1px solid #003b7a;
-            ">
-                {idx+1}. {step}
-            </div>
-            """, unsafe_allow_html=True)
+            active = idx == current_step
 
-        else:
+            if active:
 
-            if st.button(
-                f"{idx+1}. {step}",
-                use_container_width=True,
-                key=f"step_{idx}"
-            ):
+                st.markdown(f"""
+                <div style="
+                    background-color:#003b7a;
+                    color:white;
+                    padding:8px;
+                    border-radius:0px;
+                    text-align:center;
+                    font-weight:700;
+                    border:1px solid #003b7a;
+                ">
+                    {idx+1}. {step}
+                </div>
+                """, unsafe_allow_html=True)
 
-                st.session_state.current_step = idx
+            else:
 
-                st.rerun()
+                if st.button(
+                    f"{idx+1}. {step}",
+                    use_container_width=True,
+                    key=f"step_{idx}"
+                ):
 
+                    st.session_state.current_step = idx
+
+                    st.rerun()
+
+    st.markdown(
+        '</div>',
+        unsafe_allow_html=True
+    )
 # ---------------------------------------------------
 # TAB 1 - PROFIL
 # ---------------------------------------------------
