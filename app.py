@@ -146,11 +146,13 @@ h1, h2, h3 {
 }
 h1 {
 
-    color: #2d343c !important;
+    margin-top: 0rem !important;
 
-    font-weight: 700 !important;
+    margin-bottom: 0.2rem !important;
 
-    font-size: 38px !important;
+    padding-bottom: 0rem !important;
+
+    line-height: 1.1 !important;
 }
 
 /* INPUT LABELS */
@@ -946,6 +948,8 @@ div.element-container:has(.topbar-anchor) + div {
     padding-top: 0.75rem !important;
 
     padding-bottom: 0.75rem !important;
+
+    isolation: isolate !important;
 }
 
 div.element-container:has(.topbar-anchor) + div::before {
@@ -969,7 +973,7 @@ div.element-container:has(.step-nav-anchor) + div {
 
     position: sticky !important;
 
-    top: 9.3rem !important;
+    top: 8.95rem !important;
 
     z-index: 99989 !important;
 
