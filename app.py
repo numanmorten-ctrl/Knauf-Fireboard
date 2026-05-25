@@ -1840,41 +1840,41 @@ thickness = None
 # STEP HEADER
 # ---------------------------------------------------
 
-    cols = st.columns(len(steps))
+cols = st.columns(len(steps))
 
-    for idx, step in enumerate(steps):
+for idx, step in enumerate(steps):
 
-        with cols[idx]:
+    with cols[idx]:
 
-            active = idx == current_step
+        active = idx == current_step
 
-            if active:
+        if active:
 
-                st.markdown(f"""
-                <div style="
-                    background-color:#003b7a;
-                    color:white;
-                    padding:8px;
-                    border-radius:0px;
-                    text-align:center;
-                    font-weight:700;
-                    border:1px solid #003b7a;
-                ">
-                    {idx+1}. {step}
-                </div>
-                """, unsafe_allow_html=True)
+            st.markdown(f"""
+            <div style="
+                background-color:#003b7a;
+                color:white;
+                padding:8px;
+                border-radius:0px;
+                text-align:center;
+                font-weight:700;
+                border:1px solid #003b7a;
+            ">
+                {idx+1}. {step}
+            </div>
+            """, unsafe_allow_html=True)
 
-            else:
+        else:
 
-                if st.button(
-                    f"{idx+1}. {step}",
-                    use_container_width=True,
-                    key=f"step_{idx}"
-                ):
+            if st.button(
+                f"{idx+1}. {step}",
+                use_container_width=True,
+                key=f"step_{idx}"
+            ):
 
-                    st.session_state.current_step = idx
+                st.session_state.current_step = idx
 
-                    st.rerun()
+                st.rerun()
 
 # ---------------------------------------------------
 # TAB 1 - PROFIL
