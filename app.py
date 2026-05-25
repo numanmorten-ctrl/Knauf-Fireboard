@@ -927,28 +927,18 @@ table td {
 }
 
 /* ---------------------------------------------------
-STICKY APP NAVIGATION
+STICKY STEP NAVIGATION
 --------------------------------------------------- */
 
-.sticky-nav {
+div[data-testid="stHorizontalBlock"] {
 
     position: sticky;
 
     top: 4.05rem;
 
-    z-index: 99990;
+    z-index: 9999;
 
     background: #f3f5f7;
-
-    padding-top: 0.75rem;
-
-    padding-bottom: 0.75rem;
-}
-/* PREVENT CONTENT HIDING */
-
-.block-container {
-
-    padding-top: 6.8rem !important;
 }
 </style>
 """, unsafe_allow_html=True)
@@ -1393,8 +1383,6 @@ fire_tables = {
         "data/fireboard_120.csv"
     )
 }
-
-st.markdown('<div class="sticky-nav">', unsafe_allow_html=True)
 
 # ---------------------------------------------------
 # HEADER
@@ -1842,7 +1830,6 @@ for idx, step in enumerate(steps):
 
             st.rerun()
             
-st.markdown("</div>", unsafe_allow_html=True)
 # ---------------------------------------------------
 # TAB 1 - PROFIL
 # ---------------------------------------------------
