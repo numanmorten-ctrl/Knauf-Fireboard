@@ -973,7 +973,7 @@ div.element-container:has(.topbar-anchor) + div::before {
 STEP NAVIGATION STICKY
 --------------------------------------------------- */
 
-div.element-container:has(.step-nav-anchor) + div {
+div.element-container:has(.step-nav-anchor) {
 
     position: sticky !important;
 
@@ -986,15 +986,11 @@ div.element-container:has(.step-nav-anchor) + div {
     padding-top: 0.4rem !important;
 
     padding-bottom: 0.7rem !important;
-
-    overflow: visible !important;
-
-    isolation: isolate !important;
 }
 
-/* background layer */
+/* background fix */
 
-div.element-container:has(.step-nav-anchor) + div::before {
+div.element-container:has(.step-nav-anchor)::before {
 
     content: "";
 
@@ -1005,21 +1001,6 @@ div.element-container:has(.step-nav-anchor) + div::before {
     background: #f3f5f7;
 
     z-index: -1;
-}
-/* ---------------------------------------------------
-FIX STICKY PARENT CONTAINERS
---------------------------------------------------- */
-
-div[data-testid="stHorizontalBlock"]:has(button[key^="step_"]) {
-
-    align-items: stretch !important;
-
-    transform: none !important;
-}
-
-div[data-testid="stHorizontalBlock"]:has(button[key^="step_"]) > div {
-
-    overflow: visible !important;
 }
 
 </style>
