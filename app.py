@@ -926,20 +926,6 @@ table td {
     background: white !important;
 }
 
-/* ---------------------------------------------------
-STICKY STEP NAVIGATION
---------------------------------------------------- */
-
-div[data-testid="stHorizontalBlock"] {
-
-    position: sticky;
-
-    top: 4.05rem;
-
-    z-index: 9999;
-
-    background: #f3f5f7;
-}
 </style>
 """, unsafe_allow_html=True)
 
