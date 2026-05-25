@@ -969,11 +969,11 @@ div.element-container:has(.topbar-anchor) + div::before {
 STEP NAVIGATION STICKY
 --------------------------------------------------- */
 
-div.element-container:has(.step-nav-anchor) + div {
+div[data-testid="stHorizontalBlock"]:has(button[key^="step_"]) {
 
     position: sticky !important;
 
-    top: 8.95rem !important;
+    top: 8.9rem !important;
 
     z-index: 99989 !important;
 
@@ -984,8 +984,6 @@ div.element-container:has(.step-nav-anchor) + div {
     padding-bottom: 0.7rem !important;
 
     overflow: visible !important;
-
-    border-top: 1px solid transparent;
 }
 </style>
 """, unsafe_allow_html=True)
