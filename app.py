@@ -690,7 +690,11 @@ h2, h3 {
 }
 /* Mindre afstand mellem elementer */
 
-div[data-testid="stVerticalBlock"] {
+/* ---------------------------------------------------
+CONTENT SPACING ONLY
+--------------------------------------------------- */
+
+.main .block-container > div > div > div[data-testid="stVerticalBlock"] {
 
     gap: 0.8rem !important;
 }
@@ -985,6 +989,22 @@ div[data-testid="stHorizontalBlock"]:has(button[key^="step_"]) {
 
     overflow: visible !important;
 }
+/* ---------------------------------------------------
+FIX STICKY PARENT CONTAINERS
+--------------------------------------------------- */
+
+div[data-testid="stHorizontalBlock"]:has(button[key^="step_"]) {
+
+    align-items: stretch !important;
+
+    transform: none !important;
+}
+
+div[data-testid="stHorizontalBlock"]:has(button[key^="step_"]) > div {
+
+    overflow: visible !important;
+}
+
 </style>
 """, unsafe_allow_html=True)
 
