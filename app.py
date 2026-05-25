@@ -927,50 +927,29 @@ table td {
 }
 
 /* ---------------------------------------------------
-STICKY TOP AREA
+STICKY APP NAVIGATION
 --------------------------------------------------- */
 
-/* TOPBAR */
+.sticky-nav {
 
-div[data-testid="stHorizontalBlock"]:has(div[data-testid="stSelectbox"]) {
+    position: sticky;
 
-    position: sticky !important;
+    top: 4.05rem;
 
-    top: 4.05rem !important;
+    z-index: 99990;
 
-    z-index: 99990 !important;
+    background: #f3f5f7;
 
-    background: #f3f5f7 !important;
+    padding-top: 0.75rem;
 
-    padding-top: 0.75rem !important;
-
-    padding-bottom: 0.75rem !important;
+    padding-bottom: 0.75rem;
 }
-
-/* STEP NAVIGATION */
-
-div[data-testid="stHorizontalBlock"]:has(button[key^="step_"]) {
-
-    position: sticky !important;
-
-    top: 9.2rem !important;
-
-    z-index: 99989 !important;
-
-    background: #f3f5f7 !important;
-
-    padding-top: 0.45rem !important;
-
-    padding-bottom: 0.7rem !important;
-}
-
 /* PREVENT CONTENT HIDING */
 
 .block-container {
 
-    padding-top: 4.5rem !important;
+    padding-top: 6.8rem !important;
 }
-
 </style>
 """, unsafe_allow_html=True)
 
@@ -1414,6 +1393,8 @@ fire_tables = {
         "data/fireboard_120.csv"
     )
 }
+
+st.markdown('<div class="sticky-nav">', unsafe_allow_html=True)
 
 # ---------------------------------------------------
 # HEADER
@@ -1860,7 +1841,8 @@ for idx, step in enumerate(steps):
             st.session_state.current_step = idx
 
             st.rerun()
-
+            
+st.markdown("</div>", unsafe_allow_html=True)
 # ---------------------------------------------------
 # TAB 1 - PROFIL
 # ---------------------------------------------------
