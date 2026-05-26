@@ -748,34 +748,34 @@ def generate_fireboard_materials(
                 clean_numeric(layer_row["board_mm"]) or 0
             )
 
-            fireboard_label = get_material_label(
+            fireboard_material = find_material(
                 materials_lookup_df,
-                ["fireboard", f"{int(board_mm)}"],
-                fallback=f"Knauf Fireboard {int(board_mm)} mm"
+                [f"{int(board_mm)} mm", "fireboard"],
+                language=st.session_state.language
             )
 
             materials.append({
-                "Materiale": fireboard_label,
-                "ART.NR.": "",
-                "DB_NR.": "",
-                "PRODUCENT": "",
+                "Materiale": fireboard_material["description"],
+                "ART.NR.": fireboard_material["art_nr"],
+                "DB_NR.": fireboard_material["db_nr"],
+                "PRODUCENT": fireboard_material["manufacturer"],
                 "Mængde": fireboard_rate,
                 "Enhed": "m²"
             })
 
     else:
 
-        fireboard_label = get_material_label(
+        fireboard_material = find_material(
             materials_lookup_df,
             [f"{int(thickness)} mm", "fireboard"],
-            fallback=f"Knauf Fireboard {int(thickness)} mm"
+            language=st.session_state.language
         )
 
         materials.append({
-            "Materiale": fireboard_label,
-            "ART.NR.": "",
-            "DB_NR.": "",
-            "PRODUCENT": "",
+            "Materiale": fireboard_material["description"],
+            "ART.NR.": fireboard_material["art_nr"],
+            "DB_NR.": fireboard_material["db_nr"],
+            "PRODUCENT": fireboard_material["manufacturer"],
             "Mængde": fireboard_rate,
             "Enhed": "m²"
         })
