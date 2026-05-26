@@ -843,7 +843,8 @@ def generate_materials(
     materials_by_dbnr,
     get_material_label,
     clean_numeric,
-    clean_text
+    clean_text,
+    language
 ):
     """
     Generate complete material list.
@@ -860,7 +861,7 @@ def generate_materials(
             materials_lookup_df,
             get_material_label,
             clean_numeric,
-            st.session_state.language
+            language
         )
     )
 
@@ -874,7 +875,7 @@ def generate_materials(
             materials_by_artnr,
             materials_by_dbnr,
             clean_numeric,
-            st.session_state.language
+            language
         )
     )
 
