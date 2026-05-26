@@ -781,6 +781,51 @@ def generate_fireboard_materials(
         })
 
     return materials
+
+def generate_layer_fastener_materials(
+    layer_rows,
+    screw_rate,
+    staple_rate,
+    screw_clamp_logic_df,
+    materials_by_artnr,
+    materials_by_dbnr,
+    clean_numeric,
+    language
+):
+    """
+    Generate screws/clamps for each Fireboard layer.
+    """
+
+    materials = []
+
+    if layer_rows.empty:
+        return materials
+
+    for _, layer_row in layer_rows.iterrows():
+
+        layer_no = int(
+            clean_numeric(layer_row["layer_no"]) or 0
+        )
+
+        board_mm = int(
+            clean_numeric(layer_row["board_mm"]) or 0
+        )
+
+        layer_materials = resolve_screw_clamp_by_layer(
+            layer_no,
+            board_mm,
+            screw_rate,
+            staple_rate,
+            screw_clamp_logic_df,
+            materials_by_artnr,
+            materials_by_dbnr,
+            language
+        )
+
+        materials.extend(layer_materials)
+
+    return materials
+
 def generate_materials(
     fireboard_rate,
     layer_rows,
