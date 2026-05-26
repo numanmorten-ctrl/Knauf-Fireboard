@@ -1378,101 +1378,93 @@ topbar_container = st.container()
 # HEADER
 # ---------------------------------------------------
 
-with topbar_container:
+col1, col2, col3, col4, col5 = st.columns(
+    [6, 2, 2, 0.24, 1.12],
+    gap="small",
+    vertical_alignment="bottom"
+)
 
-    col1, col2, col3, col4, col5 = st.columns(
-        [6, 2, 2, 0.24, 1.12],
-        gap="small",
-        vertical_alignment="bottom"
+with col1:
+
+    st.title(
+        t("title")
     )
 
-    with col1:
+# ---------------------------------------------------
+# NY BEREGNING
+# ---------------------------------------------------
 
-        st.title(
-            t("title")
+with col2:
+
+    st.write("")
+    st.write("")
+
+    if st.button(
+        f"🔄 {t('new_calculation')}",
+        use_container_width=True
+    ):
+
+        reset_calculation_state(
+            st.session_state
         )
 
-    with col2:
+        st.rerun()
 
-        st.write("")
-        st.write("")
+# ---------------------------------------------------
+# NYT PROJEKT
+# ---------------------------------------------------
 
-        if st.button(
-            f"🔄 {t('new_calculation')}",
-            use_container_width=True
-        ):
+with col3:
 
-            reset_calculation_state(
-                st.session_state
-            )
+    st.write("")
+    st.write("")
 
-            st.rerun()
+    if st.button(
+        f"🗑️ {t('new_project')}",
+        use_container_width=True
+    ):
 
-    with col3:
+        st.session_state.clear()
 
-        st.write("")
-        st.write("")
+        st.rerun()
 
-        if st.button(
-            f"🗑️ {t('new_project')}",
-            use_container_width=True
-        ):
+# ---------------------------------------------------
+# LANGUAGE ICON
+# ---------------------------------------------------
 
-            st.session_state.clear()
+with col4:
 
-            st.rerun()
+    st.button(
+        "🌐",
+        disabled=True,
+        use_container_width=True
+    )
 
-    with col4:
+# ---------------------------------------------------
+# LANGUAGE SELECT
+# ---------------------------------------------------
 
-        st.button(
-            "🌐",
-            disabled=True,
-            use_container_width=True
-        )
+with col5:
 
-    with col5:
+    selected_language = st.selectbox(
+        "",
+        options=["Dansk", "English"],
+        index=0 if st.session_state.language == "DA" else 1,
+        label_visibility="collapsed",
+        key="language_select"
+    )
 
-        selected_language = st.selectbox(
-            "",
-            options=["Dansk", "English"],
-            index=0 if st.session_state.language == "DA" else 1,
-            label_visibility="collapsed",
-            key="language_select"
-        )
+    new_lang = (
+        "DA"
+        if selected_language == "Dansk"
+        else "EN"
+    )
 
-        new_lang = (
-            "DA"
-            if selected_language == "Dansk"
-            else "EN"
-        )
+    if new_lang != st.session_state.language:
 
-        if new_lang != st.session_state.language:
+        st.session_state.language = new_lang
 
-            st.session_state.language = new_lang
-
-            st.rerun()
-
-topbar_container.float(
-    css="""
-        top: 4.05rem;
-
-        background-color: #f3f5f7;
-
-        padding-top: 0.5rem;
-        padding-bottom: 0.5rem;
-
-        padding-left: 1.5rem;
-        padding-right: 1.5rem;
-
-        z-index: 99999;
-
-        border-bottom: 1px solid #d9dde3;
-
-        width: calc(100% - 21rem);
-
-        margin-left: 21rem;
-    """
-)
+        st.rerun()
 
 # ---------------------------------------------------
 # SIDEBAR
