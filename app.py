@@ -61,6 +61,9 @@ from utils.constants import (
     DESCRIPTION_FONT,
     CALC_FONT,
     RESULT_FONT,
+    PAGE_FONT,
+    generate_single_pdf,
+    generate_complete_pdf,
     PAGE_FONT
 )
 
@@ -146,13 +149,11 @@ h1, h2, h3 {
 }
 h1 {
 
-    margin-top: 0rem !important;
+    color: #2d343c !important;
 
-    margin-bottom: 0.2rem !important;
+    font-weight: 700 !important;
 
-    padding-bottom: 0rem !important;
-
-    line-height: 1.1 !important;
+    font-size: 38px !important;
 }
 
 /* INPUT LABELS */
@@ -671,7 +672,7 @@ hr {
 
 /* Mindre afstand efter headers */
 
-h1 {
+h1, {
 
     margin-top: -4rem !important;
 
@@ -690,11 +691,7 @@ h2, h3 {
 }
 /* Mindre afstand mellem elementer */
 
-/* ---------------------------------------------------
-CONTENT SPACING ONLY
---------------------------------------------------- */
-
-.main .block-container > div > div > div[data-testid="stVerticalBlock"] {
+div[data-testid="stVerticalBlock"] {
 
     gap: 0.8rem !important;
 }
@@ -926,57 +923,6 @@ table td {
     background: white !important;
 }
 
-/* ---------------------------------------------------
-STICKY STEP NAV
---------------------------------------------------- */
-
-.custom-step-nav {
-
-    position: sticky;
-
-    top: 4.05rem;
-
-    z-index: 999;
-
-    background: #f3f5f7;
-
-    padding-top: 0.75rem;
-
-    padding-bottom: 0.75rem;
-
-    border-bottom: 1px solid #d9dde3;
-
-    display: flex;
-
-    gap: 12px;
-}
-
-.custom-step-btn {
-
-    flex: 1;
-
-    text-align: center;
-
-    padding: 10px;
-
-    border: 1px solid #b8c2cc;
-
-    background: white;
-
-    font-weight: 600;
-
-    color: #2d343c;
-}
-
-.custom-step-btn.active {
-
-    background: #003b7a;
-
-    border-color: #003b7a;
-
-    color: white;
-}
-
 </style>
 """, unsafe_allow_html=True)
 
@@ -1053,7 +999,6 @@ header_html = """
 
     text-rendering: geometricPrecision;
 }
-
 </style>
 
 <div class="knauf-header">
@@ -1421,8 +1366,6 @@ fire_tables = {
     )
 }
 
-topbar_container = st.container()
-
 # ---------------------------------------------------
 # HEADER
 # ---------------------------------------------------
@@ -1473,13 +1416,7 @@ with col3:
         use_container_width=True
     ):
 
-        current_language = st.session_state.language
-
         st.session_state.clear()
-
-        st.session_state.language = current_language
-
-        st.session_state.current_step = 0
 
         st.rerun()
 
@@ -1854,29 +1791,42 @@ thickness = None
 # STEP HEADER
 # ---------------------------------------------------
 
-step_html = '<div class="custom-step-nav">'
+cols = st.columns(len(steps))
 
 for idx, step in enumerate(steps):
 
-    active_class = (
-        "active"
-        if idx == current_step
-        else ""
-    )
+    with cols[idx]:
 
-    step_html += f"""
-    <div class="custom-step-btn {active_class}">
-        {idx+1}. {step}
-    </div>
-    """
+        active = idx == current_step
 
-step_html += "</div>"
+        if active:
 
-st.markdown(
-    step_html,
-    unsafe_allow_html=True
-)
-            
+            st.markdown(f"""
+            <div style="
+                background-color:#003b7a;
+                color:white;
+                padding:8px;
+                border-radius:0px;
+                text-align:center;
+                font-weight:700;
+                border:1px solid #003b7a;
+            ">
+                {idx+1}. {step}
+            </div>
+            """, unsafe_allow_html=True)
+
+        else:
+
+            if st.button(
+                f"{idx+1}. {step}",
+                use_container_width=True,
+                key=f"step_{idx}"
+            ):
+
+                st.session_state.current_step = idx
+
+                st.rerun()
+
 # ---------------------------------------------------
 # TAB 1 - PROFIL
 # ---------------------------------------------------
