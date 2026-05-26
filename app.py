@@ -3150,6 +3150,8 @@ if current_step == 3:
 
             materials_df["PRODUCENT"] = (
                 materials_df["PRODUCENT"]
+                .astype(str)
+                .str.strip()
                 .replace({
                     "Fremmed materiale": "Foreign material"
                 })
