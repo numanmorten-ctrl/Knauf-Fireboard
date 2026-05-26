@@ -2995,7 +2995,7 @@ if current_step == 3:
     st.header(t("materials_header"))
 
     profile_length = st.text_input(
-        "Profil længde (meter)",
+        t("profile_length"),
         value="6,0"
     )
 
