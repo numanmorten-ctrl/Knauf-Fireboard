@@ -952,6 +952,27 @@ table td {
     font-size: 14px !important;
 }
 
+/* Fjern rounded corners på Streamlit table container */
+
+[data-testid="stTable"] {
+    border-radius: 0 !important;
+    overflow: hidden !important;
+}
+
+[data-testid="stTable"] table {
+    border-radius: 0 !important;
+}
+
+/* Headerhjørner */
+
+table th:first-child {
+    border-top-left-radius: 0 !important;
+}
+
+table th:last-child {
+    border-top-right-radius: 0 !important;
+}
+
 </style>
 """, unsafe_allow_html=True)
 
