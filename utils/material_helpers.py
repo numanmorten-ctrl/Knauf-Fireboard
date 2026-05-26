@@ -68,9 +68,9 @@ def resolve_screw_clamp_by_layer(
 
             resolved_materials.append({
                 "Materiale": (
-                    screw_material.get("BESKRIVELSE_EN")
-                    if screw_material.get("BESKRIVELSE_EN")
-                    else screw_material.get("BESKRIVELSE_DK")
+                    f"{screw_material.get('ART.NR.', '')} · "
+                    f"{screw_material.get('DB_NR.', '')} · "
+                    f"{screw_material.get('BESKRIVELSE_DK', '')}"
                 ),
                 "Mængde": screw_rate_qty,
                 "Enhed": "stk"
@@ -94,9 +94,9 @@ def resolve_screw_clamp_by_layer(
 
             resolved_materials.append({
                 "Materiale": (
-                    clamp_material.get("BESKRIVELSE_EN")
-                    if clamp_material.get("BESKRIVELSE_EN")
-                    else clamp_material.get("BESKRIVELSE_DK")
+                    f"{clamp_material.get('ART.NR.', '')} · "
+                    f"{clamp_material.get('DB_NR.', '')} · "
+                    f"{clamp_material.get('BESKRIVELSE_DK', '')}"
                 ),
                 "Mængde": staple_rate_qty,
                 "Enhed": "stk"
@@ -456,8 +456,10 @@ def get_material_label(df, search_terms, fallback="Ukendt materiale"):
         else "BESKRIVELSE_DK"
     )
 
+    df = df.copy()
+
     df["search_text"] = (
-        df[description_column]
+        df["BESKRIVELSE_DK"]
         .astype(str)
         .map(clean_text)
     )
@@ -467,10 +469,14 @@ def get_material_label(df, search_terms, fallback="Ukendt materiale"):
         for term in search_terms
     ]
 
-    matches = df[
-        df["search_text"]
-        .str.contains(search_terms[0], na=False)
-    ]
+    matches = df.copy()
+
+    for term in search_terms:
+
+        matches = matches[
+            matches["search_text"]
+            .str.contains(term, na=False)
+        ]
 
     if not matches.empty:
 
