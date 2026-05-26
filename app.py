@@ -953,9 +953,9 @@ table {
 HEADER
 --------------------------------------------------- */
 
-[data-testid="stTable"] thead tr th {
+.col_heading {
 
-    background: #f9f9f9 !important;
+    background: #f8f8f8 !important;
 
     color: #2f3b45 !important;
 
@@ -974,8 +974,6 @@ HEADER
     font-size: 14px !important;
 
     letter-spacing: 0.02em !important;
-
-    border-radius: 0 !important;
 }
 
 /* ---------------------------------------------------
