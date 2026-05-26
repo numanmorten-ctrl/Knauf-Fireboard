@@ -704,7 +704,8 @@ def generate_fireboard_materials(
     thickness,
     materials_lookup_df,
     get_material_label,
-    clean_numeric
+    clean_numeric,
+    language
 ):
     """
     Generate Fireboard materials.
@@ -751,50 +752,79 @@ def generate_fireboard_materials(
 
     return materials
 
-def generate_layer_fastener_materials(
+def generate_fireboard_materials(
+    fireboard_rate,
     layer_rows,
-    screw_rate,
-    staple_rate,
-    screw_clamp_logic_df,
-    materials_by_artnr,
-    materials_by_dbnr,
+    thickness,
+    materials_lookup_df,
+    get_material_label,
     clean_numeric,
     language
 ):
     """
-    Generate screw/clamp materials for all layers.
+    Generate Fireboard materials.
     """
 
     materials = []
 
-    if layer_rows.empty:
+    if fireboard_rate <= 0:
         return materials
 
-    for _, layer_row in layer_rows.iterrows():
+    if not layer_rows.empty:
 
-        layer_no = int(
-            clean_numeric(layer_row["layer_no"]) or 0
+        for _, layer_row in layer_rows.iterrows():
+
+            board_mm = int(
+                clean_numeric(layer_row["board_mm"]) or 0
+            )
+
+            search_terms = (
+                [f"{board_mm} mm", "fireboard"]
+            )
+
+            fallback = (
+                f"Knauf Fireboard {board_mm} mm"
+            )
+
+            fireboard_label = get_material_label(
+                materials_lookup_df,
+                search_terms,
+                fallback=fallback,
+                language=language
+            )
+
+            materials.append({
+                "Materiale": fireboard_label,
+                "Mængde": fireboard_rate,
+                "Enhed": "m²"
+            })
+
+    else:
+
+        thickness_mm = int(thickness)
+
+        search_terms = (
+            [f"{thickness_mm} mm", "fireboard"]
         )
 
-        board_mm = clean_numeric(
-            layer_row["board_mm"]
-        ) or 0
-
-        layer_materials = resolve_screw_clamp_by_layer(
-            layer_no,
-            board_mm,
-            screw_rate,
-            staple_rate,
-            screw_clamp_logic_df,
-            materials_by_artnr,
-            materials_by_dbnr,
-            language
+        fallback = (
+            f"Knauf Fireboard {thickness_mm} mm"
         )
 
-        materials.extend(layer_materials)
+        fireboard_label = get_material_label(
+            materials_lookup_df,
+            search_terms,
+            fallback=fallback,
+            language=language
+        )
+
+        materials.append({
+            "Materiale": fireboard_label,
+            "Mængde": fireboard_rate,
+            "Enhed": "m²"
+        })
 
     return materials
-
 def generate_materials(
     fireboard_rate,
     layer_rows,
