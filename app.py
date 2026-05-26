@@ -905,7 +905,7 @@ table {
 }
 
 table th {
-    background: #f3f4f6 !important;
+    background: #fbfbfc !important;
     color: #364650 !important;
 
     border-top: none !important;
