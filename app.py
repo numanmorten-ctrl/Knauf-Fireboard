@@ -959,7 +959,7 @@ HEADER
 
 table th {
 
-    background-color: #f1f1f1 !important;
+    background-color: #f2f2f2 !important;
 
     color: #2f3b45 !important;
 
