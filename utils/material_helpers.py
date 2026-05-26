@@ -370,7 +370,7 @@ def build_material_row(
         ),
 
         "PRODUCENT": (
-            match["PRODUCENT"]
+            match["PRODUCENT_DK"]
             if match is not None
             else ""
         ),
