@@ -729,7 +729,8 @@ def generate_fireboard_materials(
     thickness,
     materials_lookup_df,
     get_material_label,
-    clean_numeric
+    clean_numeric,
+    language
 ):
     """
     Generate Fireboard materials.
@@ -751,7 +752,7 @@ def generate_fireboard_materials(
             fireboard_material = find_material(
                 materials_lookup_df,
                 [f"{int(board_mm)} mm", "fireboard"],
-                language=st.session_state.language
+                language=language
             )
 
             materials.append({
@@ -768,7 +769,7 @@ def generate_fireboard_materials(
         fireboard_material = find_material(
             materials_lookup_df,
             [f"{int(thickness)} mm", "fireboard"],
-            language=st.session_state.language
+            language=language
         )
 
         materials.append({
@@ -858,7 +859,8 @@ def generate_materials(
             thickness,
             materials_lookup_df,
             get_material_label,
-            clean_numeric
+            clean_numeric,
+            st.session_state.language
         )
     )
 
