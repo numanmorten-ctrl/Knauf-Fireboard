@@ -959,30 +959,28 @@ HEADER
 
 table th {
 
-    background-color: #f2f2f2 !important;
+    background: #f2f2f2 !important;
 
     color: #2f3b45 !important;
 
-    font-weight: 700 !important;
+    border-top: none !important;
+    border-left: none !important;
+    border-right: none !important;
 
-    font-size: 14px !important;
+    border-bottom: 1px solid #dfe3e8 !important;
 
-    letter-spacing: 0.02em !important;
+    padding: 10px 16px !important;
+
+    line-height: 1.1 !important;
 
     text-align: left !important;
 
-    padding: 14px 16px !important;
+    font-weight: 700 !important;
 
-    border-top: none !important;
+    font-size: 13px !important;
 
-    border-left: none !important;
-
-    border-right: none !important;
-
-    border-bottom: 1px solid #d6dbe1 !important;
-
-    border-radius: 0 !important;
-}}
+    letter-spacing: 0.02em !important;
+}
 
 /* ---------------------------------------------------
 BODY
