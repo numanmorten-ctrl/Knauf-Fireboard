@@ -951,8 +951,25 @@ table td {
 
     font-size: 14px !important;
 }
-table thead tr {
-    background: #f5f6f7 !important;
+
+/* Fjern card/container look omkring tabellen */
+
+.element-container:has(table) {
+    background: transparent !important;
+    border-radius: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    box-shadow: none !important;
+}
+
+/* Streamlit wrapper */
+
+[data-testid="stTable"] {
+    background: transparent !important;
+    border-radius: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    overflow: visible !important;
 }
 
 </style>
