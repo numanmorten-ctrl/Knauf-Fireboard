@@ -903,11 +903,13 @@ STREAMLIT TABLE RESET
     background: transparent !important;
 
     border: none !important;
+
     box-shadow: none !important;
 
     border-radius: 0 !important;
 
     padding: 0 !important;
+
     margin: 0 !important;
 
     overflow: visible !important;
@@ -918,11 +920,13 @@ STREAMLIT TABLE RESET
     background: transparent !important;
 
     border: none !important;
+
     box-shadow: none !important;
 
     border-radius: 0 !important;
 
     padding: 0 !important;
+
     margin: 0 !important;
 
     overflow: visible !important;
@@ -953,58 +957,68 @@ table {
 HEADER
 --------------------------------------------------- */
 
-.col_heading {
+table th {
 
-    background: #f8f8f8 !important;
+    background-color: #f8f8f8 !important;
 
     color: #2f3b45 !important;
-
-    border-top: none !important;
-    border-left: none !important;
-    border-right: none !important;
-
-    border-bottom: 1px solid #dfe3e8 !important;
-
-    padding: 14px 16px !important;
-
-    text-align: left !important;
 
     font-weight: 700 !important;
 
     font-size: 14px !important;
 
     letter-spacing: 0.02em !important;
+
+    text-align: left !important;
+
+    padding: 14px 16px !important;
+
+    border-top: none !important;
+
+    border-left: none !important;
+
+    border-right: none !important;
+
+    border-bottom: 1px solid #dfe3e8 !important;
+
+    border-radius: 0 !important;
 }
 
 /* ---------------------------------------------------
 BODY
 --------------------------------------------------- */
 
-[data-testid="stTable"] tbody td {
+table td {
 
     background: white !important;
 
     color: #364650 !important;
 
+    font-size: 14px !important;
+
+    padding: 14px 16px !important;
+
     border-top: none !important;
+
     border-left: none !important;
+
     border-right: none !important;
 
     border-bottom: 1px solid #eceff3 !important;
 
-    padding: 14px 16px !important;
-
-    font-size: 14px !important;
-
     border-radius: 0 !important;
 }
 
-/* REMOVE ROUNDED CORNERS */
+/* ---------------------------------------------------
+REMOVE ROUNDED CORNERS
+--------------------------------------------------- */
 
-[data-testid="stTable"] table,
-[data-testid="stTable"] tbody,
-[data-testid="stTable"] tr,
-[data-testid="stTable"] td {
+table,
+thead,
+tbody,
+tr,
+th,
+td {
 
     border-radius: 0 !important;
 }
@@ -1013,11 +1027,10 @@ BODY
 OPTIONAL HOVER
 --------------------------------------------------- */
 
-[data-testid="stTable"] tbody tr:hover td {
+table tbody tr:hover td {
 
     background: #fafafa !important;
 }
-
 </style>
 """, unsafe_allow_html=True)
 
