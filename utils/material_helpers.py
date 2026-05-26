@@ -556,7 +556,7 @@ def get_material_label(df, search_terms, fallback="Ukendt materiale"):
     df = df.copy()
 
     df["search_text"] = (
-        df["BESKRIVELSE_DK"]
+        df[description_column]
         .astype(str)
         .map(clean_text)
     )
