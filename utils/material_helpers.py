@@ -395,8 +395,7 @@ def build_materials_dataframe(
     profile_length,
     materials_by_artnr,
     materials_by_dbnr,
-    materials_by_description,
-    language
+    materials_by_description
 ):
 
     materials_deduplicated = deduplicate_materials(
@@ -405,24 +404,6 @@ def build_materials_dataframe(
         materials_by_dbnr,
         materials_by_description
     )
-
-    manufacturer_column = (
-        "MANUFACTURER"
-        if language == "EN"
-        else "PRODUCENT"
-    )
-
-description_column = (
-    "DESCRIPTION"
-    if language == "EN"
-    else "BESKRIVELSE"
-)
-
-description_column = (
-    "DESCRIPTION"
-    if language == "EN"
-    else "BESKRIVELSE"
-)
 
     materials_df = pd.DataFrame(
         [
@@ -438,8 +419,8 @@ description_column = (
         columns=[
             "ART.NR.",
             "DB_NR",
-            manufacturer_column,
-            description_column,
+            "PRODUCENT",
+            "BESKRIVELSE",
             "FORBRUG",
             "ENHED",
             "SPILDPROCENT",
