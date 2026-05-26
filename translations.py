@@ -242,6 +242,7 @@ translations = {
         "material_total": "SAMLET FORBRUG",
         "materials_header": "Materialeforbrug",
         "profile_length": "Profil længde (meter)",
+        "select_layer_build_up": "Vælg lagopbygning",
 
         # ---------------------------------------------------
         # PDF
@@ -503,6 +504,7 @@ translations = {
         "material_total": "TOTAL CONSUMPTION",
         "materials_header": "Materials",
         "profile_length": "Profile length (meters)",
+        "select_layer_build_up": "Select layer build-up",
 
         # ---------------------------------------------------
         # PDF
