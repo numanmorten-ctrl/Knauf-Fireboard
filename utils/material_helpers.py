@@ -363,7 +363,7 @@ def build_material_row(
             else ""
         ),
 
-        "DB_NR": (
+        "DB NR": (
             format_db_nr(match["DB_NR."])
             if match is not None
             else ""
@@ -418,7 +418,7 @@ def build_materials_dataframe(
         ],
         columns=[
             "ART.NR.",
-            "DB_NR",
+            "DB NR",
             "PRODUCENT",
             "BESKRIVELSE",
             "FORBRUG",
