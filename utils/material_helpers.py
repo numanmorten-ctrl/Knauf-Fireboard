@@ -244,6 +244,9 @@ def find_material(
             .str.contains(term, na=False)
         ]
 
+    print("SEARCH TERMS:", search_terms)
+    print(matches[[description_column]].head())
+    
     if matches.empty:
 
         return {
@@ -532,12 +535,19 @@ def get_material_label(df, search_terms, fallback="Ukendt materiale"):
 
     matches = df.copy()
 
+    search_text_series = matches["search_text"].fillna("")
+
+    mask = pd.Series(True, index=matches.index)
+
     for term in search_terms:
 
-        matches = matches[
-            matches["search_text"]
-            .str.contains(term, na=False)
-        ]
+        mask &= search_text_series.str.contains(
+            term,
+            case=False,
+            na=False
+        )
+
+    matches = matches[mask]
 
     if not matches.empty:
 
