@@ -240,6 +240,7 @@ translations = {
         "material_unit": "ENHED",
         "material_waste": "SPILDPROCENT",
         "material_total": "SAMLET FORBRUG",
+        "materials_header": "Materialeforbrug",
 
         # ---------------------------------------------------
         # PDF
@@ -499,6 +500,7 @@ translations = {
         "material_unit": "UNIT",
         "material_waste": "WASTE %",
         "material_total": "TOTAL CONSUMPTION",
+        "materials_header": "Materials",
 
         # ---------------------------------------------------
         # PDF
