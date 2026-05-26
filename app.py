@@ -3101,6 +3101,7 @@ if current_step == 3:
                     for variant in available_variants
                 }
                 selected_variant = st.selectbox(
+                    "Vælg lagopbygning",
                     t("select_layer_build_up"),
                     available_variants,
                     format_func=lambda variant: variant_labels.get(variant, variant),
