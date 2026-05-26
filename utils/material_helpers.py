@@ -227,11 +227,12 @@ def find_material(
     df["search_text"] = (
         df[description_column]
         .astype(str)
-        .map(clean_text)
+        .str.lower()
+        .str.strip()
     )
 
     search_terms = [
-        clean_text(term)
+        str(term).lower().strip()
         for term in search_terms
     ]
 
