@@ -1247,18 +1247,27 @@ if not materials_lookup_df.empty:
     for row in materials_lookup_df.to_dict("records"):
         art_nr = str(row.get("ART.NR.", "") or "").strip()
         db_nr = str(row.get("DB_NR.", "") or "").strip()
-        description = str(
-            row.get(DESCRIPTION_COLUMN, "")
+        description_dk = str(
+            row.get("BESKRIVELSE_DK", "")
             or ""
-        ).strip()
-        description_lower = description.lower()
+        ).strip().lower()
+
+        description_en = str(
+            row.get("BESKRIVELSE_EN", "")
+            or ""
+        ).strip().lower()
 
         if art_nr:
             materials_by_artnr[art_nr] = row
+
         if db_nr:
             materials_by_dbnr[db_nr] = row
-        if description_lower and description_lower not in materials_by_description:
-            materials_by_description[description_lower] = row
+
+        if description_dk:
+            materials_by_description[description_dk] = row
+
+        if description_en:
+            materials_by_description[description_en] = row
 
         materials_lookup_records.append(row)
 
@@ -3154,5 +3163,17 @@ if current_step == 3:
             materials_by_description,
             DESCRIPTION_COLUMN
         )
+
+        if st.session_state.language == "EN":
+
+            materials_df = materials_df.rename(columns={
+
+                "PRODUCENT": "MANUFACTURER",
+                "BESKRIVELSE": "DESCRIPTION",
+                "FORBRUG": "CONSUMPTION",
+                "ENHED": "UNIT",
+                "SPILDPROCENT": "WASTE PERCENT",
+                "SAMLET FORBRUG": "TOTAL CONSUMPTION"
+            })
 
         render_materials_table(materials_df)
