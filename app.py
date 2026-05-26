@@ -1242,15 +1242,29 @@ if not materials_lookup_df.empty:
     for row in materials_lookup_df.to_dict("records"):
         art_nr = str(row.get("ART.NR.", "") or "").strip()
         db_nr = str(row.get("DB_NR.", "") or "").strip()
-        description = str(row.get("BESKRIVELSE_DK", "") or "").strip()
-        description_lower = description.lower()
+        description_dk = str(
+            row.get("BESKRIVELSE_DK", "") or ""
+        ).strip()
 
+        description_en = str(
+            row.get("BESKRIVELSE_EN", "") or ""
+        ).strip()
+        
         if art_nr:
             materials_by_artnr[art_nr] = row
+
         if db_nr:
             materials_by_dbnr[db_nr] = row
-        if description_lower and description_lower not in materials_by_description:
-            materials_by_description[description_lower] = row
+
+        if description_dk:
+            materials_by_description[
+                description_dk.lower()
+            ] = row
+
+        if description_en:
+            materials_by_description[
+                description_en.lower()
+            ] = row
 
         materials_lookup_records.append(row)
 
