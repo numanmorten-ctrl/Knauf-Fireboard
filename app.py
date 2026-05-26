@@ -961,7 +961,7 @@ table th {
 
     background: #f2f2f2 !important;
 
-    color: #2f3b45 !important;
+    color: #364650 !important;
 
     border-top: none !important;
     border-left: none !important;
@@ -975,11 +975,13 @@ table th {
 
     text-align: left !important;
 
-    font-weight: 700 !important;
+    font-weight: 800 !important;
 
     font-size: 13px !important;
 
     letter-spacing: 0.02em !important;
+
+    text-transform: uppercase !important;
 }
 
 /* ---------------------------------------------------
