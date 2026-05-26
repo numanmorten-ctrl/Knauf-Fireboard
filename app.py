@@ -977,7 +977,7 @@ table th {
 
     font-weight: 900 !important;
 
-    font-size: 13px !important;
+    font-size: 11px !important;
 
     letter-spacing: 0.02em !important;
 
