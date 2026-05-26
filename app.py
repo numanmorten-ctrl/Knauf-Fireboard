@@ -959,7 +959,7 @@ HEADER
 
 table th {
 
-    background-color: #f8f8f8 !important;
+    background-color: #eeeeee !important;
 
     color: #2f3b45 !important;
 
@@ -979,10 +979,10 @@ table th {
 
     border-right: none !important;
 
-    border-bottom: 1px solid #dfe3e8 !important;
+    border-bottom: 1px solid #d6dbe1 !important;
 
     border-radius: 0 !important;
-}
+}}
 
 /* ---------------------------------------------------
 BODY
