@@ -3157,6 +3157,27 @@ if current_step == 3:
                 })
             )
 
+            materials_df["BESKRIVELSE"] = (
+                materials_df["BESKRIVELSE"]
+                .astype(str)
+                .str.strip()
+                .replace({
+                    "Skrue": "Screw",
+                    "Stålklamme": "Steel clamp",
+                    "Vinkelprofil": "Angle profile",
+                    "Bjælkeprofil": "Beam profile",
+                    "rød": "red",
+                    "gul": "yellow",
+                    "grøn": "green",
+                    "brun": "brown",
+                    "blå": "blue",
+                    "hvid": "white",
+                    "sort": "black",
+                    "orange": "orange",
+                    "PDP profil": "PDP Profile"
+                }, regex=True)
+            )
+
         materials_df.columns = [
             t("material_artnr"),
             t("material_dbnr"),
