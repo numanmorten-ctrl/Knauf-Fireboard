@@ -1,5 +1,4 @@
 import pandas as pd
-import streamlit as st
 
 from utils.data_loader import clean_numeric, clean_text
 
@@ -245,11 +244,8 @@ def find_material(
             .str.contains(term, na=False)
         ]
 
-    st.write("SEARCH TERMS:", search_terms)
-
-    st.dataframe(
-        matches[[description_column]].head(20)
-    )
+    print("SEARCH TERMS:", search_terms)
+    print(matches[[description_column]].head(20))
     
     if matches.empty:
 
