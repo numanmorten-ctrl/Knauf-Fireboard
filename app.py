@@ -947,6 +947,57 @@ div[data-testid="stHorizontalBlock"]:has(button[key^="step_"]) {
     border-bottom: 1px solid #d9dde3 !important;
 }
 
+/* ---------------------------------------------------
+STICKY STEP NAV
+--------------------------------------------------- */
+
+.custom-step-nav {
+
+    position: sticky;
+
+    top: 4.05rem;
+
+    z-index: 999;
+
+    background: #f3f5f7;
+
+    padding-top: 0.75rem;
+
+    padding-bottom: 0.75rem;
+
+    border-bottom: 1px solid #d9dde3;
+
+    display: flex;
+
+    gap: 12px;
+}
+
+.custom-step-btn {
+
+    flex: 1;
+
+    text-align: center;
+
+    padding: 10px;
+
+    border: 1px solid #b8c2cc;
+
+    background: white;
+
+    font-weight: 600;
+
+    color: #2d343c;
+}
+
+.custom-step-btn.active {
+
+    background: #003b7a;
+
+    border-color: #003b7a;
+
+    color: white;
+}
+
 </style>
 """, unsafe_allow_html=True)
 
@@ -1818,30 +1869,28 @@ thickness = None
 # STEP HEADER
 # ---------------------------------------------------
 
-step_cols = st.columns(len(steps))
+step_html = '<div class="custom-step-nav">'
 
 for idx, step in enumerate(steps):
 
-    with step_cols[idx]:
+    active_class = (
+        "active"
+        if idx == current_step
+        else ""
+    )
 
-        active = idx == current_step
+    step_html += f"""
+    <div class="custom-step-btn {active_class}">
+        {idx+1}. {step}
+    </div>
+    """
 
-        button_type = (
-            "primary"
-            if active
-            else "secondary"
-        )
+step_html += "</div>"
 
-        if st.button(
-            f"{idx+1}. {step}",
-            key=f"step_{idx}",
-            use_container_width=True,
-            type=button_type
-        ):
-
-            st.session_state.current_step = idx
-
-            st.rerun()
+st.markdown(
+    step_html,
+    unsafe_allow_html=True
+)
             
 # ---------------------------------------------------
 # TAB 1 - PROFIL
