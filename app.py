@@ -1455,18 +1455,18 @@ with topbar_container:
 topbar_container.float(
     css="""
         top: 4.05rem;
+
+        left: 21rem;
+        right: 1.5rem;
+
+        width: auto;
+
         background-color: #f3f5f7;
+
         padding-top: 0.5rem;
         padding-bottom: 0.5rem;
 
         z-index: 99999;
-
-        left: 0;
-        right: 0;
-        width: auto;
-
-        padding-left: 21rem;
-        padding-right: 1.5rem;
 
         border-bottom: 1px solid #d9dde3;
     """
