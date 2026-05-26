@@ -895,122 +895,60 @@ div[data-baseweb="select"] > div {
     display: none !important;
 }
 /* ---------------------------------------------------
-STREAMLIT TABLE RESET
---------------------------------------------------- */
-
-[data-testid="stTable"] {
-
-    background: transparent !important;
-
-    border: none !important;
-
-    box-shadow: none !important;
-
-    border-radius: 0 !important;
-
-    padding: 0 !important;
-
-    margin: 0 !important;
-
-    overflow: visible !important;
-}
-
-[data-testid="stTable"] > div {
-
-    background: transparent !important;
-
-    border: none !important;
-
-    box-shadow: none !important;
-
-    border-radius: 0 !important;
-
-    padding: 0 !important;
-
-    margin: 0 !important;
-
-    overflow: visible !important;
-}
-
-/* ---------------------------------------------------
 TABLE
 --------------------------------------------------- */
 
 table {
 
-    width: 100%;
+    width: 100% !important;
 
-    border-collapse: collapse;
+    border-collapse: collapse !important;
 
-    background: white;
+    border-spacing: 0 !important;
+
+    background: white !important;
+
+    border: none !important;
+
+    box-shadow: none !important;
+
+    outline: none !important;
 }
 
 /* ---------------------------------------------------
 HEADER
 --------------------------------------------------- */
 
-table th {
+table thead th {
 
-    background: #f2f2f2;
+    background: #f2f2f2 !important;
 
-    color: #364650;
+    color: #364650 !important;
 
-    font-weight: 700;
+    font-weight: 700 !important;
 
-    font-size: 11px;
+    font-size: 11px !important;
 
-    text-transform: uppercase;
+    text-transform: uppercase !important;
 
-    text-align: left;
+    text-align: left !important;
 
-    padding: 10px 16px;
+    padding: 12px 24px !important;
 
-    border-bottom: 1px solid #dfe3e8;
+    border: none !important;
 
-    border-top: none;
-    border-left: none;
-    border-right: none;
+    border-bottom: 1px solid #dfe3e8 !important;
+
+    vertical-align: middle !important;
+
+    letter-spacing: 0.02em !important;
 }
 
 /* ---------------------------------------------------
 BODY
 --------------------------------------------------- */
 
-table td {
-
-    background: white;
-
-    color: #364650;
-
-    padding: 14px 16px;
-
-    border-bottom: 1px solid #eceff3;
-
-    border-top: none;
-    border-left: none;
-    border-right: none;
-}
-
-/* ---------------------------------------------------
-REMOVE ROUNDED CORNERS
---------------------------------------------------- */
-
-table,
-table * {
-
-    border-radius: 0 !important;
-}
-
-/* ---------------------------------------------------
-BODY
---------------------------------------------------- */
-
-table tr {
-
-    border-bottom: 1px solid #e3e6ea !important;
-}
-
-table td {
+table tbody td {
 
     background: white !important;
 
@@ -1018,65 +956,42 @@ table td {
 
     font-size: 14px !important;
 
-    padding: 14px 16px !important;
+    padding: 18px 24px !important;
 
-    border-top: none !important;
+    border: none !important;
+
+    border-bottom: 1px solid #e3e6ea !important;
+
+    vertical-align: middle !important;
+}
+
+/* ---------------------------------------------------
+REMOVE SIDE BORDERS
+--------------------------------------------------- */
+
+table,
+table tr,
+table td,
+table th {
 
     border-left: none !important;
 
     border-right: none !important;
 
-    border-bottom: 1px solid #e3e6ea !important;
-
     border-radius: 0 !important;
+
+    box-shadow: none !important;
+
+    outline: none !important;
 }
 
 /* ---------------------------------------------------
-REMOVE ROUNDED CORNERS
---------------------------------------------------- */
-
-table,
-thead,
-tbody,
-tr,
-th,
-td {
-
-    border-radius: 0 !important;
-}
-
-/* ---------------------------------------------------
-OPTIONAL HOVER
+HOVER
 --------------------------------------------------- */
 
 table tbody tr:hover td {
 
     background: #fafafa !important;
-}
-
-/* FORCE HEADER STYLE */
-
-[data-testid="stTable"] table thead tr th,
-[data-testid="stTable"] table tbody tr th {
-
-    background-color: #f2f2f2 !important;
-
-    color: #364650 !important;
-
-    font-weight: 900 !important;
-
-    font-size: 11px !important;
-
-    text-transform: uppercase !important;
-
-    padding-top: 10px !important;
-    padding-bottom: 10px !important;
-
-    border-bottom: 1px solid #dfe3e8 !important;
-
-    border-left: none !important;
-    border-right: none !important;
-    border-top: none !important;
 }
 
 </style>
