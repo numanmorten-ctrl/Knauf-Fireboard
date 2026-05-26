@@ -758,7 +758,8 @@ def generate_layer_fastener_materials(
     screw_clamp_logic_df,
     materials_by_artnr,
     materials_by_dbnr,
-    clean_numeric
+    clean_numeric,
+    language
 ):
     """
     Generate screw/clamp materials for all layers.
@@ -786,7 +787,8 @@ def generate_layer_fastener_materials(
             staple_rate,
             screw_clamp_logic_df,
             materials_by_artnr,
-            materials_by_dbnr
+            materials_by_dbnr,
+            language
         )
 
         materials.extend(layer_materials)
@@ -825,7 +827,8 @@ def generate_materials(
             thickness,
             materials_lookup_df,
             get_material_label,
-            clean_numeric
+            clean_numeric,
+            language
         )
     )
 
@@ -838,7 +841,8 @@ def generate_materials(
             screw_clamp_logic_df,
             materials_by_artnr,
             materials_by_dbnr,
-            clean_numeric
+            clean_numeric,
+            language
         )
     )
 
