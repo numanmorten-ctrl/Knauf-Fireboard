@@ -3164,7 +3164,7 @@ if current_step == 3:
             materials_by_artnr,
             materials_by_dbnr,
             materials_by_description,
-            DESCRIPTION_COLUMN
+            description_column
         )
 
         if st.session_state.language == "EN":
