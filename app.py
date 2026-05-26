@@ -927,7 +927,7 @@ table thead th {
 
     font-weight: 700 !important;
 
-    font-size: 14px !important;
+    font-size: 15px !important;
 
     text-transform: uppercase !important;
 
