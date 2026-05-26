@@ -1231,11 +1231,7 @@ if materials_lookup_path.exists():
         materials_lookup_path,
         sep=";"
     )
-    DESCRIPTION_COLUMN = (
-        "BESKRIVELSE_EN"
-        if st.session_state.language == "EN"
-        else "BESKRIVELSE_DK"
-    )
+    
 else:
     materials_lookup_df = pd.DataFrame()
 
@@ -3156,6 +3152,12 @@ if current_step == 3:
             )
         )
 
+        description_column = (
+            "BESKRIVELSE_EN"
+            if st.session_state.language == "EN"
+            else "BESKRIVELSE_DK"
+        )
+        
         materials_df = build_materials_dataframe(
             materials,
             profile_length,
