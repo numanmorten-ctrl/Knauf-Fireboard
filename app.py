@@ -1468,7 +1468,7 @@ with col3:
     st.write("")
     st.write("")
 
-   if st.button(
+    if st.button(
         f"🗑️ {t('new_project')}",
         use_container_width=True
     ):
