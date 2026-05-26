@@ -3146,6 +3146,15 @@ if current_step == 3:
             materials_by_description
         )
 
+        if st.session_state.language == "EN":
+
+            materials_df["PRODUCENT"] = (
+                materials_df["PRODUCENT"]
+                .replace({
+                    "Fremmed materiale": "Foreign material"
+                })
+            )
+
         materials_df.columns = [
             t("material_artnr"),
             t("material_dbnr"),
