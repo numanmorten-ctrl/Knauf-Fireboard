@@ -1456,19 +1456,21 @@ topbar_container.float(
     css="""
         top: 4.05rem;
 
-        left: 21rem;
-        right: 1.5rem;
-
-        width: auto;
-
         background-color: #f3f5f7;
 
         padding-top: 0.5rem;
         padding-bottom: 0.5rem;
 
+        padding-left: 1.5rem;
+        padding-right: 1.5rem;
+
         z-index: 99999;
 
         border-bottom: 1px solid #d9dde3;
+
+        width: calc(100% - 21rem);
+
+        margin-left: 21rem;
     """
 )
 
