@@ -1,6 +1,8 @@
 from io import BytesIO
 from datetime import datetime
 
+from translations import translations
+
 from utils.constants import *
 
 from reportlab.pdfgen import canvas
