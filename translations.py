@@ -233,7 +233,7 @@ translations = {
             "Beregning gemt",
 
         "material_artnr": "ART.NR.",
-        "material_dbnr": "DB_NR",
+        "material_dbnr": "DB NR",
         "material_manufacturer": "PRODUCENT",
         "material_description": "BESKRIVELSE",
         "material_consumption": "FORBRUG",
@@ -495,7 +495,7 @@ translations = {
         "calculation_saved":
             "Calculation saved",
         "material_artnr": "ART.NO.",
-        "material_dbnr": "DB_NO",
+        "material_dbnr": "DB NO",
         "material_manufacturer": "MANUFACTURER",
         "material_description": "DESCRIPTION",
         "material_consumption": "CONSUMPTION",
