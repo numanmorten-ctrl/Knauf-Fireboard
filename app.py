@@ -999,11 +999,12 @@ BODY
     border-radius: 0 !important;
 }
 
-/* ---------------------------------------------------
-REMOVE ALL ROUNDED CORNERS
---------------------------------------------------- */
+/* REMOVE ROUNDED CORNERS */
 
-[data-testid="stTable"] * {
+[data-testid="stTable"] table,
+[data-testid="stTable"] tbody,
+[data-testid="stTable"] tr,
+[data-testid="stTable"] td {
 
     border-radius: 0 !important;
 }
