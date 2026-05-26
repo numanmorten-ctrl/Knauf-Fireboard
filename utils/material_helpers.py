@@ -332,6 +332,9 @@ def deduplicate_materials(
 
             deduplicated[group_key] = {
                 "Materiale": label,
+                "ART.NR.": material.get("ART.NR.", ""),
+                "DB_NR.": material.get("DB_NR.", ""),
+                "PRODUCENT": material.get("PRODUCENT", ""),
                 "Mængde": quantity,
                 "Enhed": unit
             }
@@ -434,12 +437,25 @@ def build_material_row(
 
     else:
 
-        match = lookup_material_info(
-            row.get("Materiale", ""),
-            materials_by_artnr,
-            materials_by_dbnr,
-            materials_by_description
-        )
+        existing_art = str(row.get("ART.NR.", "")).strip()
+
+        if existing_art:
+
+            match = {
+                "ART.NR.": row.get("ART.NR.", ""),
+                "DB_NR.": row.get("DB_NR.", ""),
+                "PRODUCENT": row.get("PRODUCENT", ""),
+                description_column: row.get("Materiale", "")
+            }
+
+        else:
+
+            match = lookup_material_info(
+                row.get("Materiale", ""),
+                materials_by_artnr,
+                materials_by_dbnr,
+                materials_by_description
+            )
 
     per_meter = row.get("Mængde", 0)
 
