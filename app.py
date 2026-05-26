@@ -952,25 +952,40 @@ table td {
     font-size: 14px !important;
 }
 
-/* Fjern rounded corners på Streamlit table container */
+/* Fjern alt container styling omkring tabel */
 
 [data-testid="stTable"] {
+    background: transparent !important;
+    padding: 0 !important;
+    margin: 0 !important;
+
+    border: none !important;
     border-radius: 0 !important;
-    overflow: hidden !important;
+
+    overflow: visible !important;
+
+    box-shadow: none !important;
 }
+
+/* Selve tabellen */
 
 [data-testid="stTable"] table {
+    border-collapse: collapse !important;
+    border-spacing: 0 !important;
+
     border-radius: 0 !important;
 }
 
-/* Headerhjørner */
+/* Header */
+
+table th {
+    border-radius: 0 !important;
+}
+
+/* Første hjørne */
 
 table th:first-child {
     border-top-left-radius: 0 !important;
-}
-
-table th:last-child {
-    border-top-right-radius: 0 !important;
 }
 
 </style>
