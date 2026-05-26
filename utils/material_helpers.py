@@ -243,9 +243,6 @@ def find_material(
             matches["search_text"]
             .str.contains(term, na=False)
         ]
-
-    print("SEARCH TERMS:", search_terms)
-    print(matches[[description_column]].head(20))
     
     if matches.empty:
 
