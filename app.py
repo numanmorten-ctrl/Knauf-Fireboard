@@ -905,16 +905,24 @@ table {
 }
 
 table th {
-    background: #f7f8fa !important;
+    background: #f3f4f6 !important;
     color: #364650 !important;
-    border: 1px solid #d9dde3 !important;
+
+    border-top: none !important;
+    border-left: none !important;
+    border-right: none !important;
+    border-bottom: 1px solid #d9dde3 !important;
+
     padding: 10px !important;
     text-align: left !important;
     font-weight: 600 !important;
 }
-
 table td {
-    border: 1px solid #d9dde3 !important;
+    border-top: none !important;
+    border-left: none !important;
+    border-right: none !important;
+    border-bottom: 1px solid #e5e7eb !important;
+
     padding: 10px !important;
     color: #364650 !important;
     background: white !important;
