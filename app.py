@@ -1009,7 +1009,7 @@ table {
 
 /* HEADER */
 [data-testid="stTable"] thead tr th {
-    background-color: #f8f8f8 !important;
+    background-color: #f9f9f9 !important;
     color: #374151 !important;
     border-top: none !important;
     border-left: none !important;
