@@ -207,6 +207,60 @@ def lookup_material_info(
 
     return None
 
+def find_material(
+    materials_lookup_df,
+    search_terms,
+    language="DA"
+):
+    """
+    Find material row from materials.csv
+    """
+
+    description_column = (
+        "BESKRIVELSE_EN"
+        if language == "EN"
+        else "BESKRIVELSE_DK"
+    )
+
+    df = materials_lookup_df.copy()
+
+    df["search_text"] = (
+        df[description_column]
+        .astype(str)
+        .map(clean_text)
+    )
+
+    search_terms = [
+        clean_text(term)
+        for term in search_terms
+    ]
+
+    matches = df.copy()
+
+    for term in search_terms:
+
+        matches = matches[
+            matches["search_text"]
+            .str.contains(term, na=False)
+        ]
+
+    if matches.empty:
+
+        return {
+            "description": "Ukendt materiale",
+            "art_nr": "",
+            "db_nr": "",
+            "manufacturer": ""
+        }
+
+    row = matches.iloc[0]
+
+    return {
+        "description": row.get(description_column, ""),
+        "art_nr": row.get("ART.NR.", ""),
+        "db_nr": row.get("DB_NR.", ""),
+        "manufacturer": row.get("PRODUCENT", "")
+    }
 
 # ---------------------------------------------------
 # HELPER: Deduplicate materials
