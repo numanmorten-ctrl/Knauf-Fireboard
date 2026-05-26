@@ -14,8 +14,7 @@ def resolve_screw_clamp_by_layer(
     staple_rate_qty,
     screw_clamp_logic_df,
     materials_by_artnr,
-    materials_by_dbnr,
-    language
+    materials_by_dbnr
 ):
     """
     For a given layer and board thickness,
@@ -68,11 +67,7 @@ def resolve_screw_clamp_by_layer(
         if screw_material is not None:
 
             resolved_materials.append({
-                "Materiale": (
-                    screw_material["BESKRIVELSE_EN"]
-                    if language == "EN"
-                    else screw_material["BESKRIVELSE_DK"]
-                ),
+                "Materiale": screw_material["BESKRIVELSE_DK"],
                 "Mængde": screw_rate_qty,
                 "Enhed": "stk"
             })
@@ -94,11 +89,7 @@ def resolve_screw_clamp_by_layer(
         if clamp_material is not None:
 
             resolved_materials.append({
-                "Materiale": (
-                    clamp_material["BESKRIVELSE_EN"]
-                    if language == "EN"
-                    else clamp_material["BESKRIVELSE_DK"]
-                ),
+                "Materiale": clamp_material["BESKRIVELSE_DK"],
                 "Mængde": staple_rate_qty,
                 "Enhed": "stk"
             })
@@ -350,8 +341,7 @@ def build_material_row(
     profile_length,
     materials_by_artnr,
     materials_by_dbnr,
-    materials_by_description,
-    language="DA"
+    materials_by_description
 ):
 
     match = lookup_material_info(
@@ -364,18 +354,6 @@ def build_material_row(
     per_meter = row.get("Mængde", 0)
 
     total = per_meter * profile_length
-
-    manufacturer_column = (
-        "PRODUCENT_EN"
-        if language == "EN"
-        else "PRODUCENT_DK"
-    )
-
-    description_column = (
-        "BESKRIVELSE_EN"
-        if language == "EN"
-        else "BESKRIVELSE_DK"
-    )
 
     return {
 
@@ -392,13 +370,13 @@ def build_material_row(
         ),
 
         "PRODUCENT": (
-            match[manufacturer_column]
+            match["PRODUCENT"]
             if match is not None
             else ""
         ),
 
         "BESKRIVELSE": (
-            match[description_column]
+            match["BESKRIVELSE_DK"]
             if match is not None
             else row.get("Materiale", "")
         ),
@@ -417,8 +395,7 @@ def build_materials_dataframe(
     profile_length,
     materials_by_artnr,
     materials_by_dbnr,
-    materials_by_description,
-    language="DA"
+    materials_by_description
 ):
 
     materials_deduplicated = deduplicate_materials(
@@ -435,8 +412,7 @@ def build_materials_dataframe(
                 profile_length,
                 materials_by_artnr,
                 materials_by_dbnr,
-                materials_by_description,
-                language
+                materials_by_description
             )
             for _, row in pd.DataFrame(materials_deduplicated).iterrows()
         ],
@@ -454,24 +430,13 @@ def build_materials_dataframe(
 
     return materials_df
 
-def get_material_label(
-    df,
-    search_terms,
-    fallback="Ukendt materiale",
-    language="DA"
-):
+def get_material_label(df, search_terms, fallback="Ukendt materiale"):
 
-    description_column = (
-        "BESKRIVELSE_EN"
-        if language == "EN"
-        else "BESKRIVELSE_DK"
-    )
-
-    if description_column not in df.columns:
+    if "BESKRIVELSE_DK" not in df.columns:
         return fallback
 
     df["search_text"] = (
-        df[description_column]
+        df["BESKRIVELSE_DK"]
         .astype(str)
         .map(clean_text)
     )
@@ -493,7 +458,7 @@ def get_material_label(
         return (
             f"{row['ART.NR.']} · "
             f"{row['DB_NR.']} · "
-            f"{row[description_column]}"
+            f"{row['BESKRIVELSE_DK']}"
         )
 
     return fallback
@@ -730,8 +695,7 @@ def generate_fireboard_materials(
     thickness,
     materials_lookup_df,
     get_material_label,
-    clean_numeric,
-    language
+    clean_numeric
 ):
     """
     Generate Fireboard materials.
@@ -752,9 +716,8 @@ def generate_fireboard_materials(
 
             fireboard_label = get_material_label(
                 materials_lookup_df,
-                [f"{board_mm} mm", "fireboard"],
-                fallback=f"Knauf Fireboard {board_mm} mm",
-                language=language
+                [f"{int(board_mm)} mm", "fireboard"],
+                fallback=f"Knauf Fireboard {int(board_mm)} mm"
             )
 
             materials.append({
@@ -765,13 +728,10 @@ def generate_fireboard_materials(
 
     else:
 
-        thickness_mm = int(thickness)
-
         fireboard_label = get_material_label(
             materials_lookup_df,
-            [f"{thickness_mm} mm", "fireboard"],
-            fallback=f"Knauf Fireboard {thickness_mm} mm",
-            language=language
+            [f"{int(thickness)} mm", "fireboard"],
+            fallback=f"Knauf Fireboard {int(thickness)} mm"
         )
 
         materials.append({
@@ -789,11 +749,10 @@ def generate_layer_fastener_materials(
     screw_clamp_logic_df,
     materials_by_artnr,
     materials_by_dbnr,
-    clean_numeric,
-    language
+    clean_numeric
 ):
     """
-    Generate screws/clamps for each Fireboard layer.
+    Generate screw/clamp materials for all layers.
     """
 
     materials = []
@@ -807,9 +766,9 @@ def generate_layer_fastener_materials(
             clean_numeric(layer_row["layer_no"]) or 0
         )
 
-        board_mm = int(
-            clean_numeric(layer_row["board_mm"]) or 0
-        )
+        board_mm = clean_numeric(
+            layer_row["board_mm"]
+        ) or 0
 
         layer_materials = resolve_screw_clamp_by_layer(
             layer_no,
@@ -818,8 +777,7 @@ def generate_layer_fastener_materials(
             staple_rate,
             screw_clamp_logic_df,
             materials_by_artnr,
-            materials_by_dbnr,
-            language
+            materials_by_dbnr
         )
 
         materials.extend(layer_materials)
@@ -842,8 +800,7 @@ def generate_materials(
     materials_by_dbnr,
     get_material_label,
     clean_numeric,
-    clean_text,
-    language
+    clean_text
 ):
     """
     Generate complete material list.
@@ -859,8 +816,7 @@ def generate_materials(
             thickness,
             materials_lookup_df,
             get_material_label,
-            clean_numeric,
-            language
+            clean_numeric
         )
     )
 
@@ -873,8 +829,7 @@ def generate_materials(
             screw_clamp_logic_df,
             materials_by_artnr,
             materials_by_dbnr,
-            clean_numeric,
-            language
+            clean_numeric
         )
     )
 
