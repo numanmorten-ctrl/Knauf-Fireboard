@@ -17,6 +17,15 @@ translations = {
         "new_project":
             "Nyt projekt",
 
+        "materials":
+            "Materialeforbrug",
+
+        "profile_length":
+            "Profil længde (meter)",
+
+        "select_variant":
+            "Vælg lagopbygning",
+
         # ---------------------------------------------------
         # SIDEBAR
         # ---------------------------------------------------
@@ -258,6 +267,15 @@ translations = {
 
         "new_project":
             "New project",
+
+        "materials":
+            "Materials",
+
+        "profile_length":
+            "Profile length (meters)",
+
+        "select_variant":
+            "Select layer build-up",
 
         # ---------------------------------------------------
         # SIDEBAR
