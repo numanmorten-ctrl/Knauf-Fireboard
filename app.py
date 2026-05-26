@@ -1007,25 +1007,14 @@ table {
 
 /* HEADER */
 
-table th {
-
-    background: #f5f6f7 !important;
-
+/* HEADER */
+[data-testid="stTable"] thead tr th {
+    background-color: #f8f8f8 !important;
     color: #374151 !important;
-
-    font-weight: 600 !important;
-
     border-top: none !important;
     border-left: none !important;
     border-right: none !important;
-
     border-bottom: 1px solid #d1d5db !important;
-
-    padding: 12px !important;
-
-    text-align: left !important;
-
-    border-radius: 0 !important;
 }
 
 /* BODY */
