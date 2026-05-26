@@ -1231,6 +1231,11 @@ if materials_lookup_path.exists():
         materials_lookup_path,
         sep=";"
     )
+    DESCRIPTION_COLUMN = (
+        "BESKRIVELSE_EN"
+        if st.session_state.language == "EN"
+        else "BESKRIVELSE_DK"
+    )
 else:
     materials_lookup_df = pd.DataFrame()
 
@@ -1242,7 +1247,10 @@ if not materials_lookup_df.empty:
     for row in materials_lookup_df.to_dict("records"):
         art_nr = str(row.get("ART.NR.", "") or "").strip()
         db_nr = str(row.get("DB_NR.", "") or "").strip()
-        description = str(row.get("BESKRIVELSE_DK", "") or "").strip()
+        description = str(
+            row.get(DESCRIPTION_COLUMN, "")
+            or ""
+        ).strip()
         description_lower = description.lower()
 
         if art_nr:
@@ -2992,7 +3000,7 @@ if current_step == 3:
     # MATERIALERFORBRUG
     # ---------------------------------------------------
 
-    st.header("Materialeforbrug")
+    st.header(t("materials"))
 
     profile_length = st.text_input(
         "Profil længde (meter)",
@@ -3143,7 +3151,8 @@ if current_step == 3:
             profile_length,
             materials_by_artnr,
             materials_by_dbnr,
-            materials_by_description
+            materials_by_description,
+            DESCRIPTION_COLUMN
         )
 
         render_materials_table(materials_df)
