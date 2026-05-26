@@ -14,7 +14,8 @@ def resolve_screw_clamp_by_layer(
     staple_rate_qty,
     screw_clamp_logic_df,
     materials_by_artnr,
-    materials_by_dbnr
+    materials_by_dbnr,
+    language
 ):
     """
     For a given layer and board thickness,
@@ -70,7 +71,7 @@ def resolve_screw_clamp_by_layer(
                 "Materiale": (
                     f"{screw_material.get('ART.NR.', '')} · "
                     f"{screw_material.get('DB_NR.', '')} · "
-                    f"{screw_material.get('BESKRIVELSE_DK', '')}"
+                    f"{screw_material.get(description_column, '')}"
                 ),
                 "Mængde": screw_rate_qty,
                 "Enhed": "stk"
@@ -96,7 +97,7 @@ def resolve_screw_clamp_by_layer(
                 "Materiale": (
                     f"{clamp_material.get('ART.NR.', '')} · "
                     f"{clamp_material.get('DB_NR.', '')} · "
-                    f"{clamp_material.get('BESKRIVELSE_DK', '')}"
+                    f"{clamp_material.get(description_column, '')}"
                 ),
                 "Mængde": staple_rate_qty,
                 "Enhed": "stk"
@@ -743,7 +744,7 @@ def generate_fireboard_materials(
 
             fireboard_label = get_material_label(
                 materials_lookup_df,
-                [f"{int(board_mm)} mm", "fireboard"],
+                ["fireboard", f"{int(board_mm)}"],
                 fallback=f"Knauf Fireboard {int(board_mm)} mm"
             )
 
