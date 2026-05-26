@@ -6,7 +6,6 @@ from reportlab.pdfgen import canvas
 from pypdf import PdfReader, PdfWriter
 
 import streamlit as st
-from streamlit_float import *
 import pandas as pd
 import requests
 
@@ -927,9 +926,29 @@ table td {
     background: white !important;
 }
 
+/* ---------------------------------------------------
+STICKY STEP NAVIGATION
+--------------------------------------------------- */
+
+div[data-testid="stHorizontalBlock"]:has(button[key^="step_"]) {
+
+    position: sticky !important;
+
+    top: 4.2rem !important;
+
+    z-index: 999 !important;
+
+    background: #f3f5f7 !important;
+
+    padding-top: 0.75rem !important;
+
+    padding-bottom: 0.75rem !important;
+
+    border-bottom: 1px solid #d9dde3 !important;
+}
+
 </style>
 """, unsafe_allow_html=True)
-float_init()
 
 # ---------------------------------------------------
 # CUSTOM HEADER BRANDING
@@ -1807,7 +1826,11 @@ for idx, step in enumerate(steps):
 
         active = idx == current_step
 
-        button_type = "primary" if active else "secondary"
+        button_type = (
+            "primary"
+            if active
+            else "secondary"
+        )
 
         if st.button(
             f"{idx+1}. {step}",
