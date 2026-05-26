@@ -957,7 +957,7 @@ table {
 HEADER
 --------------------------------------------------- */
 
-table th {
+[data-testid="stTable"] thead th {
 
     background: #f2f2f2 !important;
 
