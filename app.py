@@ -955,7 +955,7 @@ HEADER
 
 [data-testid="stTable"] thead tr th {
 
-    background: #f8f8f8 !important;
+    background: #f9f9f9 !important;
 
     color: #2f3b45 !important;
 
