@@ -3158,7 +3158,8 @@ if current_step == 3:
             profile_length,
             materials_by_artnr,
             materials_by_dbnr,
-            materials_by_description
+            materials_by_description,
+            st.session_state.language
         )
 
         materials_df.columns = [
