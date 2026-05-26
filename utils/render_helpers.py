@@ -6,4 +6,9 @@ def render_materials_table(materials_df):
     Render materials table.
     """
 
-    st.table(materials_df)
+    html = materials_df.to_html(index=False)
+
+    st.markdown(
+        html,
+        unsafe_allow_html=True
+    )
