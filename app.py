@@ -895,64 +895,6 @@ div[data-baseweb="select"] > div {
     display: none !important;
 }
 /* ---------------------------------------------------
-TABLE STYLE
---------------------------------------------------- */
-
-table {
-    width: 100% !important;
-    border-collapse: collapse !important;
-
-    background: white !important;
-
-    border-radius: 0 !important;
-    box-shadow: none !important;
-}
-
-/* HEADER */
-
-table th {
-
-    background: #f9f9f9 !important;
-
-    color: #2f3b45 !important;
-
-    border-top: none !important;
-    border-left: none !important;
-    border-right: none !important;
-
-    border-bottom: 1px solid #dfe3e8 !important;
-
-    padding: 14px 16px !important;
-
-    text-align: left !important;
-
-    font-weight: 700 !important;
-
-    font-size: 14px !important;
-
-    letter-spacing: 0.02em !important;
-}
-
-/* BODY */
-
-table td {
-
-    background: white !important;
-
-    color: #364650 !important;
-
-    border-top: none !important;
-    border-left: none !important;
-    border-right: none !important;
-
-    border-bottom: 1px solid #eceff3 !important;
-
-    padding: 14px 16px !important;
-
-    font-size: 14px !important;
-}
-
-/* ---------------------------------------------------
 STREAMLIT TABLE RESET
 --------------------------------------------------- */
 
@@ -987,7 +929,7 @@ STREAMLIT TABLE RESET
 }
 
 /* ---------------------------------------------------
-TABLE STYLE
+TABLE
 --------------------------------------------------- */
 
 table {
@@ -1003,37 +945,78 @@ table {
     border-radius: 0 !important;
 
     box-shadow: none !important;
+
+    overflow: hidden !important;
 }
 
-/* HEADER */
+/* ---------------------------------------------------
+HEADER
+--------------------------------------------------- */
 
-/* HEADER */
 [data-testid="stTable"] thead tr th {
-    background-color: #f9f9f9 !important;
-    color: #374151 !important;
+
+    background: #f8f8f8 !important;
+
+    color: #2f3b45 !important;
+
     border-top: none !important;
     border-left: none !important;
     border-right: none !important;
-    border-bottom: 1px solid #d1d5db !important;
+
+    border-bottom: 1px solid #dfe3e8 !important;
+
+    padding: 14px 16px !important;
+
+    text-align: left !important;
+
+    font-weight: 700 !important;
+
+    font-size: 14px !important;
+
+    letter-spacing: 0.02em !important;
+
+    border-radius: 0 !important;
 }
 
-/* BODY */
+/* ---------------------------------------------------
+BODY
+--------------------------------------------------- */
 
-table td {
+[data-testid="stTable"] tbody td {
 
     background: white !important;
 
-    color: #374151 !important;
+    color: #364650 !important;
 
     border-top: none !important;
     border-left: none !important;
     border-right: none !important;
 
-    border-bottom: 1px solid #e5e7eb !important;
+    border-bottom: 1px solid #eceff3 !important;
 
-    padding: 12px !important;
+    padding: 14px 16px !important;
+
+    font-size: 14px !important;
 
     border-radius: 0 !important;
+}
+
+/* ---------------------------------------------------
+REMOVE ALL ROUNDED CORNERS
+--------------------------------------------------- */
+
+[data-testid="stTable"] * {
+
+    border-radius: 0 !important;
+}
+
+/* ---------------------------------------------------
+OPTIONAL HOVER
+--------------------------------------------------- */
+
+[data-testid="stTable"] tbody tr:hover td {
+
+    background: #fafafa !important;
 }
 
 </style>
