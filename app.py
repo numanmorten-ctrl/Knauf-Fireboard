@@ -118,7 +118,7 @@ MAIN LAYOUT
 
 .stApp {
 
-    background-color: #f3f5f7;
+    background-color: #ffffff !important;
 }
 
 .block-container {
@@ -519,7 +519,7 @@ SIDEBAR
 
 section[data-testid="stSidebar"] {
 
-    background-color: white;
+    background-color: #f5f6f7 !important;
 
     border-right: 1px solid #d9dde3;
 
@@ -912,7 +912,7 @@ table {
 
 table th {
 
-    background: #f1f3f4 !important;
+    background: #f4f5f6 !important;
 
     color: #2f3b45 !important;
 
