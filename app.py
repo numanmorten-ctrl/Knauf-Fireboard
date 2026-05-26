@@ -982,7 +982,7 @@ BODY
 
 [data-testid="stTable"] tbody td {
 
-    background-color: #f8f8f8 !important;
+    background: white !important;
 
     color: #364650 !important;
 
