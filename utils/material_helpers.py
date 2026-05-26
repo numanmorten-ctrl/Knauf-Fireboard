@@ -381,7 +381,7 @@ def build_material_row(
             else row.get("Materiale", "")
         ),
 
-        "FORBRUG": format_number(per_meter),
+        "FORBRUG PR. LBM": format_number(per_meter),
 
         "ENHED": row.get("Enhed", ""),
 
@@ -421,7 +421,7 @@ def build_materials_dataframe(
             "DB NR",
             "PRODUCENT",
             "BESKRIVELSE",
-            "FORBRUG",
+            "FORBRUG PR. LBM",
             "ENHED",
             "SPILDPROCENT",
             "SAMLET FORBRUG"
