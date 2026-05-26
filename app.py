@@ -61,9 +61,6 @@ from utils.constants import (
     DESCRIPTION_FONT,
     CALC_FONT,
     RESULT_FONT,
-    PAGE_FONT,
-    generate_single_pdf,
-    generate_complete_pdf,
     PAGE_FONT
 )
 
