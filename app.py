@@ -1036,6 +1036,32 @@ table tbody tr:hover td {
 
     background: #fafafa !important;
 }
+
+/* FORCE HEADER STYLE */
+
+[data-testid="stTable"] table thead tr th,
+[data-testid="stTable"] table tbody tr th {
+
+    background-color: #f2f2f2 !important;
+
+    color: #364650 !important;
+
+    font-weight: 900 !important;
+
+    font-size: 11px !important;
+
+    text-transform: uppercase !important;
+
+    padding-top: 10px !important;
+    padding-bottom: 10px !important;
+
+    border-bottom: 1px solid #dfe3e8 !important;
+
+    border-left: none !important;
+    border-right: none !important;
+    border-top: none !important;
+}
+
 </style>
 """, unsafe_allow_html=True)
 
