@@ -951,41 +951,8 @@ table td {
 
     font-size: 14px !important;
 }
-
-/* Fjern alt container styling omkring tabel */
-
-[data-testid="stTable"] {
-    background: transparent !important;
-    padding: 0 !important;
-    margin: 0 !important;
-
-    border: none !important;
-    border-radius: 0 !important;
-
-    overflow: visible !important;
-
-    box-shadow: none !important;
-}
-
-/* Selve tabellen */
-
-[data-testid="stTable"] table {
-    border-collapse: collapse !important;
-    border-spacing: 0 !important;
-
-    border-radius: 0 !important;
-}
-
-/* Header */
-
-table th {
-    border-radius: 0 !important;
-}
-
-/* Første hjørne */
-
-table th:first-child {
-    border-top-left-radius: 0 !important;
+table thead tr {
+    background: #f5f6f7 !important;
 }
 
 </style>
