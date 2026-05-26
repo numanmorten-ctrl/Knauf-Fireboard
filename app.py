@@ -938,50 +938,67 @@ TABLE
 
 table {
 
-    width: 100% !important;
+    width: 100%;
 
-    border-collapse: collapse !important;
+    border-collapse: collapse;
 
-    border-spacing: 0 !important;
-
-    background: white !important;
-
-    border-radius: 0 !important;
-
-    box-shadow: none !important;
-
-    overflow: hidden !important;
+    background: white;
 }
 
 /* ---------------------------------------------------
 HEADER
 --------------------------------------------------- */
 
-[data-testid="stTable"] thead th {
+table th {
 
-    background: #f2f2f2 !important;
+    background: #f2f2f2;
 
-    color: #364650 !important;
+    color: #364650;
 
-    border-top: none !important;
-    border-left: none !important;
-    border-right: none !important;
+    font-weight: 700;
 
-    border-bottom: 1px solid #dfe3e8 !important;
+    font-size: 11px;
 
-    padding: 10px 16px !important;
+    text-transform: uppercase;
 
-    line-height: 1.1 !important;
+    text-align: left;
 
-    text-align: left !important;
+    padding: 10px 16px;
 
-    font-weight: 900 !important;
+    border-bottom: 1px solid #dfe3e8;
 
-    font-size: 11px !important;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+}
 
-    letter-spacing: 0.02em !important;
+/* ---------------------------------------------------
+BODY
+--------------------------------------------------- */
 
-    text-transform: uppercase !important;
+table td {
+
+    background: white;
+
+    color: #364650;
+
+    padding: 14px 16px;
+
+    border-bottom: 1px solid #eceff3;
+
+    border-top: none;
+    border-left: none;
+    border-right: none;
+}
+
+/* ---------------------------------------------------
+REMOVE ROUNDED CORNERS
+--------------------------------------------------- */
+
+table,
+table * {
+
+    border-radius: 0 !important;
 }
 
 /* ---------------------------------------------------
