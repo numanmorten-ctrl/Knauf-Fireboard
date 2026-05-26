@@ -241,6 +241,7 @@ translations = {
         "material_waste": "SPILDPROCENT",
         "material_total": "SAMLET FORBRUG",
         "materials_header": "Materialeforbrug",
+        "profile_length": "Profil længde (meter)",
 
         # ---------------------------------------------------
         # PDF
@@ -501,6 +502,7 @@ translations = {
         "material_waste": "WASTE %",
         "material_total": "TOTAL CONSUMPTION",
         "materials_header": "Materials",
+        "profile_length": "Profile length (meters)",
 
         # ---------------------------------------------------
         # PDF
