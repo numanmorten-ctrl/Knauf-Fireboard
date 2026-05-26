@@ -988,6 +988,11 @@ table th {
 BODY
 --------------------------------------------------- */
 
+table tr {
+
+    border-bottom: 1px solid #e3e6ea !important;
+}
+
 table td {
 
     background: white !important;
@@ -1004,7 +1009,7 @@ table td {
 
     border-right: none !important;
 
-    border-bottom: 1px solid #eceff3 !important;
+    border-bottom: 1px solid #e3e6ea !important;
 
     border-radius: 0 !important;
 }
