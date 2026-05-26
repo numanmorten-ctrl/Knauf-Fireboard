@@ -67,7 +67,11 @@ def resolve_screw_clamp_by_layer(
         if screw_material is not None:
 
             resolved_materials.append({
-                "Materiale": screw_material["BESKRIVELSE_DK"],
+                "Materiale": (
+                    screw_material.get("BESKRIVELSE_EN")
+                    if screw_material.get("BESKRIVELSE_EN")
+                    else screw_material.get("BESKRIVELSE_DK")
+                ),
                 "Mængde": screw_rate_qty,
                 "Enhed": "stk"
             })
@@ -89,7 +93,11 @@ def resolve_screw_clamp_by_layer(
         if clamp_material is not None:
 
             resolved_materials.append({
-                "Materiale": clamp_material["BESKRIVELSE_DK"],
+                "Materiale": (
+                    clamp_material.get("BESKRIVELSE_EN")
+                    if clamp_material.get("BESKRIVELSE_EN")
+                    else clamp_material.get("BESKRIVELSE_DK")
+                ),
                 "Mængde": staple_rate_qty,
                 "Enhed": "stk"
             })
@@ -435,11 +443,21 @@ def build_materials_dataframe(
 
 def get_material_label(df, search_terms, fallback="Ukendt materiale"):
 
-    if "BESKRIVELSE_DK" not in df.columns:
+    if (
+        "BESKRIVELSE_DK" not in df.columns
+        and
+        "BESKRIVELSE_EN" not in df.columns
+    ):
         return fallback
 
+    description_column = (
+        "BESKRIVELSE_EN"
+        if "BESKRIVELSE_EN" in df.columns
+        else "BESKRIVELSE_DK"
+    )
+
     df["search_text"] = (
-        df["BESKRIVELSE_DK"]
+        df[description_column]
         .astype(str)
         .map(clean_text)
     )
@@ -461,7 +479,7 @@ def get_material_label(df, search_terms, fallback="Ukendt materiale"):
         return (
             f"{row['ART.NR.']} · "
             f"{row['DB_NR.']} · "
-            f"{row['BESKRIVELSE_DK']}"
+            f"{row[description_column]}"
         )
 
     return fallback
