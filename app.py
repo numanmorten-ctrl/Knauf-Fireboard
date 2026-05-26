@@ -3003,7 +3003,7 @@ if current_step == 3:
     st.header(t("materials"))
 
     profile_length = st.text_input(
-        "Profil længde (meter)",
+        t("profile_length"),
         value="6,0"
     )
 
@@ -3109,7 +3109,7 @@ if current_step == 3:
                     for variant in available_variants
                 }
                 selected_variant = st.selectbox(
-                    "Vælg lagopbygning",
+                    t("select_variant"),
                     available_variants,
                     format_func=lambda variant: variant_labels.get(variant, variant),
                 )
