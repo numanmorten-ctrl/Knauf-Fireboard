@@ -26,6 +26,15 @@ translations = {
         "select_variant":
             "Vælg lagopbygning",
 
+        "material_artnr": "ART.NR.",
+        "material_dbnr": "DB_NR",
+        "material_manufacturer": "PRODUCENT",
+        "material_description": "BESKRIVELSE",
+        "material_consumption": "FORBRUG",
+        "material_unit": "ENHED",
+        "material_waste": "SPILDPROCENT",
+        "material_total": "SAMLET FORBRUG",
+
         # ---------------------------------------------------
         # SIDEBAR
         # ---------------------------------------------------
@@ -276,6 +285,15 @@ translations = {
 
         "select_variant":
             "Select layer build-up",
+
+        "material_artnr": "ART.NO.",
+        "material_dbnr": "DB_NO",
+        "material_manufacturer": "MANUFACTURER",
+        "material_description": "DESCRIPTION",
+        "material_consumption": "CONSUMPTION",
+        "material_unit": "UNIT",
+        "material_waste": "WASTE %",
+        "material_total": "TOTAL CONSUMPTION",
 
         # ---------------------------------------------------
         # SIDEBAR
