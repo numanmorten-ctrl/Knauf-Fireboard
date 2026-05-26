@@ -118,7 +118,7 @@ MAIN LAYOUT
 
 .stApp {
 
-    background-color: #f6f8f8 !important;
+    background-color: #f7f8f9 !important;
 }
 
 .block-container {
