@@ -952,6 +952,101 @@ table td {
     font-size: 14px !important;
 }
 
+/* ---------------------------------------------------
+STREAMLIT TABLE RESET
+--------------------------------------------------- */
+
+[data-testid="stTable"] {
+
+    background: transparent !important;
+
+    border: none !important;
+    box-shadow: none !important;
+
+    border-radius: 0 !important;
+
+    padding: 0 !important;
+    margin: 0 !important;
+
+    overflow: visible !important;
+}
+
+[data-testid="stTable"] > div {
+
+    background: transparent !important;
+
+    border: none !important;
+    box-shadow: none !important;
+
+    border-radius: 0 !important;
+
+    padding: 0 !important;
+    margin: 0 !important;
+
+    overflow: visible !important;
+}
+
+/* ---------------------------------------------------
+TABLE STYLE
+--------------------------------------------------- */
+
+table {
+
+    width: 100% !important;
+
+    border-collapse: collapse !important;
+
+    border-spacing: 0 !important;
+
+    background: white !important;
+
+    border-radius: 0 !important;
+
+    box-shadow: none !important;
+}
+
+/* HEADER */
+
+table th {
+
+    background: #f5f6f7 !important;
+
+    color: #374151 !important;
+
+    font-weight: 600 !important;
+
+    border-top: none !important;
+    border-left: none !important;
+    border-right: none !important;
+
+    border-bottom: 1px solid #d1d5db !important;
+
+    padding: 12px !important;
+
+    text-align: left !important;
+
+    border-radius: 0 !important;
+}
+
+/* BODY */
+
+table td {
+
+    background: white !important;
+
+    color: #374151 !important;
+
+    border-top: none !important;
+    border-left: none !important;
+    border-right: none !important;
+
+    border-bottom: 1px solid #e5e7eb !important;
+
+    padding: 12px !important;
+
+    border-radius: 0 !important;
+}
+
 </style>
 """, unsafe_allow_html=True)
 
