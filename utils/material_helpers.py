@@ -341,7 +341,8 @@ def build_material_row(
     profile_length,
     materials_by_artnr,
     materials_by_dbnr,
-    materials_by_description
+    materials_by_description,
+    description_column
 ):
 
     match = lookup_material_info(
@@ -376,7 +377,7 @@ def build_material_row(
         ),
 
         "BESKRIVELSE": (
-            match["BESKRIVELSE_DK"]
+            match[description_column]
             if match is not None
             else row.get("Materiale", "")
         ),
@@ -395,7 +396,8 @@ def build_materials_dataframe(
     profile_length,
     materials_by_artnr,
     materials_by_dbnr,
-    materials_by_description
+    materials_by_description,
+    description_column
 ):
 
     materials_deduplicated = deduplicate_materials(
@@ -412,7 +414,8 @@ def build_materials_dataframe(
                 profile_length,
                 materials_by_artnr,
                 materials_by_dbnr,
-                materials_by_description
+                materials_by_description,
+                description_column
             )
             for _, row in pd.DataFrame(materials_deduplicated).iterrows()
         ],
