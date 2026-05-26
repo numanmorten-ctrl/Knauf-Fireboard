@@ -2992,7 +2992,7 @@ if current_step == 3:
     # MATERIALERFORBRUG
     # ---------------------------------------------------
 
-    st.header("Materialeforbrug")
+    st.header(t("materials_header"))
 
     profile_length = st.text_input(
         "Profil længde (meter)",
