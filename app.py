@@ -1018,6 +1018,25 @@ OPTIONAL HOVER
     background: #fafafa !important;
 }
 
+/* ---------------------------------------------------
+STREAMLIT DATAFRAME HEADER
+--------------------------------------------------- */
+
+[data-testid="stDataFrame"] thead th {
+
+    background-color: #f8f8f8 !important;
+
+    color: #2f3b45 !important;
+
+    font-weight: 700 !important;
+
+    border-top: none !important;
+    border-left: none !important;
+    border-right: none !important;
+
+    border-bottom: 1px solid #dfe3e8 !important;
+}
+
 </style>
 """, unsafe_allow_html=True)
 
