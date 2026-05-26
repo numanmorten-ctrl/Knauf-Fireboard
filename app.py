@@ -912,7 +912,7 @@ table {
 
 table th {
 
-    background: #f4f5f6 !important;
+    background: #f4f4f4 !important;
 
     color: #2f3b45 !important;
 
