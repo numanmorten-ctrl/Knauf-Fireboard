@@ -417,12 +417,29 @@ def build_material_row(
     description_column
 ):
 
-    match = lookup_material_info(
-        row.get("Materiale", ""),
-        materials_by_artnr,
-        materials_by_dbnr,
-        materials_by_description
-    )
+    existing_art = row.get("ART.NR.", "")
+    existing_db = row.get("DB_NR.", "")
+    existing_manufacturer = row.get("PRODUCENT", "")
+
+    match = None
+
+    if existing_art and str(existing_art).strip():
+
+        match = {
+            "ART.NR.": existing_art,
+            "DB_NR.": existing_db,
+            "PRODUCENT": existing_manufacturer,
+            description_column: row.get("Materiale", "")
+        }
+
+    else:
+
+        match = lookup_material_info(
+            row.get("Materiale", ""),
+            materials_by_artnr,
+            materials_by_dbnr,
+            materials_by_description
+        )
 
     per_meter = row.get("Mængde", 0)
 
