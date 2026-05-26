@@ -61,6 +61,9 @@ from utils.constants import (
     DESCRIPTION_FONT,
     CALC_FONT,
     RESULT_FONT,
+    PAGE_FONT,
+    generate_single_pdf,
+    generate_complete_pdf,
     PAGE_FONT
 )
 
@@ -1231,7 +1234,6 @@ if materials_lookup_path.exists():
         materials_lookup_path,
         sep=";"
     )
-    
 else:
     materials_lookup_df = pd.DataFrame()
 
@@ -1243,27 +1245,15 @@ if not materials_lookup_df.empty:
     for row in materials_lookup_df.to_dict("records"):
         art_nr = str(row.get("ART.NR.", "") or "").strip()
         db_nr = str(row.get("DB_NR.", "") or "").strip()
-        description_dk = str(
-            row.get("BESKRIVELSE_DK", "")
-            or ""
-        ).strip().lower()
-
-        description_en = str(
-            row.get("BESKRIVELSE_EN", "")
-            or ""
-        ).strip().lower()
+        description = str(row.get("BESKRIVELSE_DK", "") or "").strip()
+        description_lower = description.lower()
 
         if art_nr:
             materials_by_artnr[art_nr] = row
-
         if db_nr:
             materials_by_dbnr[db_nr] = row
-
-        if description_dk:
-            materials_by_description[description_dk] = row
-
-        if description_en:
-            materials_by_description[description_en] = row
+        if description_lower and description_lower not in materials_by_description:
+            materials_by_description[description_lower] = row
 
         materials_lookup_records.append(row)
 
@@ -3005,10 +2995,10 @@ if current_step == 3:
     # MATERIALERFORBRUG
     # ---------------------------------------------------
 
-    st.header(t("materials"))
+    st.header("Materialeforbrug")
 
     profile_length = st.text_input(
-        t("profile_length"),
+        "Profil længde (meter)",
         value="6,0"
     )
 
@@ -3114,7 +3104,7 @@ if current_step == 3:
                     for variant in available_variants
                 }
                 selected_variant = st.selectbox(
-                    t("select_variant"),
+                    "Vælg lagopbygning",
                     available_variants,
                     format_func=lambda variant: variant_labels.get(variant, variant),
                 )
@@ -3147,36 +3137,16 @@ if current_step == 3:
                 materials_by_dbnr,
                 get_material_label,
                 clean_numeric,
-                clean_text,
-                st.session_state.language
+                clean_text
             )
         )
 
-        description_column = (
-            "BESKRIVELSE_EN"
-            if st.session_state.language == "EN"
-            else "BESKRIVELSE_DK"
-        )
-        
         materials_df = build_materials_dataframe(
             materials,
             profile_length,
             materials_by_artnr,
             materials_by_dbnr,
-            materials_by_description,
-            description_column
+            materials_by_description
         )
-
-        if st.session_state.language == "EN":
-
-            materials_df = materials_df.rename(columns={
-
-                "PRODUCENT": "MANUFACTURER",
-                "BESKRIVELSE": "DESCRIPTION",
-                "FORBRUG": "CONSUMPTION",
-                "ENHED": "UNIT",
-                "SPILDPROCENT": "WASTE PERCENT",
-                "SAMLET FORBRUG": "TOTAL CONSUMPTION"
-            })
 
         render_materials_table(materials_df)
