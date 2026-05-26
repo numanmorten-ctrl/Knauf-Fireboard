@@ -901,31 +901,55 @@ TABLE STYLE
 table {
     width: 100% !important;
     border-collapse: collapse !important;
+
     background: white !important;
+
+    border-radius: 0 !important;
+    box-shadow: none !important;
 }
+
+/* HEADER */
 
 table th {
+
     background: #f1f3f4 !important;
-    color: #364650 !important;
+
+    color: #2f3b45 !important;
 
     border-top: none !important;
     border-left: none !important;
     border-right: none !important;
-    border-bottom: 1px solid #d9dde3 !important;
 
-    padding: 10px !important;
+    border-bottom: 1px solid #dfe3e8 !important;
+
+    padding: 14px 16px !important;
+
     text-align: left !important;
-    font-weight: 600 !important;
+
+    font-weight: 700 !important;
+
+    font-size: 14px !important;
+
+    letter-spacing: 0.02em !important;
 }
+
+/* BODY */
+
 table td {
+
+    background: white !important;
+
+    color: #364650 !important;
+
     border-top: none !important;
     border-left: none !important;
     border-right: none !important;
-    border-bottom: 1px solid #e5e7eb !important;
 
-    padding: 10px !important;
-    color: #364650 !important;
-    background: white !important;
+    border-bottom: 1px solid #eceff3 !important;
+
+    padding: 14px 16px !important;
+
+    font-size: 14px !important;
 }
 
 </style>
