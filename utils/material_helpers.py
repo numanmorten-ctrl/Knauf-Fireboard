@@ -14,15 +14,8 @@ def resolve_screw_clamp_by_layer(
     staple_rate_qty,
     screw_clamp_logic_df,
     materials_by_artnr,
-    materials_by_dbnr,
-    language
+    materials_by_dbnr
 ):
-    description_column = (
-        "BESKRIVELSE_EN"
-        if language == "EN"
-        else "BESKRIVELSE_DK"
-    )
-
     """
     For a given layer and board thickness,
     resolve and return screws/clamps.
@@ -74,11 +67,7 @@ def resolve_screw_clamp_by_layer(
         if screw_material is not None:
 
             resolved_materials.append({
-                "Materiale": (
-                    f"{screw_material.get('ART.NR.', '')} · "
-                    f"{screw_material.get('DB_NR.', '')} · "
-                    f"{screw_material.get(description_column, '')}"
-                ),
+                "Materiale": screw_material["BESKRIVELSE_DK"],
                 "Mængde": screw_rate_qty,
                 "Enhed": "stk"
             })
@@ -100,11 +89,7 @@ def resolve_screw_clamp_by_layer(
         if clamp_material is not None:
 
             resolved_materials.append({
-                "Materiale": (
-                    f"{clamp_material.get('ART.NR.', '')} · "
-                    f"{clamp_material.get('DB_NR.', '')} · "
-                    f"{clamp_material.get(description_column, '')}"
-                ),
+                "Materiale": clamp_material["BESKRIVELSE_DK"],
                 "Mængde": staple_rate_qty,
                 "Enhed": "stk"
             })
@@ -207,61 +192,6 @@ def lookup_material_info(
 
     return None
 
-def find_material(
-    materials_lookup_df,
-    search_terms,
-    language="DA"
-):
-    """
-    Find material row from materials.csv
-    """
-
-    description_column = (
-        "BESKRIVELSE_EN"
-        if language == "EN"
-        else "BESKRIVELSE_DK"
-    )
-
-    df = materials_lookup_df.copy()
-
-    df["search_text"] = (
-        df[description_column]
-        .astype(str)
-        .str.lower()
-        .str.strip()
-    )
-
-    search_terms = [
-        str(term).lower().strip()
-        for term in search_terms
-    ]
-
-    matches = df.copy()
-
-    for term in search_terms:
-
-        matches = matches[
-            matches["search_text"]
-            .str.contains(term, na=False)
-        ]
-    
-    if matches.empty:
-
-        return {
-            "description": "Ukendt materiale",
-            "art_nr": "",
-            "db_nr": "",
-            "manufacturer": ""
-        }
-
-    row = matches.iloc[0]
-
-    return {
-        "description": row.get(description_column, ""),
-        "art_nr": row.get("ART.NR.", ""),
-        "db_nr": row.get("DB_NR.", ""),
-        "manufacturer": row.get("PRODUCENT", "")
-    }
 
 # ---------------------------------------------------
 # HELPER: Deduplicate materials
@@ -330,9 +260,6 @@ def deduplicate_materials(
 
             deduplicated[group_key] = {
                 "Materiale": label,
-                "ART.NR.": material.get("ART.NR.", ""),
-                "DB_NR.": material.get("DB_NR.", ""),
-                "PRODUCENT": material.get("PRODUCENT", ""),
                 "Mængde": quantity,
                 "Enhed": unit
             }
@@ -414,46 +341,15 @@ def build_material_row(
     profile_length,
     materials_by_artnr,
     materials_by_dbnr,
-    materials_by_description,
-    description_column
+    materials_by_description
 ):
 
-    existing_art = row.get("ART.NR.", "")
-    existing_db = row.get("DB_NR.", "")
-    existing_manufacturer = row.get("PRODUCENT", "")
-
-    match = None
-
-    if existing_art and str(existing_art).strip():
-
-        match = {
-            "ART.NR.": existing_art,
-            "DB_NR.": existing_db,
-            "PRODUCENT": existing_manufacturer,
-            description_column: row.get("Materiale", "")
-        }
-
-    else:
-
-        existing_art = str(row.get("ART.NR.", "")).strip()
-
-        if existing_art:
-
-            match = {
-                "ART.NR.": row.get("ART.NR.", ""),
-                "DB_NR.": row.get("DB_NR.", ""),
-                "PRODUCENT": row.get("PRODUCENT", ""),
-                description_column: row.get("Materiale", "")
-            }
-
-        else:
-
-            match = lookup_material_info(
-                row.get("Materiale", ""),
-                materials_by_artnr,
-                materials_by_dbnr,
-                materials_by_description
-            )
+    match = lookup_material_info(
+        row.get("Materiale", ""),
+        materials_by_artnr,
+        materials_by_dbnr,
+        materials_by_description
+    )
 
     per_meter = row.get("Mængde", 0)
 
@@ -480,7 +376,7 @@ def build_material_row(
         ),
 
         "BESKRIVELSE": (
-            match[description_column]
+            match["BESKRIVELSE_DK"]
             if match is not None
             else row.get("Materiale", "")
         ),
@@ -499,8 +395,7 @@ def build_materials_dataframe(
     profile_length,
     materials_by_artnr,
     materials_by_dbnr,
-    materials_by_description,
-    description_column
+    materials_by_description
 ):
 
     materials_deduplicated = deduplicate_materials(
@@ -517,8 +412,7 @@ def build_materials_dataframe(
                 profile_length,
                 materials_by_artnr,
                 materials_by_dbnr,
-                materials_by_description,
-                description_column
+                materials_by_description
             )
             for _, row in pd.DataFrame(materials_deduplicated).iterrows()
         ],
@@ -538,23 +432,11 @@ def build_materials_dataframe(
 
 def get_material_label(df, search_terms, fallback="Ukendt materiale"):
 
-    if (
-        "BESKRIVELSE_DK" not in df.columns
-        and
-        "BESKRIVELSE_EN" not in df.columns
-    ):
+    if "BESKRIVELSE_DK" not in df.columns:
         return fallback
 
-    description_column = (
-        "BESKRIVELSE_EN"
-        if "BESKRIVELSE_EN" in df.columns
-        else "BESKRIVELSE_DK"
-    )
-
-    df = df.copy()
-
     df["search_text"] = (
-        df[description_column]
+        df["BESKRIVELSE_DK"]
         .astype(str)
         .map(clean_text)
     )
@@ -564,21 +446,10 @@ def get_material_label(df, search_terms, fallback="Ukendt materiale"):
         for term in search_terms
     ]
 
-    matches = df.copy()
-
-    search_text_series = matches["search_text"].fillna("")
-
-    mask = pd.Series(True, index=matches.index)
-
-    for term in search_terms:
-
-        mask &= search_text_series.str.contains(
-            term,
-            case=False,
-            na=False
-        )
-
-    matches = matches[mask]
+    matches = df[
+        df["search_text"]
+        .str.contains(search_terms[0], na=False)
+    ]
 
     if not matches.empty:
 
@@ -587,7 +458,7 @@ def get_material_label(df, search_terms, fallback="Ukendt materiale"):
         return (
             f"{row['ART.NR.']} · "
             f"{row['DB_NR.']} · "
-            f"{row[description_column]}"
+            f"{row['BESKRIVELSE_DK']}"
         )
 
     return fallback
@@ -824,8 +695,7 @@ def generate_fireboard_materials(
     thickness,
     materials_lookup_df,
     get_material_label,
-    clean_numeric,
-    language
+    clean_numeric
 ):
     """
     Generate Fireboard materials.
@@ -844,34 +714,28 @@ def generate_fireboard_materials(
                 clean_numeric(layer_row["board_mm"]) or 0
             )
 
-            fireboard_material = find_material(
+            fireboard_label = get_material_label(
                 materials_lookup_df,
                 [f"{int(board_mm)} mm", "fireboard"],
-                language=language
+                fallback=f"Knauf Fireboard {int(board_mm)} mm"
             )
 
             materials.append({
-                "Materiale": fireboard_material["description"],
-                "ART.NR.": fireboard_material["art_nr"],
-                "DB_NR.": fireboard_material["db_nr"],
-                "PRODUCENT": fireboard_material["manufacturer"],
+                "Materiale": fireboard_label,
                 "Mængde": fireboard_rate,
                 "Enhed": "m²"
             })
 
     else:
 
-        fireboard_material = find_material(
+        fireboard_label = get_material_label(
             materials_lookup_df,
             [f"{int(thickness)} mm", "fireboard"],
-            language=language
+            fallback=f"Knauf Fireboard {int(thickness)} mm"
         )
 
         materials.append({
-            "Materiale": fireboard_material["description"],
-            "ART.NR.": fireboard_material["art_nr"],
-            "DB_NR.": fireboard_material["db_nr"],
-            "PRODUCENT": fireboard_material["manufacturer"],
+            "Materiale": fireboard_label,
             "Mængde": fireboard_rate,
             "Enhed": "m²"
         })
@@ -885,8 +749,7 @@ def generate_layer_fastener_materials(
     screw_clamp_logic_df,
     materials_by_artnr,
     materials_by_dbnr,
-    clean_numeric,
-    language
+    clean_numeric
 ):
     """
     Generate screw/clamp materials for all layers.
@@ -914,8 +777,7 @@ def generate_layer_fastener_materials(
             staple_rate,
             screw_clamp_logic_df,
             materials_by_artnr,
-            materials_by_dbnr,
-            language
+            materials_by_dbnr
         )
 
         materials.extend(layer_materials)
@@ -938,8 +800,7 @@ def generate_materials(
     materials_by_dbnr,
     get_material_label,
     clean_numeric,
-    clean_text,
-    language
+    clean_text
 ):
     """
     Generate complete material list.
@@ -955,8 +816,7 @@ def generate_materials(
             thickness,
             materials_lookup_df,
             get_material_label,
-            clean_numeric,
-            language
+            clean_numeric
         )
     )
 
@@ -969,8 +829,7 @@ def generate_materials(
             screw_clamp_logic_df,
             materials_by_artnr,
             materials_by_dbnr,
-            clean_numeric,
-            language
+            clean_numeric
         )
     )
 
