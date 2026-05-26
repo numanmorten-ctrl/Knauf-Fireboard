@@ -17,6 +17,12 @@ def resolve_screw_clamp_by_layer(
     materials_by_dbnr,
     language
 ):
+    description_column = (
+        "BESKRIVELSE_EN"
+        if language == "EN"
+        else "BESKRIVELSE_DK"
+    )
+
     """
     For a given layer and board thickness,
     resolve and return screws/clamps.
@@ -750,6 +756,9 @@ def generate_fireboard_materials(
 
             materials.append({
                 "Materiale": fireboard_label,
+                "ART.NR.": "",
+                "DB_NR.": "",
+                "PRODUCENT": "",
                 "Mængde": fireboard_rate,
                 "Enhed": "m²"
             })
@@ -764,6 +773,9 @@ def generate_fireboard_materials(
 
         materials.append({
             "Materiale": fireboard_label,
+            "ART.NR.": "",
+            "DB_NR.": "",
+            "PRODUCENT": "",
             "Mængde": fireboard_rate,
             "Enhed": "m²"
         })
@@ -777,7 +789,8 @@ def generate_layer_fastener_materials(
     screw_clamp_logic_df,
     materials_by_artnr,
     materials_by_dbnr,
-    clean_numeric
+    clean_numeric,
+    language
 ):
     """
     Generate screw/clamp materials for all layers.
@@ -805,7 +818,8 @@ def generate_layer_fastener_materials(
             staple_rate,
             screw_clamp_logic_df,
             materials_by_artnr,
-            materials_by_dbnr
+            materials_by_dbnr,
+            language
         )
 
         materials.extend(layer_materials)
@@ -857,7 +871,8 @@ def generate_materials(
             screw_clamp_logic_df,
             materials_by_artnr,
             materials_by_dbnr,
-            clean_numeric
+            clean_numeric,
+            st.session_state.language
         )
     )
 
