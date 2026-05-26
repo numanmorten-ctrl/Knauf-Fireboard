@@ -927,27 +927,6 @@ table td {
 }
 
 /* ---------------------------------------------------
-STICKY STEP NAVIGATION
---------------------------------------------------- */
-
-div[data-testid="stHorizontalBlock"]:has(button[key^="step_"]) {
-
-    position: sticky !important;
-
-    top: 4.2rem !important;
-
-    z-index: 999 !important;
-
-    background: #f3f5f7 !important;
-
-    padding-top: 0.75rem !important;
-
-    padding-bottom: 0.75rem !important;
-
-    border-bottom: 1px solid #d9dde3 !important;
-}
-
-/* ---------------------------------------------------
 STICKY STEP NAV
 --------------------------------------------------- */
 
@@ -1489,12 +1468,18 @@ with col3:
     st.write("")
     st.write("")
 
-    if st.button(
+   if st.button(
         f"🗑️ {t('new_project')}",
         use_container_width=True
     ):
 
+        current_language = st.session_state.language
+
         st.session_state.clear()
+
+        st.session_state.language = current_language
+
+        st.session_state.current_step = 0
 
         st.rerun()
 
