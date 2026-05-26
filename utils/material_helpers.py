@@ -14,7 +14,8 @@ def resolve_screw_clamp_by_layer(
     staple_rate_qty,
     screw_clamp_logic_df,
     materials_by_artnr,
-    materials_by_dbnr
+    materials_by_dbnr,
+    language
 ):
     """
     For a given layer and board thickness,
@@ -67,7 +68,11 @@ def resolve_screw_clamp_by_layer(
         if screw_material is not None:
 
             resolved_materials.append({
-                "Materiale": screw_material["BESKRIVELSE_DK"],
+                "Materiale": (
+                    screw_material["BESKRIVELSE_EN"]
+                    if language == "EN"
+                    else screw_material["BESKRIVELSE_DK"]
+                ),
                 "Mængde": screw_rate_qty,
                 "Enhed": "stk"
             })
@@ -89,7 +94,11 @@ def resolve_screw_clamp_by_layer(
         if clamp_material is not None:
 
             resolved_materials.append({
-                "Materiale": clamp_material["BESKRIVELSE_DK"],
+                "Materiale": (
+                    clamp_material["BESKRIVELSE_EN"]
+                    if language == "EN"
+                    else clamp_material["BESKRIVELSE_DK"]
+                ),
                 "Mængde": staple_rate_qty,
                 "Enhed": "stk"
             })
