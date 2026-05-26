@@ -975,7 +975,7 @@ table th {
 
     text-align: left !important;
 
-    font-weight: 800 !important;
+    font-weight: 900 !important;
 
     font-size: 13px !important;
 
