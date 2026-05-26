@@ -3146,4 +3146,15 @@ if current_step == 3:
             materials_by_description
         )
 
+        materials_df.columns = [
+            t("material_artnr"),
+            t("material_dbnr"),
+            t("material_manufacturer"),
+            t("material_description"),
+            t("material_consumption"),
+            t("material_unit"),
+            t("material_waste"),
+            t("material_total")
+        ]
+
         render_materials_table(materials_df)
