@@ -811,7 +811,8 @@ def generate_materials(
     materials_by_dbnr,
     get_material_label,
     clean_numeric,
-    clean_text
+    clean_text,
+    language
 ):
     """
     Generate complete material list.
