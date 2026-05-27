@@ -411,8 +411,6 @@ def build_material_row(
 
         "ENHED": row.get("Enhed", ""),
 
-        "SPILDPROCENT": "",
-
         "SAMLET FORBRUG": format_number(total)
     }
 
