@@ -23,6 +23,9 @@ translations = {
         "profile_length":
             "Profil længde (meter)",
 
+        "waste_percent":
+            "Spild (%)",
+
         "select_variant":
             "Vælg lagopbygning",
 
@@ -290,6 +293,9 @@ translations = {
 
         "profile_length":
             "Profile length (meters)",
+
+        "waste_percent":
+            "Waste (%)",
 
         "select_variant":
             "Select layer build-up",
