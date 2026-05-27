@@ -3277,7 +3277,6 @@ if current_step == 3:
             t("material_description"),
             t("material_consumption"),
             t("material_unit"),
-            t("material_waste"),
             t("material_total")
         ]
 
