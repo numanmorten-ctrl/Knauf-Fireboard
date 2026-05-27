@@ -1,0 +1,5 @@
+generate_finishing_materials(
+    fireboard_rate,
+    layer_rows,
+    materials_lookup_df
+)
