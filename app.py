@@ -3069,23 +3069,31 @@ if current_step == 3:
 
     st.header(t("materials_header"))
 
-    profile_length = st.text_input(
-        t("profile_length"),
-        value="6,0"
-    )
+    col1, col2 = st.columns(2)
 
-    profile_length = clean_numeric(profile_length)
+    with col1:
 
-    if profile_length is None:
-        profile_length = 0
+        profile_length = st.text_input(
+            t("profile_length"),
+            value="6,0"
+        )
 
-    waste_percent = st.number_input(
-        t("waste_percent"),
-        min_value=0.0,
-        max_value=100.0,
-        value=10.0,
-        step=1.0
-    )
+        profile_length = clean_numeric(profile_length)
+
+        if profile_length is None:
+            profile_length = 0
+
+    with col2:
+
+        waste_percent = st.text_input(
+            t("waste_percent"),
+            value="10"
+        )
+
+        waste_percent = clean_numeric(waste_percent)
+
+        if waste_percent is None:
+            waste_percent = 0
 
     amount_row = apv_df[
         (
