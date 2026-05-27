@@ -404,6 +404,7 @@ def build_material_row(
 def build_materials_dataframe(
     materials,
     profile_length,
+    waste_percent,
     materials_by_artnr,
     materials_by_dbnr,
     materials_by_description
