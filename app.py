@@ -3079,6 +3079,14 @@ if current_step == 3:
     if profile_length is None:
         profile_length = 0
 
+    waste_percent = st.number_input(
+        t("waste_percent"),
+        min_value=0.0,
+        max_value=100.0,
+        value=10.0,
+        step=1.0
+    )
+
     amount_row = apv_df[
         (
             apv_df["profile"]
