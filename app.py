@@ -3232,6 +3232,7 @@ if current_step == 3:
         materials_df = build_materials_dataframe(
             materials,
             profile_length,
+            waste_percent,
             materials_by_artnr,
             materials_by_dbnr,
             materials_by_description
