@@ -449,7 +449,6 @@ def build_materials_dataframe(
             "BESKRIVELSE",
             "FORBRUG PR. LBM",
             "ENHED",
-            "SPILDPROCENT",
             "SAMLET FORBRUG"
         ]
     )
