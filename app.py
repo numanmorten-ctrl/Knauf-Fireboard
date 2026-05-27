@@ -3229,7 +3229,7 @@ if current_step == 3:
             )
         )
 
-        materials_df = build_materials_dataframe(
+        materials_table_df = build_materials_dataframe(
             materials,
             profile_length,
             waste_percent,
