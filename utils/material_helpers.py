@@ -357,11 +357,21 @@ def build_material_row(
 
     return {
 
-        "ART.NR.": (
-            format_art_nr(match["ART.NR."])
+        # Beskrivelse bruges til specialregler
+        description = (
+            match["BESKRIVELSE_DK"]
             if match is not None
-            else ""
-        ),
+            else row.get("Materiale", "")
+        )
+
+        # Fjern ART.NR. for stålklammer
+        art_nr = ""
+
+        if match is not None:
+
+            if "stålklamme" not in str(description).lower():
+
+                art_nr = format_art_nr(match["ART.NR."])
 
         "DB NR": (
             format_db_nr(match["DB_NR."])
@@ -426,6 +436,23 @@ def build_materials_dataframe(
             "SPILDPROCENT",
             "SAMLET FORBRUG"
         ]
+    )
+
+    # Stålklammer nederst
+    materials_df["_sort_staal"] = (
+        materials_df["BESKRIVELSE"]
+        .astype(str)
+        .str.lower()
+        .str.contains("stålklamme|steel clamp", na=False)
+    )
+
+    materials_df = materials_df.sort_values(
+        by=["_sort_staal", "BESKRIVELSE"],
+        ascending=[True, True]
+    )
+
+    materials_df = materials_df.drop(
+        columns=["_sort_staal"]
     )
 
     return materials_df
