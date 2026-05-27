@@ -352,8 +352,10 @@ def build_material_row(
         materials_by_description
     )
 
-    per_meter = row.get("Mængde", 0)
-
+    per_meter = clean_numeric(per_meter) or 0
+    profile_length = clean_numeric(profile_length) or 0
+    waste_percent = clean_numeric(waste_percent) or 0
+    
     total = (
         per_meter
         * profile_length
