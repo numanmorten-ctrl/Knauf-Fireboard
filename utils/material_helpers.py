@@ -826,6 +826,52 @@ def generate_layer_fastener_materials(
 
     return materials
 
+# ---------------------------------------------------
+# GENERATE FINISHING MATERIALS
+# ---------------------------------------------------
+
+def generate_finishing_materials(
+    fireboard_rate,
+    materials_lookup_df,
+    get_material_label
+):
+    """
+    Generate finishing materials
+    (joint filler + paper tape).
+    """
+
+    materials = []
+
+    # Spartelmasse
+
+    filler_label = get_material_label(
+        materials_lookup_df,
+        ["spartel"],
+        fallback="Fireboard spartel"
+    )
+
+    materials.append({
+        "Materiale": filler_label,
+        "Mængde": fireboard_rate * 0.35,
+        "Enhed": "kg"
+    })
+
+    # Spartelpapir
+
+    tape_label = get_material_label(
+        materials_lookup_df,
+        ["spartelpapir"],
+        fallback="Spartelpapir"
+    )
+
+    materials.append({
+        "Materiale": tape_label,
+        "Mængde": fireboard_rate * 1.2,
+        "Enhed": "m"
+    })
+
+    return materials
+
 def generate_materials(
     fireboard_rate,
     layer_rows,
