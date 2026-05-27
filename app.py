@@ -3240,8 +3240,8 @@ if current_step == 3:
 
         if st.session_state.language == "EN":
 
-            materials_df["PRODUCENT"] = (
-                materials_df["PRODUCENT"]
+            materials_table_df["PRODUCENT"] = (
+                materials_table_df["PRODUCENT"]
                 .astype(str)
                 .str.strip()
                 .replace({
@@ -3249,8 +3249,8 @@ if current_step == 3:
                 })
             )
 
-            materials_df["BESKRIVELSE"] = (
-                materials_df["BESKRIVELSE"]
+            materials_table_df["BESKRIVELSE"] = (
+                materials_table_df["BESKRIVELSE"]
                 .astype(str)
                 .str.strip()
                 .replace({
@@ -3270,7 +3270,7 @@ if current_step == 3:
                 }, regex=True)
             )
 
-        materials_df.columns = [
+        materials_table_df.columns = [
             t("material_artnr"),
             t("material_dbnr"),
             t("material_manufacturer"),
@@ -3281,10 +3281,10 @@ if current_step == 3:
             t("material_total")
         ]
 
-        render_materials_table(materials_df)
+        render_materials_table(materials_table_df)
         
         excel_file = create_materials_excel(
-            materials_df
+            materials_table_df
         )
 
         st.download_button(
