@@ -12,6 +12,7 @@ import requests
 from translations import translations
 from utils.data_loader import clean_text, clean_numeric, load_and_clean_csv
 from utils.render_helpers import render_materials_table
+from utils.export_helpers import create_materials_excel
 from utils.ui_helpers import (
     card,
     disabled_card
@@ -3264,3 +3265,19 @@ if current_step == 3:
         ]
 
         render_materials_table(materials_df)
+        
+        excel_file = create_materials_excel(
+            materials_df
+        )
+
+        st.download_button(
+            label="📥 Download Excel",
+            data=excel_file,
+            file_name="materialeliste.xlsx",
+            mime=(
+                "application/vnd.openxmlformats-officedocument."
+                "spreadsheetml.sheet"
+            )
+        )
+
+
