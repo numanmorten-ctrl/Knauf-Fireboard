@@ -244,6 +244,11 @@ translations = {
         "profile_length": "Profil længde (meter)",
         "select_layer_build_up": "Vælg lagopbygning",
 
+        "waste_percent": {
+            "DA": "Spild (%)",
+            "EN": "Waste (%)"
+        },
+
         # ---------------------------------------------------
         # PDF
         # ---------------------------------------------------
@@ -505,6 +510,11 @@ translations = {
         "materials_header": "Materials",
         "profile_length": "Profile length (meters)",
         "select_layer_build_up": "Select layer build-up",
+
+        "waste_percent": {
+            "DA": "Spild (%)",
+            "EN": "Waste (%)"
+        },
 
         # ---------------------------------------------------
         # PDF
