@@ -944,6 +944,15 @@ def generate_materials(
         clean_text
     )
 
+    # Finishing materials
+    materials.extend(
+        generate_finishing_materials(
+            fireboard_rate,
+            materials_lookup_df,
+            get_material_label
+        )
+    )
+
     if beam_material:
         materials.append(beam_material)
 
