@@ -355,23 +355,28 @@ def build_material_row(
 
     total = per_meter * profile_length
 
+    # Beskrivelse
+    description = (
+        match["BESKRIVELSE_DK"]
+        if match is not None
+        else row.get("Materiale", "")
+    )
+
+    # ART.NR.
+    art_nr = ""
+
+    if match is not None:
+
+        # Fjern dummy nummer for stålklammer
+        if "stålklamme" not in str(description).lower():
+
+            art_nr = format_art_nr(
+                match["ART.NR."]
+            )
+
     return {
 
-        # Beskrivelse bruges til specialregler
-        description = (
-            match["BESKRIVELSE_DK"]
-            if match is not None
-            else row.get("Materiale", "")
-        )
-
-        # Fjern ART.NR. for stålklammer
-        art_nr = ""
-
-        if match is not None:
-
-            if "stålklamme" not in str(description).lower():
-
-                art_nr = format_art_nr(match["ART.NR."])
+        "ART.NR.": art_nr,
 
         "DB NR": (
             format_db_nr(match["DB_NR."])
@@ -385,11 +390,7 @@ def build_material_row(
             else ""
         ),
 
-        "BESKRIVELSE": (
-            match["BESKRIVELSE_DK"]
-            if match is not None
-            else row.get("Materiale", "")
-        ),
+        "BESKRIVELSE": description,
 
         "FORBRUG PR. LBM": format_number(per_meter),
 
