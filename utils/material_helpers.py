@@ -339,6 +339,7 @@ def format_art_nr(value):
 def build_material_row(
     row,
     profile_length,
+    waste_percent,
     materials_by_artnr,
     materials_by_dbnr,
     materials_by_description
@@ -353,7 +354,11 @@ def build_material_row(
 
     per_meter = row.get("Mængde", 0)
 
-    total = per_meter * profile_length
+    total = (
+        per_meter
+        * profile_length
+        * (1 + waste_percent / 100)
+    )
 
     # Beskrivelse
     description = (
@@ -422,6 +427,7 @@ def build_materials_dataframe(
             build_material_row(
                 row,
                 profile_length,
+                waste_percent,
                 materials_by_artnr,
                 materials_by_dbnr,
                 materials_by_description
