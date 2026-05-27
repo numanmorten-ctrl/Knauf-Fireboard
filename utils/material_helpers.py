@@ -860,8 +860,8 @@ def generate_finishing_materials(
 
     tape_label = get_material_label(
         materials_lookup_df,
-        ["spartelpapir"],
-        fallback="Spartelpapir"
+        ["fugestrimler"],
+        fallback="Fugestrimler glasfiber"
     )
 
     materials.append({
