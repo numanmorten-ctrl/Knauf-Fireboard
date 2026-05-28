@@ -1848,7 +1848,8 @@ with st.sidebar:
                         "ART.NR."
                     ],
                     dropna=False,
-                    as_index=False
+                    as_index=False,
+                    sort=False
                 )
                 .agg({
                     "DB NR": "first",
@@ -1859,16 +1860,6 @@ with st.sidebar:
                     "SAMLET MÆNGDE": "sum"
                 })
             )
-
-            total_materials_df["ART.NR_SORT"] = (
-                total_materials_df["ART.NR."]
-                .replace("", pd.NA)
-            )
-
-            total_materials_df = total_materials_df.sort_values(
-                by=["ART.NR_SORT", "BESKRIVELSE"],
-                na_position="last"
-            ).drop(columns=["ART.NR_SORT"])
 
             combined_excel = create_materials_excel(
                 combined_df
