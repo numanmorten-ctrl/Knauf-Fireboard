@@ -3330,8 +3330,10 @@ if current_step == 3:
             unsafe_allow_html=True
         )
 
+        excel_export_df = materials_table_df.iloc[:, :-3]
+
         excel_file = create_materials_excel(
-            materials_table_df
+            excel_export_df
         )
 
         st.download_button(
