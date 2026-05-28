@@ -508,7 +508,7 @@ def build_materials_dataframe(
             "FORBRUG PR. LBM",
             "ENHED",
             "SAMLET FORBRUG",
-            "CO2"
+            "CO2",
             "EPD",
             "DATABLAD"
         ]
