@@ -1823,6 +1823,8 @@ with st.sidebar:
                 ignore_index=True
             )
 
+            combined_df["SORT_ORDER"] = range(len(combined_df))
+
             # ---------------------------------------------------
             # CONVERT NUMBER COLUMNS
             # ---------------------------------------------------
@@ -1872,6 +1874,7 @@ with st.sidebar:
                     sort=False
                 )
                 .agg({
+                    "SORT_ORDER": "min",
                     "ART.NR.": "first",
                     "DB NR": "first",
                     "PRODUCENT": "first",
@@ -1883,8 +1886,15 @@ with st.sidebar:
                 .drop(columns=["GROUP_KEY"])
             )
 
+            total_materials_df = total_materials_df.sort_values(
+                by="SORT_ORDER"
+            ).drop(columns=["SORT_ORDER"])
+
             combined_excel = create_materials_excel(
-                combined_df
+                combined_df.drop(
+                    columns=["SORT_ORDER", "GROUP_KEY"],
+                    errors="ignore"
+                )
             )
 
             total_excel = create_materials_excel(
