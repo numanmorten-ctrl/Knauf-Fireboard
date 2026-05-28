@@ -3271,10 +3271,6 @@ if current_step == 3:
                 }, regex=True)
             )
 
-
-        st.write(materials_table_df.columns.tolist())
-        st.write(len(materials_table_df.columns))
-        
         materials_table_df.columns = [
             t("material_artnr"),
             t("material_dbnr"),
