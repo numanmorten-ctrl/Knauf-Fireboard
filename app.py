@@ -1860,6 +1860,11 @@ with st.sidebar:
                 })
             )
 
+            total_materials_df = total_materials_df.sort_values(
+                by=["ART.NR.", "BESKRIVELSE"],
+                na_position="last"
+            )
+
             combined_excel = create_materials_excel(
                 combined_df
             )
