@@ -1841,6 +1841,18 @@ with st.sidebar:
                         errors="coerce"
                     ).fillna(0)
 
+            combined_df["GROUP_KEY"] = (
+                combined_df["ART.NR."]
+                .fillna("")
+                .astype(str)
+                .str.strip()
+            )
+
+            combined_df.loc[
+                combined_df["GROUP_KEY"] == "",
+                "GROUP_KEY"
+            ] = combined_df["BESKRIVELSE"]
+
             total_materials_df = (
                 combined_df
                 .groupby(
