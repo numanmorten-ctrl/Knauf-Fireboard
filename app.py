@@ -1930,8 +1930,13 @@ with st.sidebar:
                 combined_export_df
             )
 
+            total_export_df = total_materials_df.drop(
+                columns=["SORT_ORDER"],
+                errors="ignore"
+            )
+
             total_excel = create_materials_excel(
-                total_materials_df
+                total_export_df
             )
 
             st.download_button(
