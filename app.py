@@ -1845,13 +1845,14 @@ with st.sidebar:
                 combined_df
                 .groupby(
                     [
-                        "ART.NR."
+                        "GROUP_KEY"
                     ],
                     dropna=False,
                     as_index=False,
                     sort=False
                 )
                 .agg({
+                    "ART.NR.": "first",
                     "DB NR": "first",
                     "PRODUCENT": "first",
                     "BESKRIVELSE": "first",
@@ -1859,6 +1860,7 @@ with st.sidebar:
                     "FORBRUG PR. LBM": "sum",
                     "SAMLET MÆNGDE": "sum"
                 })
+                .drop(columns=["GROUP_KEY"])
             )
 
             combined_excel = create_materials_excel(
