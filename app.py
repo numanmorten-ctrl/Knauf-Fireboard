@@ -3299,9 +3299,13 @@ if current_step == 3:
         )
 
         co2_values = pd.to_numeric(
+
             materials_table_df[
                 t("material_co2")
-            ],
+            ]
+            .astype(str)
+            .str.replace(",", ".", regex=False),
+
             errors="coerce"
         )
 
@@ -3310,12 +3314,12 @@ if current_step == 3:
         st.markdown(
             f"""
             <div style="
-                display: flex;
-                justify-content: flex-end;
-                margin-top: 1rem;
-                margin-bottom: 1rem;
-                font-size: 1.1rem;
+                text-align: right;
+                color: #444444;
+                font-size: 1rem;
                 font-weight: 600;
+                margin-top: -0.5rem;
+                margin-bottom: 1rem;
             ">
                 Samlet CO2-aftryk: {format_number(total_co2)} kg CO2e
             </div>
