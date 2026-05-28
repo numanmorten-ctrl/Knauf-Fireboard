@@ -3259,6 +3259,7 @@ if current_step == 3:
                     "Stålklamme": "Steel clamp",
                     "Vinkelprofil": "Angle profile",
                     "Bjælkeprofil": "Beam profile",
+                    "Fugestrimler glasfiber": "Fiberglass joint tape",
                     "rød": "red",
                     "gul": "yellow",
                     "grøn": "green",
