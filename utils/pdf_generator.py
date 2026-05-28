@@ -282,7 +282,7 @@ def get_display_text(value, t):
 
     mapping = {
         "Klammeløsning": "clamping_solution",
-        "Bjælkeprofil eller PDP profil": "beam_or_pdp_profile"
+        "Bjælkeprofil eller PHL profil": "beam_or_phl_profile"
     }
 
     translation_key = mapping.get(value)
