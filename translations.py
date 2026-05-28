@@ -161,8 +161,8 @@ translations = {
         "clamping_solution":
             "Klammeløsning",
 
-        "beam_or_pdp_profile":
-            "Bjælkeprofil eller PDP profil",
+        "beam_or_phl_profile":
+            "Bjælkeprofil eller PHL profil",
 
         "one_side_not_possible":
             "1 side ikke muligt",
@@ -429,8 +429,8 @@ translations = {
         "clamping_solution":
             "Clamping solution",
 
-        "beam_or_pdp_profile":
-            "Beam profile or PDP profile",
+        "beam_or_phl_profile":
+            "Beam profile or PHL profile",
 
         "one_side_not_possible":
             "1 side not possible",
