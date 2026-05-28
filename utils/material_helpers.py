@@ -514,7 +514,7 @@ def resolve_beam_text(
     Resolve beam profile text from beam profile logic table.
 
     Returns:
-        "PDP"
+        "PHL"
         or
         "BJ xx-xx color"
     """
@@ -539,8 +539,8 @@ def resolve_beam_text(
             beam_row.get("color", "")
         )
 
-        pdp_value = clean_text(
-            beam_row.get("pdp", "")
+        phl_value = clean_text(
+            beam_row.get("phl", "")
         )
 
         if bj_value and bj_value.lower() != "nan":
@@ -549,11 +549,11 @@ def resolve_beam_text(
 
             return f"Bjælkeprofil {bj_formatted} {color_value} 2000 mm".strip()
 
-        elif pdp_value and pdp_value.lower() != "nan":
+        elif phl_value and phl_value.lower() != "nan":
 
-            return "PDP profil 25 3000 mm"
+            return "Phl profil 25 3000 mm"
 
-    return "PDP"
+    return "Phl"
 
 def resolve_angle_material(
     angle_rate,
@@ -707,9 +707,9 @@ def resolve_beam_material(
 
     beam_keywords = []
 
-    if beam_text.upper() == "PDP":
+    if beam_text.upper() == "PHL":
 
-        beam_keywords = ["pdp"]
+        beam_keywords = ["phl"]
 
     elif beam_text.upper() == "BJ":
 
