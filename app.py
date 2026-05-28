@@ -1891,10 +1891,7 @@ with st.sidebar:
             ).drop(columns=["SORT_ORDER"])
 
             combined_excel = create_materials_excel(
-                combined_df.drop(
-                    columns=["SORT_ORDER", "GROUP_KEY"],
-                    errors="ignore"
-                )
+                combined_df
             )
 
             total_excel = create_materials_excel(
