@@ -3317,12 +3317,11 @@ if current_step == 3:
         st.markdown(
             f"""
             <div style="
-                text-align: right;
-                padding-right: 18.5rem;
+                text-align: left;
                 color: #444444;
                 font-size: 1rem;
                 font-weight: 600;
-                margin-top: -3rem;
+                margin-top: -2.2rem;
                 margin-bottom: 1rem;
             ">
                 {t("total_co2_footprint")}: {format_number(total_co2)} kg CO2e
