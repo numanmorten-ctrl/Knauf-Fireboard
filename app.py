@@ -1860,10 +1860,15 @@ with st.sidebar:
                 })
             )
 
-            total_materials_df = total_materials_df.sort_values(
-                by=["ART.NR.", "BESKRIVELSE"],
-                na_position="last"
+            total_materials_df["ART.NR_SORT"] = (
+                total_materials_df["ART.NR."]
+                .replace("", pd.NA)
             )
+
+            total_materials_df = total_materials_df.sort_values(
+                by=["ART.NR_SORT", "BESKRIVELSE"],
+                na_position="last"
+            ).drop(columns=["ART.NR_SORT"])
 
             combined_excel = create_materials_excel(
                 combined_df
