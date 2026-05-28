@@ -1,5 +1,4 @@
 import streamlit as st
-import streamlit.components.v1 as components
 
 
 def render_materials_table(materials_df):
@@ -12,8 +11,7 @@ def render_materials_table(materials_df):
         escape=False
     )
 
-    components.html(
+    st.markdown(
         html,
-        height=1200,
-        scrolling=True
+        unsafe_allow_html=True
     )
