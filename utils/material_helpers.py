@@ -1,4 +1,5 @@
 import pandas as pd
+import streamlit as st
 
 from utils.data_loader import clean_numeric, clean_text
 
@@ -402,9 +403,13 @@ def build_material_row(
                 * co2_factor
             )
 
-        if co2_type == "IGNORE":
+        if st.session_state.language == "EN":
 
-            co2_display = t("co2_not_included")
+            co2_display = "Not included according to BR18"
+
+        else:
+
+            co2_display = "Medregnes ikke jf. BR18"
 
         else:
 
