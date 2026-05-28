@@ -257,6 +257,9 @@ translations = {
             "spildprocent."
         ),
 
+        "material_epd": "EPD",
+        "material_datasheet": "DATABLAD",
+
         # ---------------------------------------------------
         # PDF
         # ---------------------------------------------------
@@ -531,6 +534,9 @@ translations = {
             "profile length and include the selected "
             "waste percentage."
         ),
+
+        "material_epd": "EPD",
+        "material_datasheet": "DATASHEET",
 
         # ---------------------------------------------------
         # PDF
