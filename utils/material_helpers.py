@@ -340,6 +340,7 @@ def build_material_row(
     row,
     profile_length,
     waste_percent,
+    fireboard_rate,
     materials_by_artnr,
     materials_by_dbnr,
     materials_by_description
@@ -369,6 +370,36 @@ def build_material_row(
         * profile_length
         * (1 + waste_percent / 100)
     )
+
+    co2_total = 0
+
+    if match is not None:
+
+        co2_factor = clean_numeric(
+            match.get("CO2", 0)
+        ) or 0
+
+        co2_type = str(
+            match.get("CO2_TYPE", "")
+        ).strip().upper()
+
+        # AREA
+        if co2_type == "AREA":
+
+            co2_total = (
+                fireboard_rate
+                * profile_length
+                * (1 + waste_percent / 100)
+                * co2_factor
+            )
+
+        # LENGTH
+        elif co2_type == "LENGTH":
+
+            co2_total = (
+                total
+                * co2_factor
+            )
 
     # Beskrivelse
     description = (
@@ -418,6 +449,7 @@ def build_materials_dataframe(
     materials,
     profile_length,
     waste_percent,
+    fireboard_rate,
     materials_by_artnr,
     materials_by_dbnr,
     materials_by_description
@@ -436,6 +468,7 @@ def build_materials_dataframe(
                 row,
                 profile_length,
                 waste_percent,
+                fireboard_rate,
                 materials_by_artnr,
                 materials_by_dbnr,
                 materials_by_description
