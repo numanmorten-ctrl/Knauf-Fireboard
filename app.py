@@ -3283,6 +3283,10 @@ if current_step == 3:
         ]
 
         render_materials_table(materials_table_df)
+
+        st.caption(
+            t("co2_note")
+        )
         
         excel_file = create_materials_excel(
             materials_table_df
