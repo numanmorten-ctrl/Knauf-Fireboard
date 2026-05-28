@@ -1823,6 +1823,8 @@ with st.sidebar:
                 ignore_index=True
             )
 
+            combined_df["SORT_ORDER"] = range(len(combined_df))
+
             # ---------------------------------------------------
             # CONVERT NUMBER COLUMNS
             # ---------------------------------------------------
@@ -1872,6 +1874,7 @@ with st.sidebar:
                     sort=False
                 )
                 .agg({
+                    "SORT_ORDER": "min",
                     "ART.NR.": "first",
                     "DB NR": "first",
                     "PRODUCENT": "first",
