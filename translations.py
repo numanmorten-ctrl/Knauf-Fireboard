@@ -18,7 +18,7 @@ translations = {
             "Nyt projekt",
 
         "materials":
-            "Materialeforbrug",
+            "Vejl. materialeforbrug",
 
         "profile_length":
             "Profil længde (meter)",
@@ -296,7 +296,7 @@ translations = {
             "New project",
 
         "materials":
-            "Materials",
+            "Estimated materials",
 
         "profile_length":
             "Profile length (meters)",
