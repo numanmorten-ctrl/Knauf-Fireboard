@@ -1848,10 +1848,18 @@ with st.sidebar:
                 .str.strip()
             )
 
-            combined_df.loc[
-                combined_df["GROUP_KEY"] == "",
-                "GROUP_KEY"
-            ] = combined_df["BESKRIVELSE"]
+            combined_df["GROUP_KEY"] = combined_df["GROUP_KEY"].replace(
+                "",
+                pd.NA
+            )
+
+            combined_df["GROUP_KEY"] = combined_df["GROUP_KEY"].fillna(
+                combined_df["BESKRIVELSE"]
+            )
+
+            combined_df["GROUP_KEY"] = combined_df["GROUP_KEY"].fillna(
+                "FREMMED_MATERIALE"
+            )
 
             total_materials_df = (
                 combined_df
