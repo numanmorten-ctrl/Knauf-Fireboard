@@ -3297,7 +3297,32 @@ if current_step == 3:
             """,
             unsafe_allow_html=True
         )
-        
+
+        co2_values = pd.to_numeric(
+            materials_table_df[
+                t("material_co2")
+            ],
+            errors="coerce"
+        )
+
+        total_co2 = co2_values.sum()
+
+        st.markdown(
+            f"""
+            <div style="
+                display: flex;
+                justify-content: flex-end;
+                margin-top: 1rem;
+                margin-bottom: 1rem;
+                font-size: 1.1rem;
+                font-weight: 600;
+            ">
+                Samlet CO2-aftryk: {format_number(total_co2)} kg CO2e
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
+
         excel_file = create_materials_excel(
             materials_table_df
         )
