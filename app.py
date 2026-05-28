@@ -124,7 +124,7 @@ MAIN LAYOUT
 
 .block-container {
 
-    max-width: 1400px;
+    max-width: 1600px;
 
     padding-top: 4.2rem !important;
 
