@@ -3324,7 +3324,7 @@ if current_step == 3:
                 margin-top: -3rem;
                 margin-bottom: 1rem;
             ">
-                Samlet CO2-aftryk: {format_number(total_co2)} kg CO2e
+                {t("total_co2_footprint")}: {format_number(total_co2)} kg CO2e
             </div>
             """,
             unsafe_allow_html=True
