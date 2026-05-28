@@ -1097,6 +1097,8 @@ defaults = {
 
     "calculations": [],
 
+    "combined_materials": {},
+
     "edit_index": None,
     "editing": False,
 
@@ -1805,6 +1807,36 @@ with st.sidebar:
             mime="application/pdf",
             use_container_width=True
         )
+        
+        # ---------------------------------------------------
+        # DOWNLOAD COMBINED MATERIAL LIST
+        # ---------------------------------------------------
+
+        if st.session_state.combined_materials:
+
+            st.divider()
+
+            combined_df = pd.concat(
+
+                st.session_state.combined_materials.values(),
+
+                ignore_index=True
+            )
+
+            combined_excel = create_materials_excel(
+                combined_df
+            )
+
+            st.download_button(
+                label="📦 Download samlet materialeliste",
+                data=combined_excel,
+                file_name="samlet_materialeliste.xlsx",
+                mime=(
+                    "application/vnd.openxmlformats-officedocument."
+                    "spreadsheetml.sheet"
+                ),
+                use_container_width=True
+            )
 
 # ---------------------------------------------------
 # STEP NAVIGATION
@@ -3018,6 +3050,24 @@ if current_step == 3:
             t("previous"),
             use_container_width=True
         ):
+
+            # ---------------------------------------------------
+            # SAVE MATERIAL LIST
+            # ---------------------------------------------------
+
+            export_df = materials_table_df.iloc[:, :-3].copy()
+
+            calculation_key = (
+                f"{selected_profile}_"
+                f"R{fire_time}_"
+                f"{temperature}"
+            )
+
+            export_df["SYSTEM"] = calculation_key
+
+            st.session_state.combined_materials[
+                calculation_key
+            ] = export_df
 
             st.session_state.current_step = 2
 
