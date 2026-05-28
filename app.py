@@ -1845,16 +1845,16 @@ with st.sidebar:
                 combined_df
                 .groupby(
                     [
-                        "ART.NR.",
-                        "DB NR",
-                        "PRODUCENT",
-                        "BESKRIVELSE",
-                        "ENHED"
+                        "ART.NR."
                     ],
                     dropna=False,
                     as_index=False
                 )
                 .agg({
+                    "DB NR": "first",
+                    "PRODUCENT": "first",
+                    "BESKRIVELSE": "first",
+                    "ENHED": "first",
                     "FORBRUG PR. LBM": "sum",
                     "SAMLET MÆNGDE": "sum"
                 })
