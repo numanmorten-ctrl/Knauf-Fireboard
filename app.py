@@ -1156,7 +1156,7 @@ CATEGORY_TO_TRANSLATION_KEY = {
 # ---------------------------------------------------
 DISPLAY_VALUE_TO_TRANSLATION_KEY = {
     "Klammeløsning": "clamping_solution",
-    "Bjælkeprofil eller PDP profil": "beam_or_pdp_profile",
+    "Bjælkeprofil eller PHL profil": "beam_or_phl_profile",
 }
 
 
@@ -2397,12 +2397,12 @@ if current_step == 1:
     with col2:
 
         card(
-            t("beam_or_pdp_profile"),
+            t("beam_or_phl_profile"),
             "images/bjaelke.png",
             "montage",
             st.session_state,
             t,
-            "Bjælkeprofil eller PDP profil"
+            "Bjælkeprofil eller PHL profil"
         )
 
     montage = st.session_state.montage
@@ -3135,7 +3135,7 @@ if current_step == 3:
         beam_rate = (
             clean_numeric(
                 amount_row[
-                    "Antal bjælkeprofiler/PDP pr. m profil"
+                    "Antal bjælkeprofiler/PHL pr. m profil"
                 ]
             ) or 0
         )
@@ -3266,7 +3266,7 @@ if current_step == 3:
                     "hvid": "white",
                     "sort": "black",
                     "orange": "orange",
-                    "PDP profil": "PDP Profile"
+                    "PHL profil": "PHL Profile"
                 }, regex=True)
             )
 
