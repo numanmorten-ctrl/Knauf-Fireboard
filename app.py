@@ -3233,6 +3233,7 @@ if current_step == 3:
             materials,
             profile_length,
             waste_percent,
+            fireboard_rate,
             materials_by_artnr,
             materials_by_dbnr,
             materials_by_description
