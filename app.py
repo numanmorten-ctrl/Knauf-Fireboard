@@ -846,7 +846,7 @@ div[data-testid="stButton"] button:disabled {
 
     cursor: default !important;
 
-    margin-right: -4px !important;
+    margin-right: -6px !important;
 }
 /* ---------------------------------------------------
 LANGUAGE ICON BUTTON
