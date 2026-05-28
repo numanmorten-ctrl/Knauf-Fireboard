@@ -3278,7 +3278,8 @@ if current_step == 3:
             t("material_description"),
             t("material_consumption"),
             t("material_unit"),
-            t("material_total")
+            t("material_total"),
+            t("material_co2")
         ]
 
         render_materials_table(materials_table_df)
