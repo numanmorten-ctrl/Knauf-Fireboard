@@ -456,16 +456,28 @@ def build_material_row(
         "CO2": co2_display,
 
         "EPD": (
+
             f'<a href="{match.get("EPD_URL", "")}" target="_blank">🌱</a>'
-            if match is not None
-            and match.get("EPD_URL", "")
+
+            if (
+                match is not None
+                and str(match.get("EPD_URL", "")).strip() != ""
+                and str(match.get("EPD_URL", "")).strip().lower() != "nan"
+            )
+
             else ""
         ),
 
         "DATABLAD": (
+
             f'<a href="{match.get("DATABLAD_URL", "")}" target="_blank">📄</a>'
-            if match is not None
-            and match.get("DATABLAD_URL", "")
+
+            if (
+                match is not None
+                and str(match.get("DATABLAD_URL", "")).strip() != ""
+                and str(match.get("DATABLAD_URL", "")).strip().lower() != "nan"
+            )
+
             else ""
         ),
     }
