@@ -1823,7 +1823,27 @@ with st.sidebar:
                 ignore_index=True
             )
 
-            combined_df["SORT_ORDER"] = range(len(combined_df))
+            material_sort_order = {
+                "Fireboard": 1,
+                "spartelmasse": 2,
+                "Fugestrimler": 3,
+                "Skrue": 4,
+                "Vinkelprofil": 5,
+                "Stålklamme": 6,
+                "PHL profil": 7,
+                "Bjælkeprofil": 8
+            }
+
+            combined_df["SORT_ORDER"] = 999
+
+            for text, order in material_sort_order.items():
+
+                combined_df.loc[
+                    combined_df["BESKRIVELSE"]
+                    .astype(str)
+                    .str.contains(text, case=False, na=False),
+                    "SORT_ORDER"
+                ] = order
 
             # ---------------------------------------------------
             # CONVERT NUMBER COLUMNS
