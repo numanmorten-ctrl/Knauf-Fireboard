@@ -442,7 +442,9 @@ def build_material_row(
 
         "ENHED": row.get("Enhed", ""),
 
-        "SAMLET FORBRUG": format_number(total)
+        "SAMLET FORBRUG": format_number(total),
+
+        "CO2": format_number(co2_total)
     }
 
 def build_materials_dataframe(
@@ -483,6 +485,7 @@ def build_materials_dataframe(
             "FORBRUG PR. LBM",
             "ENHED",
             "SAMLET FORBRUG"
+            "CO2"
         ]
     )
 
