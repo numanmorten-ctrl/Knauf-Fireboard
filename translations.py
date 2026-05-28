@@ -259,6 +259,8 @@ translations = {
 
         "material_epd": "EPD",
         "material_datasheet": "DATABLAD",
+        "co2_not_included": "Medregnes ikke jf. BR18",
+        "total_co2_footprint": "Samlet CO2-aftryk",
 
         # ---------------------------------------------------
         # PDF
@@ -537,6 +539,8 @@ translations = {
 
         "material_epd": "EPD",
         "material_datasheet": "DATASHEET",
+        "co2_not_included": "Not included according to BR18",
+        "total_co2_footprint": "Total CO2 footprint",
 
         # ---------------------------------------------------
         # PDF
