@@ -395,6 +395,8 @@ def build_material_row(
                 * co2_factor
             )
 
+            co2_display = format_number(co2_total)
+
         # LENGTH
         elif co2_type == "LENGTH":
 
@@ -403,17 +405,17 @@ def build_material_row(
                 * co2_factor
             )
 
-        if st.session_state.language == "EN":
-
-            co2_display = "Not included according to BR18"
-
-        else:
-
-            co2_display = "Medregnes ikke jf. BR18"
-
-        else:
-
             co2_display = format_number(co2_total)
+
+        else:
+
+            if st.session_state.language == "EN":
+
+                co2_display = "Not included according to BR18"
+
+            else:
+
+                co2_display = "Medregnes ikke jf. BR18"
 
     # Beskrivelse
     description = (
