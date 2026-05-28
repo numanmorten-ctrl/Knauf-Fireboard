@@ -3319,8 +3319,8 @@ if current_step == 3:
             <div style="
                 text-align: left;
                 color: #444444;
-                font-size: 1rem;
-                font-weight: 600;
+                font-size: 1.5rem;
+                font-weight: 700;
                 margin-top: -1rem;
                 margin-bottom: 1rem;
             ">
