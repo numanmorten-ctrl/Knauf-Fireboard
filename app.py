@@ -828,7 +828,7 @@ div[data-testid="stButton"] button:disabled {
 
     padding-left: 0 !important;
 
-    padding-right: 5px !important;
+    padding-right: -5px !important;
 
     border: 1px solid #b8c2cc !important;
 
