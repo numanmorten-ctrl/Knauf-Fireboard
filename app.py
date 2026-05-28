@@ -3289,7 +3289,7 @@ if current_step == 3:
             <div style="
                 font-size: 0.85rem;
                 color: #666666;
-                margin-top: 0.5rem;
+                margin-top: -2rem;
                 margin-bottom: 1rem;
             ">
                 {t("co2_note")}
