@@ -1845,6 +1845,11 @@ with st.sidebar:
                     "SORT_ORDER"
                 ] = order
 
+            combined_df = combined_df.sort_values(
+            by="SORT_ORDER",
+            kind="stable"
+            )
+
             # ---------------------------------------------------
             # CONVERT NUMBER COLUMNS
             # ---------------------------------------------------
@@ -1883,6 +1888,11 @@ with st.sidebar:
                 "FREMMED_MATERIALE"
             )
 
+            combined_df = combined_df.sort_values(
+                by="SORT_ORDER",
+                kind="stable"
+            )
+
             total_materials_df = (
                 combined_df
                 .groupby(
@@ -1907,7 +1917,8 @@ with st.sidebar:
             )
 
             total_materials_df = total_materials_df.sort_values(
-                by="SORT_ORDER"
+                by="SORT_ORDER",
+                kind="stable"
             ).drop(columns=["SORT_ORDER"])
 
             combined_export_df = combined_df.drop(
