@@ -404,7 +404,7 @@ def build_material_row(
 
         if co2_type == "IGNORE":
 
-            co2_display = "Medregnes ikke jf. BR18"
+            co2_display = t("co2_not_included")
 
         else:
 
