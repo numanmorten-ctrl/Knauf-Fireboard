@@ -1829,9 +1829,9 @@ with st.sidebar:
                 "Fugestrimler": 3,
                 "Skrue": 4,
                 "Vinkelprofil": 5,
-                "Stålklamme": 6,
+                "Bjælkeprofil": 6,
                 "PHL profil": 7,
-                "Bjælkeprofil": 8
+                "Stålklamme": 99
             }
 
             combined_df["SORT_ORDER"] = 999
