@@ -826,7 +826,7 @@ div[data-testid="stButton"] button:disabled {
 
     min-width: 38px !important;
 
-    padding-left: 10px !important;
+    padding-left: 20px !important;
 
     padding-right: 0 !important;
 
