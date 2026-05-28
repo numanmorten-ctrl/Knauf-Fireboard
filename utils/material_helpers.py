@@ -453,7 +453,7 @@ def build_material_row(
 
         "SAMLET FORBRUG": format_number(total),
 
-        "CO2": co2_display
+        "CO2": co2_display,
 
         "EPD_URL": (
             match.get("EPD_URL", "")
