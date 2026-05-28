@@ -3318,7 +3318,7 @@ if current_step == 3:
                 color: #444444;
                 font-size: 1rem;
                 font-weight: 600;
-                margin-top: -4rem;
+                margin-top: -3rem;
                 margin-bottom: 1rem;
             ">
                 Samlet CO2-aftryk: {format_number(total_co2)} kg CO2e
