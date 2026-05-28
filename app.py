@@ -3284,8 +3284,18 @@ if current_step == 3:
 
         render_materials_table(materials_table_df)
 
-        st.caption(
-            t("co2_note")
+        st.markdown(
+            f"""
+            <div style="
+                font-size: 0.85rem;
+                color: #666666;
+                margin-top: 0.5rem;
+                margin-bottom: 1rem;
+            ">
+                {t("co2_note")}
+            </div>
+            """,
+            unsafe_allow_html=True
         )
         
         excel_file = create_materials_excel(
