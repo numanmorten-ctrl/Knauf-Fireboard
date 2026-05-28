@@ -934,7 +934,7 @@ table thead th {
 
     text-align: left !important;
 
-    padding: 8px 24px !important;
+    padding: 6px 24px !important;
 
     border: none !important;
 
