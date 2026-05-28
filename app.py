@@ -1823,12 +1823,46 @@ with st.sidebar:
                 ignore_index=True
             )
 
+            total_materials_df = (
+                combined_df
+                .groupby(
+                    [
+                        "ART.NR.",
+                        "DB NR",
+                        "PRODUCENT",
+                        "BESKRIVELSE",
+                        "ENHED"
+                    ],
+                    dropna=False,
+                    as_index=False
+                )
+                .agg({
+                    "FORBRUG PR. LBM": "sum",
+                    "SAMLET MÆNGDE": "sum"
+                })
+            )
+
             combined_excel = create_materials_excel(
                 combined_df
             )
 
+            total_excel = create_materials_excel(
+                total_materials_df
+            )
+
             st.download_button(
-                label="📦 Download samlet materialeliste",
+                label="🛒 Download samlet materialeliste",
+                data=total_excel,
+                file_name="samlet_materialeliste.xlsx",
+                mime=(
+                    "application/vnd.openxmlformats-officedocument."
+                    "spreadsheetml.sheet"
+                ),
+                use_container_width=True
+            )
+
+            st.download_button(
+                label="📦 Download materialeliste pr. beregning",
                 data=combined_excel,
                 file_name="samlet_materialeliste.xlsx",
                 mime=(
