@@ -3317,7 +3317,7 @@ if current_step == 3:
             f"""
             <div style="
                 text-align: right;
-                padding-right: 10rem;
+                padding-right: 16rem;
                 color: #444444;
                 font-size: 1rem;
                 font-weight: 600;
