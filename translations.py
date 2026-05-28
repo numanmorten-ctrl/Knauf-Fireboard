@@ -251,10 +251,7 @@ translations = {
         "waste_percent": "Spild (%)",
 
         "co2_note": (
-            "Alle CO2-værdier er angivet som samlet "
-            "CO2-aftryk i kg CO2e baseret på valgt "
-            "profillængde og inkluderer valgt "
-            "spildprocent."
+            "Alle CO2-værdier er angivet som samlet CO2-aftryk i kg CO2e baseret på valgt profillængde og inkluderer valgt spildprocent. Hvor produktspecifik EPD ikke forefindes, er der anvendt generiske datasæt jf. BR18. Eventuelle generiske datasæt kan tilgås via EPD-ikonet."
         ),
 
         "material_epd": "EPD",
@@ -531,10 +528,7 @@ translations = {
         "waste_percent": "Waste (%)",
 
         "co2_note": (
-            "All CO2 values are stated as total CO2 "
-            "impact in kg CO2e based on the selected "
-            "profile length and include the selected "
-            "waste percentage."
+            "All CO2 values are stated as total CO2 impact in kg CO2e based on the selected profile length and include the selected waste percentage. Where no product-specific EPD is available, generic datasets according to BR18 have been used. Any generic datasets can be accessed via the EPD icon."
         ),
 
         "material_epd": "EPD",
