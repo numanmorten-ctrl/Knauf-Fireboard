@@ -244,7 +244,7 @@ translations = {
         "material_waste": "SPILDPROCENT",
         "material_total": "SAMLET MÆNGDE",
         "material_co2": "SAMLET CO2",
-        "materials_header": "Materialeforbrug",
+        "materials_header": "Vejl. materialeforbrug",
         "profile_length": "Profil længde (meter)",
         "select_layer_build_up": "Vælg lagopbygning",
 
@@ -521,7 +521,7 @@ translations = {
         "material_waste": "WASTE %",
         "material_total": "TOTAL QUANTITY",
         "material_co2": "TOTAL CO2",
-        "materials_header": "Materials",
+        "materials_header": "Estimated materials",
         "profile_length": "Profile length (meters)",
         "select_layer_build_up": "Select layer build-up",
 
