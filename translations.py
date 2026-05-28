@@ -250,6 +250,13 @@ translations = {
 
         "waste_percent": "Spild (%)",
 
+        "co2_note": (
+            "Alle CO2-værdier er angivet som samlet "
+            "CO2-aftryk i kg CO2e baseret på valgt "
+            "profillængde og inkluderer valgt "
+            "spildprocent."
+        ),
+
         # ---------------------------------------------------
         # PDF
         # ---------------------------------------------------
@@ -517,6 +524,13 @@ translations = {
         "select_layer_build_up": "Select layer build-up",
 
         "waste_percent": "Waste (%)",
+
+        "co2_note": (
+            "All CO2 values are stated as total CO2 "
+            "impact in kg CO2e based on the selected "
+            "profile length and include the selected "
+            "waste percentage."
+        ),
 
         # ---------------------------------------------------
         # PDF
