@@ -1823,6 +1823,27 @@ with st.sidebar:
                 ignore_index=True
             )
 
+            # ---------------------------------------------------
+            # CONVERT NUMBER COLUMNS
+            # ---------------------------------------------------
+
+            for col in [
+                "FORBRUG PR. LBM",
+                "SAMLET MÆNGDE",
+                "SAMLET CO2"
+            ]:
+
+                combined_df[col] = pd.to_numeric(
+                combined_df[col]
+                    .astype(str)
+                    .str.replace(
+                        "Medregnes ikke jf. BR18",
+                        "0"
+                )
+                    .str.replace(",", ".", regex=False),
+                    errors="coerce"
+                ).fillna(0)
+
             total_materials_df = (
                 combined_df
                 .groupby(
