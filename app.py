@@ -3091,24 +3091,6 @@ if current_step == 3:
                         calculation_data
                     )
 
-            # ---------------------------------------------------
-            # SAVE MATERIAL LIST
-            # ---------------------------------------------------
-
-            export_df = materials_table_df.iloc[:, :-3].copy()
-
-            calculation_key = (
-                f"{selected_profile}_"
-                f"R{fire_time}_"
-                f"{temperature}"
-            )
-
-            export_df["SYSTEM"] = calculation_key
-
-            st.session_state.combined_materials[
-                calculation_key
-            ] = export_df
-
             st.session_state.last_updated = datetime.now()
 
             st.rerun()
@@ -3336,6 +3318,24 @@ if current_step == 3:
         ]
 
         render_materials_table(materials_table_df)
+
+        # ---------------------------------------------------
+        # SAVE MATERIAL LIST
+        # ---------------------------------------------------
+
+        export_df = materials_table_df.iloc[:, :-3].copy()
+
+        calculation_key = (
+            f"{selected_profile}_"
+            f"R{fire_time}_"
+            f"{temperature}"
+        )
+
+        export_df["SYSTEM"] = calculation_key
+        
+        st.session_state.combined_materials[
+            calculation_key
+        ] = export_df
 
         st.markdown(
             f"""
