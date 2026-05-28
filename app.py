@@ -1904,7 +1904,7 @@ with st.sidebar:
                     sort=False
                 )
                 .agg({
-                    "SORT_ORDER": "min",
+                    "SORT_ORDER": "first",
                     "ART.NR.": "first",
                     "DB NR": "first",
                     "PRODUCENT": "first",
@@ -1917,9 +1917,9 @@ with st.sidebar:
             )
 
             total_materials_df = total_materials_df.sort_values(
-                by="SORT_ORDER",
+                by=["SORT_ORDER", "BESKRIVELSE"],
                 kind="stable"
-            ).drop(columns=["SORT_ORDER"])
+            )
 
             combined_export_df = combined_df.drop(
                 columns=["SORT_ORDER", "GROUP_KEY"],
