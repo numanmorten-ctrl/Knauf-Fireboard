@@ -1829,20 +1829,17 @@ with st.sidebar:
 
             for col in [
                 "FORBRUG PR. LBM",
-                "SAMLET MÆNGDE",
-                "SAMLET CO2"
+                "SAMLET MÆNGDE"
             ]:
 
-                combined_df[col] = pd.to_numeric(
-                combined_df[col]
-                    .astype(str)
-                    .str.replace(
-                        "Medregnes ikke jf. BR18",
-                        "0"
-                )
-                    .str.replace(",", ".", regex=False),
-                    errors="coerce"
-                ).fillna(0)
+                if col in combined_df.columns:
+
+                    combined_df[col] = pd.to_numeric(
+                        combined_df[col]
+                        .astype(str)
+                        .str.replace(",", ".", regex=False),
+                        errors="coerce"
+                    ).fillna(0)
 
             total_materials_df = (
                 combined_df
