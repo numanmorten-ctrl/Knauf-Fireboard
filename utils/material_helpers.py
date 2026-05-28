@@ -372,6 +372,7 @@ def build_material_row(
     )
 
     co2_total = 0
+    co2_display = ""
 
     if match is not None:
 
@@ -400,6 +401,14 @@ def build_material_row(
                 total
                 * co2_factor
             )
+
+        if co2_type == "IGNORE":
+
+            co2_display = "Medregnes ikke jf. BR18"
+
+        else:
+
+            co2_display = format_number(co2_total)
 
     # Beskrivelse
     description = (
@@ -444,7 +453,7 @@ def build_material_row(
 
         "SAMLET FORBRUG": format_number(total),
 
-        "CO2": format_number(co2_total)
+        "CO2": co2_display
     }
 
 def build_materials_dataframe(
