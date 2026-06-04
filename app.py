@@ -3222,6 +3222,15 @@ if current_step == 3:
     # MATERIALERFORBRUG
     # ---------------------------------------------------
 
+    if category == "Andre profiler":
+
+        st.info(
+            f"**{t('material_consumption_unavailable_title')}**\n\n"
+            f"{t('material_consumption_unavailable_text')}"
+        )
+
+        st.stop()
+
     st.header(t("materials_header"))
 
     col1, col2 = st.columns(2)

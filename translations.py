@@ -245,6 +245,14 @@ translations = {
         "material_total": "SAMLET MÆNGDE",
         "material_co2": "SAMLET CO2",
         "materials_header": "Vejl. materialeforbrug",
+        "material_consumption_unavailable_title": "Vejledende materialeforbrug kan ikke beregnes",
+        "material_consumption_unavailable_text": (
+            'Der kan ikke udarbejdes et vejledende materialeforbrug for '
+            'brugerdefinerede profiler ("Andre profiler"), da profilens '
+            'geometri ikke er kendt. Materialeforbruget afhænger blandt '
+            'andet af profilens form, dimensioner og antallet af flader, '
+            'der skal brandbeskyttes.'
+        ),
         "profile_length": "Profil længde (meter)",
         "select_layer_build_up": "Vælg lagopbygning",
 
@@ -522,6 +530,14 @@ translations = {
         "material_total": "TOTAL QUANTITY",
         "material_co2": "TOTAL CO2",
         "materials_header": "Estimated materials",
+        "material_consumption_unavailable_title": "Estimated material consumption cannot be calculated",
+        "material_consumption_unavailable_text": (
+            'An estimated material consumption cannot be generated for '
+            'custom profiles ("Other profiles"), because the profile '
+            'geometry is unknown. Material consumption depends on factors '
+            'such as the profile shape, dimensions and the number of '
+            'surfaces requiring fire protection.'
+        ),
         "profile_length": "Profile length (meters)",
         "select_layer_build_up": "Select layer build-up",
 
