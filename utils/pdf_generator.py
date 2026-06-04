@@ -128,7 +128,7 @@ def generate_single_pdf(
     can.drawString(
         CALC_X,
         CALC_Y_LOCAL,
-        get_translated_category(calc["category"])
+        get_translated_category(calc["category"], language)
     )
 
     can.drawString(
@@ -146,7 +146,7 @@ def generate_single_pdf(
     can.drawString(
         CALC_X,
         CALC_Y_LOCAL - (CALC_LINE_HEIGHT * 3),
-        format_sides_display(calc['sides'])
+        format_sides_display(calc['sides'], t)
     )
 
     can.drawString(
@@ -188,7 +188,8 @@ def generate_single_pdf(
         )
 
         translated_category = get_translated_category(
-            calc["category"]
+            calc["category"],
+            language
         )
 
         can.setFont(*PROJECT_FONT)
@@ -274,7 +275,23 @@ def generate_single_pdf(
 
     return output_stream
 
-def get_translated_category(category):
+CATEGORY_TO_TRANSLATION_KEY = {
+    "H-profiler": "h_profiles",
+    "I-profiler": "i_profiles",
+    "U-profiler": "u_profiles",
+    "Kvadratiske rør varmvalsede": "shs_hot",
+    "Kvadratiske rør koldvalsede": "shs_cold",
+    "Rektangulære rør varmvalsede": "rhs_hot",
+    "Rektangulære rør koldvalsede": "rhs_cold",
+    "Cirkulære rør middelsvære": "chs_medium",
+    "Cirkulære rør svære": "chs_heavy",
+    "Andre profiler": "other_profiles",
+}
+
+def get_translated_category(category, language):
+    key = CATEGORY_TO_TRANSLATION_KEY.get(category)
+    if key:
+        return translations[language].get(key, category)
     return category
 
 
@@ -292,8 +309,19 @@ def get_display_text(value, t):
 
     return value
 
-def format_sides_display(value):
-    return str(value)
+def format_sides_display(value, t):
+    if value is None:
+        return ""
+
+    text = str(value).strip()
+    if not text:
+        return ""
+
+    translated_sides = t("sides")
+    if translated_sides and translated_sides.lower() in text.lower():
+        return text
+
+    return f"{text} {translated_sides}"
     
 def generate_complete_pdf(
     calculations,
@@ -402,7 +430,7 @@ def generate_complete_pdf(
         can.drawString(
             CALC_X,
             CALC_Y_LOCAL,
-            get_translated_category(calc["category"])
+            get_translated_category(calc["category"], language)
         )
 
         can.drawString(
@@ -420,7 +448,7 @@ def generate_complete_pdf(
         can.drawString(
             CALC_X,
             CALC_Y_LOCAL - (CALC_LINE_HEIGHT * 3),
-            format_sides_display(calc['sides'])
+            format_sides_display(calc['sides'], t)
         )
 
         can.drawString(
@@ -464,7 +492,8 @@ def generate_complete_pdf(
             )
 
             translated_category = get_translated_category(
-                calc["category"]
+                calc["category"],
+                language
             )
 
             can.setFont(*PROJECT_FONT)
