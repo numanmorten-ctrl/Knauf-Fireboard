@@ -1823,31 +1823,112 @@ with st.sidebar:
                 ignore_index=True
             )
 
-            material_sort_order = {
-                "Fireboard": 1,
-                "spartelmasse": 2,
-                "Fugestrimler": 3,
-                "Skrue": 4,
-                "Vinkelprofil": 5,
-                "Bjælkeprofil": 6,
-                "PHL profil": 7,
-                "Stålklamme": 99
+            material_columns = {
+                "artnr": t("material_artnr"),
+                "dbnr": t("material_dbnr"),
+                "manufacturer": t("material_manufacturer"),
+                "description": t("material_description"),
+                "consumption": t("material_consumption"),
+                "unit": t("material_unit"),
+                "total": t("material_total")
             }
+
+            column_fallbacks = {
+                "artnr": ["ART.NR.", "ART.NO."],
+                "dbnr": ["DB NR", "DB NO"],
+                "manufacturer": ["PRODUCENT", "MANUFACTURER"],
+                "description": ["BESKRIVELSE", "DESCRIPTION"],
+                "consumption": ["FORBRUG PR. LBM", "CONSUMPTION PER LM"],
+                "unit": ["ENHED", "UNIT"],
+                "total": ["SAMLET MÆNGDE", "TOTAL QUANTITY"]
+            }
+
+            def normalize_material_column(key):
+
+                target_column = material_columns[key]
+                source_columns = []
+
+                for column in [
+                    target_column,
+                    *column_fallbacks[key]
+                ]:
+
+                    if (
+                        column in combined_df.columns
+                        and column not in source_columns
+                    ):
+
+                        source_columns.append(column)
+
+                if not source_columns:
+
+                    return None
+
+                normalized_values = combined_df[source_columns[0]]
+
+                for column in source_columns[1:]:
+
+                    normalized_values = normalized_values.combine_first(
+                        combined_df[column]
+                    )
+
+                combined_df[target_column] = normalized_values
+
+                combined_df.drop(
+                    columns=[
+                        column
+                        for column in source_columns
+                        if column != target_column
+                    ],
+                    inplace=True
+                )
+
+                return target_column
+
+            artnr_col = normalize_material_column("artnr")
+            dbnr_col = normalize_material_column("dbnr")
+            manufacturer_col = normalize_material_column("manufacturer")
+            description_col = normalize_material_column("description")
+            consumption_col = normalize_material_column("consumption")
+            unit_col = normalize_material_column("unit")
+            total_col = normalize_material_column("total")
 
             combined_df["SORT_ORDER"] = 999
 
-            for text, order in material_sort_order.items():
+            material_sort_terms = [
+                (1, ["Fireboard"]),
+                (2, ["spartelmasse", "joint filler"]),
+                (3, ["Fugestrimler", "Fiberglass joint tape"]),
+                (4, ["Skrue", "Screw"]),
+                (5, ["Vinkelprofil", "Angle profile"]),
+                (6, ["Bjælkeprofil", "Beam profile"]),
+                (7, ["PHL profil", "PHL Profile"]),
+                (99, ["Stålklamme", "Steel clamp"])
+            ]
 
-                combined_df.loc[
-                    combined_df["BESKRIVELSE"]
-                    .astype(str)
-                    .str.contains(text, case=False, na=False),
-                    "SORT_ORDER"
-                ] = order
+            if description_col:
+
+                for order, terms in material_sort_terms:
+
+                    description_matches = False
+
+                    for text in terms:
+
+                        description_matches = (
+                            description_matches
+                            | combined_df[description_col]
+                            .astype(str)
+                            .str.contains(text, case=False, na=False)
+                        )
+
+                    combined_df.loc[
+                        description_matches,
+                        "SORT_ORDER"
+                    ] = order
 
             combined_df = combined_df.sort_values(
-            by="SORT_ORDER",
-            kind="stable"
+                by="SORT_ORDER",
+                kind="stable"
             )
 
             # ---------------------------------------------------
@@ -1855,11 +1936,11 @@ with st.sidebar:
             # ---------------------------------------------------
 
             for col in [
-                "FORBRUG PR. LBM",
-                "SAMLET MÆNGDE"
+                consumption_col,
+                total_col
             ]:
 
-                if col in combined_df.columns:
+                if col and col in combined_df.columns:
 
                     combined_df[col] = pd.to_numeric(
                         combined_df[col]
@@ -1868,21 +1949,29 @@ with st.sidebar:
                         errors="coerce"
                     ).fillna(0)
 
-            combined_df["GROUP_KEY"] = (
-                combined_df["ART.NR."]
-                .fillna("")
-                .astype(str)
-                .str.strip()
-            )
+            if artnr_col:
+
+                combined_df["GROUP_KEY"] = (
+                    combined_df[artnr_col]
+                    .fillna("")
+                    .astype(str)
+                    .str.strip()
+                )
+
+            else:
+
+                combined_df["GROUP_KEY"] = ""
 
             combined_df["GROUP_KEY"] = combined_df["GROUP_KEY"].replace(
                 "",
                 pd.NA
             )
 
-            combined_df["GROUP_KEY"] = combined_df["GROUP_KEY"].fillna(
-                combined_df["BESKRIVELSE"]
-            )
+            if description_col:
+
+                combined_df["GROUP_KEY"] = combined_df["GROUP_KEY"].fillna(
+                    combined_df[description_col]
+                )
 
             combined_df["GROUP_KEY"] = combined_df["GROUP_KEY"].fillna(
                 "FREMMED_MATERIALE"
@@ -1892,6 +1981,31 @@ with st.sidebar:
                 by="SORT_ORDER",
                 kind="stable"
             )
+
+            aggregation_columns = {
+                "SORT_ORDER": "first"
+            }
+
+            for col in [
+                artnr_col,
+                dbnr_col,
+                manufacturer_col,
+                description_col,
+                unit_col
+            ]:
+
+                if col:
+
+                    aggregation_columns[col] = "first"
+
+            for col in [
+                consumption_col,
+                total_col
+            ]:
+
+                if col:
+
+                    aggregation_columns[col] = "sum"
 
             total_materials_df = (
                 combined_df
@@ -1903,21 +2017,18 @@ with st.sidebar:
                     as_index=False,
                     sort=False
                 )
-                .agg({
-                    "SORT_ORDER": "first",
-                    "ART.NR.": "first",
-                    "DB NR": "first",
-                    "PRODUCENT": "first",
-                    "BESKRIVELSE": "first",
-                    "ENHED": "first",
-                    "FORBRUG PR. LBM": "sum",
-                    "SAMLET MÆNGDE": "sum"
-                })
+                .agg(aggregation_columns)
                 .drop(columns=["GROUP_KEY"])
             )
 
+            sort_columns = ["SORT_ORDER"]
+
+            if description_col:
+
+                sort_columns.append(description_col)
+
             total_materials_df = total_materials_df.sort_values(
-                by=["SORT_ORDER", "BESKRIVELSE"],
+                by=sort_columns,
                 kind="stable"
             )
 
