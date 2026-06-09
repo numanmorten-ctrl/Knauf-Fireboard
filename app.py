@@ -2036,8 +2036,9 @@ with st.sidebar:
 
             combined_excel = create_materials_excel(
                 combined_export_df,
-                autosize_columns=False,
-                include_header=False
+                include_header=False,
+                language=st.session_state.language,
+                per_system=True
             )
 
             total_export_df = total_materials_df.drop(
@@ -2046,7 +2047,8 @@ with st.sidebar:
             )
 
             total_excel = create_materials_excel(
-                total_export_df
+                total_export_df,
+                language=st.session_state.language
             )
 
             st.download_button(
@@ -3625,7 +3627,8 @@ if current_step == 3:
         excel_export_df = materials_table_df.iloc[:, :-3]
 
         excel_file = create_materials_excel(
-            excel_export_df
+            excel_export_df,
+            language=st.session_state.language
         )
 
         st.download_button(
