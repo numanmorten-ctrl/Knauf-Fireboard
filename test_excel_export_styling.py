@@ -4,7 +4,10 @@ import pandas as pd
 from openpyxl import load_workbook
 
 from utils.export_helpers import (
+    COLUMN_WIDTH_MARGIN,
     KNAUF_BLUE,
+    PRINT_HEADER_FOOTER_MARGIN_INCHES,
+    PRINT_MARGIN_INCHES,
     TABLE_START_ROW,
     add_system_separator_rows,
     create_materials_excel,
@@ -44,6 +47,47 @@ def _assert_header_style(row):
         assert cell.font.bold is True
 
 
+def _assert_print_layout(worksheet, header_row):
+    assert worksheet.page_setup.orientation == "landscape"
+    assert worksheet.page_setup.fitToWidth == 1
+    assert worksheet.page_setup.fitToHeight == 0
+    assert worksheet.sheet_properties.pageSetUpPr.fitToPage is True
+    assert worksheet.print_options.horizontalCentered is True
+    assert worksheet.print_title_rows == f"${header_row}:${header_row}"
+    assert worksheet.page_margins.left == PRINT_MARGIN_INCHES
+    assert worksheet.page_margins.right == PRINT_MARGIN_INCHES
+    assert worksheet.page_margins.top == PRINT_MARGIN_INCHES
+    assert worksheet.page_margins.bottom == PRINT_MARGIN_INCHES
+    assert worksheet.page_margins.header == PRINT_HEADER_FOOTER_MARGIN_INCHES
+    assert worksheet.page_margins.footer == PRINT_HEADER_FOOTER_MARGIN_INCHES
+
+
+def _expected_visible_column_width(worksheet, column_number):
+    max_length = 0
+
+    for row_number in range(1, worksheet.max_row + 1):
+        if worksheet.row_dimensions[row_number].hidden:
+            continue
+
+        value = worksheet.cell(row=row_number, column=column_number).value
+
+        if value is not None:
+            max_length = max(max_length, len(str(value)))
+
+    return max_length + COLUMN_WIDTH_MARGIN
+
+
+def _assert_columns_autosized_to_visible_values(worksheet):
+    for column_number in range(1, worksheet.max_column + 1):
+        column_letter = worksheet.cell(
+            row=1,
+            column=column_number
+        ).column_letter
+        assert worksheet.column_dimensions[column_letter].width == (
+            _expected_visible_column_width(worksheet, column_number)
+        )
+
+
 def _worksheet_values(worksheet, min_row, max_row, max_col):
     return [
         [
@@ -66,6 +110,8 @@ def test_normal_material_list_excel_is_styled_without_changing_data_values():
     assert len(worksheet._images) == 1
     _assert_header_style(worksheet[TABLE_START_ROW])
     assert worksheet.freeze_panes == f"A{TABLE_START_ROW + 1}"
+    _assert_columns_autosized_to_visible_values(worksheet)
+    _assert_print_layout(worksheet, TABLE_START_ROW)
 
     exported_values = _worksheet_values(
         worksheet,
@@ -101,6 +147,8 @@ def test_combined_material_list_excel_is_styled_without_changing_aggregation_val
     assert worksheet.cell(row=4, column=1).value == "Material list"
     assert len(worksheet._images) == 1
     _assert_header_style(worksheet[TABLE_START_ROW])
+    _assert_columns_autosized_to_visible_values(worksheet)
+    _assert_print_layout(worksheet, TABLE_START_ROW)
 
     exported_values = _worksheet_values(
         worksheet,
@@ -136,6 +184,8 @@ def test_per_system_material_list_preserves_structure_and_styles_repeated_header
     assert len(worksheet._images) == 1
     assert worksheet.cell(row=TABLE_START_ROW, column=1).value == "SYSTEM"
     assert worksheet.freeze_panes == f"A{TABLE_START_ROW + 1}"
+    _assert_columns_autosized_to_visible_values(worksheet)
+    _assert_print_layout(worksheet, TABLE_START_ROW)
 
     repeated_header_rows = []
     for row_number in range(TABLE_START_ROW, worksheet.max_row + 1):

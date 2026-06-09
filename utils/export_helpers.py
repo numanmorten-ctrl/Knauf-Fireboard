@@ -5,6 +5,7 @@ import pandas as pd
 from openpyxl.drawing.image import Image as OpenpyxlImage
 from openpyxl.styles import Font, PatternFill
 from openpyxl.utils import get_column_letter
+from openpyxl.worksheet.page import PageMargins
 from pypdf import PdfReader
 
 KNAUF_BLUE = "009FE3"
@@ -14,6 +15,9 @@ LOGO_TEMPLATE_PATH = Path(__file__).resolve().parent.parent / "PDF_template.pdf"
 LOGO_ANCHOR = "A1"
 TITLE_ROW = 4
 TABLE_START_ROW = 6
+COLUMN_WIDTH_MARGIN = 2
+PRINT_MARGIN_INCHES = 0.25
+PRINT_HEADER_FOOTER_MARGIN_INCHES = 0.2
 
 
 def add_system_separator_rows(materials_df, system_column="SYSTEM"):
@@ -170,9 +174,17 @@ def _style_system_name_row(worksheet, row_number):
 
 def _autosize_columns(worksheet):
     for column_number in range(1, worksheet.max_column + 1):
+        column_letter = get_column_letter(column_number)
+
+        if worksheet.column_dimensions[column_letter].hidden:
+            continue
+
         max_length = 0
 
         for row_number in range(1, worksheet.max_row + 1):
+            if worksheet.row_dimensions[row_number].hidden:
+                continue
+
             value = worksheet.cell(
                 row=row_number,
                 column=column_number
@@ -181,10 +193,26 @@ def _autosize_columns(worksheet):
             if value is not None:
                 max_length = max(max_length, len(str(value)))
 
-        adjusted_width = min(max(max_length + 4, 12), 60)
-        worksheet.column_dimensions[
-            get_column_letter(column_number)
-        ].width = adjusted_width
+        worksheet.column_dimensions[column_letter].width = (
+            max_length + COLUMN_WIDTH_MARGIN
+        )
+
+
+def _configure_print_layout(worksheet, first_header_row):
+    worksheet.page_setup.orientation = worksheet.ORIENTATION_LANDSCAPE
+    worksheet.page_setup.fitToWidth = 1
+    worksheet.page_setup.fitToHeight = 0
+    worksheet.sheet_properties.pageSetUpPr.fitToPage = True
+    worksheet.print_options.horizontalCentered = True
+    worksheet.page_margins = PageMargins(
+        left=PRINT_MARGIN_INCHES,
+        right=PRINT_MARGIN_INCHES,
+        top=PRINT_MARGIN_INCHES,
+        bottom=PRINT_MARGIN_INCHES,
+        header=PRINT_HEADER_FOOTER_MARGIN_INCHES,
+        footer=PRINT_HEADER_FOOTER_MARGIN_INCHES
+    )
+    worksheet.print_title_rows = f"{first_header_row}:{first_header_row}"
 
 
 def _apply_materials_excel_styling(
@@ -230,6 +258,7 @@ def _apply_materials_excel_styling(
     first_header_row = header_rows[0] if header_rows else table_start_row
     worksheet.freeze_panes = f"A{first_header_row + 1}"
     _autosize_columns(worksheet)
+    _configure_print_layout(worksheet, first_header_row)
 
 
 def create_materials_excel(
