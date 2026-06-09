@@ -5,16 +5,28 @@ import pandas as pd
 
 def add_system_separator_rows(materials_df, system_column="SYSTEM"):
     """
-    Sort materials by system and add a separator row for each system.
+    Sort materials by system and add plain grouped export rows.
     """
 
     if system_column not in materials_df.columns:
 
         return materials_df.copy()
 
-    sorted_df = materials_df.sort_values(
-        by=system_column,
-        kind="stable"
+    export_columns = [
+        system_column,
+        *(
+            column
+            for column in materials_df.columns
+            if column != system_column
+        )
+    ]
+
+    sorted_df = (
+        materials_df[export_columns]
+        .sort_values(
+            by=system_column,
+            kind="stable"
+        )
     )
 
     rows = []
@@ -31,23 +43,37 @@ def add_system_separator_rows(materials_df, system_column="SYSTEM"):
 
         if current_system_key != previous_system:
 
-            separator_row = {
+            if rows:
+
+                rows.append({
+                    column: ""
+                    for column in export_columns
+                })
+
+            rows.append(dict(zip(export_columns, export_columns)))
+
+            system_row = {
                 column: ""
-                for column in sorted_df.columns
+                for column in export_columns
             }
-            separator_row[system_column] = current_system
-            rows.append(separator_row)
+            system_row[system_column] = current_system
+            rows.append(system_row)
+
             previous_system = current_system_key
 
         rows.append(row.to_dict())
 
     return pd.DataFrame(
         rows,
-        columns=sorted_df.columns
+        columns=export_columns
     )
 
 
-def create_materials_excel(materials_df, autosize_columns=True):
+def create_materials_excel(
+    materials_df,
+    autosize_columns=True,
+    include_header=True
+):
     """
     Create Excel file from materials dataframe.
     """
@@ -62,6 +88,7 @@ def create_materials_excel(materials_df, autosize_columns=True):
         materials_df.to_excel(
             writer,
             index=False,
+            header=include_header,
             sheet_name="Materialeliste"
         )
 
