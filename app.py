@@ -1555,7 +1555,13 @@ with col5:
 
 with st.sidebar:
 
-    st.title(f"📚 {t('calculations')}")
+    st.markdown(
+        f"""
+        <div class="sidebar-project-heading">{t('sidebar_project_heading')}</div>
+        <div class="sidebar-calculations-heading">📚 {t('calculations')}</div>
+        """,
+        unsafe_allow_html=True
+    )
 
     # ---------------------------------------------------
     # CUSTOM STYLE
@@ -1563,6 +1569,32 @@ with st.sidebar:
 
     st.markdown("""
     <style>
+
+    .sidebar-project-heading {
+
+        color: #003b7a;
+
+        font-size: 2rem;
+
+        font-weight: 700;
+
+        line-height: 1.2;
+
+        margin: 0 0 0.2rem 0;
+    }
+
+    .sidebar-calculations-heading {
+
+        color: #111827;
+
+        font-size: 1.35rem;
+
+        font-weight: 650;
+
+        line-height: 1.25;
+
+        margin: 0 0 1rem 0;
+    }
 
     /* ---------------------------------------------------
     AKTIV SIDEBAR BEREGNING
