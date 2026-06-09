@@ -12,7 +12,7 @@ import requests
 from translations import translations
 from utils.data_loader import clean_text, clean_numeric, load_and_clean_csv
 from utils.render_helpers import render_materials_table
-from utils.export_helpers import create_materials_excel
+from utils.export_helpers import add_system_separator_rows, create_materials_excel
 from utils.ui_helpers import (
     card,
     disabled_card
@@ -1926,11 +1926,6 @@ with st.sidebar:
                         "SORT_ORDER"
                     ] = order
 
-            combined_df = combined_df.sort_values(
-                by="SORT_ORDER",
-                kind="stable"
-            )
-
             # ---------------------------------------------------
             # CONVERT NUMBER COLUMNS
             # ---------------------------------------------------
@@ -1948,6 +1943,13 @@ with st.sidebar:
                         .str.replace(",", ".", regex=False),
                         errors="coerce"
                     ).fillna(0)
+
+            combined_export_df = add_system_separator_rows(
+                combined_df.drop(
+                    columns=["SORT_ORDER"],
+                    errors="ignore"
+                )
+            )
 
             if artnr_col:
 
@@ -2032,13 +2034,10 @@ with st.sidebar:
                 kind="stable"
             )
 
-            combined_export_df = combined_df.drop(
-                columns=["SORT_ORDER", "GROUP_KEY"],
-                errors="ignore"
-            )
-
             combined_excel = create_materials_excel(
-                combined_export_df
+                combined_export_df,
+                autosize_columns=False,
+                include_header=False
             )
 
             total_export_df = total_materials_df.drop(
