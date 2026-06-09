@@ -33,6 +33,9 @@ translations = {
         # SIDEBAR
         # ---------------------------------------------------
 
+        "sidebar_project_heading":
+            "Projekt",
+
         "calculations":
             "Beregninger",
 
@@ -227,10 +230,10 @@ translations = {
             "Beskrivelse",
 
         "update_calculation":
-            "🔄 Opdater beregning",
+            "🔄 Opdater beregning i projekt",
 
         "add_calculation":
-            "➕ Tilføj beregning",
+            "➕ Tilføj beregning til projekt",
 
         "calculation_saved":
             "Beregning gemt",
@@ -318,6 +321,9 @@ translations = {
         # ---------------------------------------------------
         # SIDEBAR
         # ---------------------------------------------------
+
+        "sidebar_project_heading":
+            "Project",
 
         "calculations":
             "Calculations",
@@ -513,10 +519,10 @@ translations = {
             "Description",
 
         "update_calculation":
-            "🔄 Update calculation",
+            "🔄 Update calculation in project",
 
         "add_calculation":
-            "➕ Add calculation",
+            "➕ Add calculation to project",
 
         "calculation_saved":
             "Calculation saved",
