@@ -547,7 +547,7 @@ section[data-testid="stSidebar"] {
 section[data-testid="stSidebar"] [data-testid="stSidebarContent"],
 section[data-testid="stSidebar"] > div:first-child {
 
-    padding: 0.5rem 1.5rem 1rem 1.5rem !important;
+    padding: 0rem 1.5rem 1rem 1.5rem !important;
 }
 
 /* ---------------------------------------------------
