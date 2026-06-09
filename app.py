@@ -12,7 +12,14 @@ import requests
 from translations import translations
 from utils.data_loader import clean_text, clean_numeric, load_and_clean_csv
 from utils.render_helpers import render_materials_table
-from utils.export_helpers import add_system_separator_rows, create_materials_excel
+from utils.export_helpers import (
+    EXPORT_TYPE_COMBINED,
+    EXPORT_TYPE_PER_CALCULATION,
+    EXPORT_TYPE_SINGLE,
+    add_system_separator_rows,
+    create_materials_excel,
+    get_materials_excel_filename,
+)
 from utils.ui_helpers import (
     card,
     disabled_card
@@ -2038,7 +2045,8 @@ with st.sidebar:
                 combined_export_df,
                 include_header=False,
                 language=st.session_state.language,
-                per_system=True
+                per_system=True,
+                export_type=EXPORT_TYPE_PER_CALCULATION
             )
 
             total_export_df = total_materials_df.drop(
@@ -2048,13 +2056,17 @@ with st.sidebar:
 
             total_excel = create_materials_excel(
                 total_export_df,
-                language=st.session_state.language
+                language=st.session_state.language,
+                export_type=EXPORT_TYPE_COMBINED
             )
 
             st.download_button(
                 label="🛒 Download samlet materialeliste",
                 data=total_excel,
-                file_name="samlet_materialeliste.xlsx",
+                file_name=get_materials_excel_filename(
+                    st.session_state.language,
+                    EXPORT_TYPE_COMBINED
+                ),
                 mime=(
                     "application/vnd.openxmlformats-officedocument."
                     "spreadsheetml.sheet"
@@ -2065,7 +2077,10 @@ with st.sidebar:
             st.download_button(
                 label="📦 Download materialeliste pr. beregning",
                 data=combined_excel,
-                file_name="samlet_materialeliste.xlsx",
+                file_name=get_materials_excel_filename(
+                    st.session_state.language,
+                    EXPORT_TYPE_PER_CALCULATION
+                ),
                 mime=(
                     "application/vnd.openxmlformats-officedocument."
                     "spreadsheetml.sheet"
@@ -3628,13 +3643,17 @@ if current_step == 3:
 
         excel_file = create_materials_excel(
             excel_export_df,
-            language=st.session_state.language
+            language=st.session_state.language,
+            export_type=EXPORT_TYPE_SINGLE
         )
 
         st.download_button(
             label="📥 Download Excel",
             data=excel_file,
-            file_name="materialeliste.xlsx",
+            file_name=get_materials_excel_filename(
+                st.session_state.language,
+                EXPORT_TYPE_SINGLE
+            ),
             mime=(
                 "application/vnd.openxmlformats-officedocument."
                 "spreadsheetml.sheet"
