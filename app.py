@@ -2036,7 +2036,8 @@ with st.sidebar:
 
             combined_excel = create_materials_excel(
                 combined_export_df,
-                autosize_columns=False
+                autosize_columns=False,
+                include_header=False
             )
 
             total_export_df = total_materials_df.drop(
