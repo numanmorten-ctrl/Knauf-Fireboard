@@ -11,6 +11,13 @@ from pypdf import PdfReader
 KNAUF_BLUE = "009FE3"
 WHITE = "FFFFFF"
 DEFAULT_SHEET_NAME = "Materialeliste"
+EXPORT_TYPE_SINGLE = "single"
+EXPORT_TYPE_COMBINED = "combined"
+EXPORT_TYPE_PER_CALCULATION = "per_calculation"
+FIREBOARD_TEXT = "Fireboard"
+FIREBOARD_SINGLE_ANCHOR = (2, 3)
+FIREBOARD_GROUPED_ANCHOR = (2, 2)
+FIREBOARD_GREY = "808080"
 LOGO_TEMPLATE_PATH = Path(__file__).resolve().parent.parent / "PDF_template.pdf"
 LOGO_ANCHOR = "A1"
 TITLE_ROW = 4
@@ -87,13 +94,58 @@ def add_system_separator_rows(materials_df, system_column="SYSTEM"):
     )
 
 
-def _get_material_list_title(language="DA", per_system=False):
+def _normalize_export_type(export_type=None, per_system=False):
+    if export_type:
+        return export_type
+
+    if per_system:
+        return EXPORT_TYPE_PER_CALCULATION
+
+    return EXPORT_TYPE_SINGLE
+
+
+def get_material_list_title(language="DA", export_type=EXPORT_TYPE_SINGLE):
     """Return the localized Excel title without affecting export data."""
 
-    if language == "EN":
-        return "Material list per system" if per_system else "Material list"
+    titles = {
+        "DA": {
+            EXPORT_TYPE_SINGLE: "Materialeliste",
+            EXPORT_TYPE_COMBINED: "Samlet materialeliste",
+            EXPORT_TYPE_PER_CALCULATION: "Materialeliste pr. beregning",
+        },
+        "EN": {
+            EXPORT_TYPE_SINGLE: "Material List",
+            EXPORT_TYPE_COMBINED: "Combined Material List",
+            EXPORT_TYPE_PER_CALCULATION: "Material List per Calculation",
+        },
+    }
 
-    return "Materialeliste pr. system" if per_system else "Materialeliste"
+    return titles.get(language, titles["DA"]).get(
+        export_type,
+        titles.get(language, titles["DA"])[EXPORT_TYPE_SINGLE]
+    )
+
+
+def get_materials_excel_filename(language="DA", export_type=EXPORT_TYPE_SINGLE):
+    """Return the localized download filename for a material-list Excel export."""
+
+    filenames = {
+        "DA": {
+            EXPORT_TYPE_SINGLE: "Materialeliste.xlsx",
+            EXPORT_TYPE_COMBINED: "Samlet_materialeliste.xlsx",
+            EXPORT_TYPE_PER_CALCULATION: "Materialeliste_pr_beregning.xlsx",
+        },
+        "EN": {
+            EXPORT_TYPE_SINGLE: "Material_List.xlsx",
+            EXPORT_TYPE_COMBINED: "Combined_Material_List.xlsx",
+            EXPORT_TYPE_PER_CALCULATION: "Material_List_per_Calculation.xlsx",
+        },
+    }
+
+    return filenames.get(language, filenames["DA"]).get(
+        export_type,
+        filenames.get(language, filenames["DA"])[EXPORT_TYPE_SINGLE]
+    )
 
 
 def _extract_logo_from_pdf_template(template_path=LOGO_TEMPLATE_PATH):
@@ -122,6 +174,31 @@ def _add_knauf_logo(worksheet, template_path=LOGO_TEMPLATE_PATH):
     logo.width = 170
     logo.height = 54
     worksheet.add_image(logo, LOGO_ANCHOR)
+
+
+def _get_fireboard_anchor(export_type):
+    if export_type == EXPORT_TYPE_SINGLE:
+        return FIREBOARD_SINGLE_ANCHOR
+
+    return FIREBOARD_GROUPED_ANCHOR
+
+
+def _add_fireboard_brand_text(worksheet, export_type):
+    """Add the Fireboard wordmark text next to the extracted Knauf logo."""
+
+    anchor_row, anchor_column = _get_fireboard_anchor(export_type)
+
+    fireboard_cell = worksheet.cell(
+        row=anchor_row,
+        column=anchor_column,
+        value=FIREBOARD_TEXT
+    )
+    fireboard_cell.font = Font(
+        color=FIREBOARD_GREY,
+        italic=True,
+        bold=True,
+        size=20
+    )
 
 
 def _row_values(worksheet, row_number):
@@ -222,14 +299,16 @@ def _apply_materials_excel_styling(
     language="DA",
     per_system=False,
     include_header=True,
-    table_start_row=TABLE_START_ROW
+    table_start_row=TABLE_START_ROW,
+    export_type=EXPORT_TYPE_SINGLE
 ):
     _add_knauf_logo(worksheet)
+    _add_fireboard_brand_text(worksheet, export_type)
 
     title_cell = worksheet.cell(
         row=TITLE_ROW,
         column=1,
-        value=_get_material_list_title(language, per_system)
+        value=get_material_list_title(language, export_type)
     )
     title_cell.font = Font(
         bold=True,
@@ -267,11 +346,14 @@ def create_materials_excel(
     autosize_columns=True,
     include_header=True,
     language="DA",
-    per_system=False
+    per_system=False,
+    export_type=None
 ):
     """
     Create styled Excel file from materials dataframe.
     """
+
+    resolved_export_type = _normalize_export_type(export_type, per_system)
 
     output = BytesIO()
 
@@ -295,7 +377,8 @@ def create_materials_excel(
             list(materials_df.columns),
             language=language,
             per_system=per_system,
-            include_header=include_header
+            include_header=include_header,
+            export_type=resolved_export_type
         )
 
     output.seek(0)
