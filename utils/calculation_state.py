@@ -116,7 +116,10 @@ def append_new_calculation(
         if latest == comparable_saved:
             return False
 
-    session_state.setdefault("calculations", []).append(saved_calculation)
+    calculations = session_state.setdefault("calculations", [])
+    calculations.append(saved_calculation)
+    session_state["edit_index"] = len(calculations) - 1
+    session_state["editing"] = True
     rebuild_combined_materials(session_state)
     return True
 

@@ -49,8 +49,8 @@ def test_update_replaces_selected_calculation_and_materials_without_append():
     remember_current_materials(state, first_calc, materials("Fireboard 20 mm"))
     assert append_new_calculation(state, first_calc)
 
-    state["edit_index"] = 0
-    state["editing"] = True
+    assert state["edit_index"] == 0
+    assert state["editing"] is True
     updated_calc = calculation(25, fire_time=60)
     remember_current_materials(state, updated_calc, materials("Fireboard 25 mm"))
 
@@ -98,8 +98,47 @@ def test_append_new_calculation_still_appends_distinct_calculations():
     second_calc = calculation(25)
     remember_current_materials(state, first_calc, materials("Fireboard 20 mm"))
     assert append_new_calculation(state, first_calc)
+    assert state["edit_index"] == 0
+    assert state["editing"] is True
+
+    state["edit_index"] = None
+    state["editing"] = False
     remember_current_materials(state, second_calc, materials("Fireboard 25 mm"))
     assert append_new_calculation(state, second_calc)
 
     assert len(state["calculations"]) == 2
     assert len(state["combined_materials"]) == 2
+    assert state["edit_index"] == 1
+    assert state["editing"] is True
+
+
+def test_newly_appended_calculation_enters_update_mode_immediately():
+    state = {"calculations": [], "edit_index": None, "editing": False}
+
+    first_calc = calculation(20)
+    second_calc = calculation(25)
+    remember_current_materials(state, first_calc, materials("Fireboard 20 mm"))
+    assert append_new_calculation(state, first_calc)
+
+    state["edit_index"] = None
+    state["editing"] = False
+    remember_current_materials(state, second_calc, materials("Fireboard 25 mm"))
+    assert append_new_calculation(state, second_calc)
+
+    assert state["edit_index"] == 1
+    assert state["editing"] is True
+
+    updated_second_calc = calculation(30, fire_time=60)
+    remember_current_materials(
+        state, updated_second_calc, materials("Fireboard 30 mm")
+    )
+    assert replace_selected_calculation(state, updated_second_calc)
+
+    assert len(state["calculations"]) == 2
+    assert state["calculations"][0]["thickness"] == 20
+    assert state["calculations"][1]["thickness"] == 30
+    assert state["calculations"][1][MATERIALS_KEY].iloc[0]["BESKRIVELSE"] == (
+        "Fireboard 30 mm"
+    )
+    assert state["edit_index"] == 1
+    assert state["editing"] is True
