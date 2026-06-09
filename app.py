@@ -550,6 +550,24 @@ section[data-testid="stSidebar"] > div:first-child {
     padding: 0rem 1.5rem 1rem 1.5rem !important;
 }
 
+section[data-testid="stSidebar"] [data-testid="stSidebarUserContent"] {
+
+    padding-top: 0 !important;
+}
+
+section[data-testid="stSidebar"] [data-testid="stSidebarHeader"] {
+
+    /* Controls the top position of Project/Projekt: Streamlit inserts this
+       sidebar header spacer before user content, above the first heading. */
+    height: 0.15rem !important;
+
+    min-height: 0 !important;
+
+    margin-bottom: 0.15rem !important;
+
+    padding: 0 !important;
+}
+
 /* ---------------------------------------------------
 UNIFY ALL BORDERS
 --------------------------------------------------- */
