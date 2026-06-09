@@ -15,8 +15,10 @@ EXPORT_TYPE_SINGLE = "single"
 EXPORT_TYPE_COMBINED = "combined"
 EXPORT_TYPE_PER_CALCULATION = "per_calculation"
 FIREBOARD_TEXT = "Fireboard"
-FIREBOARD_ANCHOR_ROW = 1
-FIREBOARD_ANCHOR_COLUMN = 3
+FIREBOARD_SINGLE_ANCHOR = (2, 3)
+FIREBOARD_COMBINED_ANCHOR = (2, 2)
+FIREBOARD_PER_CALCULATION_ANCHOR = (2, 2)
+FIREBOARD_GROUPED_ANCHOR = FIREBOARD_COMBINED_ANCHOR
 FIREBOARD_GREY = "808080"
 LOGO_TEMPLATE_PATH = Path(__file__).resolve().parent.parent / "PDF_template.pdf"
 LOGO_ANCHOR = "A1"
@@ -176,17 +178,34 @@ def _add_knauf_logo(worksheet, template_path=LOGO_TEMPLATE_PATH):
     worksheet.add_image(logo, LOGO_ANCHOR)
 
 
-def _add_fireboard_brand_text(worksheet):
+FIREBOARD_ANCHORS_BY_EXPORT_TYPE = {
+    EXPORT_TYPE_SINGLE: FIREBOARD_SINGLE_ANCHOR,
+    EXPORT_TYPE_COMBINED: FIREBOARD_COMBINED_ANCHOR,
+    EXPORT_TYPE_PER_CALCULATION: FIREBOARD_PER_CALCULATION_ANCHOR,
+}
+
+
+def _get_fireboard_anchor(export_type):
+    return FIREBOARD_ANCHORS_BY_EXPORT_TYPE.get(
+        export_type,
+        FIREBOARD_SINGLE_ANCHOR
+    )
+
+
+def _add_fireboard_brand_text(worksheet, export_type):
     """Add the Fireboard wordmark text next to the extracted Knauf logo."""
 
+    anchor_row, anchor_column = _get_fireboard_anchor(export_type)
+
     fireboard_cell = worksheet.cell(
-        row=FIREBOARD_ANCHOR_ROW,
-        column=FIREBOARD_ANCHOR_COLUMN,
+        row=anchor_row,
+        column=anchor_column,
         value=FIREBOARD_TEXT
     )
     fireboard_cell.font = Font(
         color=FIREBOARD_GREY,
         italic=True,
+        bold=True,
         size=20
     )
 
@@ -293,7 +312,7 @@ def _apply_materials_excel_styling(
     export_type=EXPORT_TYPE_SINGLE
 ):
     _add_knauf_logo(worksheet)
-    _add_fireboard_brand_text(worksheet)
+    _add_fireboard_brand_text(worksheet, export_type)
 
     title_cell = worksheet.cell(
         row=TITLE_ROW,
