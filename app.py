@@ -559,7 +559,7 @@ section[data-testid="stSidebar"] [data-testid="stSidebarHeader"] {
 
     /* Controls the top position of Project/Projekt: Streamlit inserts this
        sidebar header spacer before user content, above the first heading. */
-    height: 0.15rem !important;
+    height: 0.9rem !important;
 
     min-height: 0 !important;
 
