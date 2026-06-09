@@ -1580,7 +1580,7 @@ with st.sidebar:
 
         line-height: 1.15;
 
-        margin: 2rem 0 0.35rem 0;
+        margin: 0.35rem 0 1.5cm 0;
     }
 
     .sidebar-calculations-heading {
