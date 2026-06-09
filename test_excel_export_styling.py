@@ -17,11 +17,11 @@ from utils.export_helpers import (
 MATERIAL_COLUMNS_DA = [
     "ART.NR.",
     "DB.nr.",
-    "PRODUCENT",
+    "Producent",
     "Materiale",
     "Forbrug",
     "Enhed",
-    "SAMLET MÆNGDE",
+    "Total",
 ]
 
 
@@ -111,7 +111,6 @@ def test_normal_material_list_excel_is_styled_without_changing_data_values():
     _assert_header_style(worksheet[TABLE_START_ROW])
     assert worksheet.freeze_panes == f"A{TABLE_START_ROW + 1}"
     _assert_columns_autosized_to_visible_values(worksheet)
-    assert worksheet.column_dimensions["G"].width == len("SAMLET MÆNGDE") + 4
     _assert_print_layout(worksheet, TABLE_START_ROW)
 
     exported_values = _worksheet_values(
@@ -132,7 +131,7 @@ def test_combined_material_list_excel_is_styled_without_changing_aggregation_val
         columns=[
             "ART.NO.",
             "DB no.",
-            "MANUFACTURER",
+            "Manufacturer",
             "Material",
             "Consumption",
             "Unit",
@@ -149,7 +148,6 @@ def test_combined_material_list_excel_is_styled_without_changing_aggregation_val
     assert len(worksheet._images) == 1
     _assert_header_style(worksheet[TABLE_START_ROW])
     _assert_columns_autosized_to_visible_values(worksheet)
-    assert worksheet.column_dimensions["C"].width == len("MANUFACTURER") + 4
     _assert_print_layout(worksheet, TABLE_START_ROW)
 
     exported_values = _worksheet_values(
@@ -159,6 +157,36 @@ def test_combined_material_list_excel_is_styled_without_changing_aggregation_val
         len(aggregated_df.columns),
     )
     assert exported_values == aggregated_df.values.tolist()
+
+
+def test_column_autosizing_adds_enough_padding_for_long_headers():
+    danish_df = pd.DataFrame(
+        [["2906", 3.0]],
+        columns=["ART.NR.", "SAMLET MÆNGDE"],
+    )
+    english_df = pd.DataFrame(
+        [["1", "Knauf A/S"]],
+        columns=["Art", "MANUFACTURER"],
+    )
+
+    danish_workbook = _load_workbook_from_export(
+        create_materials_excel(danish_df, language="DA")
+    )
+    english_workbook = _load_workbook_from_export(
+        create_materials_excel(english_df, language="EN")
+    )
+
+    danish_worksheet = danish_workbook["Materialeliste"]
+    english_worksheet = english_workbook["Materialeliste"]
+
+    _assert_columns_autosized_to_visible_values(danish_worksheet)
+    _assert_columns_autosized_to_visible_values(english_worksheet)
+    assert danish_worksheet.column_dimensions["B"].width == (
+        len("SAMLET MÆNGDE") + COLUMN_WIDTH_MARGIN
+    )
+    assert english_worksheet.column_dimensions["B"].width == (
+        len("MANUFACTURER") + COLUMN_WIDTH_MARGIN
+    )
 
 
 def test_per_system_material_list_preserves_structure_and_styles_repeated_headers():
