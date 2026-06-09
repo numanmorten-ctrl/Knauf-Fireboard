@@ -159,6 +159,36 @@ def test_combined_material_list_excel_is_styled_without_changing_aggregation_val
     assert exported_values == aggregated_df.values.tolist()
 
 
+def test_column_autosizing_adds_enough_padding_for_long_headers():
+    danish_df = pd.DataFrame(
+        [["2906", 3.0]],
+        columns=["ART.NR.", "SAMLET MÆNGDE"],
+    )
+    english_df = pd.DataFrame(
+        [["1", "Knauf A/S"]],
+        columns=["Art", "MANUFACTURER"],
+    )
+
+    danish_workbook = _load_workbook_from_export(
+        create_materials_excel(danish_df, language="DA")
+    )
+    english_workbook = _load_workbook_from_export(
+        create_materials_excel(english_df, language="EN")
+    )
+
+    danish_worksheet = danish_workbook["Materialeliste"]
+    english_worksheet = english_workbook["Materialeliste"]
+
+    _assert_columns_autosized_to_visible_values(danish_worksheet)
+    _assert_columns_autosized_to_visible_values(english_worksheet)
+    assert danish_worksheet.column_dimensions["B"].width == (
+        len("SAMLET MÆNGDE") + COLUMN_WIDTH_MARGIN
+    )
+    assert english_worksheet.column_dimensions["B"].width == (
+        len("MANUFACTURER") + COLUMN_WIDTH_MARGIN
+    )
+
+
 def test_per_system_material_list_preserves_structure_and_styles_repeated_headers():
     materials_df = pd.DataFrame(
         [
