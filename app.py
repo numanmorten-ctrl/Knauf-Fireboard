@@ -544,6 +544,12 @@ section[data-testid="stSidebar"] {
     position: relative !important;
 }
 
+section[data-testid="stSidebar"] [data-testid="stSidebarContent"],
+section[data-testid="stSidebar"] > div:first-child {
+
+    padding-top: 0.75rem !important;
+}
+
 /* ---------------------------------------------------
 UNIFY ALL BORDERS
 --------------------------------------------------- */
@@ -1580,7 +1586,7 @@ with st.sidebar:
 
         line-height: 1.15;
 
-        margin: 0.175rem 0 1.05cm 0;
+        margin: 0 0 0.65cm 0;
     }
 
     .sidebar-calculations-heading {
