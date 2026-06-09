@@ -1,6 +1,7 @@
 from io import BytesIO
 
 import pandas as pd
+import pytest
 from openpyxl import load_workbook
 
 from utils.export_helpers import (
@@ -8,9 +9,10 @@ from utils.export_helpers import (
     EXPORT_TYPE_COMBINED,
     EXPORT_TYPE_PER_CALCULATION,
     EXPORT_TYPE_SINGLE,
-    FIREBOARD_ANCHOR_COLUMN,
-    FIREBOARD_ANCHOR_ROW,
+    FIREBOARD_COMBINED_ANCHOR,
     FIREBOARD_GREY,
+    FIREBOARD_PER_CALCULATION_ANCHOR,
+    FIREBOARD_SINGLE_ANCHOR,
     FIREBOARD_TEXT,
     KNAUF_BLUE,
     PRINT_HEADER_FOOTER_MARGIN_INCHES,
@@ -56,14 +58,31 @@ def _assert_header_style(row):
         assert cell.font.bold is True
 
 
-def _assert_fireboard_brand_text(worksheet):
-    fireboard_cell = worksheet.cell(
-        row=FIREBOARD_ANCHOR_ROW,
-        column=FIREBOARD_ANCHOR_COLUMN,
-    )
+def _assert_fireboard_brand_text(worksheet, expected_anchor):
+    row, column = expected_anchor
+    fireboard_cell = worksheet.cell(row=row, column=column)
+
     assert fireboard_cell.value == FIREBOARD_TEXT
     assert fireboard_cell.font.color.rgb == f"00{FIREBOARD_GREY}"
     assert fireboard_cell.font.italic is True
+    assert fireboard_cell.font.bold is True
+
+    logo_area_brand_cells = [
+        (1, 2),
+        (1, 3),
+        (2, 2),
+        (2, 3),
+    ]
+    for candidate_anchor in logo_area_brand_cells:
+        if candidate_anchor != expected_anchor:
+            assert worksheet.cell(*candidate_anchor).value != FIREBOARD_TEXT
+
+
+def _assert_logo_placement_unchanged(worksheet):
+    assert len(worksheet._images) == 1
+    image_anchor = worksheet._images[0].anchor._from
+    assert image_anchor.row == 0
+    assert image_anchor.col == 0
 
 
 def _assert_print_layout(worksheet, header_row):
@@ -126,8 +145,8 @@ def test_normal_material_list_excel_is_styled_without_changing_data_values():
     worksheet = workbook["Materialeliste"]
 
     assert worksheet.cell(row=4, column=1).value == "Materialeliste"
-    assert len(worksheet._images) == 1
-    _assert_fireboard_brand_text(worksheet)
+    _assert_logo_placement_unchanged(worksheet)
+    _assert_fireboard_brand_text(worksheet, FIREBOARD_SINGLE_ANCHOR)
     _assert_header_style(worksheet[TABLE_START_ROW])
     assert worksheet.freeze_panes == f"A{TABLE_START_ROW + 1}"
     _assert_columns_autosized_to_visible_values(worksheet)
@@ -169,8 +188,8 @@ def test_combined_material_list_excel_is_styled_without_changing_aggregation_val
     worksheet = workbook["Materialeliste"]
 
     assert worksheet.cell(row=4, column=1).value == "Combined Material List"
-    assert len(worksheet._images) == 1
-    _assert_fireboard_brand_text(worksheet)
+    _assert_logo_placement_unchanged(worksheet)
+    _assert_fireboard_brand_text(worksheet, FIREBOARD_COMBINED_ANCHOR)
     _assert_header_style(worksheet[TABLE_START_ROW])
     _assert_columns_autosized_to_visible_values(worksheet)
     _assert_print_layout(worksheet, TABLE_START_ROW)
@@ -236,8 +255,8 @@ def test_per_system_material_list_preserves_structure_and_styles_repeated_header
     worksheet = workbook["Materialeliste"]
 
     assert worksheet.cell(row=4, column=1).value == "Materialeliste pr. beregning"
-    assert len(worksheet._images) == 1
-    _assert_fireboard_brand_text(worksheet)
+    _assert_logo_placement_unchanged(worksheet)
+    _assert_fireboard_brand_text(worksheet, FIREBOARD_PER_CALCULATION_ANCHOR)
     assert worksheet.cell(row=TABLE_START_ROW, column=1).value == "SYSTEM"
     assert worksheet.freeze_panes == f"A{TABLE_START_ROW + 1}"
     _assert_columns_autosized_to_visible_values(worksheet)
@@ -277,79 +296,106 @@ def test_per_system_material_list_preserves_structure_and_styles_repeated_header
     assert exported_values == expected_values
 
 
-def test_material_list_workbook_titles_are_localized_for_all_export_types():
+EXPORT_SCENARIOS = [
+    (
+        "DA",
+        EXPORT_TYPE_SINGLE,
+        False,
+        True,
+        "Materialeliste",
+        "Materialeliste.xlsx",
+        FIREBOARD_SINGLE_ANCHOR,
+    ),
+    (
+        "DA",
+        EXPORT_TYPE_COMBINED,
+        False,
+        True,
+        "Samlet materialeliste",
+        "Samlet_materialeliste.xlsx",
+        FIREBOARD_COMBINED_ANCHOR,
+    ),
+    (
+        "DA",
+        EXPORT_TYPE_PER_CALCULATION,
+        True,
+        False,
+        "Materialeliste pr. beregning",
+        "Materialeliste_pr_beregning.xlsx",
+        FIREBOARD_PER_CALCULATION_ANCHOR,
+    ),
+    (
+        "EN",
+        EXPORT_TYPE_SINGLE,
+        False,
+        True,
+        "Material List",
+        "Material_List.xlsx",
+        FIREBOARD_SINGLE_ANCHOR,
+    ),
+    (
+        "EN",
+        EXPORT_TYPE_COMBINED,
+        False,
+        True,
+        "Combined Material List",
+        "Combined_Material_List.xlsx",
+        FIREBOARD_COMBINED_ANCHOR,
+    ),
+    (
+        "EN",
+        EXPORT_TYPE_PER_CALCULATION,
+        True,
+        False,
+        "Material List per Calculation",
+        "Material_List_per_Calculation.xlsx",
+        FIREBOARD_PER_CALCULATION_ANCHOR,
+    ),
+]
+
+
+@pytest.mark.parametrize(
+    (
+        "language",
+        "export_type",
+        "per_system",
+        "include_header",
+        "expected_title",
+        "expected_filename",
+        "expected_fireboard_anchor",
+    ),
+    EXPORT_SCENARIOS,
+)
+def test_material_list_branding_titles_and_filenames_by_export_type(
+    language,
+    export_type,
+    per_system,
+    include_header,
+    expected_title,
+    expected_filename,
+    expected_fireboard_anchor,
+):
     materials_df = _sample_materials_df()
+    export_df = (
+        add_system_separator_rows(materials_df)
+        if per_system
+        else materials_df
+    )
 
-    scenarios = [
-        ("DA", EXPORT_TYPE_SINGLE, False, True, "Materialeliste"),
-        ("DA", EXPORT_TYPE_COMBINED, False, True, "Samlet materialeliste"),
-        (
-            "DA",
-            EXPORT_TYPE_PER_CALCULATION,
-            True,
-            False,
-            "Materialeliste pr. beregning",
-        ),
-        ("EN", EXPORT_TYPE_SINGLE, False, True, "Material List"),
-        ("EN", EXPORT_TYPE_COMBINED, False, True, "Combined Material List"),
-        (
-            "EN",
-            EXPORT_TYPE_PER_CALCULATION,
-            True,
-            False,
-            "Material List per Calculation",
-        ),
-    ]
-
-    for language, export_type, per_system, include_header, expected_title in scenarios:
-        export_df = (
-            add_system_separator_rows(materials_df)
-            if per_system
-            else materials_df
+    workbook = _load_workbook_from_export(
+        create_materials_excel(
+            export_df,
+            include_header=include_header,
+            language=language,
+            per_system=per_system,
+            export_type=export_type,
         )
-        workbook = _load_workbook_from_export(
-            create_materials_excel(
-                export_df,
-                include_header=include_header,
-                language=language,
-                per_system=per_system,
-                export_type=export_type,
-            )
-        )
-        worksheet = workbook["Materialeliste"]
+    )
+    worksheet = workbook["Materialeliste"]
 
-        assert worksheet.cell(row=4, column=1).value == expected_title
+    assert get_material_list_title(language, export_type) == expected_title
+    assert get_materials_excel_filename(language, export_type) == expected_filename
+    assert worksheet.cell(row=4, column=1).value == expected_title
+    _assert_logo_placement_unchanged(worksheet)
+    _assert_fireboard_brand_text(worksheet, expected_fireboard_anchor)
 
-
-def test_material_list_titles_are_localized_for_all_excel_export_types():
-    assert get_material_list_title("DA", EXPORT_TYPE_SINGLE) == "Materialeliste"
-    assert get_material_list_title("DA", EXPORT_TYPE_COMBINED) == (
-        "Samlet materialeliste"
-    )
-    assert get_material_list_title("DA", EXPORT_TYPE_PER_CALCULATION) == (
-        "Materialeliste pr. beregning"
-    )
-    assert get_material_list_title("EN", EXPORT_TYPE_SINGLE) == "Material List"
-    assert get_material_list_title("EN", EXPORT_TYPE_COMBINED) == (
-        "Combined Material List"
-    )
-    assert get_material_list_title("EN", EXPORT_TYPE_PER_CALCULATION) == (
-        "Material List per Calculation"
-    )
-
-
-def test_material_list_download_filenames_are_localized_for_all_export_types():
-    assert get_materials_excel_filename("DA", EXPORT_TYPE_SINGLE) == "Materialeliste.xlsx"
-    assert get_materials_excel_filename("DA", EXPORT_TYPE_COMBINED) == (
-        "Samlet_materialeliste.xlsx"
-    )
-    assert get_materials_excel_filename("DA", EXPORT_TYPE_PER_CALCULATION) == (
-        "Materialeliste_pr_beregning.xlsx"
-    )
-    assert get_materials_excel_filename("EN", EXPORT_TYPE_SINGLE) == "Material_List.xlsx"
-    assert get_materials_excel_filename("EN", EXPORT_TYPE_COMBINED) == (
-        "Combined_Material_List.xlsx"
-    )
-    assert get_materials_excel_filename("EN", EXPORT_TYPE_PER_CALCULATION) == (
-        "Material_List_per_Calculation.xlsx"
-    )
