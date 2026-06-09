@@ -29,6 +29,12 @@ from utils.validation_helpers import (
     validate_fireboard_lookup,
     reset_calculation_state
 )
+from utils.calculation_state import (
+    append_new_calculation,
+    rebuild_combined_materials,
+    remember_current_materials,
+    replace_selected_calculation,
+)
 from utils.pdf_generator import (
     PROFILE_IMAGE_MAP,
     generate_single_pdf,
@@ -1105,6 +1111,8 @@ defaults = {
     "calculations": [],
 
     "combined_materials": {},
+    "current_materials_signature": None,
+    "current_materials_table": None,
 
     "edit_index": None,
     "editing": False,
@@ -1129,6 +1137,8 @@ for key, value in defaults.items():
     if key not in st.session_state:
 
         st.session_state[key] = value
+
+rebuild_combined_materials(st.session_state)
 
 # ---------------------------------------------------
 # TRANSLATION HELPER
@@ -1757,6 +1767,15 @@ with st.sidebar:
                         st.session_state.edit_index = None
 
                         st.session_state.editing = False
+
+                    elif (
+                        st.session_state.edit_index is not None
+                        and st.session_state.edit_index > idx
+                    ):
+
+                        st.session_state.edit_index -= 1
+
+                    rebuild_combined_materials(st.session_state)
 
                     st.rerun()
 
@@ -3321,25 +3340,17 @@ if current_step == 3:
 
             if st.session_state.edit_index is not None:
 
-                st.session_state.calculations[
-                    st.session_state.edit_index
-                ] = calculation_data
-
-                st.session_state.edit_index = None
-
-                st.session_state.editing = False
+                replace_selected_calculation(
+                    st.session_state,
+                    calculation_data
+                )
 
             else:
 
-                if not (
-                    st.session_state.calculations
-                    and st.session_state.calculations[-1]
-                    == calculation_data
-                ):
-                
-                    st.session_state.calculations.append(
-                        calculation_data
-                    )
+                append_new_calculation(
+                    st.session_state,
+                    calculation_data
+                )
 
             st.session_state.last_updated = datetime.now()
 
@@ -3584,17 +3595,13 @@ if current_step == 3:
 
         export_df = materials_table_df.iloc[:, :-3].copy()
 
-        calculation_key = (
-            f"{selected_profile}_"
-            f"R{fire_time}_"
-            f"{temperature}"
+        remember_current_materials(
+            st.session_state,
+            calculation_data,
+            export_df
         )
 
-        export_df["SYSTEM"] = calculation_key
-        
-        st.session_state.combined_materials[
-            calculation_key
-        ] = export_df
+        rebuild_combined_materials(st.session_state)
 
         st.markdown(
             f"""
