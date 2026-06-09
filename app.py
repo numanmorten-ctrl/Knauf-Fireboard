@@ -1620,6 +1620,11 @@ with st.sidebar:
         margin: 0 0 1.25rem 0;
     }
 
+    .st-key-new-calculation-section {
+
+        margin-top: -0.75rem;
+    }
+
     /* ---------------------------------------------------
     AKTIV SIDEBAR BEREGNING
     --------------------------------------------------- */
@@ -1668,18 +1673,20 @@ with st.sidebar:
     # NY BEREGNING
     # ---------------------------------------------------
 
-    if st.button(
-        f"➕ {t('new_calculation')}",
-        use_container_width=True
-    ):
+    with st.container(key="new_calculation_section"):
 
-        reset_calculation_state(
-            st.session_state
-        )
+        if st.button(
+            f"➕ {t('new_calculation')}",
+            use_container_width=True
+        ):
 
-        st.rerun()
+            reset_calculation_state(
+                st.session_state
+            )
 
-        st.divider()
+            st.rerun()
+
+            st.divider()
 
     # ---------------------------------------------------
     # BEREGNINGER
