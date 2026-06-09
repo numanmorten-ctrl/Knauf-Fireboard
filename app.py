@@ -1574,26 +1574,26 @@ with st.sidebar:
 
         color: #003b7a;
 
-        font-size: 2rem;
+        font-size: 2.35rem;
 
         font-weight: 700;
 
-        line-height: 1.2;
+        line-height: 1.15;
 
-        margin: 0 0 0.2rem 0;
+        margin: 2rem 0 0.35rem 0;
     }
 
     .sidebar-calculations-heading {
 
-        color: #111827;
+        color: #1f2933;
 
-        font-size: 1.35rem;
+        font-size: 1.2rem;
 
-        font-weight: 650;
+        font-weight: 600;
 
         line-height: 1.25;
 
-        margin: 0 0 1rem 0;
+        margin: 0 0 1.25rem 0;
     }
 
     /* ---------------------------------------------------
