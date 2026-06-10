@@ -325,7 +325,7 @@ def _folders(language: str) -> dict[str, str]:
         return {
             "report": "Report",
             "materials": "Material_lists",
-            "fireboard": "Fireboard",
+            "fireboard": "Design and Installation Sections",
             "epd": "EPD",
             "datasheets": "Datasheets",
         }
@@ -333,7 +333,7 @@ def _folders(language: str) -> dict[str, str]:
     return {
         "report": "Rapport",
         "materials": "Materialelister",
-        "fireboard": "Fireboard",
+        "fireboard": "Projekterings- og montageafsnit",
         "epd": "EPD",
         "datasheets": "Datablade",
     }
@@ -561,19 +561,30 @@ def create_project_package_zip(
                 _bytes_from_filelike(material_exports.per_calculation_excel),
             )
 
+        if language == "EN":
+            fireboard_manual_filename = "Fireboard_design_section.pdf"
+            fireboard_manual_label = "Fireboard design section"
+            fireboard_installation_filename = "Fireboard_installation_section.pdf"
+            fireboard_installation_label = "Fireboard installation section"
+        else:
+            fireboard_manual_filename = "Fireboard_projekteringsafsnit.pdf"
+            fireboard_manual_label = "Fireboard projekteringsafsnit"
+            fireboard_installation_filename = "Fireboard_montageafsnit.pdf"
+            fireboard_installation_label = "Fireboard montageafsnit"
+
         fireboard_files = [
             ExternalProjectFile(
                 url=FIREBOARD_MANUAL_SECTION_URL,
                 folder=folders["fireboard"],
-                filename="Fireboard_manualafsnit.pdf",
-                label="Fireboard manualafsnit",
+                filename=fireboard_manual_filename,
+                label=fireboard_manual_label,
                 key="fireboard:manual",
             ),
             ExternalProjectFile(
                 url=FIREBOARD_INSTALLATION_SECTION_URL,
                 folder=folders["fireboard"],
-                filename="Fireboard_montageafsnit.pdf",
-                label="Fireboard montageafsnit",
+                filename=fireboard_installation_filename,
+                label=fireboard_installation_label,
                 key="fireboard:montage",
             ),
         ]

@@ -67,7 +67,7 @@ translations = {
             "Downloads",
 
         "download_fireboard_documentation":
-            "Download Fireboard manualafsnit",
+            "Download Fireboard projekteringsafsnit",
 
         "download_fireboard_installation_section":
             "Download Fireboard montageafsnit",
@@ -386,7 +386,7 @@ translations = {
             "Downloads",
 
         "download_fireboard_documentation":
-            "Download Fireboard manual section",
+            "Download Fireboard design section",
 
         "download_fireboard_installation_section":
             "Download Fireboard installation section",
