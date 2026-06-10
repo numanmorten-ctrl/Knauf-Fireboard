@@ -57,6 +57,9 @@ translations = {
         "download_fireboard_documentation":
             "Download Fireboard manualafsnit",
 
+        "download_fireboard_installation_section":
+            "Download Fireboard montageafsnit",
+
         # ---------------------------------------------------
         # TABS
         # ---------------------------------------------------
@@ -360,6 +363,9 @@ translations = {
 
         "download_fireboard_documentation":
             "Download Fireboard manual section",
+
+        "download_fireboard_installation_section":
+            "Download Fireboard installation section",
 
         # ---------------------------------------------------
         # TABS
