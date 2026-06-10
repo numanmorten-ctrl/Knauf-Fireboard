@@ -42,6 +42,15 @@ translations = {
         "download_all_calculations":
             "Download alle beregninger",
 
+        "download_material_list":
+            "Download materialeliste",
+
+        "download_combined_material_list":
+            "Download samlet materialeliste",
+
+        "download_material_list_per_calculation":
+            "Download materialeliste pr. beregning",
+
         # ---------------------------------------------------
         # TABS
         # ---------------------------------------------------
@@ -330,6 +339,15 @@ translations = {
 
         "download_all_calculations":
             "Download all calculations",
+
+        "download_material_list":
+            "Download material list",
+
+        "download_combined_material_list":
+            "Download combined material list",
+
+        "download_material_list_per_calculation":
+            "Download material list per calculation",
 
         # ---------------------------------------------------
         # TABS
