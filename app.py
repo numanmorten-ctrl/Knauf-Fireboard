@@ -39,6 +39,7 @@ from utils.pdf_generator import (
     generate_single_pdf,
     generate_complete_pdf,
 )
+from utils.pwa import render_pwa_head_tags
 from utils.project_package import (
     PROJECT_PACKAGE_MIME,
     build_project_download_signature,
@@ -129,6 +130,8 @@ from reportlab.lib.styles import ParagraphStyle
 from reportlab.platypus import Image
 
 
+
+render_pwa_head_tags()
 
 # ---------------------------------------------------
 # KNAUF THEME
