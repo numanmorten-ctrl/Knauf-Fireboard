@@ -2159,7 +2159,7 @@ with st.sidebar:
             )
 
             st.download_button(
-                label="Download samlet materialeliste",
+                label=t("download_combined_material_list"),
                 icon=UI_ICONS["download_combined_material_list"],
                 data=total_excel,
                 file_name=get_materials_excel_filename(
@@ -2174,7 +2174,7 @@ with st.sidebar:
             )
 
             st.download_button(
-                label="Download materialeliste pr. beregning",
+                label=t("download_material_list_per_calculation"),
                 icon=UI_ICONS["download_material_list_per_calculation"],
                 data=combined_excel,
                 file_name=get_materials_excel_filename(
@@ -3743,8 +3743,8 @@ if current_step == 3:
         )
 
         st.download_button(
-            label="Download Excel",
-            icon=UI_ICONS["download_excel"],
+            label=t("download_material_list"),
+            icon=UI_ICONS["download_material_list"],
             data=excel_file,
             file_name=get_materials_excel_filename(
                 st.session_state.language,
