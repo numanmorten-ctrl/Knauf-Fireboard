@@ -54,32 +54,13 @@ def action_label(label: str) -> str:
 
 
 def material_link_icon(icon_name: str) -> str:
-    """Return an inline SVG icon for HTML material-link columns."""
+    """Return an inline icon for HTML material-link columns."""
 
     icons = {
         "epd": {
             "label": "EPD",
             "color": "#2e7d32",
-            "paths": (
-                {
-                    "color": "#6b7280",
-                    "d": (
-                        "M6.75 2.75h7.1c.2 0 .39.08.53.22l3.9 3.9"
-                        "c.14.14.22.33.22.53v13.85c0 .41-.34.75-.75.75"
-                        "h-11c-.41 0-.75-.34-.75-.75V3.5c0-.41.34-.75.75-.75Z"
-                        "M13.5 3v4.75h4.75M8.75 11.1h4.35M8.75 14.15h2.75"
-                    ),
-                },
-                {
-                    "color": "#2e7d32",
-                    "d": (
-                        "M18.7 12.2c-3.9.28-6.45 1.52-7.68 3.7"
-                        "-.63 1.12-.57 2.45.13 3.28.78.93 2.2 1.12 3.5.49"
-                        "1.74-.85 3.05-2.8 3.92-5.83M12.2 19.25"
-                        "c1.05-1.72 2.5-3.08 4.48-4.18"
-                    ),
-                },
-            ),
+            "material_symbol": "eco",
         },
         "datasheet": {
             "label": "Datasheet",
@@ -93,21 +74,30 @@ def material_link_icon(icon_name: str) -> str:
     }
 
     icon = icons[icon_name]
-    paths = icon.get("paths")
 
-    if paths is None:
-        paths = (
-            {
-                "color": icon["color"],
-                "d": icon["path"],
-            },
+    if "material_symbol" in icon:
+        symbol = escape(icon["material_symbol"])
+        return (
+            f'<span class="material-link-icon material-link-icon-{escape(icon_name)}" '
+            f'aria-label="{escape(icon["label"])}" title="{escape(icon["label"])}">'
+            '<span class="material-symbols-rounded" aria-hidden="true" '
+            f'style="color: {icon["color"]}; font-family: '
+            "'Material Symbols Rounded', 'Material Symbols Outlined'; "
+            'font-weight: normal; font-style: normal; font-size: 18px; '
+            'line-height: 18px; letter-spacing: normal; text-transform: none; '
+            'display: inline-flex; align-items: center; justify-content: center; '
+            'width: 18px; height: 18px; white-space: nowrap; word-wrap: normal; '
+            "direction: ltr; -webkit-font-feature-settings: \'liga\'; "
+            "-webkit-font-smoothing: antialiased; font-feature-settings: \'liga\'; "
+            'vertical-align: -0.2em;">'
+            f'{symbol}'
+            '</span>'
+            '</span>'
         )
-    svg_paths = "".join(
-        (
-            f'<path d="{path["d"]}" '
-            f'style="color: {path.get("color", icon["color"])};" />'
-        )
-        for path in paths
+
+    svg_path = (
+        f'<path d="{icon["path"]}" '
+        f'style="color: {icon["color"]};" />'
     )
 
     return (
@@ -117,7 +107,7 @@ def material_link_icon(icon_name: str) -> str:
         'focusable="false" fill="none" stroke="currentColor" stroke-width="1.8" '
         'stroke-linecap="round" stroke-linejoin="round" '
         'style="vertical-align: -0.2em;">'
-        f'{svg_paths}'
+        f'{svg_path}'
         '</svg>'
         '</span>'
     )
