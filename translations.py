@@ -51,6 +51,15 @@ translations = {
         "download_material_list_per_calculation":
             "Download materialeliste pr. beregning",
 
+        "documentation_section_title":
+            "Downloads",
+
+        "download_fireboard_documentation":
+            "Download Fireboard manualafsnit",
+
+        "download_fireboard_installation_section":
+            "Download Fireboard montageafsnit",
+
         # ---------------------------------------------------
         # TABS
         # ---------------------------------------------------
@@ -348,6 +357,15 @@ translations = {
 
         "download_material_list_per_calculation":
             "Download material list per calculation",
+
+        "documentation_section_title":
+            "Downloads",
+
+        "download_fireboard_documentation":
+            "Download Fireboard manual section",
+
+        "download_fireboard_installation_section":
+            "Download Fireboard installation section",
 
         # ---------------------------------------------------
         # TABS

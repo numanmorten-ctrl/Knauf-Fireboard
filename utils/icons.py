@@ -14,6 +14,8 @@ UI_ICONS = {
     "download_combined_material_list": ":material/backup_table:",
     "download_material_list_per_calculation": ":material/inventory_2:",
     "download_material_list": ":material/table_chart:",
+    "download_fireboard_documentation": ":material/description:",
+    "download_fireboard_installation_section": ":material/description:",
     "delete_calculation": ":material/delete:",
     "delete_project": ":material/delete:",
     "language_selector": ":material/language:",
@@ -32,6 +34,17 @@ INLINE_ICONS = {
         'style="vertical-align: -0.22em; margin-right: 0.25rem;">'
         '<path d="M8 6.25h10.25M8 12h10.25M8 17.75h10.25" />'
         '<path d="M4.75 6.25h.5M4.75 12h.5M4.75 17.75h.5" />'
+        '</svg>'
+    ),
+    "downloads": (
+        '<svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" '
+        'focusable="false" fill="none" stroke="#6b7280" stroke-width="1.8" '
+        'stroke-linecap="round" stroke-linejoin="round" '
+        'style="vertical-align: -0.22em; margin-right: 0.25rem;">'
+        '<path d="M4.75 6.25h5.05l1.55 1.75h7.9v8.75" />'
+        '<path d="M4.75 6.25v11.5h14.5" />'
+        '<path d="M12 10.75v4.75" />'
+        '<path d="M9.8 13.35 12 15.55l2.2-2.2" />'
         '</svg>'
     ),
 }

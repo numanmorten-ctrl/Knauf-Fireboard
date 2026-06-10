@@ -13,6 +13,10 @@ from translations import translations
 from utils.data_loader import clean_text, clean_numeric, load_and_clean_csv
 from utils.render_helpers import render_materials_table
 from utils.icons import UI_ICONS, INLINE_ICONS, action_label
+from utils.documentation import (
+    render_documentation_sidebar_heading,
+    render_fireboard_documentation_downloads,
+)
 from utils.export_helpers import (
     EXPORT_TYPE_COMBINED,
     EXPORT_TYPE_PER_CALCULATION,
@@ -195,7 +199,8 @@ BUTTONS
 --------------------------------------------------- */
 
 div.stButton > button,
-div.stDownloadButton > button {
+div.stDownloadButton > button,
+div.stLinkButton > a {
 
     width: 100%;
 
@@ -219,7 +224,8 @@ div.stDownloadButton > button {
 /* NORMAL BUTTON TEKST */
 
 div.stButton > button:not([kind="primary"]),
-div.stDownloadButton > button {
+div.stDownloadButton > button,
+div.stLinkButton > a {
 
     color: #003b7a !important;
 }
@@ -229,7 +235,8 @@ BUTTON HOVER
 --------------------------------------------------- */
 
 div.stButton > button:hover,
-div.stDownloadButton > button:hover {
+div.stDownloadButton > button:hover,
+div.stLinkButton > a:hover {
 
     border-color: #009fe3 !important;
 
@@ -241,8 +248,10 @@ div.stDownloadButton > button:hover {
 /* Keep Material Symbols neutral for general UI actions. */
 div.stButton > button [data-testid="stIconMaterial"],
 div.stDownloadButton > button [data-testid="stIconMaterial"],
+div.stLinkButton > a [data-testid="stIconMaterial"],
 div.stButton > button .material-symbols-rounded,
-div.stDownloadButton > button .material-symbols-rounded {
+div.stDownloadButton > button .material-symbols-rounded,
+div.stLinkButton > a .material-symbols-rounded {
 
     color: #69727d !important;
 }
@@ -584,6 +593,7 @@ UNIFY ALL BORDERS
 
 .stButton > button,
 .stDownloadButton > button,
+.stLinkButton > a,
 .stTextInput > div > div,
 .stTextArea > div > div,
 .stSelectbox > div > div,
@@ -611,7 +621,8 @@ div[data-baseweb="select"] > div,
 .stTextArea,
 .stSelectbox,
 .stButton,
-.stDownloadButton {
+.stDownloadButton,
+.stLinkButton {
 
     box-sizing: border-box !important;
 }
@@ -1633,6 +1644,11 @@ with st.sidebar:
         margin: 0 0 1.25rem 0;
     }
 
+    .sidebar-documentation-heading {
+
+        margin: 0.2rem 0 0.75rem 0;
+    }
+
     .st-key-new-calculation-section {
 
         margin-top: -0.75rem;
@@ -1858,12 +1874,13 @@ with st.sidebar:
                     st.rerun()
 
     # ---------------------------------------------------
-    # DOWNLOAD ALL CALCULATIONS
+    # DOWNLOADS
     # ---------------------------------------------------
+
+    render_documentation_sidebar_heading(t)
 
     if st.session_state.calculations:
 
-        st.divider()
 
         complete_pdf = generate_complete_pdf(
             calculations=st.session_state.calculations,
@@ -1912,14 +1929,12 @@ with st.sidebar:
             mime="application/pdf",
             use_container_width=True
         )
-        
+
         # ---------------------------------------------------
         # DOWNLOAD COMBINED MATERIAL LIST
         # ---------------------------------------------------
 
         if st.session_state.combined_materials:
-
-            st.divider()
 
             combined_df = pd.concat(
 
@@ -2187,6 +2202,10 @@ with st.sidebar:
                 ),
                 use_container_width=True
             )
+
+        st.divider()
+
+    render_fireboard_documentation_downloads(t)
 
 # ---------------------------------------------------
 # STEP NAVIGATION
