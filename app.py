@@ -12,6 +12,7 @@ import requests
 from translations import translations
 from utils.data_loader import clean_text, clean_numeric, load_and_clean_csv
 from utils.render_helpers import render_materials_table
+from utils.icons import UI_ICONS, INLINE_ICONS, action_label
 from utils.export_helpers import (
     EXPORT_TYPE_COMBINED,
     EXPORT_TYPE_PER_CALCULATION,
@@ -235,6 +236,15 @@ div.stDownloadButton > button:hover {
     background-color: #f5fbff !important;
 
     color: #003b7a !important;
+}
+
+/* Keep Material Symbols neutral for general UI actions. */
+div.stButton > button [data-testid="stIconMaterial"],
+div.stDownloadButton > button [data-testid="stIconMaterial"],
+div.stButton > button .material-symbols-rounded,
+div.stDownloadButton > button .material-symbols-rounded {
+
+    color: #69727d !important;
 }
 
 /* ---------------------------------------------------
@@ -1507,7 +1517,8 @@ with col2:
     st.write("")
 
     if st.button(
-        f"🔄 {t('new_calculation')}",
+        t("new_calculation"),
+        icon=UI_ICONS["new_calculation"],
         use_container_width=True
     ):
 
@@ -1527,7 +1538,8 @@ with col3:
     st.write("")
 
     if st.button(
-        f"🗑️ {t('new_project')}",
+        t("new_project"),
+        icon=UI_ICONS["delete_project"],
         use_container_width=True
     ):
 
@@ -1542,7 +1554,8 @@ with col3:
 with col4:
 
     st.button(
-        "🌐",
+        " ",
+        icon=UI_ICONS["language_selector"],
         disabled=True,
         use_container_width=True
     )
@@ -1582,7 +1595,7 @@ with st.sidebar:
     st.markdown(
         f"""
         <div class="sidebar-project-heading">{t('sidebar_project_heading')}</div>
-        <div class="sidebar-calculations-heading">📚 {t('calculations')}</div>
+        <div class="sidebar-calculations-heading">{INLINE_ICONS['calculations']} {t('calculations')}</div>
         """,
         unsafe_allow_html=True
     )
@@ -1676,7 +1689,8 @@ with st.sidebar:
     with st.container(key="new_calculation_section"):
 
         if st.button(
-            f"➕ {t('new_calculation')}",
+            t("new_calculation"),
+            icon=UI_ICONS["new_calculation"],
             use_container_width=True
         ):
 
@@ -1814,7 +1828,8 @@ with st.sidebar:
             with col2:
 
                 if st.button(
-                    "🗑️",
+                    " ",
+                    icon=UI_ICONS["delete_calculation"],
                     key=f"delete_sidebar_{idx}"
                 ):
 
@@ -1890,7 +1905,8 @@ with st.sidebar:
         )
 
         st.download_button(
-            label=f"📚 {t('download_all_calculations')}",
+            label=t("download_all_calculations"),
+            icon=UI_ICONS["download_all_calculations"],
             data=complete_pdf,
             file_name="Knauf_Fireboard_Rapport.pdf",
             mime="application/pdf",
@@ -2143,7 +2159,8 @@ with st.sidebar:
             )
 
             st.download_button(
-                label="🛒 Download samlet materialeliste",
+                label="Download samlet materialeliste",
+                icon=UI_ICONS["download_combined_material_list"],
                 data=total_excel,
                 file_name=get_materials_excel_filename(
                     st.session_state.language,
@@ -2157,7 +2174,8 @@ with st.sidebar:
             )
 
             st.download_button(
-                label="📦 Download materialeliste pr. beregning",
+                label="Download materialeliste pr. beregning",
+                icon=UI_ICONS["download_material_list_per_calculation"],
                 data=combined_excel,
                 file_name=get_materials_excel_filename(
                     st.session_state.language,
@@ -3358,7 +3376,8 @@ if current_step == 3:
     )
 
     st.download_button(
-        label=t("download_this_calculation"),
+        label=action_label(t("download_this_calculation")),
+        icon=UI_ICONS["download_this_calculation"],
         data=single_calc_pdf,
         file_name=(
             f"{selected_profile}_"
@@ -3394,9 +3413,15 @@ if current_step == 3:
             if st.session_state.edit_index is not None
             else t("add_calculation")
         )
+        button_icon = (
+            UI_ICONS["update_calculation"]
+            if st.session_state.edit_index is not None
+            else UI_ICONS["add_calculation"]
+        )
 
         if st.button(
-            button_text,
+            action_label(button_text),
+            icon=button_icon,
             use_container_width=True,
             key="save_calculation_button"
         ):
@@ -3718,7 +3743,8 @@ if current_step == 3:
         )
 
         st.download_button(
-            label="📥 Download Excel",
+            label="Download Excel",
+            icon=UI_ICONS["download_excel"],
             data=excel_file,
             file_name=get_materials_excel_filename(
                 st.session_state.language,

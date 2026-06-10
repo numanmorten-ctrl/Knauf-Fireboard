@@ -1,4 +1,6 @@
 import pandas as pd
+
+from utils.icons import material_link_icon
 import streamlit as st
 
 from utils.data_loader import clean_numeric, clean_text
@@ -464,7 +466,7 @@ def build_material_row(
 
         "EPD": (
 
-            f'<a href="{match.get("EPD_URL", "")}" target="_blank">🌱</a>'
+            f'<a href="{match.get("EPD_URL", "")}" target="_blank">{material_link_icon("epd")}</a>'
 
             if (
                 match is not None
@@ -477,7 +479,7 @@ def build_material_row(
 
         "DATABLAD": (
 
-            f'<a href="{match.get("DATABLAD_URL", "")}" target="_blank">📄</a>'
+            f'<a href="{match.get("DATABLAD_URL", "")}" target="_blank">{material_link_icon("datasheet")}</a>'
 
             if (
                 match is not None
