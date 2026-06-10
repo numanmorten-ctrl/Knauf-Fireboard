@@ -42,8 +42,10 @@ from utils.pdf_generator import (
 )
 from utils.project_package import (
     PROJECT_PACKAGE_MIME,
+    build_project_download_signature,
     build_project_material_exports,
     create_project_package_zip,
+    get_cached_project_download,
     project_package_filename,
 )
 
@@ -1176,6 +1178,10 @@ defaults = {
     "surface_area": "",
     "steel_area": "",
     "apv_method": "Direkte",
+
+    "project_package_cache": {},
+    "project_report_cache": {},
+    "project_material_exports_cache": {},
 }
 
 for key, value in defaults.items():
@@ -1882,81 +1888,157 @@ with st.sidebar:
 
     if st.session_state.calculations:
 
-
-        complete_pdf = generate_complete_pdf(
+        project_download_signature = build_project_download_signature(
             calculations=st.session_state.calculations,
-            language=st.session_state.language,
-            session_state=st.session_state,
-            t=t,
-
-            PROFILE_IMAGE_MAP=PROFILE_IMAGE_MAP,
-
-            PROJECT_X=PROJECT_X,
-            PROJECT_Y=PROJECT_Y,
-            PROJECT_LINE_HEIGHT=PROJECT_LINE_HEIGHT,
-
-            CALC_X=CALC_X,
-            CALC_Y=CALC_Y,
-            CALC_LINE_HEIGHT=CALC_LINE_HEIGHT,
-
-            RESULT_X=RESULT_X,
-            RESULT_Y=RESULT_Y,
-
-            PAGE_X=PAGE_X,
-            PAGE_Y=PAGE_Y,
-
-            PROFILE_IMAGE_X=PROFILE_IMAGE_X,
-            PROFILE_IMAGE_Y=PROFILE_IMAGE_Y,
-            PROFILE_IMAGE_WIDTH=PROFILE_IMAGE_WIDTH,
-            PROFILE_IMAGE_HEIGHT=PROFILE_IMAGE_HEIGHT,
-
-            PROFILE_TEXT_X=PROFILE_TEXT_X,
-            PROFILE_CATEGORY_TEXT_Y=PROFILE_CATEGORY_TEXT_Y,
-            PROFILE_TEXT_Y=PROFILE_TEXT_Y,
-            PROFILE_CATEGORY_FONT=PROFILE_CATEGORY_FONT,
-            PROFILE_TEXT_FONT=PROFILE_TEXT_FONT,
-
-            PROJECT_FONT=PROJECT_FONT,
-            CALC_FONT=CALC_FONT,
-            RESULT_FONT=RESULT_FONT,
-            PAGE_FONT=PAGE_FONT
-        )
-
-        material_exports = build_project_material_exports(
-            st.session_state.combined_materials,
-            st.session_state.language,
-            t,
-        )
-
-        project_package = create_project_package_zip(
-            report_pdf=complete_pdf,
-            material_exports=material_exports,
             combined_materials=st.session_state.combined_materials,
-            materials_lookup_records=materials_lookup_records,
             language=st.session_state.language,
+            project_details={
+                "project_name": st.session_state.project_name,
+                "company": st.session_state.company,
+                "prepared_by": st.session_state.prepared_by,
+                "description": st.session_state.description,
+            },
         )
 
-        st.download_button(
-            label=t("download_project_package"),
+        def build_complete_project_pdf():
+            return generate_complete_pdf(
+                calculations=st.session_state.calculations,
+                language=st.session_state.language,
+                session_state=st.session_state,
+                t=t,
+
+                PROFILE_IMAGE_MAP=PROFILE_IMAGE_MAP,
+
+                PROJECT_X=PROJECT_X,
+                PROJECT_Y=PROJECT_Y,
+                PROJECT_LINE_HEIGHT=PROJECT_LINE_HEIGHT,
+
+                CALC_X=CALC_X,
+                CALC_Y=CALC_Y,
+                CALC_LINE_HEIGHT=CALC_LINE_HEIGHT,
+
+                RESULT_X=RESULT_X,
+                RESULT_Y=RESULT_Y,
+
+                PAGE_X=PAGE_X,
+                PAGE_Y=PAGE_Y,
+
+                PROFILE_IMAGE_X=PROFILE_IMAGE_X,
+                PROFILE_IMAGE_Y=PROFILE_IMAGE_Y,
+                PROFILE_IMAGE_WIDTH=PROFILE_IMAGE_WIDTH,
+                PROFILE_IMAGE_HEIGHT=PROFILE_IMAGE_HEIGHT,
+
+                PROFILE_TEXT_X=PROFILE_TEXT_X,
+                PROFILE_CATEGORY_TEXT_Y=PROFILE_CATEGORY_TEXT_Y,
+                PROFILE_TEXT_Y=PROFILE_TEXT_Y,
+                PROFILE_CATEGORY_FONT=PROFILE_CATEGORY_FONT,
+                PROFILE_TEXT_FONT=PROFILE_TEXT_FONT,
+
+                PROJECT_FONT=PROJECT_FONT,
+                CALC_FONT=CALC_FONT,
+                RESULT_FONT=RESULT_FONT,
+                PAGE_FONT=PAGE_FONT
+            )
+
+        def build_project_material_lists():
+            return build_project_material_exports(
+                st.session_state.combined_materials,
+                st.session_state.language,
+                t,
+            )
+
+        complete_pdf = get_cached_project_download(
+            st.session_state.project_report_cache,
+            project_download_signature,
+        )
+        material_exports = get_cached_project_download(
+            st.session_state.project_material_exports_cache,
+            project_download_signature,
+        )
+        project_package = get_cached_project_download(
+            st.session_state.project_package_cache,
+            project_download_signature,
+        )
+
+        if project_package is None and st.button(
+            label=t("prepare_project_package"),
             icon=UI_ICONS["download_project_package"],
-            data=project_package,
-            file_name=project_package_filename(st.session_state.language),
-            mime=PROJECT_PACKAGE_MIME,
-            use_container_width=True
-        )
+            use_container_width=True,
+            key="prepare_project_package",
+        ):
+            complete_pdf = complete_pdf or build_complete_project_pdf()
+            material_exports = (
+                material_exports
+                if material_exports is not None
+                else build_project_material_lists()
+            )
+            project_package = create_project_package_zip(
+                report_pdf=complete_pdf,
+                material_exports=material_exports,
+                combined_materials=st.session_state.combined_materials,
+                materials_lookup_records=materials_lookup_records,
+                language=st.session_state.language,
+            )
+            st.session_state.project_report_cache = {
+                "signature": project_download_signature,
+                "data": complete_pdf,
+            }
+            st.session_state.project_material_exports_cache = {
+                "signature": project_download_signature,
+                "data": material_exports,
+            }
+            st.session_state.project_package_cache = {
+                "signature": project_download_signature,
+                "data": project_package,
+            }
 
-        st.download_button(
-            label=t("download_all_calculations"),
+        if project_package is not None:
+            st.download_button(
+                label=t("download_project_package"),
+                icon=UI_ICONS["download_project_package"],
+                data=project_package,
+                file_name=project_package_filename(st.session_state.language),
+                mime=PROJECT_PACKAGE_MIME,
+                use_container_width=True
+            )
+
+        if complete_pdf is None and st.button(
+            label=t("prepare_all_calculations"),
             icon=UI_ICONS["download_all_calculations"],
-            data=complete_pdf,
-            file_name="Knauf_Fireboard_Rapport.pdf",
-            mime="application/pdf",
-            use_container_width=True
-        )
+            use_container_width=True,
+            key="prepare_all_calculations",
+        ):
+            complete_pdf = build_complete_project_pdf()
+            st.session_state.project_report_cache = {
+                "signature": project_download_signature,
+                "data": complete_pdf,
+            }
+
+        if complete_pdf is not None:
+            st.download_button(
+                label=t("download_all_calculations"),
+                icon=UI_ICONS["download_all_calculations"],
+                data=complete_pdf,
+                file_name="Knauf_Fireboard_Rapport.pdf",
+                mime="application/pdf",
+                use_container_width=True
+            )
 
         # ---------------------------------------------------
         # DOWNLOAD COMBINED MATERIAL LIST
         # ---------------------------------------------------
+
+        if material_exports is None and st.button(
+            label=t("prepare_material_lists"),
+            icon=UI_ICONS["download_combined_material_list"],
+            use_container_width=True,
+            key="prepare_project_material_lists",
+        ):
+            material_exports = build_project_material_lists()
+            st.session_state.project_material_exports_cache = {
+                "signature": project_download_signature,
+                "data": material_exports,
+            }
 
         if material_exports is not None:
 

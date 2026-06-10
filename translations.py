@@ -42,6 +42,15 @@ translations = {
         "download_project_package":
             "Download projektpakke",
 
+        "prepare_project_package":
+            "Forbered projektpakke",
+
+        "prepare_all_calculations":
+            "Forbered rapport",
+
+        "prepare_material_lists":
+            "Forbered materialelister",
+
         "download_all_calculations":
             "Download alle beregninger",
 
@@ -351,6 +360,15 @@ translations = {
 
         "download_project_package":
             "Download project package",
+
+        "prepare_project_package":
+            "Prepare project package",
+
+        "prepare_all_calculations":
+            "Prepare report",
+
+        "prepare_material_lists":
+            "Prepare material lists",
 
         "download_all_calculations":
             "Download all calculations",
