@@ -43,8 +43,9 @@ def test_generated_pwa_head_tags_include_ipad_and_manifest_metadata():
     head_tags = build_pwa_head_tags()
 
     assert f'<link rel="manifest" href="{MANIFEST_URL}">' in head_tags
-    assert '<meta name="apple-mobile-web-app-title" content="Fireboard">' in head_tags
-    assert '<meta name="apple-mobile-web-app-status-bar-style" content="default">' in head_tags
+    assert 'name="apple-mobile-web-app-capable"' not in head_tags
+    assert 'name="apple-mobile-web-app-title"' not in head_tags
+    assert 'name="apple-mobile-web-app-status-bar-style"' not in head_tags
     assert f'<meta name="theme-color" content="{KNAUF_BLUE}">' in head_tags
     assert "viewport-fit=cover" in head_tags
     assert "width=device-width" in head_tags
@@ -53,10 +54,18 @@ def test_generated_pwa_head_tags_include_ipad_and_manifest_metadata():
 def test_generated_pwa_head_tags_do_not_enable_fullscreen_standalone_mode():
     head_tags = build_pwa_head_tags()
 
-    assert '<meta name="apple-mobile-web-app-capable" content="yes">' not in head_tags
+    assert 'name="apple-mobile-web-app-capable"' not in head_tags
+    assert 'name="apple-mobile-web-app-title"' not in head_tags
+    assert 'name="apple-mobile-web-app-status-bar-style"' not in head_tags
     assert '<meta name="mobile-web-app-capable" content="yes">' not in head_tags
-    assert '<meta name="apple-mobile-web-app-capable" content="no">' in head_tags
     assert '<meta name="mobile-web-app-capable" content="no">' in head_tags
+
+
+def test_streamlit_starts_with_collapsed_sidebar():
+    app_content = Path("app.py").read_text()
+
+    assert "st.set_page_config(" in app_content
+    assert 'initial_sidebar_state="collapsed"' in app_content
 
 
 def test_tablet_project_menu_labels_are_available_to_generated_css():
