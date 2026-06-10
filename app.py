@@ -1062,6 +1062,243 @@ table tbody tr:hover td {
     background: #fafafa !important;
 }
 
+/* Step tabs share a class so responsive rules can scale active and inactive tabs consistently. */
+.step-tab {
+    background-color: #003b7a;
+    color: white;
+    padding: 8px;
+    border-radius: 0;
+    text-align: center;
+    font-weight: 700;
+    border: 1px solid #003b7a;
+    box-sizing: border-box;
+}
+
+/* ---------------------------------------------------
+Responsive layout for constrained viewport widths
+--------------------------------------------------- */
+
+@media (max-width: 1366px) {
+
+    .block-container {
+        padding-top: 4rem !important;
+        padding-left: 1.1rem !important;
+        padding-right: 1.1rem !important;
+        max-width: 100% !important;
+        overflow-x: hidden !important;
+    }
+
+    h1 {
+        font-size: 32px !important;
+        line-height: 1.15 !important;
+        word-break: normal !important;
+        overflow-wrap: normal !important;
+        hyphens: none !important;
+    }
+
+    h2 {
+        font-size: 1.45rem !important;
+    }
+
+    h3 {
+        font-size: 1.15rem !important;
+    }
+
+    div[data-testid="stVerticalBlock"] {
+        gap: 0.65rem !important;
+    }
+
+    .element-container {
+        margin-bottom: 0.35rem !important;
+    }
+
+    .st-key-top-action-row div[data-testid="stHorizontalBlock"],
+    .st-key-top_action_row div[data-testid="stHorizontalBlock"] {
+        gap: 0.55rem !important;
+    }
+
+    .st-key-top-action-row div.stButton > button,
+    .st-key-top_action_row div.stButton > button,
+    .st-key-step-tabs div.stButton > button,
+    .st-key-step_tabs div.stButton > button {
+        min-height: 40px !important;
+        padding: 0.35rem 0.55rem !important;
+        font-size: 13px !important;
+        line-height: 1.2 !important;
+        white-space: normal !important;
+    }
+
+    .step-tab {
+        min-height: 40px !important;
+        padding: 7px 6px !important;
+        font-size: 13px !important;
+        line-height: 1.2 !important;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .st-key-profile-category-grid div[data-testid="stHorizontalBlock"],
+    .st-key-profile_category_grid div[data-testid="stHorizontalBlock"] {
+        gap: 0.55rem !important;
+    }
+
+    section[data-testid="stSidebar"] [data-testid="stSidebarContent"],
+    section[data-testid="stSidebar"] > div:first-child {
+        padding: 0rem 1rem 0.8rem 1rem !important;
+    }
+
+    section[data-testid="stSidebar"] .sidebar-project-heading {
+        font-size: 2rem !important;
+        margin-bottom: 0.45cm !important;
+    }
+
+    section[data-testid="stSidebar"] .sidebar-calculations-heading {
+        font-size: 1.08rem !important;
+        margin-bottom: 0.9rem !important;
+    }
+
+    section[data-testid="stSidebar"] button,
+    section[data-testid="stSidebar"] .stDownloadButton > button,
+    section[data-testid="stSidebar"] .stLinkButton > a {
+        min-height: 38px !important;
+        padding: 0.35rem 0.5rem !important;
+        font-size: 13px !important;
+        line-height: 1.2 !important;
+    }
+}
+
+@media (max-width: 1180px) {
+
+    .block-container {
+        padding-left: 0.85rem !important;
+        padding-right: 0.85rem !important;
+    }
+
+    h1 {
+        font-size: 28px !important;
+    }
+
+    h2 {
+        font-size: 1.32rem !important;
+    }
+
+    h3 {
+        font-size: 1.08rem !important;
+    }
+
+    .st-key-top-action-row div[data-testid="stHorizontalBlock"],
+    .st-key-top_action_row div[data-testid="stHorizontalBlock"] {
+        flex-wrap: wrap !important;
+        align-items: flex-end !important;
+    }
+
+    .st-key-top-action-row div[data-testid="column"],
+    .st-key-top_action_row div[data-testid="column"] {
+        flex: 0 1 auto !important;
+        min-width: 0 !important;
+        width: auto !important;
+    }
+
+    .st-key-top-action-row div[data-testid="column"]:nth-child(1),
+    .st-key-top_action_row div[data-testid="column"]:nth-child(1) {
+        flex: 1 1 420px !important;
+        min-width: 360px !important;
+    }
+
+    .st-key-top-action-row div[data-testid="column"]:nth-child(2),
+    .st-key-top-action-row div[data-testid="column"]:nth-child(3),
+    .st-key-top_action_row div[data-testid="column"]:nth-child(2),
+    .st-key-top_action_row div[data-testid="column"]:nth-child(3) {
+        flex: 0 1 155px !important;
+        min-width: 145px !important;
+    }
+
+    .st-key-top-action-row div[data-testid="column"]:nth-child(4),
+    .st-key-top_action_row div[data-testid="column"]:nth-child(4) {
+        flex: 0 0 38px !important;
+        min-width: 38px !important;
+    }
+
+    .st-key-top-action-row div[data-testid="column"]:nth-child(5),
+    .st-key-top_action_row div[data-testid="column"]:nth-child(5) {
+        flex: 0 1 128px !important;
+        min-width: 118px !important;
+    }
+
+    .st-key-profile-category-grid div[data-testid="stHorizontalBlock"],
+    .st-key-profile_category_grid div[data-testid="stHorizontalBlock"] {
+        flex-wrap: wrap !important;
+    }
+
+    .st-key-profile-category-grid div[data-testid="column"],
+    .st-key-profile_category_grid div[data-testid="column"] {
+        flex: 1 1 calc(33.333% - 0.6rem) !important;
+        min-width: 180px !important;
+        max-width: calc(33.333% - 0.35rem) !important;
+    }
+
+    table thead th {
+        padding: 6px 14px !important;
+        font-size: 13px !important;
+    }
+
+    table tbody td {
+        padding: 12px 14px !important;
+        font-size: 13px !important;
+    }
+}
+
+@media (max-width: 1024px) {
+
+    .block-container {
+        padding-left: 0.65rem !important;
+        padding-right: 0.65rem !important;
+    }
+
+    h1 {
+        font-size: 25px !important;
+        line-height: 1.12 !important;
+    }
+
+    div[data-testid="stVerticalBlock"] {
+        gap: 0.5rem !important;
+    }
+
+    .st-key-top-action-row div[data-testid="column"]:nth-child(1),
+    .st-key-top_action_row div[data-testid="column"]:nth-child(1) {
+        flex-basis: 100% !important;
+        min-width: 280px !important;
+    }
+
+    .st-key-step-tabs div[data-testid="stHorizontalBlock"],
+    .st-key-step_tabs div[data-testid="stHorizontalBlock"] {
+        gap: 0.4rem !important;
+    }
+
+    .st-key-step-tabs div.stButton > button,
+    .st-key-step_tabs div.stButton > button,
+    .step-tab {
+        min-height: 36px !important;
+        padding: 0.3rem 0.4rem !important;
+        font-size: 12px !important;
+    }
+
+    .st-key-profile-category-grid div[data-testid="column"],
+    .st-key-profile_category_grid div[data-testid="column"] {
+        flex-basis: calc(50% - 0.5rem) !important;
+        max-width: calc(50% - 0.35rem) !important;
+        min-width: 170px !important;
+    }
+
+    section[data-testid="stSidebar"] [data-testid="stSidebarContent"],
+    section[data-testid="stSidebar"] > div:first-child {
+        padding-left: 0.75rem !important;
+        padding-right: 0.75rem !important;
+    }
+}
+
+
 </style>
 """, unsafe_allow_html=True)
 
@@ -1519,96 +1756,98 @@ fire_tables = {
 # HEADER
 # ---------------------------------------------------
 
-col1, col2, col3, col4, col5 = st.columns(
-    [6, 2, 2, 0.24, 1.12],
-    gap="small",
-    vertical_alignment="bottom"
-)
+with st.container(key="top_action_row"):
 
-with col1:
-
-    st.title(
-        t("title")
+    col1, col2, col3, col4, col5 = st.columns(
+        [6, 2, 2, 0.24, 1.12],
+        gap="small",
+        vertical_alignment="bottom"
     )
 
-# ---------------------------------------------------
-# NY BEREGNING
-# ---------------------------------------------------
+    with col1:
 
-with col2:
-
-    st.write("")
-    st.write("")
-
-    if st.button(
-        t("new_calculation"),
-        icon=UI_ICONS["new_calculation"],
-        use_container_width=True
-    ):
-
-        reset_calculation_state(
-            st.session_state
+        st.title(
+            t("title")
         )
 
-        st.rerun()
+    # ---------------------------------------------------
+    # NY BEREGNING
+    # ---------------------------------------------------
 
-# ---------------------------------------------------
-# NYT PROJEKT
-# ---------------------------------------------------
+    with col2:
 
-with col3:
+        st.write("")
+        st.write("")
 
-    st.write("")
-    st.write("")
+        if st.button(
+            t("new_calculation"),
+            icon=UI_ICONS["new_calculation"],
+            use_container_width=True
+        ):
 
-    if st.button(
-        t("new_project"),
-        icon=UI_ICONS["delete_project"],
-        use_container_width=True
-    ):
+            reset_calculation_state(
+                st.session_state
+            )
 
-        st.session_state.clear()
+            st.rerun()
 
-        st.rerun()
+    # ---------------------------------------------------
+    # NYT PROJEKT
+    # ---------------------------------------------------
 
-# ---------------------------------------------------
-# LANGUAGE ICON
-# ---------------------------------------------------
+    with col3:
 
-with col4:
+        st.write("")
+        st.write("")
 
-    st.button(
-        " ",
-        icon=UI_ICONS["language_selector"],
-        disabled=True,
-        use_container_width=True
-    )
+        if st.button(
+            t("new_project"),
+            icon=UI_ICONS["delete_project"],
+            use_container_width=True
+        ):
 
-# ---------------------------------------------------
-# LANGUAGE SELECT
-# ---------------------------------------------------
+            st.session_state.clear()
 
-with col5:
+            st.rerun()
 
-    selected_language = st.selectbox(
-        "",
-        options=["Dansk", "English"],
-        index=0 if st.session_state.language == "DA" else 1,
-        label_visibility="collapsed",
-        key="language_select"
-    )
+    # ---------------------------------------------------
+    # LANGUAGE ICON
+    # ---------------------------------------------------
 
-    new_lang = (
-        "DA"
-        if selected_language == "Dansk"
-        else "EN"
-    )
+    with col4:
 
-    if new_lang != st.session_state.language:
+        st.button(
+            " ",
+            icon=UI_ICONS["language_selector"],
+            disabled=True,
+            use_container_width=True
+        )
 
-        st.session_state.language = new_lang
+    # ---------------------------------------------------
+    # LANGUAGE SELECT
+    # ---------------------------------------------------
 
-        st.rerun()
+    with col5:
+
+        selected_language = st.selectbox(
+            "",
+            options=["Dansk", "English"],
+            index=0 if st.session_state.language == "DA" else 1,
+            label_visibility="collapsed",
+            key="language_select"
+        )
+
+        new_lang = (
+            "DA"
+            if selected_language == "Dansk"
+            else "EN"
+        )
+
+        if new_lang != st.session_state.language:
+
+            st.session_state.language = new_lang
+
+            st.rerun()
 
 # ---------------------------------------------------
 # SIDEBAR
@@ -2150,41 +2389,35 @@ thickness = None
 # STEP HEADER
 # ---------------------------------------------------
 
-cols = st.columns(len(steps))
+with st.container(key="step_tabs"):
 
-for idx, step in enumerate(steps):
+    cols = st.columns(len(steps))
 
-    with cols[idx]:
+    for idx, step in enumerate(steps):
 
-        active = idx == current_step
+        with cols[idx]:
 
-        if active:
+            active = idx == current_step
 
-            st.markdown(f"""
-            <div style="
-                background-color:#003b7a;
-                color:white;
-                padding:8px;
-                border-radius:0px;
-                text-align:center;
-                font-weight:700;
-                border:1px solid #003b7a;
-            ">
-                {idx+1}. {step}
-            </div>
-            """, unsafe_allow_html=True)
+            if active:
 
-        else:
+                st.markdown(f"""
+                <div class="step-tab step-tab-active">
+                    {idx+1}. {step}
+                </div>
+                """, unsafe_allow_html=True)
 
-            if st.button(
-                f"{idx+1}. {step}",
-                use_container_width=True,
-                key=f"step_{idx}"
-            ):
+            else:
 
-                st.session_state.current_step = idx
+                if st.button(
+                    f"{idx+1}. {step}",
+                    use_container_width=True,
+                    key=f"step_{idx}"
+                ):
 
-                st.rerun()
+                    st.session_state.current_step = idx
+
+                    st.rerun()
 
 # ---------------------------------------------------
 # TAB 1 - PROFIL
@@ -2214,25 +2447,27 @@ if current_step == 0:
         ("Andre profiler", t("other_profiles"), "images/other_profiles.png"),
     ]
 
-    for i in range(0, len(categories), 5):
+    with st.container(key="profile_category_grid"):
 
-        cols = st.columns(5)
+        for i in range(0, len(categories), 5):
 
-        for col, (value, label, image) in zip(
-            cols,
-            categories[i:i+5]
-        ):
+            cols = st.columns(5, gap="small")
 
-            with col:
+            for col, (value, label, image) in zip(
+                cols,
+                categories[i:i+5]
+            ):
 
-                card(
-                    label,
-                    image,
-                    "category",
-                    st.session_state,
-                    t,
-                    value
-                )
+                with col:
+
+                    card(
+                        label,
+                        image,
+                        "category",
+                        st.session_state,
+                        t,
+                        value
+                    )
 
     category = st.session_state.category
 
