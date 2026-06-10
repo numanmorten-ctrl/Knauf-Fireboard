@@ -13,7 +13,10 @@ from translations import translations
 from utils.data_loader import clean_text, clean_numeric, load_and_clean_csv
 from utils.render_helpers import render_materials_table
 from utils.icons import UI_ICONS, INLINE_ICONS, action_label
-from utils.documentation import render_documentation_sidebar_section
+from utils.documentation import (
+    render_documentation_sidebar_heading,
+    render_fireboard_documentation_downloads,
+)
 from utils.export_helpers import (
     EXPORT_TYPE_COMBINED,
     EXPORT_TYPE_PER_CALCULATION,
@@ -1646,6 +1649,11 @@ with st.sidebar:
         margin: 0.2rem 0 0.75rem 0;
     }
 
+    .sidebar-downloads-project-spacing {
+
+        height: 0.5rem;
+    }
+
 
     .st-key-new-calculation-section {
 
@@ -1872,12 +1880,13 @@ with st.sidebar:
                     st.rerun()
 
     # ---------------------------------------------------
-    # DOWNLOAD ALL CALCULATIONS
+    # DOWNLOADS
     # ---------------------------------------------------
+
+    render_documentation_sidebar_heading(t)
 
     if st.session_state.calculations:
 
-        st.divider()
 
         complete_pdf = generate_complete_pdf(
             calculations=st.session_state.calculations,
@@ -1926,14 +1935,12 @@ with st.sidebar:
             mime="application/pdf",
             use_container_width=True
         )
-        
+
         # ---------------------------------------------------
         # DOWNLOAD COMBINED MATERIAL LIST
         # ---------------------------------------------------
 
         if st.session_state.combined_materials:
-
-            st.divider()
 
             combined_df = pd.concat(
 
@@ -2202,7 +2209,12 @@ with st.sidebar:
                 use_container_width=True
             )
 
-    render_documentation_sidebar_section(t)
+        st.markdown(
+            '<div class="sidebar-downloads-project-spacing"></div>',
+            unsafe_allow_html=True
+        )
+
+    render_fireboard_documentation_downloads(t)
 
 # ---------------------------------------------------
 # STEP NAVIGATION
