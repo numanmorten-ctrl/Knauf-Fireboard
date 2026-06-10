@@ -20,12 +20,10 @@ IPAD_VIEWPORT = (
 )
 
 PWA_META_TAGS: tuple[dict[str, str], ...] = (
-    # Keep home-screen metadata, but do not enable fullscreen standalone mode:
-    # PDF/Excel downloads on iPad need normal browser navigation so users can
-    # return to the app after Safari previews a file.
-    {"name": "apple-mobile-web-app-capable", "content": "no"},
-    {"name": "apple-mobile-web-app-title", "content": "Fireboard"},
-    {"name": "apple-mobile-web-app-status-bar-style", "content": "default"},
+    # Do not add Apple standalone/fullscreen metadata here. iPad users need
+    # normal Safari navigation after PDF/Excel downloads so they can return to
+    # the app after Safari previews a file. Keeping only standard browser/PWA
+    # metadata preserves Add to Home Screen compatibility as far as iOS allows.
     {"name": "mobile-web-app-capable", "content": "no"},
     {"name": "theme-color", "content": KNAUF_BLUE},
     {"name": "viewport", "content": IPAD_VIEWPORT},

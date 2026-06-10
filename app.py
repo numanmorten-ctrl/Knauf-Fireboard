@@ -130,6 +130,10 @@ from reportlab.lib.styles import ParagraphStyle
 from reportlab.platypus import Image
 
 
+st.set_page_config(
+    page_title="Knauf Fireboard",
+    initial_sidebar_state="collapsed",
+)
 
 render_pwa_head_tags()
 
