@@ -131,6 +131,71 @@ def test_project_package_contains_report_and_material_list_exports():
         assert archive.read("Rapport/Knauf_Fireboard_Rapport.pdf") == b"report"
 
 
+def test_project_package_uses_danish_fireboard_documentation_folder_and_names():
+    package = create_project_package_zip(
+        report_pdf=BytesIO(b"report"),
+        material_exports=None,
+        combined_materials={},
+        materials_lookup_records=[],
+        language="DA",
+        fetcher=lambda url, timeout=20: FakeResponse(b"external"),
+    )
+
+    with ZipFile(package) as archive:
+        names = set(archive.namelist())
+        assert (
+            "Projekterings- og montageafsnit/Fireboard_projekteringsafsnit.pdf"
+            in names
+        )
+        assert (
+            "Projekterings- og montageafsnit/Fireboard_montageafsnit.pdf"
+            in names
+        )
+        assert not any(name.startswith("Fireboard/") for name in names)
+
+
+def test_project_package_uses_english_fireboard_documentation_folder_and_names():
+    package = create_project_package_zip(
+        report_pdf=BytesIO(b"report"),
+        material_exports=None,
+        combined_materials={},
+        materials_lookup_records=[],
+        language="EN",
+        fetcher=lambda url, timeout=20: FakeResponse(b"external"),
+    )
+
+    with ZipFile(package) as archive:
+        names = set(archive.namelist())
+        assert (
+            "Design and Installation Sections/Fireboard_design_section.pdf"
+            in names
+        )
+        assert (
+            "Design and Installation Sections/Fireboard_installation_section.pdf"
+            in names
+        )
+        assert not any(name.startswith("Fireboard/") for name in names)
+
+
+def test_skipped_fireboard_documentation_readme_uses_updated_label():
+    def failing_fetcher(url, timeout=20):
+        raise RuntimeError("network unavailable")
+
+    package = create_project_package_zip(
+        report_pdf=BytesIO(b"report"),
+        material_exports=None,
+        combined_materials={},
+        materials_lookup_records=[],
+        language="DA",
+        fetcher=failing_fetcher,
+    )
+
+    with ZipFile(package) as archive:
+        readme = archive.read("README.txt").decode("utf-8")
+        assert "Fireboard projekteringsafsnit" in readme
+        assert "Fireboard manualafsnit" not in readme
+
+
 def test_duplicate_epd_and_datasheet_urls_are_included_once():
     external_files = collect_project_external_files(
         project_materials(),
