@@ -45,6 +45,9 @@ translations = {
         "preparing_project_package_status":
             "Samler projektpakke...",
 
+        "get_project_package":
+            "Hent projektpakke",
+
         "download_all_calculations":
             "Download alle beregninger",
 
@@ -357,6 +360,9 @@ translations = {
 
         "preparing_project_package_status":
             "Preparing project package...",
+
+        "get_project_package":
+            "Get project package",
 
         "download_all_calculations":
             "Download all calculations",
