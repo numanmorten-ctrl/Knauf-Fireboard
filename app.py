@@ -1,4 +1,5 @@
 import base64
+import json
 from io import BytesIO
 from datetime import datetime
 from pathlib import Path
@@ -6,6 +7,7 @@ from reportlab.pdfgen import canvas
 from pypdf import PdfReader, PdfWriter
 
 import streamlit as st
+import streamlit.components.v1 as components
 import pandas as pd
 from translations import translations
 from utils.data_loader import clean_text, clean_numeric, load_and_clean_csv
@@ -86,6 +88,8 @@ from utils.constants import (
     PAGE_FONT
 )
 
+
+
 from utils.material_helpers import (
     resolve_screw_clamp_by_layer,
     lookup_material_by_code,
@@ -126,6 +130,54 @@ from reportlab.lib.units import mm
 from reportlab.lib.enums import TA_LEFT
 from reportlab.lib.styles import ParagraphStyle
 from reportlab.platypus import Image
+
+
+def _download_bytes(data: BytesIO | bytes) -> bytes:
+    """Return download bytes without moving a BytesIO cursor."""
+
+    if isinstance(data, bytes):
+        return data
+
+    position = data.tell()
+    data.seek(0)
+    payload = data.read()
+    data.seek(position)
+    return payload
+
+
+def trigger_browser_download(
+    *,
+    data: BytesIO | bytes,
+    file_name: str,
+    mime: str,
+) -> None:
+    """Trigger a browser download for data generated after a normal click."""
+
+    encoded = base64.b64encode(_download_bytes(data)).decode("ascii")
+    components.html(
+        f"""
+        <script>
+        const base64Data = {json.dumps(encoded)};
+        const binary = atob(base64Data);
+        const bytes = new Uint8Array(binary.length);
+        for (let i = 0; i < binary.length; i += 1) {{
+            bytes[i] = binary.charCodeAt(i);
+        }}
+        const blob = new Blob([bytes], {{type: {json.dumps(mime)}}});
+        const link = document.createElement("a");
+        link.href = URL.createObjectURL(blob);
+        link.download = {json.dumps(file_name)};
+        link.style.display = "none";
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+        setTimeout(() => URL.revokeObjectURL(link.href), 1000);
+        </script>
+        """,
+        height=0,
+        width=0,
+    )
+
 
 # ---------------------------------------------------
 # KNAUF THEME
@@ -1960,91 +2012,83 @@ with st.sidebar:
             project_download_signature,
         )
 
-        if project_package is None and st.button(
-            label=t("prepare_project_package"),
+        if st.button(
+            label=t("download_project_package"),
             icon=UI_ICONS["download_project_package"],
             use_container_width=True,
-            key="prepare_project_package",
+            key="download_project_package",
         ):
-            complete_pdf = complete_pdf or build_complete_project_pdf()
-            material_exports = (
-                material_exports
-                if material_exports is not None
-                else build_project_material_lists()
-            )
-            project_package = create_project_package_zip(
-                report_pdf=complete_pdf,
-                material_exports=material_exports,
-                combined_materials=st.session_state.combined_materials,
-                materials_lookup_records=materials_lookup_records,
-                language=st.session_state.language,
-            )
-            st.session_state.project_report_cache = {
-                "signature": project_download_signature,
-                "data": complete_pdf,
-            }
-            st.session_state.project_material_exports_cache = {
-                "signature": project_download_signature,
-                "data": material_exports,
-            }
-            st.session_state.project_package_cache = {
-                "signature": project_download_signature,
-                "data": project_package,
-            }
+            if project_package is None:
+                with st.spinner(t("preparing_project_package_status")):
+                    complete_pdf = complete_pdf or build_complete_project_pdf()
+                    material_exports = (
+                        material_exports
+                        if material_exports is not None
+                        else build_project_material_lists()
+                    )
+                    project_package = create_project_package_zip(
+                        report_pdf=complete_pdf,
+                        material_exports=material_exports,
+                        combined_materials=st.session_state.combined_materials,
+                        materials_lookup_records=materials_lookup_records,
+                        language=st.session_state.language,
+                    )
+                st.session_state.project_report_cache = {
+                    "signature": project_download_signature,
+                    "data": complete_pdf,
+                }
+                st.session_state.project_material_exports_cache = {
+                    "signature": project_download_signature,
+                    "data": material_exports,
+                }
+                st.session_state.project_package_cache = {
+                    "signature": project_download_signature,
+                    "data": project_package,
+                }
 
-        if project_package is not None:
-            st.download_button(
-                label=t("download_project_package"),
-                icon=UI_ICONS["download_project_package"],
+            trigger_browser_download(
                 data=project_package,
                 file_name=project_package_filename(st.session_state.language),
                 mime=PROJECT_PACKAGE_MIME,
-                use_container_width=True
             )
 
-        if complete_pdf is None and st.button(
-            label=t("prepare_all_calculations"),
+        if st.button(
+            label=t("download_all_calculations"),
             icon=UI_ICONS["download_all_calculations"],
             use_container_width=True,
-            key="prepare_all_calculations",
+            key="download_all_calculations",
         ):
-            complete_pdf = build_complete_project_pdf()
-            st.session_state.project_report_cache = {
-                "signature": project_download_signature,
-                "data": complete_pdf,
-            }
+            if complete_pdf is None:
+                complete_pdf = build_complete_project_pdf()
+                st.session_state.project_report_cache = {
+                    "signature": project_download_signature,
+                    "data": complete_pdf,
+                }
 
-        if complete_pdf is not None:
-            st.download_button(
-                label=t("download_all_calculations"),
-                icon=UI_ICONS["download_all_calculations"],
+            trigger_browser_download(
                 data=complete_pdf,
                 file_name="Knauf_Fireboard_Rapport.pdf",
                 mime="application/pdf",
-                use_container_width=True
             )
 
         # ---------------------------------------------------
         # DOWNLOAD COMBINED MATERIAL LIST
         # ---------------------------------------------------
 
-        if material_exports is None and st.button(
-            label=t("prepare_material_lists"),
+        if st.button(
+            label=t("download_combined_material_list"),
             icon=UI_ICONS["download_combined_material_list"],
             use_container_width=True,
-            key="prepare_project_material_lists",
+            key="download_combined_material_list",
         ):
-            material_exports = build_project_material_lists()
-            st.session_state.project_material_exports_cache = {
-                "signature": project_download_signature,
-                "data": material_exports,
-            }
+            if material_exports is None:
+                material_exports = build_project_material_lists()
+                st.session_state.project_material_exports_cache = {
+                    "signature": project_download_signature,
+                    "data": material_exports,
+                }
 
-        if material_exports is not None:
-
-            st.download_button(
-                label=t("download_combined_material_list"),
-                icon=UI_ICONS["download_combined_material_list"],
+            trigger_browser_download(
                 data=material_exports.combined_excel,
                 file_name=get_materials_excel_filename(
                     st.session_state.language,
@@ -2054,12 +2098,22 @@ with st.sidebar:
                     "application/vnd.openxmlformats-officedocument."
                     "spreadsheetml.sheet"
                 ),
-                use_container_width=True
             )
 
-            st.download_button(
-                label=t("download_material_list_per_calculation"),
-                icon=UI_ICONS["download_material_list_per_calculation"],
+        if st.button(
+            label=t("download_material_list_per_calculation"),
+            icon=UI_ICONS["download_material_list_per_calculation"],
+            use_container_width=True,
+            key="download_material_list_per_calculation",
+        ):
+            if material_exports is None:
+                material_exports = build_project_material_lists()
+                st.session_state.project_material_exports_cache = {
+                    "signature": project_download_signature,
+                    "data": material_exports,
+                }
+
+            trigger_browser_download(
                 data=material_exports.per_calculation_excel,
                 file_name=get_materials_excel_filename(
                     st.session_state.language,
@@ -2069,7 +2123,6 @@ with st.sidebar:
                     "application/vnd.openxmlformats-officedocument."
                     "spreadsheetml.sheet"
                 ),
-                use_container_width=True
             )
 
         st.divider()
