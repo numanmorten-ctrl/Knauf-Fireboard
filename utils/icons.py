@@ -10,6 +10,7 @@ from html import escape
 UI_ICONS = {
     "calculations": ":material/view_list:",
     "new_calculation": ":material/add:",
+    "download_project_package": ":material/archive:",
     "download_all_calculations": ":material/file_copy:",
     "download_combined_material_list": ":material/backup_table:",
     "download_material_list_per_calculation": ":material/inventory_2:",

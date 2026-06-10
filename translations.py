@@ -39,6 +39,9 @@ translations = {
         "calculations":
             "Beregninger",
 
+        "download_project_package":
+            "Download projektpakke",
+
         "download_all_calculations":
             "Download alle beregninger",
 
@@ -345,6 +348,9 @@ translations = {
 
         "calculations":
             "Calculations",
+
+        "download_project_package":
+            "Download project package",
 
         "download_all_calculations":
             "Download all calculations",

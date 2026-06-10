@@ -12,15 +12,6 @@ from utils.documentation_urls import (
 )
 from utils.icons import INLINE_ICONS, UI_ICONS
 
-# Future documentation package actions to add here when project-level
-# document generation is ready:
-# - Download samlet dokumentationspakke
-# - Download alle EPD'er for projektet
-# - Download alle datablade for projektet
-# - Download ZIP med projektdokumentation
-FUTURE_PROJECT_DOCUMENTATION_DOWNLOADS = ()
-
-
 def render_documentation_sidebar_heading(t: Callable[[str], str]) -> None:
     """Render the shared Downloads heading in the sidebar."""
 
