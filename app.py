@@ -544,6 +544,30 @@ section[data-testid="stSidebar"] {
     position: relative !important;
 }
 
+section[data-testid="stSidebar"] [data-testid="stSidebarContent"],
+section[data-testid="stSidebar"] > div:first-child {
+
+    padding: 0rem 1.5rem 1rem 1.5rem !important;
+}
+
+section[data-testid="stSidebar"] [data-testid="stSidebarUserContent"] {
+
+    padding-top: 0 !important;
+}
+
+section[data-testid="stSidebar"] [data-testid="stSidebarHeader"] {
+
+    /* Controls the top position of Project/Projekt: Streamlit inserts this
+       sidebar header spacer before user content, above the first heading. */
+    height: 0.9rem !important;
+
+    min-height: 0 !important;
+
+    margin-bottom: 0.15rem !important;
+
+    padding: 0 !important;
+}
+
 /* ---------------------------------------------------
 UNIFY ALL BORDERS
 --------------------------------------------------- */
@@ -1555,7 +1579,13 @@ with col5:
 
 with st.sidebar:
 
-    st.title(f"📚 {t('calculations')}")
+    st.markdown(
+        f"""
+        <div class="sidebar-project-heading">{t('sidebar_project_heading')}</div>
+        <div class="sidebar-calculations-heading">📚 {t('calculations')}</div>
+        """,
+        unsafe_allow_html=True
+    )
 
     # ---------------------------------------------------
     # CUSTOM STYLE
@@ -1563,6 +1593,37 @@ with st.sidebar:
 
     st.markdown("""
     <style>
+
+    .sidebar-project-heading {
+
+        color: #003b7a;
+
+        font-size: 2.35rem;
+
+        font-weight: 700;
+
+        line-height: 1.15;
+
+        margin: 0 0 0.65cm 0;
+    }
+
+    .sidebar-calculations-heading {
+
+        color: #1f2933;
+
+        font-size: 1.2rem;
+
+        font-weight: 600;
+
+        line-height: 1.25;
+
+        margin: 0 0 1.25rem 0;
+    }
+
+    .st-key-new-calculation-section {
+
+        margin-top: -0.75rem;
+    }
 
     /* ---------------------------------------------------
     AKTIV SIDEBAR BEREGNING
@@ -1612,18 +1673,20 @@ with st.sidebar:
     # NY BEREGNING
     # ---------------------------------------------------
 
-    if st.button(
-        f"➕ {t('new_calculation')}",
-        use_container_width=True
-    ):
+    with st.container(key="new_calculation_section"):
 
-        reset_calculation_state(
-            st.session_state
-        )
+        if st.button(
+            f"➕ {t('new_calculation')}",
+            use_container_width=True
+        ):
 
-        st.rerun()
+            reset_calculation_state(
+                st.session_state
+            )
 
-        st.divider()
+            st.rerun()
+
+            st.divider()
 
     # ---------------------------------------------------
     # BEREGNINGER
