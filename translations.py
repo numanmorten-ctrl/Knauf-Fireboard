@@ -52,13 +52,10 @@ translations = {
             "Download materialeliste pr. beregning",
 
         "documentation_section_title":
-            "Dokumentation",
+            "Downloads",
 
         "download_fireboard_documentation":
-            "Download Fireboard dokumentation",
-
-        "project_documentation_coming_soon":
-            "Projektdokumentation kommer snart",
+            "Download Fireboard manualafsnit",
 
         # ---------------------------------------------------
         # TABS
@@ -359,13 +356,10 @@ translations = {
             "Download material list per calculation",
 
         "documentation_section_title":
-            "Documentation",
+            "Downloads",
 
         "download_fireboard_documentation":
-            "Download Fireboard documentation",
-
-        "project_documentation_coming_soon":
-            "Project documentation coming soon",
+            "Download Fireboard manual section",
 
         # ---------------------------------------------------
         # TABS
