@@ -1649,12 +1649,6 @@ with st.sidebar:
         margin: 0.2rem 0 0.75rem 0;
     }
 
-    .sidebar-downloads-project-spacing {
-
-        height: 0.5rem;
-    }
-
-
     .st-key-new-calculation-section {
 
         margin-top: -0.75rem;
@@ -2209,10 +2203,7 @@ with st.sidebar:
                 use_container_width=True
             )
 
-        st.markdown(
-            '<div class="sidebar-downloads-project-spacing"></div>',
-            unsafe_allow_html=True
-        )
+        st.divider()
 
     render_fireboard_documentation_downloads(t)
 
