@@ -35,6 +35,17 @@ INLINE_ICONS = {
         '<path d="M4.75 6.25h.5M4.75 12h.5M4.75 17.75h.5" />'
         '</svg>'
     ),
+    "downloads": (
+        '<svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" '
+        'focusable="false" fill="none" stroke="#6b7280" stroke-width="1.8" '
+        'stroke-linecap="round" stroke-linejoin="round" '
+        'style="vertical-align: -0.22em; margin-right: 0.25rem;">'
+        '<path d="M4.75 6.25h5.05l1.55 1.75h7.9v8.75" />'
+        '<path d="M4.75 6.25v11.5h14.5" />'
+        '<path d="M12 10.75v4.75" />'
+        '<path d="M9.8 13.35 12 15.55l2.2-2.2" />'
+        '</svg>'
+    ),
 }
 
 _ICON_PREFIXES = (

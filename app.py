@@ -1646,16 +1646,6 @@ with st.sidebar:
         margin: 0.2rem 0 0.75rem 0;
     }
 
-    .sidebar-documentation-placeholder {
-
-        color: #7b8794;
-
-        font-size: 0.82rem;
-
-        line-height: 1.35;
-
-        margin-top: 0.35rem;
-    }
 
     .st-key-new-calculation-section {
 

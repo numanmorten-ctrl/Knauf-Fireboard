@@ -6,7 +6,7 @@ from collections.abc import Callable
 
 import streamlit as st
 
-from utils.icons import UI_ICONS
+from utils.icons import INLINE_ICONS, UI_ICONS
 
 
 FIREBOARD_DOCUMENTATION_URL = (
@@ -31,7 +31,7 @@ def render_documentation_sidebar_section(t: Callable[[str], str]) -> None:
     st.markdown(
         f"""
         <div class="sidebar-calculations-heading sidebar-documentation-heading">
-            {t("documentation_section_title")}
+            {INLINE_ICONS["downloads"]} {t("documentation_section_title")}
         </div>
         """,
         unsafe_allow_html=True,
@@ -42,13 +42,4 @@ def render_documentation_sidebar_section(t: Callable[[str], str]) -> None:
         url=FIREBOARD_DOCUMENTATION_URL,
         icon=UI_ICONS["download_fireboard_documentation"],
         use_container_width=True,
-    )
-
-    st.markdown(
-        f"""
-        <div class="sidebar-documentation-placeholder">
-            {t("project_documentation_coming_soon")}
-        </div>
-        """,
-        unsafe_allow_html=True,
     )
