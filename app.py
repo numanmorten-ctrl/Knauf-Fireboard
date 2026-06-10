@@ -1446,6 +1446,60 @@ def t(key):
     ][key]
 
 
+def _css_content(value):
+
+    return value.replace("\\", "\\\\").replace('"', '\\"')
+
+
+def render_tablet_project_menu_affordance():
+
+    project_menu_label = _css_content(t("tablet_project_menu_label"))
+
+    st.markdown(
+        f"""
+        <style>
+        /* On iPad/tablet widths, make Streamlit's collapsed sidebar control
+           discoverable as the Project menu instead of relying on only the
+           small default arrow. The sidebar contains saved calculations and
+           project/PDF/Excel downloads. */
+        @media (max-width: 1180px) {{
+            [data-testid="stSidebarCollapsedControl"] button,
+            button[aria-label="Open sidebar"],
+            button[aria-label="open sidebar"] {{
+                width: auto !important;
+                min-width: 6.4rem !important;
+                min-height: 2.15rem !important;
+                padding: 0.25rem 0.65rem !important;
+                border: 1px solid #b8c2cc !important;
+                border-radius: 0 !important;
+                background: rgba(255, 255, 255, 0.96) !important;
+                color: #1f2933 !important;
+                box-shadow: none !important;
+                align-items: center !important;
+                justify-content: center !important;
+            }}
+
+            [data-testid="stSidebarCollapsedControl"] button::after,
+            button[aria-label="Open sidebar"]::after,
+            button[aria-label="open sidebar"]::after {{
+                content: "{project_menu_label}";
+                color: #1f2933;
+                font-size: 0.92rem;
+                font-weight: 600;
+                line-height: 1;
+                margin-left: 0.28rem;
+                white-space: nowrap;
+            }}
+        }}
+        </style>
+        """,
+        unsafe_allow_html=True
+    )
+
+
+render_tablet_project_menu_affordance()
+
+
 # ---------------------------------------------------
 # PROFILE CATEGORY MAPPING
 # ---------------------------------------------------

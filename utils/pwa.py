@@ -1,7 +1,9 @@
 """Helpers for Fireboard iPad home-screen / PWA metadata.
 
 For iPad installation, users should open the site in Safari and choose
-"Føj til hjemmeskærm" / "Add to Home Screen".
+"Føj til hjemmeskærm" / "Add to Home Screen". The manifest deliberately
+uses browser display mode because PDF/Excel downloads on iPad need normal
+browser navigation so users can return to the app after Safari previews a file.
 """
 
 from __future__ import annotations
@@ -18,10 +20,13 @@ IPAD_VIEWPORT = (
 )
 
 PWA_META_TAGS: tuple[dict[str, str], ...] = (
-    {"name": "apple-mobile-web-app-capable", "content": "yes"},
+    # Keep home-screen metadata, but do not enable fullscreen standalone mode:
+    # PDF/Excel downloads on iPad need normal browser navigation so users can
+    # return to the app after Safari previews a file.
+    {"name": "apple-mobile-web-app-capable", "content": "no"},
     {"name": "apple-mobile-web-app-title", "content": "Fireboard"},
     {"name": "apple-mobile-web-app-status-bar-style", "content": "default"},
-    {"name": "mobile-web-app-capable", "content": "yes"},
+    {"name": "mobile-web-app-capable", "content": "no"},
     {"name": "theme-color", "content": KNAUF_BLUE},
     {"name": "viewport", "content": IPAD_VIEWPORT},
 )
@@ -75,7 +80,7 @@ def build_pwa_head_injection_html() -> str:
 
 
 def render_pwa_head_tags() -> None:
-    """Inject Fireboard PWA tags for iPad Safari and standalone home-screen use."""
+    """Inject Fireboard iPad home-screen tags without fullscreen standalone launch."""
 
     import streamlit.components.v1 as components
 
