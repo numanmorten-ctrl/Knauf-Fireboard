@@ -14,6 +14,7 @@ UI_ICONS = {
     "download_combined_material_list": ":material/backup_table:",
     "download_material_list_per_calculation": ":material/inventory_2:",
     "download_material_list": ":material/table_chart:",
+    "download_fireboard_documentation": ":material/description:",
     "delete_calculation": ":material/delete:",
     "delete_project": ":material/delete:",
     "language_selector": ":material/language:",
