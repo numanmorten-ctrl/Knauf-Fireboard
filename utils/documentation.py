@@ -21,8 +21,8 @@ from utils.icons import INLINE_ICONS, UI_ICONS
 FUTURE_PROJECT_DOCUMENTATION_DOWNLOADS = ()
 
 
-def render_documentation_sidebar_section(t: Callable[[str], str]) -> None:
-    """Render reusable sidebar controls for Fireboard documentation downloads."""
+def render_documentation_sidebar_heading(t: Callable[[str], str]) -> None:
+    """Render the shared Downloads heading in the sidebar."""
 
     st.divider()
 
@@ -34,6 +34,10 @@ def render_documentation_sidebar_section(t: Callable[[str], str]) -> None:
         """,
         unsafe_allow_html=True,
     )
+
+
+def render_fireboard_documentation_downloads(t: Callable[[str], str]) -> None:
+    """Render Fireboard documentation download controls."""
 
     st.link_button(
         label=t("download_fireboard_documentation"),
@@ -48,3 +52,10 @@ def render_documentation_sidebar_section(t: Callable[[str], str]) -> None:
         icon=UI_ICONS["download_fireboard_installation_section"],
         use_container_width=True,
     )
+
+
+def render_documentation_sidebar_section(t: Callable[[str], str]) -> None:
+    """Render reusable sidebar controls for Fireboard documentation downloads."""
+
+    render_documentation_sidebar_heading(t)
+    render_fireboard_documentation_downloads(t)
