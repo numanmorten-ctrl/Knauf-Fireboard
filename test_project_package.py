@@ -210,6 +210,103 @@ def test_duplicate_epd_and_datasheet_urls_are_included_once():
     assert len(datasheet_files) == 1
 
 
+def test_fireboard_documents_use_friendly_zip_filenames_without_article_numbers():
+    external_files = collect_project_external_files(
+        project_materials(),
+        material_lookup_records(),
+        language="DA",
+    )
+
+    archive_paths = {f"{file.folder}/{file.filename}" for file in external_files}
+
+    assert "EPD/EPD Fireboard.pdf" in archive_paths
+    assert "Datablade/Datablad Fireboard.pdf" in archive_paths
+    assert not any("2906" in path or "2907" in path for path in archive_paths)
+
+
+def test_document_friendly_names_cover_known_product_families():
+    combined_materials = {
+        "1. system": pd.DataFrame(
+            [
+                {"BESKRIVELSE": "15 mm Fireboard 1250x2000"},
+                {"BESKRIVELSE": "Fireboard spartelmasse 10 kg"},
+                {"BESKRIVELSE": "Bjælkeprofil BJ 8-10 rød 2000 mm"},
+                {"BESKRIVELSE": "Vinkelprofil 30/30 4000 mm"},
+                {"BESKRIVELSE": "Skrue RA51 500 stk."},
+            ]
+        )
+    }
+    lookup_records = [
+        {
+            "BESKRIVELSE_DK": "15 mm Fireboard 1250x2000",
+            "BESKRIVELSE_EN": "15 mm Fireboard 1250x2000",
+            "EPD_URL": "https://example.test/fireboard-epd",
+            "DATABLAD_URL": "https://example.test/fireboard-datasheet",
+        },
+        {
+            "BESKRIVELSE_DK": "Fireboard spartelmasse 10 kg",
+            "BESKRIVELSE_EN": "Fireboard joint filler 10 kg",
+            "EPD_URL": "https://example.test/spartel-epd",
+            "DATABLAD_URL": "https://example.test/spartel-datasheet",
+        },
+        {
+            "BESKRIVELSE_DK": "Bjælkeprofil BJ 8-10 rød 2000 mm",
+            "BESKRIVELSE_EN": "Bjælkeprofil BJ 8-10 red 2000 mm",
+            "EPD_URL": "",
+            "DATABLAD_URL": "https://example.test/bjælkeprofil-datasheet",
+        },
+        {
+            "BESKRIVELSE_DK": "Vinkelprofil 30/30 4000 mm",
+            "BESKRIVELSE_EN": "Angle profile 30/30 4000 mm",
+            "EPD_URL": "",
+            "DATABLAD_URL": "https://example.test/vinkelprofil-datasheet",
+        },
+        {
+            "BESKRIVELSE_DK": "Skrue RA51 500 stk.",
+            "BESKRIVELSE_EN": "RA screw 51 500 pcs.",
+            "EPD_URL": "",
+            "DATABLAD_URL": "https://example.test/ra-screw-datasheet",
+        },
+    ]
+
+    external_files = collect_project_external_files(
+        combined_materials,
+        lookup_records,
+        language="DA",
+    )
+    archive_paths = {f"{file.folder}/{file.filename}" for file in external_files}
+
+    assert "EPD/EPD Fireboard.pdf" in archive_paths
+    assert "EPD/EPD Fireboard Spartelmasse.pdf" in archive_paths
+    assert "Datablade/Datablad Fireboard.pdf" in archive_paths
+    assert "Datablade/Datablad Fireboard Spartelmasse.pdf" in archive_paths
+    assert "Datablade/Datablad Bilkeprofil.pdf" in archive_paths
+    assert "Datablade/Datablad Vinkelprofil.pdf" in archive_paths
+    assert "Datablade/Datablad Skrue RA.pdf" in archive_paths
+
+
+def test_shared_friendly_documents_are_included_only_once_in_zip():
+    material_exports = build_project_material_exports(
+        project_materials(),
+        "DA",
+        t_da,
+    )
+
+    package = create_project_package_zip(
+        report_pdf=BytesIO(b"report"),
+        material_exports=material_exports,
+        combined_materials=project_materials(),
+        materials_lookup_records=material_lookup_records(),
+        language="DA",
+        fetcher=lambda url, timeout=20: FakeResponse(f"content:{url}".encode()),
+    )
+
+    with ZipFile(package) as archive:
+        names = archive.namelist()
+        assert names.count("EPD/EPD Fireboard.pdf") == 1
+        assert names.count("Datablade/Datablad Fireboard.pdf") == 1
+
+
 def test_missing_external_files_do_not_break_zip_creation():
     material_exports = build_project_material_exports(
         project_materials(),

@@ -371,6 +371,90 @@ def _filename_from_url(url: str, default: str) -> str:
     return _safe_filename(default, default)
 
 
+def _normalized_material_text(*values: object) -> str:
+    """Return lower-case searchable material text from stable product metadata."""
+
+    return " ".join(
+        str(value or "").strip().lower()
+        for value in values
+        if _is_present(value)
+    )
+
+
+def _friendly_document_filename(kind: str, material: dict) -> str | None:
+    """Return friendly ZIP filename for known Fireboard document families."""
+
+    description_text = _normalized_material_text(
+        material.get("BESKRIVELSE_DK", ""),
+        material.get("BESKRIVELSE_EN", ""),
+    )
+    url_text = _normalized_material_text(
+        material.get("EPD_URL", ""),
+        material.get("DATABLAD_URL", ""),
+    )
+    searchable_text = f"{description_text} {url_text}"
+
+    is_fireboard_spartel = (
+        "fireboard" in searchable_text
+        and (
+            "spartel" in searchable_text
+            or "joint filler" in searchable_text
+            or "filler" in searchable_text
+            or "0f5b8560-6df2-43a2-8246-113abe14ebd4" in searchable_text
+            or "4e2f75ae-c647-4aa3-bea2-015b472696ed" in searchable_text
+        )
+    )
+    is_fireboard_board = (
+        "fireboard" in searchable_text
+        and not is_fireboard_spartel
+        and (
+            "1250x2000" in searchable_text
+            or "fireboard1250x2000" in searchable_text
+            or "bd284248-a4d0-4a2b-b9a1-bba44b114bbb" in searchable_text
+            or "7f66875b-c69a-44ca-8cc5-d5b081df8b85" in searchable_text
+        )
+    )
+
+    if kind == "epd":
+        if is_fireboard_spartel:
+            return "EPD Fireboard Spartelmasse.pdf"
+        if is_fireboard_board:
+            return "EPD Fireboard.pdf"
+        return None
+
+    if kind != "datasheet":
+        return None
+
+    if is_fireboard_spartel:
+        return "Datablad Fireboard Spartelmasse.pdf"
+    if is_fireboard_board:
+        return "Datablad Fireboard.pdf"
+    if (
+        "bjælkeprofil" in searchable_text
+        or "bjaelkeprofil" in searchable_text
+        or "bjalkprofil" in searchable_text
+        or "bilkeprofil" in searchable_text
+        or "c8211f97-9df6-4079-b526-1b6f4dc6d18a" in searchable_text
+    ):
+        return "Datablad Bilkeprofil.pdf"
+    if (
+        "vinkelprofil" in searchable_text
+        or "angle profile" in searchable_text
+        or "4bbc27b2-8420-4c59-a2ec-919bd613e39c" in searchable_text
+    ):
+        return "Datablad Vinkelprofil.pdf"
+    if (
+        "skrue ra" in searchable_text
+        or "skrue rab" in searchable_text
+        or "ra screw" in searchable_text
+        or "rab screw" in searchable_text
+        or "256cf991-b530-432f-b5b8-b60766af3334" in searchable_text
+    ):
+        return "Datablad Skrue RA.pdf"
+
+    return None
+
+
 def _material_lookup_maps(
     materials_lookup_records: Iterable[dict],
 ) -> tuple[dict[str, dict], dict[str, dict], dict[str, dict]]:
@@ -468,10 +552,14 @@ def collect_project_external_files(
                 continue
 
             default_filename = f"{prefix}_{stable_id}.pdf"
+            friendly_filename = _friendly_document_filename(kind, material)
             unique[dedupe_key] = ExternalProjectFile(
                 url=url,
                 folder=folders[folder_key],
-                filename=_filename_from_url(url, default_filename),
+                filename=(
+                    friendly_filename
+                    or _filename_from_url(url, default_filename)
+                ),
                 label=label,
                 key=dedupe_key,
             )
