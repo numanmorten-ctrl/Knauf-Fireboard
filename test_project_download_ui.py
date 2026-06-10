@@ -1,7 +1,36 @@
+import ast
+import base64
+from io import BytesIO
 from pathlib import Path
+from types import SimpleNamespace
 
 
 APP_SOURCE = Path(__file__).with_name("app.py").read_text()
+
+
+def load_download_helpers():
+    module = ast.parse(APP_SOURCE)
+    helper_defs = [
+        node
+        for node in module.body
+        if isinstance(node, ast.FunctionDef)
+        and node.name in {"ensure_bytes", "trigger_browser_download"}
+    ]
+    helper_module = ast.Module(body=helper_defs, type_ignores=[])
+    ast.fix_missing_locations(helper_module)
+
+    html_calls = []
+    namespace = {
+        "base64": base64,
+        "BytesIO": BytesIO,
+        "json": __import__("json"),
+        "components": SimpleNamespace(
+            html=lambda *args, **kwargs: html_calls.append((args, kwargs))
+        ),
+    }
+    exec(compile(helper_module, filename="app.py", mode="exec"), namespace)
+    namespace["html_calls"] = html_calls
+    return namespace
 
 
 def test_project_package_uses_component_auto_download():
@@ -37,3 +66,27 @@ def test_project_package_second_button_removed_without_affecting_normal_download
         assert f'key="{key}"' in APP_SOURCE
 
     assert APP_SOURCE.count("st.download_button(") >= len(normal_download_keys)
+
+
+def test_ensure_bytes_returns_bytesio_value_without_moving_cursor():
+    helpers = load_download_helpers()
+    package = BytesIO(b"project-package")
+    package.seek(7)
+
+    assert helpers["ensure_bytes"](package) == b"project-package"
+    assert package.tell() == 7
+
+
+def test_trigger_browser_download_accepts_bytesio_project_package_data():
+    helpers = load_download_helpers()
+
+    helpers["trigger_browser_download"](
+        data=BytesIO(b"project-package"),
+        file_name="project.zip",
+        mime="application/zip",
+    )
+
+    assert helpers["html_calls"]
+    html = helpers["html_calls"][0][0][0]
+    assert "data:application/zip;base64,cHJvamVjdC1wYWNrYWdl" in html
+    assert "project.zip" in html
