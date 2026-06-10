@@ -10,8 +10,32 @@ from reportlab.lib.pagesizes import A4
 from reportlab.lib import colors
 
 from pypdf import PdfReader, PdfWriter
+from pypdf.generic import NameObject, TextStringObject
 from reportlab.lib.pagesizes import A4
 from reportlab.lib import colors
+
+from utils.documentation_urls import FIREBOARD_INSTALLATION_SECTION_URL
+
+
+def apply_fireboard_installation_section_url(page):
+    """Keep the PDF template installation-section link aligned with the shared URL."""
+
+    for annotation_reference in page.get("/Annots", []):
+        annotation = annotation_reference.get_object()
+        action = annotation.get("/A")
+
+        if action is None:
+            continue
+
+        uri = str(action.get("/URI", ""))
+
+        if uri.startswith("https://knauf.com/api/download-center/v1/assets/"):
+            action[NameObject("/URI")] = TextStringObject(
+                FIREBOARD_INSTALLATION_SECTION_URL
+            )
+
+    return page
+
 
 PROFILE_IMAGE_MAP = {
 
@@ -259,7 +283,9 @@ def generate_single_pdf(
         open(template_path, "rb")
     )
 
-    base_page = template_pdf.pages[0]
+    base_page = apply_fireboard_installation_section_url(
+        template_pdf.pages[0]
+    )
 
     base_page.merge_page(
         overlay_pdf.pages[0]
@@ -569,7 +595,9 @@ def generate_complete_pdf(
             open(template_path, "rb")
         )
 
-        base_page = template_pdf.pages[0]
+        base_page = apply_fireboard_installation_section_url(
+            template_pdf.pages[0]
+        )
 
         base_page.merge_page(
             overlay_pdf.pages[0]
