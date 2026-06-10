@@ -39,6 +39,18 @@ translations = {
         "calculations":
             "Beregninger",
 
+        "download_project_package":
+            "Download projektpakke",
+
+        "generate_project_package":
+            "Generer projektpakke",
+
+        "preparing_project_package_status":
+            "Samler projektpakke...",
+
+        "get_project_package":
+            "Hent projektpakke",
+
         "download_all_calculations":
             "Download alle beregninger",
 
@@ -55,7 +67,7 @@ translations = {
             "Downloads",
 
         "download_fireboard_documentation":
-            "Download Fireboard manualafsnit",
+            "Download Fireboard projekteringsafsnit",
 
         "download_fireboard_installation_section":
             "Download Fireboard montageafsnit",
@@ -346,6 +358,18 @@ translations = {
         "calculations":
             "Calculations",
 
+        "download_project_package":
+            "Download project package",
+
+        "generate_project_package":
+            "Generate project package",
+
+        "preparing_project_package_status":
+            "Preparing project package...",
+
+        "get_project_package":
+            "Get project package",
+
         "download_all_calculations":
             "Download all calculations",
 
@@ -362,7 +386,7 @@ translations = {
             "Downloads",
 
         "download_fireboard_documentation":
-            "Download Fireboard manual section",
+            "Download Fireboard design section",
 
         "download_fireboard_installation_section":
             "Download Fireboard installation section",

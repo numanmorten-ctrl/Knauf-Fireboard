@@ -1,4 +1,3 @@
-import base64
 from io import BytesIO
 from datetime import datetime
 from pathlib import Path
@@ -7,8 +6,6 @@ from pypdf import PdfReader, PdfWriter
 
 import streamlit as st
 import pandas as pd
-import requests
-
 from translations import translations
 from utils.data_loader import clean_text, clean_numeric, load_and_clean_csv
 from utils.render_helpers import render_materials_table
@@ -18,10 +15,7 @@ from utils.documentation import (
     render_fireboard_documentation_downloads,
 )
 from utils.export_helpers import (
-    EXPORT_TYPE_COMBINED,
-    EXPORT_TYPE_PER_CALCULATION,
     EXPORT_TYPE_SINGLE,
-    add_system_separator_rows,
     create_materials_excel,
     get_materials_excel_filename,
 )
@@ -44,6 +38,14 @@ from utils.pdf_generator import (
     PROFILE_IMAGE_MAP,
     generate_single_pdf,
     generate_complete_pdf,
+)
+from utils.project_package import (
+    PROJECT_PACKAGE_MIME,
+    build_project_download_signature,
+    build_project_material_exports,
+    create_project_package_zip,
+    get_cached_project_download,
+    project_package_filename,
 )
 
 from utils.constants import (
@@ -82,6 +84,8 @@ from utils.constants import (
     RESULT_FONT,
     PAGE_FONT
 )
+
+
 
 from utils.material_helpers import (
     resolve_screw_clamp_by_layer,
@@ -123,6 +127,8 @@ from reportlab.lib.units import mm
 from reportlab.lib.enums import TA_LEFT
 from reportlab.lib.styles import ParagraphStyle
 from reportlab.platypus import Image
+
+
 
 # ---------------------------------------------------
 # KNAUF THEME
@@ -1175,6 +1181,10 @@ defaults = {
     "surface_area": "",
     "steel_area": "",
     "apv_method": "Direkte",
+
+    "project_package_cache": {},
+    "project_report_cache": {},
+    "project_material_exports_cache": {},
 }
 
 for key, value in defaults.items():
@@ -1881,45 +1891,147 @@ with st.sidebar:
 
     if st.session_state.calculations:
 
-
-        complete_pdf = generate_complete_pdf(
+        project_download_signature = build_project_download_signature(
             calculations=st.session_state.calculations,
+            combined_materials=st.session_state.combined_materials,
             language=st.session_state.language,
-            session_state=st.session_state,
-            t=t,
-
-            PROFILE_IMAGE_MAP=PROFILE_IMAGE_MAP,
-
-            PROJECT_X=PROJECT_X,
-            PROJECT_Y=PROJECT_Y,
-            PROJECT_LINE_HEIGHT=PROJECT_LINE_HEIGHT,
-
-            CALC_X=CALC_X,
-            CALC_Y=CALC_Y,
-            CALC_LINE_HEIGHT=CALC_LINE_HEIGHT,
-
-            RESULT_X=RESULT_X,
-            RESULT_Y=RESULT_Y,
-
-            PAGE_X=PAGE_X,
-            PAGE_Y=PAGE_Y,
-
-            PROFILE_IMAGE_X=PROFILE_IMAGE_X,
-            PROFILE_IMAGE_Y=PROFILE_IMAGE_Y,
-            PROFILE_IMAGE_WIDTH=PROFILE_IMAGE_WIDTH,
-            PROFILE_IMAGE_HEIGHT=PROFILE_IMAGE_HEIGHT,
-
-            PROFILE_TEXT_X=PROFILE_TEXT_X,
-            PROFILE_CATEGORY_TEXT_Y=PROFILE_CATEGORY_TEXT_Y,
-            PROFILE_TEXT_Y=PROFILE_TEXT_Y,
-            PROFILE_CATEGORY_FONT=PROFILE_CATEGORY_FONT,
-            PROFILE_TEXT_FONT=PROFILE_TEXT_FONT,
-
-            PROJECT_FONT=PROJECT_FONT,
-            CALC_FONT=CALC_FONT,
-            RESULT_FONT=RESULT_FONT,
-            PAGE_FONT=PAGE_FONT
+            project_details={
+                "project_name": st.session_state.project_name,
+                "company": st.session_state.company,
+                "prepared_by": st.session_state.prepared_by,
+                "description": st.session_state.description,
+            },
         )
+
+        def build_complete_project_pdf():
+            return generate_complete_pdf(
+                calculations=st.session_state.calculations,
+                language=st.session_state.language,
+                session_state=st.session_state,
+                t=t,
+
+                PROFILE_IMAGE_MAP=PROFILE_IMAGE_MAP,
+
+                PROJECT_X=PROJECT_X,
+                PROJECT_Y=PROJECT_Y,
+                PROJECT_LINE_HEIGHT=PROJECT_LINE_HEIGHT,
+
+                CALC_X=CALC_X,
+                CALC_Y=CALC_Y,
+                CALC_LINE_HEIGHT=CALC_LINE_HEIGHT,
+
+                RESULT_X=RESULT_X,
+                RESULT_Y=RESULT_Y,
+
+                PAGE_X=PAGE_X,
+                PAGE_Y=PAGE_Y,
+
+                PROFILE_IMAGE_X=PROFILE_IMAGE_X,
+                PROFILE_IMAGE_Y=PROFILE_IMAGE_Y,
+                PROFILE_IMAGE_WIDTH=PROFILE_IMAGE_WIDTH,
+                PROFILE_IMAGE_HEIGHT=PROFILE_IMAGE_HEIGHT,
+
+                PROFILE_TEXT_X=PROFILE_TEXT_X,
+                PROFILE_CATEGORY_TEXT_Y=PROFILE_CATEGORY_TEXT_Y,
+                PROFILE_TEXT_Y=PROFILE_TEXT_Y,
+                PROFILE_CATEGORY_FONT=PROFILE_CATEGORY_FONT,
+                PROFILE_TEXT_FONT=PROFILE_TEXT_FONT,
+
+                PROJECT_FONT=PROJECT_FONT,
+                CALC_FONT=CALC_FONT,
+                RESULT_FONT=RESULT_FONT,
+                PAGE_FONT=PAGE_FONT
+            )
+
+        def build_project_material_lists():
+            return build_project_material_exports(
+                st.session_state.combined_materials,
+                st.session_state.language,
+                t,
+            )
+
+        if st.session_state.project_report_cache and not get_cached_project_download(
+            st.session_state.project_report_cache,
+            project_download_signature,
+        ):
+            st.session_state.project_report_cache = {}
+
+        if st.session_state.project_material_exports_cache and not get_cached_project_download(
+            st.session_state.project_material_exports_cache,
+            project_download_signature,
+        ):
+            st.session_state.project_material_exports_cache = {}
+
+        if st.session_state.project_package_cache and not get_cached_project_download(
+            st.session_state.project_package_cache,
+            project_download_signature,
+        ):
+            st.session_state.project_package_cache = {}
+
+        complete_pdf = get_cached_project_download(
+            st.session_state.project_report_cache,
+            project_download_signature,
+        )
+        material_exports = get_cached_project_download(
+            st.session_state.project_material_exports_cache,
+            project_download_signature,
+        )
+        project_package = get_cached_project_download(
+            st.session_state.project_package_cache,
+            project_download_signature,
+        )
+
+        if project_package is None:
+            if st.button(
+                label=t("generate_project_package"),
+                icon=UI_ICONS["download_project_package"],
+                use_container_width=True,
+                key="generate_project_package",
+            ):
+                with st.spinner(t("preparing_project_package_status")):
+                    complete_pdf = complete_pdf or build_complete_project_pdf()
+                    material_exports = (
+                        material_exports
+                        if material_exports is not None
+                        else build_project_material_lists()
+                    )
+                    project_package = create_project_package_zip(
+                        report_pdf=complete_pdf,
+                        material_exports=material_exports,
+                        combined_materials=st.session_state.combined_materials,
+                        materials_lookup_records=materials_lookup_records,
+                        language=st.session_state.language,
+                    )
+                st.session_state.project_report_cache = {
+                    "signature": project_download_signature,
+                    "data": complete_pdf,
+                }
+                st.session_state.project_material_exports_cache = {
+                    "signature": project_download_signature,
+                    "data": material_exports,
+                }
+                st.session_state.project_package_cache = {
+                    "signature": project_download_signature,
+                    "data": project_package,
+                }
+                st.rerun()
+        else:
+            st.download_button(
+                label=t("download_project_package"),
+                icon=UI_ICONS["download_project_package"],
+                data=project_package,
+                file_name=project_package_filename(st.session_state.language),
+                mime=PROJECT_PACKAGE_MIME,
+                use_container_width=True,
+                key="download_project_package",
+            )
+
+        if complete_pdf is None:
+            complete_pdf = build_complete_project_pdf()
+            st.session_state.project_report_cache = {
+                "signature": project_download_signature,
+                "data": complete_pdf,
+            }
 
         st.download_button(
             label=t("download_all_calculations"),
@@ -1927,281 +2039,52 @@ with st.sidebar:
             data=complete_pdf,
             file_name="Knauf_Fireboard_Rapport.pdf",
             mime="application/pdf",
-            use_container_width=True
+            use_container_width=True,
+            key="download_all_calculations",
         )
 
         # ---------------------------------------------------
         # DOWNLOAD COMBINED MATERIAL LIST
         # ---------------------------------------------------
 
-        if st.session_state.combined_materials:
-
-            combined_df = pd.concat(
-
-                st.session_state.combined_materials.values(),
-
-                ignore_index=True
-            )
-
-            material_columns = {
-                "artnr": t("material_artnr"),
-                "dbnr": t("material_dbnr"),
-                "manufacturer": t("material_manufacturer"),
-                "description": t("material_description"),
-                "consumption": t("material_consumption"),
-                "unit": t("material_unit"),
-                "total": t("material_total")
+        if material_exports is None:
+            material_exports = build_project_material_lists()
+            st.session_state.project_material_exports_cache = {
+                "signature": project_download_signature,
+                "data": material_exports,
             }
 
-            column_fallbacks = {
-                "artnr": ["ART.NR.", "ART.NO."],
-                "dbnr": ["DB NR", "DB NO"],
-                "manufacturer": ["PRODUCENT", "MANUFACTURER"],
-                "description": ["BESKRIVELSE", "DESCRIPTION"],
-                "consumption": ["FORBRUG PR. LBM", "CONSUMPTION PER LM"],
-                "unit": ["ENHED", "UNIT"],
-                "total": ["SAMLET MÆNGDE", "TOTAL QUANTITY"]
-            }
+        st.download_button(
+            label=t("download_combined_material_list"),
+            icon=UI_ICONS["download_combined_material_list"],
+            data=material_exports.combined_excel,
+            file_name=get_materials_excel_filename(
+                st.session_state.language,
+                "combined"
+            ),
+            mime=(
+                "application/vnd.openxmlformats-officedocument."
+                "spreadsheetml.sheet"
+            ),
+            use_container_width=True,
+            key="download_combined_material_list",
+        )
 
-            def normalize_material_column(key):
-
-                target_column = material_columns[key]
-                source_columns = []
-
-                for column in [
-                    target_column,
-                    *column_fallbacks[key]
-                ]:
-
-                    if (
-                        column in combined_df.columns
-                        and column not in source_columns
-                    ):
-
-                        source_columns.append(column)
-
-                if not source_columns:
-
-                    return None
-
-                normalized_values = combined_df[source_columns[0]]
-
-                for column in source_columns[1:]:
-
-                    normalized_values = normalized_values.combine_first(
-                        combined_df[column]
-                    )
-
-                combined_df[target_column] = normalized_values
-
-                combined_df.drop(
-                    columns=[
-                        column
-                        for column in source_columns
-                        if column != target_column
-                    ],
-                    inplace=True
-                )
-
-                return target_column
-
-            artnr_col = normalize_material_column("artnr")
-            dbnr_col = normalize_material_column("dbnr")
-            manufacturer_col = normalize_material_column("manufacturer")
-            description_col = normalize_material_column("description")
-            consumption_col = normalize_material_column("consumption")
-            unit_col = normalize_material_column("unit")
-            total_col = normalize_material_column("total")
-
-            combined_df["SORT_ORDER"] = 999
-
-            material_sort_terms = [
-                (1, ["Fireboard"]),
-                (2, ["spartelmasse", "joint filler"]),
-                (3, ["Fugestrimler", "Fiberglass joint tape"]),
-                (4, ["Skrue", "Screw"]),
-                (5, ["Vinkelprofil", "Angle profile"]),
-                (6, ["Bjælkeprofil", "Beam profile"]),
-                (7, ["PHL profil", "PHL Profile"]),
-                (99, ["Stålklamme", "Steel clamp"])
-            ]
-
-            if description_col:
-
-                for order, terms in material_sort_terms:
-
-                    description_matches = False
-
-                    for text in terms:
-
-                        description_matches = (
-                            description_matches
-                            | combined_df[description_col]
-                            .astype(str)
-                            .str.contains(text, case=False, na=False)
-                        )
-
-                    combined_df.loc[
-                        description_matches,
-                        "SORT_ORDER"
-                    ] = order
-
-            # ---------------------------------------------------
-            # CONVERT NUMBER COLUMNS
-            # ---------------------------------------------------
-
-            for col in [
-                consumption_col,
-                total_col
-            ]:
-
-                if col and col in combined_df.columns:
-
-                    combined_df[col] = pd.to_numeric(
-                        combined_df[col]
-                        .astype(str)
-                        .str.replace(",", ".", regex=False),
-                        errors="coerce"
-                    ).fillna(0)
-
-            combined_export_df = add_system_separator_rows(
-                combined_df.drop(
-                    columns=["SORT_ORDER"],
-                    errors="ignore"
-                )
-            )
-
-            if artnr_col:
-
-                combined_df["GROUP_KEY"] = (
-                    combined_df[artnr_col]
-                    .fillna("")
-                    .astype(str)
-                    .str.strip()
-                )
-
-            else:
-
-                combined_df["GROUP_KEY"] = ""
-
-            combined_df["GROUP_KEY"] = combined_df["GROUP_KEY"].replace(
-                "",
-                pd.NA
-            )
-
-            if description_col:
-
-                combined_df["GROUP_KEY"] = combined_df["GROUP_KEY"].fillna(
-                    combined_df[description_col]
-                )
-
-            combined_df["GROUP_KEY"] = combined_df["GROUP_KEY"].fillna(
-                "FREMMED_MATERIALE"
-            )
-
-            combined_df = combined_df.sort_values(
-                by="SORT_ORDER",
-                kind="stable"
-            )
-
-            aggregation_columns = {
-                "SORT_ORDER": "first"
-            }
-
-            for col in [
-                artnr_col,
-                dbnr_col,
-                manufacturer_col,
-                description_col,
-                unit_col
-            ]:
-
-                if col:
-
-                    aggregation_columns[col] = "first"
-
-            for col in [
-                consumption_col,
-                total_col
-            ]:
-
-                if col:
-
-                    aggregation_columns[col] = "sum"
-
-            total_materials_df = (
-                combined_df
-                .groupby(
-                    [
-                        "GROUP_KEY"
-                    ],
-                    dropna=False,
-                    as_index=False,
-                    sort=False
-                )
-                .agg(aggregation_columns)
-                .drop(columns=["GROUP_KEY"])
-            )
-
-            sort_columns = ["SORT_ORDER"]
-
-            if description_col:
-
-                sort_columns.append(description_col)
-
-            total_materials_df = total_materials_df.sort_values(
-                by=sort_columns,
-                kind="stable"
-            )
-
-            combined_excel = create_materials_excel(
-                combined_export_df,
-                include_header=False,
-                language=st.session_state.language,
-                per_system=True,
-                export_type=EXPORT_TYPE_PER_CALCULATION
-            )
-
-            total_export_df = total_materials_df.drop(
-                columns=["SORT_ORDER"],
-                errors="ignore"
-            )
-
-            total_excel = create_materials_excel(
-                total_export_df,
-                language=st.session_state.language,
-                export_type=EXPORT_TYPE_COMBINED
-            )
-
-            st.download_button(
-                label=t("download_combined_material_list"),
-                icon=UI_ICONS["download_combined_material_list"],
-                data=total_excel,
-                file_name=get_materials_excel_filename(
-                    st.session_state.language,
-                    EXPORT_TYPE_COMBINED
-                ),
-                mime=(
-                    "application/vnd.openxmlformats-officedocument."
-                    "spreadsheetml.sheet"
-                ),
-                use_container_width=True
-            )
-
-            st.download_button(
-                label=t("download_material_list_per_calculation"),
-                icon=UI_ICONS["download_material_list_per_calculation"],
-                data=combined_excel,
-                file_name=get_materials_excel_filename(
-                    st.session_state.language,
-                    EXPORT_TYPE_PER_CALCULATION
-                ),
-                mime=(
-                    "application/vnd.openxmlformats-officedocument."
-                    "spreadsheetml.sheet"
-                ),
-                use_container_width=True
-            )
+        st.download_button(
+            label=t("download_material_list_per_calculation"),
+            icon=UI_ICONS["download_material_list_per_calculation"],
+            data=material_exports.per_calculation_excel,
+            file_name=get_materials_excel_filename(
+                st.session_state.language,
+                "per_calculation"
+            ),
+            mime=(
+                "application/vnd.openxmlformats-officedocument."
+                "spreadsheetml.sheet"
+            ),
+            use_container_width=True,
+            key="download_material_list_per_calculation",
+        )
 
         st.divider()
 
