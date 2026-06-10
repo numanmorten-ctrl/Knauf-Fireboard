@@ -2,7 +2,7 @@
   "_comment": "Icon paths are placeholders only. Upload PNG icon files manually to static/icons/icon-192.png and static/icons/icon-512.png before relying on install prompts. No icon image files are included in this PR.",
   "name": "Knauf Fireboard",
   "short_name": "Fireboard",
-  "display": "standalone",
+  "display": "browser",
   "theme_color": "#003b7a",
   "background_color": "#ffffff",
   "orientation": "any",

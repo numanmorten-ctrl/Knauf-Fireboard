@@ -36,6 +36,9 @@ translations = {
         "sidebar_project_heading":
             "Projekt",
 
+        "tablet_project_menu_label":
+            "☰ Projekt",
+
         "calculations":
             "Beregninger",
 
@@ -354,6 +357,9 @@ translations = {
 
         "sidebar_project_heading":
             "Project",
+
+        "tablet_project_menu_label":
+            "☰ Project",
 
         "calculations":
             "Calculations",
