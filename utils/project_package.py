@@ -3,7 +3,9 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+import hashlib
 from io import BytesIO
+import json
 from pathlib import PurePosixPath
 from typing import Callable, Iterable
 from urllib.parse import unquote, urlparse
@@ -25,6 +27,60 @@ from utils.export_helpers import (
 )
 
 PROJECT_PACKAGE_MIME = "application/zip"
+
+
+def _signature_normalize(value: object) -> object:
+    """Return JSON-serializable project data for download cache keys."""
+
+    if isinstance(value, pd.DataFrame):
+        normalized_df = value.where(pd.notna(value), None)
+        return {
+            "columns": list(normalized_df.columns),
+            "rows": normalized_df.to_dict(orient="records"),
+        }
+
+    if isinstance(value, dict):
+        return {
+            str(key): _signature_normalize(value[key])
+            for key in sorted(value, key=lambda item: str(item))
+        }
+
+    if isinstance(value, (list, tuple)):
+        return [_signature_normalize(item) for item in value]
+
+    if pd.isna(value):
+        return None
+
+    return value
+
+
+def build_project_download_signature(
+    *,
+    calculations: list[dict],
+    combined_materials: dict[str, pd.DataFrame],
+    language: str,
+    project_details: dict[str, object] | None = None,
+) -> str:
+    """Return a stable signature for cached project-level downloads."""
+
+    payload = {
+        "calculations": _signature_normalize(calculations),
+        "combined_materials": _signature_normalize(combined_materials),
+        "language": language,
+        "project_details": _signature_normalize(project_details or {}),
+    }
+    serialized = json.dumps(payload, sort_keys=True, default=str, separators=(",", ":"))
+    return hashlib.sha256(serialized.encode("utf-8")).hexdigest()
+
+
+def get_cached_project_download(cache: dict | None, signature: str) -> object | None:
+    """Return cached download data only when it matches the current signature."""
+
+    if not cache or cache.get("signature") != signature:
+        return None
+
+    return cache.get("data")
+
 
 
 @dataclass(frozen=True)

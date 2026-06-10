@@ -5,9 +5,11 @@ import pandas as pd
 
 from translations import translations
 from utils.project_package import (
+    build_project_download_signature,
     build_project_material_exports,
     collect_project_external_files,
     create_project_package_zip,
+    get_cached_project_download,
 )
 
 
@@ -169,3 +171,46 @@ def test_missing_external_files_do_not_break_zip_creation():
         assert "Rapport/Knauf_Fireboard_Rapport.pdf" in names
         assert "README.txt" in names
         assert "shared-epd" in archive.read("README.txt").decode("utf-8")
+
+
+def test_project_download_signature_changes_only_for_saved_project_inputs():
+    base_signature = build_project_download_signature(
+        calculations=[{"profile": "HEB 100", "fire_time": 60}],
+        combined_materials=project_materials(),
+        language="DA",
+        project_details={"project_name": "Project A"},
+    )
+    same_signature = build_project_download_signature(
+        calculations=[{"profile": "HEB 100", "fire_time": 60}],
+        combined_materials=project_materials(),
+        language="DA",
+        project_details={"project_name": "Project A"},
+    )
+    changed_signature = build_project_download_signature(
+        calculations=[{"profile": "HEB 100", "fire_time": 90}],
+        combined_materials=project_materials(),
+        language="DA",
+        project_details={"project_name": "Project A"},
+    )
+
+    assert same_signature == base_signature
+    assert changed_signature != base_signature
+
+
+def test_cached_project_download_is_returned_only_for_matching_signature():
+    signature = build_project_download_signature(
+        calculations=[{"profile": "HEB 100", "fire_time": 60}],
+        combined_materials=project_materials(),
+        language="DA",
+    )
+    changed_signature = build_project_download_signature(
+        calculations=[{"profile": "HEB 100", "fire_time": 90}],
+        combined_materials=project_materials(),
+        language="DA",
+    )
+    cached_zip = BytesIO(b"cached")
+    cache = {"signature": signature, "data": cached_zip}
+
+    assert get_cached_project_download(cache, signature) is cached_zip
+    assert get_cached_project_download(cache, changed_signature) is None
+    assert get_cached_project_download({}, signature) is None
