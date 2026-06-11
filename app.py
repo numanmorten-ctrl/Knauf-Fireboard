@@ -963,23 +963,6 @@ div[data-baseweb="select"] > div {
 
     border-left: none !important;
 }
-
-/* Narrow global selectbox text alignment correction: nudge only the
-   rendered BaseWeb selected value text down slightly without changing
-   selectbox dimensions, borders, margins, widths, arrows, or layouts. */
-div[data-testid="stSelectbox"] div[data-baseweb="select"] span {
-
-    display: inline-block !important;
-
-    transform: translateY(1px) !important;
-}
-
-/* Keep the BaseWeb select input text vertically aligned with the rendered
-   value for all Streamlit selectboxes without changing box dimensions. */
-div[data-testid="stSelectbox"] div[data-baseweb="select"] input {
-
-    transform: translateY(1px) !important;
-}
 /* DATAFRAME BG */
 
 [data-testid="stDataFrame"] {
@@ -1157,18 +1140,6 @@ Responsive layout for constrained viewport widths
         font-size: 13px !important;
         line-height: 1.2 !important;
         white-space: normal !important;
-    }
-
-    /* Tablet-only language-selector height correction: constrain only the
-       existing language dropdown box so it stays level with the globe box
-       and top action controls without changing widths, margins, columns,
-       borders, arrow placement, or the globe icon box. */
-    div[data-testid="stSelectbox"]:has(#language_select)
-    div[data-baseweb="select"] > div {
-        height: 44px !important;
-        min-height: 44px !important;
-        max-height: 44px !important;
-        box-sizing: border-box !important;
     }
 
     .step-tab {
