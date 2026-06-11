@@ -1212,23 +1212,12 @@ Responsive layout for constrained viewport widths
         align-items: flex-end !important;
     }
 
-    /* DEBUG: verify likely keyed language selectbox wrapper selector variants. */
-    .st-key-language-selector-wrapper,
-    .st-key-language_selector_wrapper,
-    .st-key-language-select-wrapper,
-    .st-key-language_select_wrapper {
-        background: lime !important;
-        outline: 3px solid lime !important;
-    }
-
     /* Tablet-only fix: keep language selectbox aligned with action buttons. */
-    .st-key-top-action-row div[data-testid="stSelectbox"]:has(#language_select),
-    .st-key-top_action_row div[data-testid="stSelectbox"]:has(#language_select) {
+    .st-key-language_selector_wrapper div[data-testid="stSelectbox"] {
         margin-top: 0 !important;
     }
 
-    .st-key-top-action-row div[data-testid="stSelectbox"]:has(#language_select) div[data-baseweb="select"] > div,
-    .st-key-top_action_row div[data-testid="stSelectbox"]:has(#language_select) div[data-baseweb="select"] > div {
+    .st-key-language_selector_wrapper div[data-baseweb="select"] > div {
         height: var(--top-action-control-height) !important;
         min-height: var(--top-action-control-height) !important;
         max-height: var(--top-action-control-height) !important;
