@@ -1,0 +1,25 @@
+{
+  "_comment": "Icon paths are placeholders only. Upload PNG icon files manually to static/icons/icon-192.png and static/icons/icon-512.png before relying on install prompts. No icon image files are included in this PR.",
+  "name": "Knauf Fireboard",
+  "short_name": "Fireboard",
+  "display": "browser",
+  "theme_color": "#003b7a",
+  "background_color": "#ffffff",
+  "orientation": "any",
+  "icons": [
+    {
+      "_comment": "Placeholder only: upload this PNG file manually later.",
+      "src": "/app/static/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "_comment": "Placeholder only: upload this PNG file manually later.",
+      "src": "/app/static/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

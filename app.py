@@ -1,10 +1,13 @@
 from io import BytesIO
+import html
+import json
 from datetime import datetime
 from pathlib import Path
 from reportlab.pdfgen import canvas
 from pypdf import PdfReader, PdfWriter
 
 import streamlit as st
+import streamlit.components.v1 as components
 import pandas as pd
 from translations import translations
 from utils.data_loader import clean_text, clean_numeric, load_and_clean_csv
@@ -39,6 +42,7 @@ from utils.pdf_generator import (
     generate_single_pdf,
     generate_complete_pdf,
 )
+from utils.pwa import render_pwa_head_tags
 from utils.project_package import (
     PROJECT_PACKAGE_MIME,
     build_project_download_signature,
@@ -129,6 +133,12 @@ from reportlab.lib.styles import ParagraphStyle
 from reportlab.platypus import Image
 
 
+st.set_page_config(
+    page_title="Knauf Fireboard",
+    initial_sidebar_state="expanded",
+)
+
+render_pwa_head_tags()
 
 # ---------------------------------------------------
 # KNAUF THEME
@@ -434,6 +444,13 @@ div[data-baseweb="select"] input {
     caret-color: #003b7a !important;
 
     background: transparent !important;
+}
+
+/* Narrow fix: vertically center visible Streamlit/BaseWeb selected values. */
+div[data-testid="stSelectbox"] div[data-baseweb="select"] > div > div:first-child,
+div[data-testid="stSelectbox"] div[data-baseweb="select"] > div > div:first-child > div {
+
+    transform: translateY(1px);
 }
 
 /* Dropdown popup */
@@ -1059,12 +1076,280 @@ table tbody tr:hover td {
     background: #fafafa !important;
 }
 
+/* Step tabs share a class so responsive rules can scale active and inactive tabs consistently. */
+.step-tab {
+    background-color: #003b7a;
+    color: white;
+    padding: 8px;
+    border-radius: 0;
+    text-align: center;
+    font-weight: 700;
+    border: 1px solid #003b7a;
+    box-sizing: border-box;
+}
+
+/* ---------------------------------------------------
+Responsive layout for constrained viewport widths
+--------------------------------------------------- */
+
+@media (max-width: 1366px) {
+
+    .block-container {
+        padding-top: 4rem !important;
+        padding-left: 1.1rem !important;
+        padding-right: 1.1rem !important;
+        max-width: 100% !important;
+        overflow-x: hidden !important;
+    }
+
+    h1 {
+        font-size: 32px !important;
+        line-height: 1.15 !important;
+        word-break: normal !important;
+        overflow-wrap: normal !important;
+        hyphens: none !important;
+    }
+
+    h2 {
+        font-size: 1.45rem !important;
+    }
+
+    h3 {
+        font-size: 1.15rem !important;
+    }
+
+    div[data-testid="stVerticalBlock"] {
+        gap: 0.65rem !important;
+    }
+
+    .element-container {
+        margin-bottom: 0.35rem !important;
+    }
+
+    .st-key-top-action-row div[data-testid="stHorizontalBlock"],
+    .st-key-top_action_row div[data-testid="stHorizontalBlock"] {
+        gap: 0.55rem !important;
+    }
+
+    .st-key-top-action-row div.stButton > button,
+    .st-key-top_action_row div.stButton > button,
+    .st-key-step-tabs div.stButton > button,
+    .st-key-step_tabs div.stButton > button {
+        min-height: 40px !important;
+        padding: 0.35rem 0.55rem !important;
+        font-size: 13px !important;
+        line-height: 1.2 !important;
+        white-space: normal !important;
+    }
+
+    .step-tab {
+        min-height: 40px !important;
+        padding: 7px 6px !important;
+        font-size: 13px !important;
+        line-height: 1.2 !important;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .st-key-profile-category-grid div[data-testid="stHorizontalBlock"],
+    .st-key-profile_category_grid div[data-testid="stHorizontalBlock"] {
+        gap: 0.55rem !important;
+    }
+
+    section[data-testid="stSidebar"] [data-testid="stSidebarContent"],
+    section[data-testid="stSidebar"] > div:first-child {
+        padding: 0rem 1rem 0.8rem 1rem !important;
+    }
+
+    section[data-testid="stSidebar"] .sidebar-project-heading {
+        font-size: 2rem !important;
+        margin-bottom: 0.45cm !important;
+    }
+
+    section[data-testid="stSidebar"] .sidebar-calculations-heading {
+        font-size: 1.08rem !important;
+        margin-bottom: 0.9rem !important;
+    }
+
+    section[data-testid="stSidebar"] button,
+    section[data-testid="stSidebar"] .stDownloadButton > button,
+    section[data-testid="stSidebar"] .stLinkButton > a {
+        min-height: 38px !important;
+        padding: 0.35rem 0.5rem !important;
+        font-size: 13px !important;
+        line-height: 1.2 !important;
+    }
+}
+
+@media (max-width: 1180px) {
+
+    .block-container {
+        padding-left: 0.85rem !important;
+        padding-right: 0.85rem !important;
+    }
+
+    h1 {
+        font-size: 28px !important;
+    }
+
+    h2 {
+        font-size: 1.32rem !important;
+    }
+
+    h3 {
+        font-size: 1.08rem !important;
+    }
+
+    .st-key-top-action-row,
+    .st-key-top_action_row {
+        --top-action-control-height: 40px;
+    }
+
+    .st-key-top-action-row div[data-testid="stHorizontalBlock"],
+    .st-key-top_action_row div[data-testid="stHorizontalBlock"] {
+        flex-wrap: wrap !important;
+        align-items: flex-end !important;
+    }
+
+    /* Tablet-only fix: keep language selectbox aligned with action buttons. */
+    .st-key-language_selector_wrapper div[data-testid="stSelectbox"] {
+        margin-top: 0 !important;
+    }
+
+    .st-key-language_selector_wrapper div[data-baseweb="select"] > div {
+        height: var(--top-action-control-height) !important;
+        min-height: var(--top-action-control-height) !important;
+        max-height: var(--top-action-control-height) !important;
+    }
+
+    .st-key-language_icon_wrapper div[data-testid="stButton"] button {
+        height: var(--top-action-control-height) !important;
+        min-height: var(--top-action-control-height) !important;
+        max-height: var(--top-action-control-height) !important;
+    }
+
+    .st-key-top-action-row div[data-testid="column"],
+    .st-key-top_action_row div[data-testid="column"] {
+        flex: 0 1 auto !important;
+        min-width: 0 !important;
+        width: auto !important;
+    }
+
+    .st-key-top-action-row div[data-testid="column"]:nth-child(1),
+    .st-key-top_action_row div[data-testid="column"]:nth-child(1) {
+        flex: 1 1 420px !important;
+        min-width: 360px !important;
+    }
+
+    .st-key-top-action-row div[data-testid="column"]:nth-child(2),
+    .st-key-top-action-row div[data-testid="column"]:nth-child(3),
+    .st-key-top_action_row div[data-testid="column"]:nth-child(2),
+    .st-key-top_action_row div[data-testid="column"]:nth-child(3) {
+        flex: 0 1 155px !important;
+        min-width: 145px !important;
+    }
+
+    .st-key-top-action-row div[data-testid="column"]:nth-child(4),
+    .st-key-top_action_row div[data-testid="column"]:nth-child(4) {
+        flex: 0 0 38px !important;
+        min-width: 38px !important;
+    }
+
+    .st-key-top-action-row div[data-testid="column"]:nth-child(5),
+    .st-key-top_action_row div[data-testid="column"]:nth-child(5) {
+        flex: 0 1 128px !important;
+        min-width: 118px !important;
+    }
+
+    .st-key-profile-category-grid div[data-testid="stHorizontalBlock"],
+    .st-key-profile_category_grid div[data-testid="stHorizontalBlock"] {
+        flex-wrap: wrap !important;
+    }
+
+    .st-key-profile-category-grid div[data-testid="column"],
+    .st-key-profile_category_grid div[data-testid="column"] {
+        flex: 1 1 calc(33.333% - 0.6rem) !important;
+        min-width: 180px !important;
+        max-width: calc(33.333% - 0.35rem) !important;
+    }
+
+    table thead th {
+        padding: 6px 14px !important;
+        font-size: 13px !important;
+    }
+
+    table tbody td {
+        padding: 12px 14px !important;
+        font-size: 13px !important;
+    }
+}
+
+@media (max-width: 1024px) {
+
+    .block-container {
+        padding-left: 0.65rem !important;
+        padding-right: 0.65rem !important;
+    }
+
+    h1 {
+        font-size: 25px !important;
+        line-height: 1.12 !important;
+    }
+
+    div[data-testid="stVerticalBlock"] {
+        gap: 0.5rem !important;
+    }
+
+    .st-key-top-action-row div[data-testid="column"]:nth-child(1),
+    .st-key-top_action_row div[data-testid="column"]:nth-child(1) {
+        flex-basis: 100% !important;
+        min-width: 280px !important;
+    }
+
+    .st-key-step-tabs div[data-testid="stHorizontalBlock"],
+    .st-key-step_tabs div[data-testid="stHorizontalBlock"] {
+        gap: 0.4rem !important;
+    }
+
+    .st-key-step-tabs div.stButton > button,
+    .st-key-step_tabs div.stButton > button,
+    .step-tab {
+        min-height: 36px !important;
+        padding: 0.3rem 0.4rem !important;
+        font-size: 12px !important;
+    }
+
+    .st-key-profile-category-grid div[data-testid="column"],
+    .st-key-profile_category_grid div[data-testid="column"] {
+        flex-basis: calc(50% - 0.5rem) !important;
+        max-width: calc(50% - 0.35rem) !important;
+        min-width: 170px !important;
+    }
+
+    section[data-testid="stSidebar"] [data-testid="stSidebarContent"],
+    section[data-testid="stSidebar"] > div:first-child {
+        padding-left: 0.75rem !important;
+        padding-right: 0.75rem !important;
+    }
+}
+
+
 </style>
 """, unsafe_allow_html=True)
 
 # ---------------------------------------------------
 # CUSTOM HEADER BRANDING
 # ---------------------------------------------------
+
+project_menu_labels = translations[st.session_state.get("language", "DA")]
+project_menu_button_collapsed_label = project_menu_labels.get(
+    "project_menu_button_collapsed",
+    project_menu_labels["project_menu_button"],
+)
+project_menu_button_expanded_label = project_menu_labels[
+    "project_menu_button_expanded"
+]
 
 header_html = """
 <style>
@@ -1091,6 +1376,51 @@ header_html = """
     z-index: 9999999;
 
     pointer-events: none;
+}
+
+.fireboard-project-menu-button {
+
+    display: none;
+
+    flex: 0 0 auto;
+
+    min-width: 7.25rem;
+
+    min-height: 34px;
+
+    padding: 0.34rem 0.5rem;
+
+    border: 1px solid #b8c2cc;
+
+    border-radius: 0;
+
+    background: rgba(255, 255, 255, 0.96);
+
+    color: #003b7a;
+
+    font-size: 12.5px;
+
+    font-weight: 700;
+
+    line-height: 1;
+
+    white-space: nowrap;
+
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+
+    cursor: pointer;
+
+    pointer-events: auto;
+}
+
+.fireboard-project-menu-button:hover,
+.fireboard-project-menu-button:focus-visible {
+
+    border-color: #009fe3;
+
+    background: #f5fbff;
+
+    outline: none;
 }
 
 .knauf-logo {
@@ -1135,15 +1465,175 @@ header_html = """
 
     text-rendering: geometricPrecision;
 }
+
+/*
+Streamlit-internal sidebar toggle controls. These selectors intentionally hide
+Streamlit's built-in collapsed/expanded arrows so Fireboard can present a
+stable project-menu affordance near the brand header. Streamlit may rename
+these data-testid/aria attributes in future releases, so maintain with care.
+*/
+button[data-testid="stSidebarCollapseButton"],
+button[data-testid="stSidebarCollapsedControl"],
+[data-testid="stSidebarCollapseButton"] button,
+[data-testid="stSidebarCollapsedControl"] button,
+button[aria-label="Open sidebar"],
+button[aria-label="Close sidebar"] {
+    opacity: 0 !important;
+    width: 1px !important;
+    min-width: 1px !important;
+    height: 1px !important;
+    min-height: 1px !important;
+    padding: 0 !important;
+    border: 0 !important;
+    overflow: hidden !important;
+    pointer-events: none !important;
+}
+
+@media (max-width: 1180px) {
+
+    .knauf-header {
+        left: 0.75rem;
+        gap: 8px;
+    }
+
+    .fireboard-project-menu-button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+}
+
+@media (max-width: 640px) {
+
+    .knauf-header {
+        left: 0.45rem;
+        gap: 6px;
+    }
+
+    .fireboard-project-menu-button {
+        min-width: 6.6rem;
+        min-height: 32px;
+        padding: 0.32rem 0.36rem;
+        font-size: 11.5px;
+    }
+}
 </style>
 
 <div class="knauf-header">
+<button type="button" class="fireboard-project-menu-button" aria-label="__PROJECT_MENU_BUTTON_LABEL__">__PROJECT_MENU_BUTTON_LABEL__</button>
 <img class="knauf-logo" src="https://knauf.com/api/download-center/v1/assets/8355fec5-8cb9-42fe-b5d7-4e7258bf446a?download=true">
 <div class="knauf-fireboard">Fireboard</div>
 </div>
-"""
+""".replace(
+    "__PROJECT_MENU_BUTTON_LABEL__",
+    html.escape(project_menu_button_collapsed_label, quote=True),
+)
 
 st.markdown(header_html, unsafe_allow_html=True)
+
+components.html(
+    f"""
+    <script>
+    (() => {{
+        const doc = window.parent.document;
+        const button = doc.querySelector('.fireboard-project-menu-button');
+        if (!button) return;
+
+        const labels = {{
+            collapsed: {json.dumps(project_menu_button_collapsed_label)},
+            expanded: {json.dumps(project_menu_button_expanded_label)}
+        }};
+
+        const toggleSelectors = [
+            'button[data-testid="stSidebarCollapseButton"]',
+            'button[data-testid="stSidebarCollapsedControl"]',
+            '[data-testid="stSidebarCollapseButton"] button',
+            '[data-testid="stSidebarCollapsedControl"] button',
+            'button[aria-label="Open sidebar"]',
+            'button[aria-label="Close sidebar"]',
+            'button[title="Open sidebar"]',
+            'button[title="Close sidebar"]'
+        ];
+
+        const isRendered = (candidate) => {{
+            if (!candidate) return false;
+            const style = window.getComputedStyle(candidate);
+            return style.display !== 'none' && style.visibility !== 'hidden';
+        }};
+
+        const accessibleLabel = (candidate) => (
+            `${{candidate.getAttribute('aria-label') || ''}} ${{candidate.getAttribute('title') || ''}}`.toLowerCase()
+        );
+
+        const findStreamlitSidebarToggle = () => {{
+            for (const selector of toggleSelectors) {{
+                const toggle = doc.querySelector(selector);
+                if (toggle) return toggle;
+            }}
+            return Array.from(doc.querySelectorAll('button[aria-label], button[title]')).find((candidate) => {{
+                const label = accessibleLabel(candidate);
+                return label.includes('sidebar');
+            }});
+        }};
+
+        const isSidebarExpanded = () => {{
+            const collapsedControl = doc.querySelector('[data-testid="stSidebarCollapsedControl"]');
+            if (isRendered(collapsedControl)) return false;
+
+            const collapseControl = doc.querySelector('[data-testid="stSidebarCollapseButton"]');
+            if (isRendered(collapseControl)) return true;
+
+            const closeToggle = Array.from(doc.querySelectorAll('button[aria-label], button[title]')).find((candidate) => {{
+                const label = accessibleLabel(candidate);
+                return label.includes('close sidebar') || label.includes('collapse sidebar');
+            }});
+            if (isRendered(closeToggle)) return true;
+
+            const openToggle = Array.from(doc.querySelectorAll('button[aria-label], button[title]')).find((candidate) => {{
+                const label = accessibleLabel(candidate);
+                return label.includes('open sidebar') || label.includes('expand sidebar');
+            }});
+            if (isRendered(openToggle)) return false;
+
+            const sidebar = doc.querySelector('section[data-testid="stSidebar"]');
+            if (sidebar) {{
+                const rect = sidebar.getBoundingClientRect();
+                const style = window.getComputedStyle(sidebar);
+                return style.display !== 'none' && style.visibility !== 'hidden' && rect.width > 2;
+            }}
+
+            return false;
+        }};
+
+        const updateProjectMenuLabel = () => {{
+            const label = isSidebarExpanded() ? labels.expanded : labels.collapsed;
+            if (button.textContent !== label) button.textContent = label;
+            if (button.getAttribute('aria-label') !== label) {{
+                button.setAttribute('aria-label', label);
+            }}
+        }};
+
+        button.onclick = (event) => {{
+            event.preventDefault();
+            const toggle = findStreamlitSidebarToggle();
+            if (toggle) toggle.click();
+            window.setTimeout(updateProjectMenuLabel, 80);
+            window.setTimeout(updateProjectMenuLabel, 250);
+        }};
+
+        updateProjectMenuLabel();
+        new MutationObserver(updateProjectMenuLabel).observe(doc.body, {{
+            attributes: true,
+            childList: true,
+            subtree: true
+        }});
+        window.addEventListener('resize', updateProjectMenuLabel);
+    }})();
+    </script>
+    """,
+    height=0,
+    width=0,
+)
 # ---------------------------------------------------
 # SESSION STATE
 # ---------------------------------------------------
@@ -1204,6 +1694,8 @@ def t(key):
     return translations[
         st.session_state.language
     ][key]
+
+
 
 
 # ---------------------------------------------------
@@ -1516,96 +2008,102 @@ fire_tables = {
 # HEADER
 # ---------------------------------------------------
 
-col1, col2, col3, col4, col5 = st.columns(
-    [6, 2, 2, 0.24, 1.12],
-    gap="small",
-    vertical_alignment="bottom"
-)
+with st.container(key="top_action_row"):
 
-with col1:
-
-    st.title(
-        t("title")
+    col1, col2, col3, col4, col5 = st.columns(
+        [6, 2, 2, 0.24, 1.12],
+        gap="small",
+        vertical_alignment="bottom"
     )
 
-# ---------------------------------------------------
-# NY BEREGNING
-# ---------------------------------------------------
+    with col1:
 
-with col2:
-
-    st.write("")
-    st.write("")
-
-    if st.button(
-        t("new_calculation"),
-        icon=UI_ICONS["new_calculation"],
-        use_container_width=True
-    ):
-
-        reset_calculation_state(
-            st.session_state
+        st.title(
+            t("title")
         )
 
-        st.rerun()
+    # ---------------------------------------------------
+    # NY BEREGNING
+    # ---------------------------------------------------
 
-# ---------------------------------------------------
-# NYT PROJEKT
-# ---------------------------------------------------
+    with col2:
 
-with col3:
+        st.write("")
+        st.write("")
 
-    st.write("")
-    st.write("")
+        if st.button(
+            t("new_calculation"),
+            icon=UI_ICONS["new_calculation"],
+            use_container_width=True
+        ):
 
-    if st.button(
-        t("new_project"),
-        icon=UI_ICONS["delete_project"],
-        use_container_width=True
-    ):
+            reset_calculation_state(
+                st.session_state
+            )
 
-        st.session_state.clear()
+            st.rerun()
 
-        st.rerun()
+    # ---------------------------------------------------
+    # NYT PROJEKT
+    # ---------------------------------------------------
 
-# ---------------------------------------------------
-# LANGUAGE ICON
-# ---------------------------------------------------
+    with col3:
 
-with col4:
+        st.write("")
+        st.write("")
 
-    st.button(
-        " ",
-        icon=UI_ICONS["language_selector"],
-        disabled=True,
-        use_container_width=True
-    )
+        if st.button(
+            t("new_project"),
+            icon=UI_ICONS["delete_project"],
+            use_container_width=True
+        ):
 
-# ---------------------------------------------------
-# LANGUAGE SELECT
-# ---------------------------------------------------
+            st.session_state.clear()
 
-with col5:
+            st.rerun()
 
-    selected_language = st.selectbox(
-        "",
-        options=["Dansk", "English"],
-        index=0 if st.session_state.language == "DA" else 1,
-        label_visibility="collapsed",
-        key="language_select"
-    )
+    # ---------------------------------------------------
+    # LANGUAGE ICON
+    # ---------------------------------------------------
 
-    new_lang = (
-        "DA"
-        if selected_language == "Dansk"
-        else "EN"
-    )
+    with col4:
 
-    if new_lang != st.session_state.language:
+        with st.container(key="language_icon_wrapper"):
 
-        st.session_state.language = new_lang
+            st.button(
+                " ",
+                icon=UI_ICONS["language_selector"],
+                disabled=True,
+                use_container_width=True
+            )
 
-        st.rerun()
+    # ---------------------------------------------------
+    # LANGUAGE SELECT
+    # ---------------------------------------------------
+
+    with col5:
+
+        with st.container(key="language_selector_wrapper"):
+
+            selected_language = st.selectbox(
+                "",
+                options=["Dansk", "English"],
+                index=0 if st.session_state.language == "DA" else 1,
+                label_visibility="collapsed",
+                key="language_select"
+            )
+
+        new_lang = (
+            "DA"
+            if selected_language == "Dansk"
+            else "EN"
+        )
+
+        if new_lang != st.session_state.language:
+
+            st.session_state.language = new_lang
+
+            st.rerun()
 
 # ---------------------------------------------------
 # SIDEBAR
@@ -2147,41 +2645,35 @@ thickness = None
 # STEP HEADER
 # ---------------------------------------------------
 
-cols = st.columns(len(steps))
+with st.container(key="step_tabs"):
 
-for idx, step in enumerate(steps):
+    cols = st.columns(len(steps))
 
-    with cols[idx]:
+    for idx, step in enumerate(steps):
 
-        active = idx == current_step
+        with cols[idx]:
 
-        if active:
+            active = idx == current_step
 
-            st.markdown(f"""
-            <div style="
-                background-color:#003b7a;
-                color:white;
-                padding:8px;
-                border-radius:0px;
-                text-align:center;
-                font-weight:700;
-                border:1px solid #003b7a;
-            ">
-                {idx+1}. {step}
-            </div>
-            """, unsafe_allow_html=True)
+            if active:
 
-        else:
+                st.markdown(f"""
+                <div class="step-tab step-tab-active">
+                    {idx+1}. {step}
+                </div>
+                """, unsafe_allow_html=True)
 
-            if st.button(
-                f"{idx+1}. {step}",
-                use_container_width=True,
-                key=f"step_{idx}"
-            ):
+            else:
 
-                st.session_state.current_step = idx
+                if st.button(
+                    f"{idx+1}. {step}",
+                    use_container_width=True,
+                    key=f"step_{idx}"
+                ):
 
-                st.rerun()
+                    st.session_state.current_step = idx
+
+                    st.rerun()
 
 # ---------------------------------------------------
 # TAB 1 - PROFIL
@@ -2211,25 +2703,27 @@ if current_step == 0:
         ("Andre profiler", t("other_profiles"), "images/other_profiles.png"),
     ]
 
-    for i in range(0, len(categories), 5):
+    with st.container(key="profile_category_grid"):
 
-        cols = st.columns(5)
+        for i in range(0, len(categories), 5):
 
-        for col, (value, label, image) in zip(
-            cols,
-            categories[i:i+5]
-        ):
+            cols = st.columns(5, gap="small")
 
-            with col:
+            for col, (value, label, image) in zip(
+                cols,
+                categories[i:i+5]
+            ):
 
-                card(
-                    label,
-                    image,
-                    "category",
-                    st.session_state,
-                    t,
-                    value
-                )
+                with col:
+
+                    card(
+                        label,
+                        image,
+                        "category",
+                        st.session_state,
+                        t,
+                        value
+                    )
 
     category = st.session_state.category
 
