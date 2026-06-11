@@ -1,7 +1,13 @@
 import json
 from pathlib import Path
 
-from utils.pwa import KNAUF_BLUE, MANIFEST_URL, build_pwa_head_tags
+from utils.pwa import (
+    APPLE_TOUCH_ICON_URL,
+    FAVICON_URL,
+    KNAUF_BLUE,
+    MANIFEST_URL,
+    build_pwa_head_tags,
+)
 
 
 def test_manifest_metadata_uses_knauf_fireboard_pwa_values():
@@ -13,36 +19,36 @@ def test_manifest_metadata_uses_knauf_fireboard_pwa_values():
     assert manifest["theme_color"] == KNAUF_BLUE
     assert manifest["background_color"] == "#ffffff"
     assert manifest["orientation"] == "any"
-    assert "manual" in manifest["_comment"]
+    assert "_comment" not in manifest
 
 
-def test_manifest_uses_placeholder_icon_paths_without_requiring_binary_assets():
+def test_manifest_uses_uploaded_icon_paths():
     manifest = json.loads(Path("static/manifest.webmanifest").read_text())
 
     assert manifest["icons"] == [
         {
-            "_comment": "Placeholder only: upload this PNG file manually later.",
             "src": "/app/static/icons/icon-192.png",
             "sizes": "192x192",
             "type": "image/png",
             "purpose": "any maskable",
         },
         {
-            "_comment": "Placeholder only: upload this PNG file manually later.",
             "src": "/app/static/icons/icon-512.png",
             "sizes": "512x512",
             "type": "image/png",
             "purpose": "any maskable",
         },
     ]
-    assert not Path("static/icons/icon-192.png").exists()
-    assert not Path("static/icons/icon-512.png").exists()
+    assert Path("static/icons/icon-192.png").exists()
+    assert Path("static/icons/icon-512.png").exists()
 
 
 def test_generated_pwa_head_tags_include_ipad_and_manifest_metadata():
     head_tags = build_pwa_head_tags()
 
     assert f'<link rel="manifest" href="{MANIFEST_URL}">' in head_tags
+    assert f'<link rel="apple-touch-icon" href="{APPLE_TOUCH_ICON_URL}">' in head_tags
+    assert f'<link rel="icon" type="image/png" href="{FAVICON_URL}">' in head_tags
     assert 'name="apple-mobile-web-app-capable"' not in head_tags
     assert 'name="apple-mobile-web-app-title"' not in head_tags
     assert 'name="apple-mobile-web-app-status-bar-style"' not in head_tags
