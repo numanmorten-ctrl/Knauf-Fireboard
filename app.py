@@ -867,7 +867,14 @@ div[data-baseweb="select"] > div::after {
 LANGUAGE ICON COLUMN
 --------------------------------------------------- */
 
-div[data-testid="column"]:nth-last-child(2) {
+.st-key-top-action-row,
+.st-key-top_action_row {
+
+    --top-action-control-height: 44px;
+}
+
+.st-key-top-action-row div[data-testid="column"]:nth-child(4),
+.st-key-top_action_row div[data-testid="column"]:nth-child(4) {
 
     display: flex !important;
 
@@ -878,7 +885,9 @@ div[data-testid="column"]:nth-last-child(2) {
 FJERN STREAMLIT SPACING I COL4
 --------------------------------------------------- */
 
-div[data-testid="column"]:nth-last-child(2)
+.st-key-top-action-row div[data-testid="column"]:nth-child(4)
+div[data-testid="stMarkdownContainer"],
+.st-key-top_action_row div[data-testid="column"]:nth-child(4)
 div[data-testid="stMarkdownContainer"] {
 
     margin-bottom: 0 !important;
@@ -890,15 +899,28 @@ div[data-testid="stMarkdownContainer"] {
 LANGUAGE ICON BUTTON
 --------------------------------------------------- */
 
+.st-key-top-action-row div[data-testid="column"]:nth-child(4)
+div[data-testid="stButton"] button:disabled,
+.st-key-top_action_row div[data-testid="column"]:nth-child(4)
 div[data-testid="stButton"] button:disabled {
 
-    height: 44px !important;
+    height: var(--top-action-control-height) !important;
 
-    min-height: 44px !important;
+    min-height: var(--top-action-control-height) !important;
 
     width: 38px !important;
 
     min-width: 38px !important;
+
+    display: flex !important;
+
+    align-items: center !important;
+
+    justify-content: center !important;
+
+    padding-top: 0 !important;
+
+    padding-bottom: 0 !important;
 
     padding-left: 20px !important;
 
@@ -918,52 +940,106 @@ div[data-testid="stButton"] button:disabled {
 
     font-size: 16px !important;
 
+    line-height: normal !important;
+
     cursor: default !important;
 
     margin-right: 0px !important;
-}
-/* ---------------------------------------------------
-LANGUAGE ICON BUTTON
---------------------------------------------------- */
-
-div[data-testid="stButton"] button:disabled {
 
     position: relative !important;
 
     z-index: 3 !important;
 }
+
+.st-key-top-action-row div[data-testid="column"]:nth-child(4)
+div[data-testid="stButton"] button:disabled span,
+.st-key-top_action_row div[data-testid="column"]:nth-child(4)
+div[data-testid="stButton"] button:disabled span {
+
+    display: flex !important;
+
+    align-items: center !important;
+
+    line-height: normal !important;
+}
+
 /* ---------------------------------------------------
 LANGUAGE SELECTBOX
 --------------------------------------------------- */
 
+/*
+Targets Streamlit's rendered selectbox markup for the language selector only:
+the widget wrapper, BaseWeb select root, the rendered control, the value/input
+containers, the hidden text input, and Streamlit/BaseWeb icon slots.
+*/
+.st-key-top-action-row div[data-testid="column"]:nth-child(5)
+div[data-testid="stSelectbox"],
+.st-key-top_action_row div[data-testid="column"]:nth-child(5)
 div[data-testid="stSelectbox"] {
 
-    margin-top: -8px !important;
+    margin-top: 0 !important;
+
+    margin-bottom: 0 !important;
 
     margin-left: -0px !important;
+
+    padding-top: 0 !important;
+
+    padding-bottom: 0 !important;
 
     position: relative !important;
 
     z-index: 1 !important;
 }
 
-/* Keep the language selector the same size while centering its content. */
-div[data-testid="stSelectbox"]:has(#language_select)
-div[data-baseweb="select"] > div {
+.st-key-top-action-row div[data-testid="column"]:nth-child(5)
+div[data-testid="stSelectbox"] div[data-baseweb="select"],
+.st-key-top_action_row div[data-testid="column"]:nth-child(5)
+div[data-testid="stSelectbox"] div[data-baseweb="select"] {
 
-    height: 44px !important;
+    height: var(--top-action-control-height) !important;
 
-    min-height: 44px !important;
+    min-height: var(--top-action-control-height) !important;
 
     display: flex !important;
 
     align-items: center !important;
+
+    margin-top: 0 !important;
+
+    margin-bottom: 0 !important;
 }
 
-div[data-testid="stSelectbox"]:has(#language_select)
-div[data-baseweb="select"] > div > div {
+.st-key-top-action-row div[data-testid="column"]:nth-child(5)
+div[data-testid="stSelectbox"] div[data-baseweb="select"] > div,
+.st-key-top_action_row div[data-testid="column"]:nth-child(5)
+div[data-testid="stSelectbox"] div[data-baseweb="select"] > div {
+
+    height: var(--top-action-control-height) !important;
+
+    min-height: var(--top-action-control-height) !important;
+
+    display: flex !important;
+
+    align-items: center !important;
+
+    box-sizing: border-box !important;
+
+    padding-top: 0 !important;
+
+    padding-bottom: 0 !important;
+
+    border-left: none !important;
+}
+
+.st-key-top-action-row div[data-testid="column"]:nth-child(5)
+div[data-testid="stSelectbox"] div[data-baseweb="select"] > div > div,
+.st-key-top_action_row div[data-testid="column"]:nth-child(5)
+div[data-testid="stSelectbox"] div[data-baseweb="select"] > div > div {
 
     height: 100% !important;
+
+    min-height: 0 !important;
 
     display: flex !important;
 
@@ -972,25 +1048,60 @@ div[data-baseweb="select"] > div > div {
     padding-top: 0 !important;
 
     padding-bottom: 0 !important;
+
+    margin-top: 0 !important;
+
+    margin-bottom: 0 !important;
 }
 
-div[data-testid="stSelectbox"]:has(#language_select)
-div[data-baseweb="select"] span,
-div[data-testid="stSelectbox"]:has(#language_select)
-div[data-baseweb="select"] input {
+.st-key-top-action-row div[data-testid="column"]:nth-child(5)
+div[data-testid="stSelectbox"] div[data-baseweb="select"] input,
+.st-key-top-action-row div[data-testid="column"]:nth-child(5)
+div[data-testid="stSelectbox"] div[data-baseweb="select"] span,
+.st-key-top-action-row div[data-testid="column"]:nth-child(5)
+div[data-testid="stSelectbox"] div[data-baseweb="select"] [role="combobox"],
+.st-key-top_action_row div[data-testid="column"]:nth-child(5)
+div[data-testid="stSelectbox"] div[data-baseweb="select"] input,
+.st-key-top_action_row div[data-testid="column"]:nth-child(5)
+div[data-testid="stSelectbox"] div[data-baseweb="select"] span,
+.st-key-top_action_row div[data-testid="column"]:nth-child(5)
+div[data-testid="stSelectbox"] div[data-baseweb="select"] [role="combobox"] {
 
-    line-height: 44px !important;
+    height: auto !important;
+
+    min-height: 0 !important;
+
+    line-height: normal !important;
+
+    padding-top: 0 !important;
+
+    padding-bottom: 0 !important;
+
+    margin-top: 0 !important;
+
+    margin-bottom: 0 !important;
 }
-/* ---------------------------------------------------
-FJERN VENSTRE BORDER
-KUN LANGUAGE DROPDOWN
---------------------------------------------------- */
 
-div[data-testid="stSelectbox"]:has(#language_select)
-div[data-baseweb="select"] > div {
+/* Center the custom dropdown arrow on the actual Streamlit/BaseWeb control. */
+.st-key-top-action-row div[data-testid="column"]:nth-child(5)
+div[data-testid="stSelectbox"] div[data-baseweb="select"] > div::after,
+.st-key-top_action_row div[data-testid="column"]:nth-child(5)
+div[data-testid="stSelectbox"] div[data-baseweb="select"] > div::after {
 
-    border-left: none !important;
+    top: 50% !important;
+
+    transform: translateY(-50%) !important;
 }
+
+@media (max-width: 1366px) {
+
+    .st-key-top-action-row,
+    .st-key-top_action_row {
+
+        --top-action-control-height: 40px;
+    }
+}
+
 /* DATAFRAME BG */
 
 [data-testid="stDataFrame"] {
