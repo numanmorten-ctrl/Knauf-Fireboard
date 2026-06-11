@@ -98,7 +98,7 @@ def test_generated_pwa_head_tags_include_ipad_and_manifest_metadata():
     assert f'<link rel="apple-touch-icon" href="{APPLE_TOUCH_ICON_URL}">' in head_tags
     assert f'<link rel="icon" type="image/png" href="{FAVICON_URL}">' in head_tags
     assert 'name="apple-mobile-web-app-capable"' not in head_tags
-    assert 'name="apple-mobile-web-app-title"' not in head_tags
+    assert '<meta name="apple-mobile-web-app-title" content="Knauf Fireboard">' in head_tags
     assert 'name="apple-mobile-web-app-status-bar-style"' not in head_tags
     assert f'<meta name="theme-color" content="{KNAUF_BLUE}">' in head_tags
     assert "viewport-fit=cover" in head_tags
@@ -109,7 +109,7 @@ def test_generated_pwa_head_tags_do_not_enable_fullscreen_standalone_mode():
     head_tags = build_pwa_head_tags()
 
     assert 'name="apple-mobile-web-app-capable"' not in head_tags
-    assert 'name="apple-mobile-web-app-title"' not in head_tags
+    assert '<meta name="apple-mobile-web-app-title" content="Knauf Fireboard">' in head_tags
     assert 'name="apple-mobile-web-app-status-bar-style"' not in head_tags
     assert '<meta name="mobile-web-app-capable" content="yes">' not in head_tags
     assert '<meta name="mobile-web-app-capable" content="no">' in head_tags
