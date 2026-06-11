@@ -867,14 +867,6 @@ div[data-baseweb="select"] > div::after {
 LANGUAGE ICON COLUMN
 --------------------------------------------------- */
 
-.st-key-top-action-row,
-.st-key-top_action_row {
-
-    --top-action-control-height: 44px;
-
-    --language-selector-join-offset: 1rem;
-}
-
 .st-key-top-action-row div[data-testid="column"]:nth-child(4),
 .st-key-top_action_row div[data-testid="column"]:nth-child(4) {
 
@@ -906,23 +898,13 @@ div[data-testid="stButton"] button:disabled,
 .st-key-top_action_row div[data-testid="column"]:nth-child(4)
 div[data-testid="stButton"] button:disabled {
 
-    height: var(--top-action-control-height) !important;
+    height: 44px !important;
 
-    min-height: var(--top-action-control-height) !important;
+    min-height: 44px !important;
 
     width: 38px !important;
 
     min-width: 38px !important;
-
-    display: flex !important;
-
-    align-items: center !important;
-
-    justify-content: center !important;
-
-    padding-top: 0 !important;
-
-    padding-bottom: 0 !important;
 
     padding-left: 20px !important;
 
@@ -931,10 +913,6 @@ div[data-testid="stButton"] button:disabled {
     border: 1px solid #b8c2cc !important;
 
     border-right: none !important;
-
-    border-top-right-radius: 0 !important;
-
-    border-bottom-right-radius: 0 !important;
 
     background: white !important;
 
@@ -946,38 +924,29 @@ div[data-testid="stButton"] button:disabled {
 
     font-size: 16px !important;
 
-    line-height: normal !important;
-
     cursor: default !important;
 
-    margin-right: 0 !important;
+    margin-right: 0px !important;
+}
+
+/* ---------------------------------------------------
+LANGUAGE ICON BUTTON
+--------------------------------------------------- */
+
+.st-key-top-action-row div[data-testid="column"]:nth-child(4)
+div[data-testid="stButton"] button:disabled,
+.st-key-top_action_row div[data-testid="column"]:nth-child(4)
+div[data-testid="stButton"] button:disabled {
 
     position: relative !important;
 
     z-index: 3 !important;
 }
 
-.st-key-top-action-row div[data-testid="column"]:nth-child(4)
-div[data-testid="stButton"] button:disabled span,
-.st-key-top_action_row div[data-testid="column"]:nth-child(4)
-div[data-testid="stButton"] button:disabled span {
-
-    display: flex !important;
-
-    align-items: center !important;
-
-    line-height: normal !important;
-}
-
 /* ---------------------------------------------------
 LANGUAGE SELECTBOX
 --------------------------------------------------- */
 
-/*
-Keep the globe icon and language selector visually connected as a single
-control. Streamlit columns add a small gap between col4 and col5, so the
-selectbox is pulled left across that gap while the icon keeps the shared border.
-*/
 .st-key-top-action-row div[data-testid="column"]:nth-child(5)
 div[data-testid="stSelectbox"],
 .st-key-top_action_row div[data-testid="column"]:nth-child(5)
@@ -985,75 +954,50 @@ div[data-testid="stSelectbox"] {
 
     margin-top: -8px !important;
 
-    margin-bottom: 0 !important;
-
-    margin-left: calc(-1 * var(--language-selector-join-offset)) !important;
-
-    width: calc(100% + var(--language-selector-join-offset)) !important;
+    margin-left: -0px !important;
 
     position: relative !important;
 
     z-index: 1 !important;
 }
 
-.st-key-top-action-row div[data-testid="column"]:nth-child(5)
-div[data-testid="stSelectbox"] div[data-baseweb="select"],
-.st-key-top_action_row div[data-testid="column"]:nth-child(5)
-div[data-testid="stSelectbox"] div[data-baseweb="select"] {
-
-    height: var(--top-action-control-height) !important;
-
-    min-height: var(--top-action-control-height) !important;
-}
+/* ---------------------------------------------------
+FJERN VENSTRE BORDER
+KUN LANGUAGE DROPDOWN
+--------------------------------------------------- */
 
 .st-key-top-action-row div[data-testid="column"]:nth-child(5)
-div[data-testid="stSelectbox"] div[data-baseweb="select"] > div,
+div[data-testid="stSelectbox"]:has(#language_select)
+div[data-baseweb="select"] > div,
 .st-key-top_action_row div[data-testid="column"]:nth-child(5)
-div[data-testid="stSelectbox"] div[data-baseweb="select"] > div {
-
-    height: var(--top-action-control-height) !important;
-
-    min-height: var(--top-action-control-height) !important;
-
-    display: flex !important;
-
-    align-items: center !important;
-
-    box-sizing: border-box !important;
+div[data-testid="stSelectbox"]:has(#language_select)
+div[data-baseweb="select"] > div {
 
     border-left: none !important;
-
-    border-top-left-radius: 0 !important;
-
-    border-bottom-left-radius: 0 !important;
 }
 
+/* Restore the pre-alignment dropdown arrow offset for the language selector only. */
 .st-key-top-action-row div[data-testid="column"]:nth-child(5)
-div[data-testid="stSelectbox"] div[data-baseweb="select"] > div > div,
+div[data-testid="stSelectbox"]:has(#language_select)
+div[data-baseweb="select"] > div::after,
 .st-key-top_action_row div[data-testid="column"]:nth-child(5)
-div[data-testid="stSelectbox"] div[data-baseweb="select"] > div > div {
+div[data-testid="stSelectbox"]:has(#language_select)
+div[data-baseweb="select"] > div::after {
 
-    height: 100% !important;
+    transform: translateY(-35%) !important;
+}
 
-    display: flex !important;
+/* Small text-only nudge so the restored language value sits visually centered. */
+.st-key-top-action-row div[data-testid="column"]:nth-child(5)
+div[data-testid="stSelectbox"]:has(#language_select)
+div[data-baseweb="select"] > div > div,
+.st-key-top_action_row div[data-testid="column"]:nth-child(5)
+div[data-testid="stSelectbox"]:has(#language_select)
+div[data-baseweb="select"] > div > div {
 
-    align-items: center !important;
-
-    padding-top: 0 !important;
+    padding-top: 1px !important;
 
     padding-bottom: 0 !important;
-}
-
-.st-key-top-action-row div[data-testid="column"]:nth-child(5)
-div[data-testid="stSelectbox"] div[data-baseweb="select"] span,
-.st-key-top-action-row div[data-testid="column"]:nth-child(5)
-div[data-testid="stSelectbox"] div[data-baseweb="select"] input,
-.st-key-top_action_row div[data-testid="column"]:nth-child(5)
-div[data-testid="stSelectbox"] div[data-baseweb="select"] span,
-.st-key-top_action_row div[data-testid="column"]:nth-child(5)
-div[data-testid="stSelectbox"] div[data-baseweb="select"] input {
-
-    line-height: var(--top-action-control-height) !important;
 }
 
 /* DATAFRAME BG */
