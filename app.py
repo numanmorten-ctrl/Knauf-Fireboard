@@ -1203,7 +1203,7 @@ Responsive layout for constrained viewport widths
 
     .st-key-top-action-row,
     .st-key-top_action_row {
-        --top-action-control-height: 30px;
+        --top-action-control-height: 44px;
     }
 
     .st-key-top-action-row div[data-testid="stHorizontalBlock"],
