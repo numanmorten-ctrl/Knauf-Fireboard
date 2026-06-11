@@ -851,7 +851,7 @@ div[data-baseweb="select"] > div::after {
 
     top: 50%;
 
-    transform: translateY(-50%);
+    transform: translateY(-35%);
 
     width: 0;
     height: 0;
@@ -867,8 +867,7 @@ div[data-baseweb="select"] > div::after {
 LANGUAGE ICON COLUMN
 --------------------------------------------------- */
 
-.st-key-top-action-row div[data-testid="column"]:nth-child(4),
-.st-key-top_action_row div[data-testid="column"]:nth-child(4) {
+div[data-testid="column"]:nth-last-child(2) {
 
     display: flex !important;
 
@@ -879,9 +878,7 @@ LANGUAGE ICON COLUMN
 FJERN STREAMLIT SPACING I COL4
 --------------------------------------------------- */
 
-.st-key-top-action-row div[data-testid="column"]:nth-child(4)
-div[data-testid="stMarkdownContainer"],
-.st-key-top_action_row div[data-testid="column"]:nth-child(4)
+div[data-testid="column"]:nth-last-child(2)
 div[data-testid="stMarkdownContainer"] {
 
     margin-bottom: 0 !important;
@@ -893,9 +890,6 @@ div[data-testid="stMarkdownContainer"] {
 LANGUAGE ICON BUTTON
 --------------------------------------------------- */
 
-.st-key-top-action-row div[data-testid="column"]:nth-child(4)
-div[data-testid="stButton"] button:disabled,
-.st-key-top_action_row div[data-testid="column"]:nth-child(4)
 div[data-testid="stButton"] button:disabled {
 
     height: 44px !important;
@@ -928,28 +922,20 @@ div[data-testid="stButton"] button:disabled {
 
     margin-right: 0px !important;
 }
-
 /* ---------------------------------------------------
 LANGUAGE ICON BUTTON
 --------------------------------------------------- */
 
-.st-key-top-action-row div[data-testid="column"]:nth-child(4)
-div[data-testid="stButton"] button:disabled,
-.st-key-top_action_row div[data-testid="column"]:nth-child(4)
 div[data-testid="stButton"] button:disabled {
 
     position: relative !important;
 
     z-index: 3 !important;
 }
-
 /* ---------------------------------------------------
 LANGUAGE SELECTBOX
 --------------------------------------------------- */
 
-.st-key-top-action-row div[data-testid="column"]:nth-child(5)
-div[data-testid="stSelectbox"],
-.st-key-top_action_row div[data-testid="column"]:nth-child(5)
 div[data-testid="stSelectbox"] {
 
     margin-top: -8px !important;
@@ -960,46 +946,16 @@ div[data-testid="stSelectbox"] {
 
     z-index: 1 !important;
 }
-
 /* ---------------------------------------------------
 FJERN VENSTRE BORDER
 KUN LANGUAGE DROPDOWN
 --------------------------------------------------- */
 
-.st-key-top-action-row div[data-testid="column"]:nth-child(5)
-div[data-testid="stSelectbox"]:has(#language_select)
-div[data-baseweb="select"] > div,
-.st-key-top_action_row div[data-testid="column"]:nth-child(5)
 div[data-testid="stSelectbox"]:has(#language_select)
 div[data-baseweb="select"] > div {
 
     border-left: none !important;
 }
-
-/* Restore the pre-alignment dropdown arrow offset for the language selector only. */
-.st-key-top-action-row div[data-testid="column"]:nth-child(5)
-div[data-testid="stSelectbox"]:has(#language_select)
-div[data-baseweb="select"] > div::after,
-.st-key-top_action_row div[data-testid="column"]:nth-child(5)
-div[data-testid="stSelectbox"]:has(#language_select)
-div[data-baseweb="select"] > div::after {
-
-    transform: translateY(-35%) !important;
-}
-
-/* Small text-only nudge so the restored language value sits visually centered. */
-.st-key-top-action-row div[data-testid="column"]:nth-child(5)
-div[data-testid="stSelectbox"]:has(#language_select)
-div[data-baseweb="select"] > div > div,
-.st-key-top_action_row div[data-testid="column"]:nth-child(5)
-div[data-testid="stSelectbox"]:has(#language_select)
-div[data-baseweb="select"] > div > div {
-
-    padding-top: 1px !important;
-
-    padding-bottom: 0 !important;
-}
-
 /* DATAFRAME BG */
 
 [data-testid="stDataFrame"] {
