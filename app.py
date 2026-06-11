@@ -132,7 +132,7 @@ from reportlab.platypus import Image
 
 st.set_page_config(
     page_title="Knauf Fireboard",
-    initial_sidebar_state="collapsed",
+    initial_sidebar_state="expanded",
 )
 
 render_pwa_head_tags()
