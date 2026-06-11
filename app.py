@@ -446,8 +446,14 @@ div[data-baseweb="select"] input {
     background: transparent !important;
 }
 
-/* Temporary debug: target only the rendered BaseWeb selected-value element. */
-div[data-baseweb="select"] div[aria-live="polite"] {
+/* Temporary debug: target the likely selected-value container inside Streamlit selectboxes. */
+div[data-testid="stSelectbox"] div[data-baseweb="select"] > div > div:first-child {
+
+    background: red !important;
+}
+
+/* Temporary debug fallback: target the selected-value child container. */
+div[data-testid="stSelectbox"] div[data-baseweb="select"] > div > div:first-child > div {
 
     background: red !important;
 }
