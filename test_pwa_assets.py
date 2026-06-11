@@ -68,12 +68,14 @@ def test_streamlit_starts_with_expanded_sidebar_on_desktop():
     assert 'initial_sidebar_state="expanded"' in app_content
 
 
-def test_tablet_project_menu_labels_are_available_to_generated_css():
+def test_tablet_sidebar_hint_is_persistent_header_copy_without_toggle_hijack():
     app_content = Path("app.py").read_text()
     translations_content = Path("translations.py").read_text()
 
-    assert 't("tablet_project_menu_label")' in app_content
-    assert '[data-testid="stSidebarCollapsedControl"] button::after' in app_content
+    assert '"tablet_sidebar_header_hint"' in app_content
+    assert 'class="tablet-sidebar-header-hint"' in app_content
     assert "@media (max-width: 1180px)" in app_content
-    assert "☰ Projekt" in translations_content
-    assert "☰ Project" in translations_content
+    assert "stSidebarCollapsedControl" not in app_content
+    assert "button::after" not in app_content
+    assert "‹‹ Åbn/luk projektmenu" in translations_content
+    assert "‹‹ Open/close project menu" in translations_content
