@@ -61,11 +61,11 @@ def test_generated_pwa_head_tags_do_not_enable_fullscreen_standalone_mode():
     assert '<meta name="mobile-web-app-capable" content="no">' in head_tags
 
 
-def test_streamlit_starts_with_collapsed_sidebar():
+def test_streamlit_starts_with_expanded_sidebar_on_desktop():
     app_content = Path("app.py").read_text()
 
     assert "st.set_page_config(" in app_content
-    assert 'initial_sidebar_state="collapsed"' in app_content
+    assert 'initial_sidebar_state="expanded"' in app_content
 
 
 def test_tablet_project_menu_labels_are_available_to_generated_css():
