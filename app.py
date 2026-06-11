@@ -446,16 +446,11 @@ div[data-baseweb="select"] input {
     background: transparent !important;
 }
 
-/* Temporary debug: target the likely selected-value container inside Streamlit selectboxes. */
-div[data-testid="stSelectbox"] div[data-baseweb="select"] > div > div:first-child {
-
-    background: red !important;
-}
-
-/* Temporary debug fallback: target the selected-value child container. */
+/* Narrow fix: vertically center visible Streamlit/BaseWeb selected values. */
+div[data-testid="stSelectbox"] div[data-baseweb="select"] > div > div:first-child,
 div[data-testid="stSelectbox"] div[data-baseweb="select"] > div > div:first-child > div {
 
-    background: red !important;
+    transform: translateY(1px);
 }
 
 /* Dropdown popup */
