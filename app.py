@@ -851,7 +851,7 @@ div[data-baseweb="select"] > div::after {
 
     top: 50%;
 
-    transform: translateY(-35%);
+    transform: translateY(-50%);
 
     width: 0;
     height: 0;
@@ -945,6 +945,41 @@ div[data-testid="stSelectbox"] {
     position: relative !important;
 
     z-index: 1 !important;
+}
+
+/* Keep the language selector the same size while centering its content. */
+div[data-testid="stSelectbox"]:has(#language_select)
+div[data-baseweb="select"] > div {
+
+    height: 44px !important;
+
+    min-height: 44px !important;
+
+    display: flex !important;
+
+    align-items: center !important;
+}
+
+div[data-testid="stSelectbox"]:has(#language_select)
+div[data-baseweb="select"] > div > div {
+
+    height: 100% !important;
+
+    display: flex !important;
+
+    align-items: center !important;
+
+    padding-top: 0 !important;
+
+    padding-bottom: 0 !important;
+}
+
+div[data-testid="stSelectbox"]:has(#language_select)
+div[data-baseweb="select"] span,
+div[data-testid="stSelectbox"]:has(#language_select)
+div[data-baseweb="select"] input {
+
+    line-height: 44px !important;
 }
 /* ---------------------------------------------------
 FJERN VENSTRE BORDER
