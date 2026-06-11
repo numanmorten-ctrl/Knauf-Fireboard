@@ -446,6 +446,12 @@ div[data-baseweb="select"] input {
     background: transparent !important;
 }
 
+/* Temporary debug: target only the rendered BaseWeb selected-value element. */
+div[data-baseweb="select"] div[aria-live="polite"] {
+
+    background: red !important;
+}
+
 /* Dropdown popup */
 
 div[data-baseweb="popover"] {
