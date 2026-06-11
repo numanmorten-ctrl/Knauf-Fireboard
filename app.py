@@ -1078,6 +1078,24 @@ table tbody tr:hover td {
     box-sizing: border-box;
 }
 
+/* Tablet-only sidebar usage hint. Hidden by default and revealed with the
+   existing tablet/constrained-width breakpoint below. */
+.st-key-tablet-sidebar-hint,
+.st-key-tablet_sidebar_hint {
+    display: none !important;
+}
+
+.tablet-sidebar-hint {
+    background: #f2f5f8;
+    border: 1px solid #d9dde3;
+    color: #3e4650;
+    font-size: 0.9rem;
+    font-weight: 500;
+    line-height: 1.35;
+    margin: 0 0 0.2rem 0;
+    padding: 0.55rem 0.7rem;
+}
+
 /* ---------------------------------------------------
 Responsive layout for constrained viewport widths
 --------------------------------------------------- */
@@ -1173,6 +1191,11 @@ Responsive layout for constrained viewport widths
 }
 
 @media (max-width: 1180px) {
+
+    .st-key-tablet-sidebar-hint,
+    .st-key-tablet_sidebar_hint {
+        display: block !important;
+    }
 
     .block-container {
         padding-left: 0.85rem !important;
@@ -1453,6 +1476,14 @@ def t(key):
 def _css_content(value):
 
     return value.replace("\\", "\\\\").replace('"', '\\"')
+
+
+def render_tablet_sidebar_usage_hint():
+
+    st.markdown(
+        f'<div class="tablet-sidebar-hint" role="note">{t("tablet_sidebar_usage_hint")}</div>',
+        unsafe_allow_html=True
+    )
 
 
 def render_tablet_project_menu_affordance():
@@ -2442,6 +2473,14 @@ selected_profile = st.session_state.get(
 
 apv = None
 thickness = None
+
+# ---------------------------------------------------
+# TABLET SIDEBAR HINT
+# ---------------------------------------------------
+
+with st.container(key="tablet_sidebar_hint"):
+
+    render_tablet_sidebar_usage_hint()
 
 # ---------------------------------------------------
 # STEP HEADER
