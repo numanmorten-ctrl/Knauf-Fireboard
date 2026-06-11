@@ -81,6 +81,7 @@ PWA_META_TAGS: tuple[dict[str, str], ...] = (
     # the app after Safari previews a file. Keeping only standard browser/PWA
     # metadata preserves Add to Home Screen compatibility as far as iOS allows.
     {"name": "mobile-web-app-capable", "content": "no"},
+    {"name": "apple-mobile-web-app-title", "content": "Knauf Fireboard"},
     {"name": "theme-color", "content": KNAUF_BLUE},
     {"name": "viewport", "content": IPAD_VIEWPORT},
 )
