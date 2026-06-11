@@ -1223,6 +1223,12 @@ Responsive layout for constrained viewport widths
         max-height: var(--top-action-control-height) !important;
     }
 
+    .st-key-language_icon_wrapper div[data-testid="stButton"] button {
+        height: var(--top-action-control-height) !important;
+        min-height: var(--top-action-control-height) !important;
+        max-height: var(--top-action-control-height) !important;
+    }
+
     .st-key-top-action-row div[data-testid="column"],
     .st-key-top_action_row div[data-testid="column"] {
         flex: 0 1 auto !important;
@@ -2062,12 +2068,14 @@ with st.container(key="top_action_row"):
 
     with col4:
 
-        st.button(
-            " ",
-            icon=UI_ICONS["language_selector"],
-            disabled=True,
-            use_container_width=True
-        )
+        with st.container(key="language_icon_wrapper"):
+
+            st.button(
+                " ",
+                icon=UI_ICONS["language_selector"],
+                disabled=True,
+                use_container_width=True
+            )
 
     # ---------------------------------------------------
     # LANGUAGE SELECT
