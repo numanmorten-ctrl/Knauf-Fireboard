@@ -68,14 +68,24 @@ def test_streamlit_starts_with_expanded_sidebar_on_desktop():
     assert 'initial_sidebar_state="expanded"' in app_content
 
 
-def test_tablet_sidebar_hint_is_persistent_header_copy_without_toggle_hijack():
+def test_fireboard_project_menu_replaces_tablet_sidebar_hint():
     app_content = Path("app.py").read_text()
     translations_content = Path("translations.py").read_text()
 
-    assert '"tablet_sidebar_header_hint"' in app_content
-    assert 'class="tablet-sidebar-header-hint"' in app_content
+    assert '"project_menu_button"' in app_content
+    assert 'class="fireboard-project-menu-button"' in app_content
     assert "@media (max-width: 1180px)" in app_content
-    assert "stSidebarCollapsedControl" not in app_content
+    assert "components.html(" in app_content
+    assert "findStreamlitSidebarToggle" in app_content
+    assert "Streamlit-internal sidebar toggle controls" in app_content
+    assert "stSidebarCollapsedControl" in app_content
+    assert "stSidebarCollapseButton" in app_content
     assert "button::after" not in app_content
-    assert "‹‹ Åbn/luk projektmenu" in translations_content
-    assert "‹‹ Open/close project menu" in translations_content
+
+    assert "☰ Projekt" in translations_content
+    assert "☰ Project" in translations_content
+    assert "tablet_sidebar_header_hint" not in app_content
+    assert "tablet-sidebar-header-hint" not in app_content
+    assert "tablet_sidebar_header_hint" not in translations_content
+    assert "‹‹ Åbn/luk projektmenu" not in translations_content
+    assert "‹‹ Open/close project menu" not in translations_content

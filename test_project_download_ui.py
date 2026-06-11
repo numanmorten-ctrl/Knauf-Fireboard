@@ -6,10 +6,8 @@ TRANSLATIONS_SOURCE = Path(__file__).with_name("translations.py").read_text()
 
 
 def test_project_package_browser_auto_download_helper_removed():
-    assert "import streamlit.components.v1 as components" not in APP_SOURCE
     assert "def trigger_browser_download" not in APP_SOURCE
     assert "base64.b64encode" not in APP_SOURCE
-    assert "components.html(" not in APP_SOURCE
     assert "anchor.click()" not in APP_SOURCE
     assert "data:{mime};base64" not in APP_SOURCE
 

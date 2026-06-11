@@ -36,8 +36,8 @@ translations = {
         "sidebar_project_heading":
             "Projekt",
 
-        "tablet_sidebar_header_hint":
-            "‹‹ Åbn/luk projektmenu",
+        "project_menu_button":
+            "☰ Projekt",
 
         "calculations":
             "Beregninger",
@@ -358,8 +358,8 @@ translations = {
         "sidebar_project_heading":
             "Project",
 
-        "tablet_sidebar_header_hint":
-            "‹‹ Open/close project menu",
+        "project_menu_button":
+            "☰ Project",
 
         "calculations":
             "Calculations",

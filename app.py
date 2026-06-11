@@ -1,10 +1,12 @@
 from io import BytesIO
+import json
 from datetime import datetime
 from pathlib import Path
 from reportlab.pdfgen import canvas
 from pypdf import PdfReader, PdfWriter
 
 import streamlit as st
+import streamlit.components.v1 as components
 import pandas as pd
 from translations import translations
 from utils.data_loader import clean_text, clean_numeric, load_and_clean_csv
@@ -1310,9 +1312,9 @@ Responsive layout for constrained viewport widths
 # CUSTOM HEADER BRANDING
 # ---------------------------------------------------
 
-tablet_sidebar_header_hint = translations[
+project_menu_button_label = translations[
     st.session_state.get("language", "DA")
-]["tablet_sidebar_header_hint"]
+]["project_menu_button"]
 
 header_html = """
 <style>
@@ -1341,6 +1343,51 @@ header_html = """
     pointer-events: none;
 }
 
+.fireboard-project-menu-button {
+
+    display: none;
+
+    flex: 0 0 auto;
+
+    min-width: 5.7rem;
+
+    min-height: 34px;
+
+    padding: 0.34rem 0.62rem;
+
+    border: 1px solid #b8c2cc;
+
+    border-radius: 0;
+
+    background: rgba(255, 255, 255, 0.96);
+
+    color: #003b7a;
+
+    font-size: 13px;
+
+    font-weight: 700;
+
+    line-height: 1;
+
+    white-space: nowrap;
+
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+
+    cursor: pointer;
+
+    pointer-events: auto;
+}
+
+.fireboard-project-menu-button:hover,
+.fireboard-project-menu-button:focus-visible {
+
+    border-color: #009fe3;
+
+    background: #f5fbff;
+
+    outline: none;
+}
+
 .knauf-logo {
 
     height: 57px;
@@ -1349,21 +1396,6 @@ header_html = """
     width: auto;
 
     display: block;
-}
-
-.tablet-sidebar-header-hint {
-
-    display: none;
-
-    color: #6f7782;
-
-    font-size: 12px;
-
-    font-weight: 500;
-
-    line-height: 1;
-
-    white-space: nowrap;
 }
 
 .knauf-fireboard {
@@ -1399,37 +1431,115 @@ header_html = """
     text-rendering: geometricPrecision;
 }
 
+/*
+Streamlit-internal sidebar toggle controls. These selectors intentionally hide
+Streamlit's built-in collapsed/expanded arrows so Fireboard can present a
+stable project-menu affordance near the brand header. Streamlit may rename
+these data-testid/aria attributes in future releases, so maintain with care.
+*/
+button[data-testid="stSidebarCollapseButton"],
+button[data-testid="stSidebarCollapsedControl"],
+[data-testid="stSidebarCollapseButton"] button,
+[data-testid="stSidebarCollapsedControl"] button,
+button[aria-label="Open sidebar"],
+button[aria-label="Close sidebar"] {
+    opacity: 0 !important;
+    width: 1px !important;
+    min-width: 1px !important;
+    height: 1px !important;
+    min-height: 1px !important;
+    padding: 0 !important;
+    border: 0 !important;
+    overflow: hidden !important;
+    pointer-events: none !important;
+}
+
 @media (max-width: 1180px) {
 
     .knauf-header {
-        left: 2.45rem;
+        left: 0.75rem;
         gap: 8px;
     }
 
-    .tablet-sidebar-header-hint {
-        display: inline-block;
+    .fireboard-project-menu-button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
     }
 }
 
 @media (max-width: 640px) {
 
-    .tablet-sidebar-header-hint {
-        font-size: 11px;
+    .knauf-header {
+        left: 0.45rem;
+        gap: 6px;
+    }
+
+    .fireboard-project-menu-button {
+        min-width: 5.15rem;
+        min-height: 32px;
+        padding: 0.32rem 0.45rem;
+        font-size: 12px;
     }
 }
 </style>
 
 <div class="knauf-header">
-<div class="tablet-sidebar-header-hint" role="note">__TABLET_SIDEBAR_HEADER_HINT__</div>
+<button type="button" class="fireboard-project-menu-button" aria-label="__PROJECT_MENU_BUTTON_LABEL__">__PROJECT_MENU_BUTTON_LABEL__</button>
 <img class="knauf-logo" src="https://knauf.com/api/download-center/v1/assets/8355fec5-8cb9-42fe-b5d7-4e7258bf446a?download=true">
 <div class="knauf-fireboard">Fireboard</div>
 </div>
 """.replace(
-    "__TABLET_SIDEBAR_HEADER_HINT__",
-    tablet_sidebar_header_hint,
+    "__PROJECT_MENU_BUTTON_LABEL__",
+    project_menu_button_label,
 )
 
 st.markdown(header_html, unsafe_allow_html=True)
+
+components.html(
+    f"""
+    <script>
+    (() => {{
+        const doc = window.parent.document;
+        const button = doc.querySelector('.fireboard-project-menu-button');
+        if (!button) return;
+
+        button.textContent = {json.dumps(project_menu_button_label)};
+        button.setAttribute('aria-label', {json.dumps(project_menu_button_label)});
+
+        const toggleSelectors = [
+            'button[data-testid="stSidebarCollapseButton"]',
+            'button[data-testid="stSidebarCollapsedControl"]',
+            '[data-testid="stSidebarCollapseButton"] button',
+            '[data-testid="stSidebarCollapsedControl"] button',
+            'button[aria-label="Open sidebar"]',
+            'button[aria-label="Close sidebar"]',
+            'button[title="Open sidebar"]',
+            'button[title="Close sidebar"]'
+        ];
+
+        const findStreamlitSidebarToggle = () => {{
+            for (const selector of toggleSelectors) {{
+                const toggle = doc.querySelector(selector);
+                if (toggle) return toggle;
+            }}
+            return Array.from(doc.querySelectorAll('button[aria-label], button[title]')).find((candidate) => {{
+                const label = `${{candidate.getAttribute('aria-label') || ''}} ${{candidate.getAttribute('title') || ''}}`.toLowerCase();
+                return label.includes('sidebar');
+            }});
+        }};
+
+        button.onclick = (event) => {{
+            event.preventDefault();
+            const toggle = findStreamlitSidebarToggle();
+            if (toggle) toggle.click();
+        }};
+    }})();
+    </script>
+    """,
+    height=0,
+    width=0,
+)
 # ---------------------------------------------------
 # SESSION STATE
 # ---------------------------------------------------
