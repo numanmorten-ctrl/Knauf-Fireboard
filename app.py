@@ -1201,10 +1201,23 @@ Responsive layout for constrained viewport widths
         font-size: 1.08rem !important;
     }
 
+    .st-key-top-action-row,
+    .st-key-top_action_row {
+        --top-action-control-height: 44px;
+    }
+
     .st-key-top-action-row div[data-testid="stHorizontalBlock"],
     .st-key-top_action_row div[data-testid="stHorizontalBlock"] {
         flex-wrap: wrap !important;
         align-items: flex-end !important;
+    }
+
+    /* Tablet-only fix: keep language selectbox aligned with action buttons. */
+    .st-key-top-action-row div[data-testid="stSelectbox"]:has(#language_select) div[data-baseweb="select"] > div,
+    .st-key-top_action_row div[data-testid="stSelectbox"]:has(#language_select) div[data-baseweb="select"] > div {
+        height: var(--top-action-control-height) !important;
+        min-height: var(--top-action-control-height) !important;
+        max-height: var(--top-action-control-height) !important;
     }
 
     .st-key-top-action-row div[data-testid="column"],
