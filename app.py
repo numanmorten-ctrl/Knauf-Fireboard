@@ -957,22 +957,19 @@ div[data-baseweb="select"] > div {
     border-left: none !important;
 }
 
-/* Narrow language-selector-only correction: nudge only the rendered
-   selected language value down without changing the combined globe/select
-   width, margins, border structure, arrow, or globe icon positioning. */
-div[data-testid="stSelectbox"]:has(#language_select)
-div[data-baseweb="select"] span {
+/* Narrow global selectbox text alignment correction: nudge only the
+   rendered BaseWeb selected value text down slightly without changing
+   selectbox dimensions, borders, margins, widths, arrows, or layouts. */
+div[data-testid="stSelectbox"] div[data-baseweb="select"] span {
 
     display: inline-block !important;
 
     transform: translateY(1px) !important;
 }
 
-/* Keep the typed/hidden BaseWeb select input aligned with the rendered
-   language value; scoped to the language selector so other selectboxes are
-   untouched. */
-div[data-testid="stSelectbox"]:has(#language_select)
-div[data-baseweb="select"] input {
+/* Keep the BaseWeb select input text vertically aligned with the rendered
+   value for all Streamlit selectboxes without changing box dimensions. */
+div[data-testid="stSelectbox"] div[data-baseweb="select"] input {
 
     transform: translateY(1px) !important;
 }
