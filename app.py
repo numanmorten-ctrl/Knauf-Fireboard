@@ -450,7 +450,7 @@ div[data-baseweb="select"] input {
 div[data-testid="stSelectbox"] div[data-baseweb="select"] > div > div:first-child,
 div[data-testid="stSelectbox"] div[data-baseweb="select"] > div > div:first-child > div {
 
-    transform: translateY(2px);
+    transform: translateY(1px);
 }
 
 /* Dropdown popup */
