@@ -956,6 +956,26 @@ div[data-baseweb="select"] > div {
 
     border-left: none !important;
 }
+
+/* Narrow language-selector-only correction: nudge only the rendered
+   selected language value down without changing the combined globe/select
+   width, margins, border structure, arrow, or globe icon positioning. */
+div[data-testid="stSelectbox"]:has(#language_select)
+div[data-baseweb="select"] span {
+
+    display: inline-block !important;
+
+    transform: translateY(1px) !important;
+}
+
+/* Keep the typed/hidden BaseWeb select input aligned with the rendered
+   language value; scoped to the language selector so other selectboxes are
+   untouched. */
+div[data-testid="stSelectbox"]:has(#language_select)
+div[data-baseweb="select"] input {
+
+    transform: translateY(1px) !important;
+}
 /* DATAFRAME BG */
 
 [data-testid="stDataFrame"] {
@@ -1133,6 +1153,18 @@ Responsive layout for constrained viewport widths
         font-size: 13px !important;
         line-height: 1.2 !important;
         white-space: normal !important;
+    }
+
+    /* Tablet-only language-selector height correction: constrain only the
+       existing language dropdown box so it stays level with the globe box
+       and top action controls without changing widths, margins, columns,
+       borders, arrow placement, or the globe icon box. */
+    div[data-testid="stSelectbox"]:has(#language_select)
+    div[data-baseweb="select"] > div {
+        height: 44px !important;
+        min-height: 44px !important;
+        max-height: 44px !important;
+        box-sizing: border-box !important;
     }
 
     .step-tab {
