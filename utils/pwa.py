@@ -12,9 +12,10 @@ from html import escape
 from typing import Iterable
 
 KNAUF_BLUE = "#003b7a"
-MANIFEST_URL = "/app/static/manifest.webmanifest"
-APPLE_TOUCH_ICON_URL = "/app/static/icons/apple-touch-icon.png"
-FAVICON_URL = "/app/static/icons/favicon.png"
+STREAMLIT_STATIC_URL_PREFIX = "app/static"
+MANIFEST_URL = f"{STREAMLIT_STATIC_URL_PREFIX}/manifest.webmanifest"
+APPLE_TOUCH_ICON_URL = f"{STREAMLIT_STATIC_URL_PREFIX}/icons/apple-touch-icon.png"
+FAVICON_URL = f"{STREAMLIT_STATIC_URL_PREFIX}/icons/favicon.png"
 PWA_INJECTION_MARKER_ID = "fireboard-pwa-head-tags"
 IPAD_VIEWPORT = (
     "width=device-width, initial-scale=1, viewport-fit=cover, "
