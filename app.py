@@ -1212,9 +1212,8 @@ Responsive layout for constrained viewport widths
         align-items: flex-end !important;
     }
 
-    /* DEBUG: verify language selectbox wrapper selector. */
-    .st-key-top-action-row div[data-testid="stSelectbox"]:has(#language_select),
-    .st-key-top_action_row div[data-testid="stSelectbox"]:has(#language_select) {
+    /* DEBUG: verify keyed language selectbox wrapper selector. */
+    .st-key-language-selector-wrapper {
         background: lime !important;
     }
 
@@ -2083,13 +2082,15 @@ with st.container(key="top_action_row"):
 
     with col5:
 
-        selected_language = st.selectbox(
-            "",
-            options=["Dansk", "English"],
-            index=0 if st.session_state.language == "DA" else 1,
-            label_visibility="collapsed",
-            key="language_select"
-        )
+        with st.container(key="language_selector_wrapper"):
+
+            selected_language = st.selectbox(
+                "",
+                options=["Dansk", "English"],
+                index=0 if st.session_state.language == "DA" else 1,
+                label_visibility="collapsed",
+                key="language_select"
+            )
 
         new_lang = (
             "DA"
