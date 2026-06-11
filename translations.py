@@ -36,11 +36,8 @@ translations = {
         "sidebar_project_heading":
             "Projekt",
 
-        "tablet_project_menu_label":
-            "☰ Projekt",
-
-        "tablet_sidebar_usage_hint":
-            "💡 For mere plads på iPad kan projektmenuen skjules med pilen øverst til venstre.",
+        "tablet_sidebar_header_hint":
+            "‹‹ Åbn/luk projektmenu",
 
         "calculations":
             "Beregninger",
@@ -361,11 +358,8 @@ translations = {
         "sidebar_project_heading":
             "Project",
 
-        "tablet_project_menu_label":
-            "☰ Project",
-
-        "tablet_sidebar_usage_hint":
-            "💡 For more workspace on iPad, collapse the project menu using the arrow in the top left corner.",
+        "tablet_sidebar_header_hint":
+            "‹‹ Open/close project menu",
 
         "calculations":
             "Calculations",

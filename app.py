@@ -1078,24 +1078,6 @@ table tbody tr:hover td {
     box-sizing: border-box;
 }
 
-/* Tablet-only sidebar usage hint. Hidden by default and revealed with the
-   existing tablet/constrained-width breakpoint below. */
-.st-key-tablet-sidebar-hint,
-.st-key-tablet_sidebar_hint {
-    display: none !important;
-}
-
-.tablet-sidebar-hint {
-    background: #f2f5f8;
-    border: 1px solid #d9dde3;
-    color: #3e4650;
-    font-size: 0.9rem;
-    font-weight: 500;
-    line-height: 1.35;
-    margin: 0 0 0.2rem 0;
-    padding: 0.55rem 0.7rem;
-}
-
 /* ---------------------------------------------------
 Responsive layout for constrained viewport widths
 --------------------------------------------------- */
@@ -1191,11 +1173,6 @@ Responsive layout for constrained viewport widths
 }
 
 @media (max-width: 1180px) {
-
-    .st-key-tablet-sidebar-hint,
-    .st-key-tablet_sidebar_hint {
-        display: block !important;
-    }
 
     .block-container {
         padding-left: 0.85rem !important;
@@ -1333,6 +1310,10 @@ Responsive layout for constrained viewport widths
 # CUSTOM HEADER BRANDING
 # ---------------------------------------------------
 
+tablet_sidebar_header_hint = translations[
+    st.session_state.get("language", "DA")
+]["tablet_sidebar_header_hint"]
+
 header_html = """
 <style>
 
@@ -1370,6 +1351,21 @@ header_html = """
     display: block;
 }
 
+.tablet-sidebar-header-hint {
+
+    display: none;
+
+    color: #6f7782;
+
+    font-size: 12px;
+
+    font-weight: 500;
+
+    line-height: 1;
+
+    white-space: nowrap;
+}
+
 .knauf-fireboard {
 
     font-size: 28px;
@@ -1402,13 +1398,36 @@ header_html = """
 
     text-rendering: geometricPrecision;
 }
+
+@media (max-width: 1180px) {
+
+    .knauf-header {
+        left: 2.45rem;
+        gap: 8px;
+    }
+
+    .tablet-sidebar-header-hint {
+        display: inline-block;
+    }
+}
+
+@media (max-width: 640px) {
+
+    .tablet-sidebar-header-hint {
+        font-size: 11px;
+    }
+}
 </style>
 
 <div class="knauf-header">
+<div class="tablet-sidebar-header-hint" role="note">__TABLET_SIDEBAR_HEADER_HINT__</div>
 <img class="knauf-logo" src="https://knauf.com/api/download-center/v1/assets/8355fec5-8cb9-42fe-b5d7-4e7258bf446a?download=true">
 <div class="knauf-fireboard">Fireboard</div>
 </div>
-"""
+""".replace(
+    "__TABLET_SIDEBAR_HEADER_HINT__",
+    tablet_sidebar_header_hint,
+)
 
 st.markdown(header_html, unsafe_allow_html=True)
 # ---------------------------------------------------
@@ -1473,66 +1492,6 @@ def t(key):
     ][key]
 
 
-def _css_content(value):
-
-    return value.replace("\\", "\\\\").replace('"', '\\"')
-
-
-def render_tablet_sidebar_usage_hint():
-
-    st.markdown(
-        f'<div class="tablet-sidebar-hint" role="note">{t("tablet_sidebar_usage_hint")}</div>',
-        unsafe_allow_html=True
-    )
-
-
-def render_tablet_project_menu_affordance():
-
-    project_menu_label = _css_content(t("tablet_project_menu_label"))
-
-    st.markdown(
-        f"""
-        <style>
-        /* On iPad/tablet widths, make Streamlit's collapsed sidebar control
-           discoverable as the Project menu instead of relying on only the
-           small default arrow. The sidebar contains saved calculations and
-           project/PDF/Excel downloads. */
-        @media (max-width: 1180px) {{
-            [data-testid="stSidebarCollapsedControl"] button,
-            button[aria-label="Open sidebar"],
-            button[aria-label="open sidebar"] {{
-                width: auto !important;
-                min-width: 6.4rem !important;
-                min-height: 2.15rem !important;
-                padding: 0.25rem 0.65rem !important;
-                border: 1px solid #b8c2cc !important;
-                border-radius: 0 !important;
-                background: rgba(255, 255, 255, 0.96) !important;
-                color: #1f2933 !important;
-                box-shadow: none !important;
-                align-items: center !important;
-                justify-content: center !important;
-            }}
-
-            [data-testid="stSidebarCollapsedControl"] button::after,
-            button[aria-label="Open sidebar"]::after,
-            button[aria-label="open sidebar"]::after {{
-                content: "{project_menu_label}";
-                color: #1f2933;
-                font-size: 0.92rem;
-                font-weight: 600;
-                line-height: 1;
-                margin-left: 0.28rem;
-                white-space: nowrap;
-            }}
-        }}
-        </style>
-        """,
-        unsafe_allow_html=True
-    )
-
-
-render_tablet_project_menu_affordance()
 
 
 # ---------------------------------------------------
@@ -2473,14 +2432,6 @@ selected_profile = st.session_state.get(
 
 apv = None
 thickness = None
-
-# ---------------------------------------------------
-# TABLET SIDEBAR HINT
-# ---------------------------------------------------
-
-with st.container(key="tablet_sidebar_hint"):
-
-    render_tablet_sidebar_usage_hint()
 
 # ---------------------------------------------------
 # STEP HEADER
