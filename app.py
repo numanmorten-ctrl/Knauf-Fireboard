@@ -871,6 +871,8 @@ LANGUAGE ICON COLUMN
 .st-key-top_action_row {
 
     --top-action-control-height: 44px;
+
+    --language-selector-join-offset: 1rem;
 }
 
 .st-key-top-action-row div[data-testid="column"]:nth-child(4),
@@ -930,6 +932,10 @@ div[data-testid="stButton"] button:disabled {
 
     border-right: none !important;
 
+    border-top-right-radius: 0 !important;
+
+    border-bottom-right-radius: 0 !important;
+
     background: white !important;
 
     opacity: 1 !important;
@@ -944,7 +950,7 @@ div[data-testid="stButton"] button:disabled {
 
     cursor: default !important;
 
-    margin-right: 0px !important;
+    margin-right: 0 !important;
 
     position: relative !important;
 
@@ -968,24 +974,22 @@ LANGUAGE SELECTBOX
 --------------------------------------------------- */
 
 /*
-Targets Streamlit's rendered selectbox markup for the language selector only:
-the widget wrapper, BaseWeb select root, the rendered control, the value/input
-containers, the hidden text input, and Streamlit/BaseWeb icon slots.
+Keep the globe icon and language selector visually connected as a single
+control. Streamlit columns add a small gap between col4 and col5, so the
+selectbox is pulled left across that gap while the icon keeps the shared border.
 */
 .st-key-top-action-row div[data-testid="column"]:nth-child(5)
 div[data-testid="stSelectbox"],
 .st-key-top_action_row div[data-testid="column"]:nth-child(5)
 div[data-testid="stSelectbox"] {
 
-    margin-top: 0 !important;
+    margin-top: -8px !important;
 
     margin-bottom: 0 !important;
 
-    margin-left: -0px !important;
+    margin-left: calc(-1 * var(--language-selector-join-offset)) !important;
 
-    padding-top: 0 !important;
-
-    padding-bottom: 0 !important;
+    width: calc(100% + var(--language-selector-join-offset)) !important;
 
     position: relative !important;
 
@@ -1000,14 +1004,6 @@ div[data-testid="stSelectbox"] div[data-baseweb="select"] {
     height: var(--top-action-control-height) !important;
 
     min-height: var(--top-action-control-height) !important;
-
-    display: flex !important;
-
-    align-items: center !important;
-
-    margin-top: 0 !important;
-
-    margin-bottom: 0 !important;
 }
 
 .st-key-top-action-row div[data-testid="column"]:nth-child(5)
@@ -1025,11 +1021,11 @@ div[data-testid="stSelectbox"] div[data-baseweb="select"] > div {
 
     box-sizing: border-box !important;
 
-    padding-top: 0 !important;
-
-    padding-bottom: 0 !important;
-
     border-left: none !important;
+
+    border-top-left-radius: 0 !important;
+
+    border-bottom-left-radius: 0 !important;
 }
 
 .st-key-top-action-row div[data-testid="column"]:nth-child(5)
@@ -1039,8 +1035,6 @@ div[data-testid="stSelectbox"] div[data-baseweb="select"] > div > div {
 
     height: 100% !important;
 
-    min-height: 0 !important;
-
     display: flex !important;
 
     align-items: center !important;
@@ -1048,58 +1042,18 @@ div[data-testid="stSelectbox"] div[data-baseweb="select"] > div > div {
     padding-top: 0 !important;
 
     padding-bottom: 0 !important;
-
-    margin-top: 0 !important;
-
-    margin-bottom: 0 !important;
 }
 
 .st-key-top-action-row div[data-testid="column"]:nth-child(5)
-div[data-testid="stSelectbox"] div[data-baseweb="select"] input,
-.st-key-top-action-row div[data-testid="column"]:nth-child(5)
 div[data-testid="stSelectbox"] div[data-baseweb="select"] span,
 .st-key-top-action-row div[data-testid="column"]:nth-child(5)
-div[data-testid="stSelectbox"] div[data-baseweb="select"] [role="combobox"],
-.st-key-top_action_row div[data-testid="column"]:nth-child(5)
 div[data-testid="stSelectbox"] div[data-baseweb="select"] input,
 .st-key-top_action_row div[data-testid="column"]:nth-child(5)
 div[data-testid="stSelectbox"] div[data-baseweb="select"] span,
 .st-key-top_action_row div[data-testid="column"]:nth-child(5)
-div[data-testid="stSelectbox"] div[data-baseweb="select"] [role="combobox"] {
+div[data-testid="stSelectbox"] div[data-baseweb="select"] input {
 
-    height: auto !important;
-
-    min-height: 0 !important;
-
-    line-height: normal !important;
-
-    padding-top: 0 !important;
-
-    padding-bottom: 0 !important;
-
-    margin-top: 0 !important;
-
-    margin-bottom: 0 !important;
-}
-
-/* Center the custom dropdown arrow on the actual Streamlit/BaseWeb control. */
-.st-key-top-action-row div[data-testid="column"]:nth-child(5)
-div[data-testid="stSelectbox"] div[data-baseweb="select"] > div::after,
-.st-key-top_action_row div[data-testid="column"]:nth-child(5)
-div[data-testid="stSelectbox"] div[data-baseweb="select"] > div::after {
-
-    top: 50% !important;
-
-    transform: translateY(-50%) !important;
-}
-
-@media (max-width: 1366px) {
-
-    .st-key-top-action-row,
-    .st-key-top_action_row {
-
-        --top-action-control-height: 40px;
-    }
+    line-height: var(--top-action-control-height) !important;
 }
 
 /* DATAFRAME BG */
