@@ -8,18 +8,71 @@ browser navigation so users can return to the app after Safari previews a file.
 
 from __future__ import annotations
 
+import base64
+import json
 from html import escape
+from pathlib import Path
 from typing import Iterable
 
 KNAUF_BLUE = "#003b7a"
-STREAMLIT_STATIC_URL_PREFIX = "app/static"
-MANIFEST_URL = f"{STREAMLIT_STATIC_URL_PREFIX}/manifest.webmanifest"
-APPLE_TOUCH_ICON_URL = f"{STREAMLIT_STATIC_URL_PREFIX}/icons/apple-touch-icon.png"
-FAVICON_URL = f"{STREAMLIT_STATIC_URL_PREFIX}/icons/favicon.png"
 PWA_INJECTION_MARKER_ID = "fireboard-pwa-head-tags"
 IPAD_VIEWPORT = (
     "width=device-width, initial-scale=1, viewport-fit=cover, "
     "minimum-scale=1"
+)
+REPOSITORY_ROOT = Path(__file__).resolve().parents[1]
+STATIC_ICON_DIR = REPOSITORY_ROOT / "static" / "icons"
+DATA_URI_IMAGE_TYPE = "image/png"
+DATA_URI_MANIFEST_TYPE = "application/manifest+json"
+
+
+def _png_data_uri(filename: str) -> str:
+    """Return a PNG icon as an inline data URI.
+
+    Streamlit Cloud static serving is not always reachable from the public app
+    URL before the Streamlit frontend has booted. Inlining keeps the PWA icon
+    links independent of Streamlit's `/app/static/...` route so Safari/Chrome
+    can resolve them directly from the injected head tags.
+    """
+
+    encoded_icon = base64.b64encode((STATIC_ICON_DIR / filename).read_bytes()).decode(
+        "ascii"
+    )
+    return f"data:{DATA_URI_IMAGE_TYPE};base64,{encoded_icon}"
+
+
+APPLE_TOUCH_ICON_URL = _png_data_uri("apple-touch-icon.png")
+FAVICON_URL = _png_data_uri("favicon.png")
+ICON_192_URL = _png_data_uri("icon-192.png")
+ICON_512_URL = _png_data_uri("icon-512.png")
+
+MANIFEST_METADATA: dict[str, object] = {
+    "name": "Knauf Fireboard",
+    "short_name": "Fireboard",
+    "display": "browser",
+    "theme_color": KNAUF_BLUE,
+    "background_color": "#ffffff",
+    "orientation": "any",
+    "icons": [
+        {
+            "src": ICON_192_URL,
+            "sizes": "192x192",
+            "type": DATA_URI_IMAGE_TYPE,
+            "purpose": "any maskable",
+        },
+        {
+            "src": ICON_512_URL,
+            "sizes": "512x512",
+            "type": DATA_URI_IMAGE_TYPE,
+            "purpose": "any maskable",
+        },
+    ],
+}
+MANIFEST_URL = (
+    f"data:{DATA_URI_MANIFEST_TYPE};base64,"
+    + base64.b64encode(
+        json.dumps(MANIFEST_METADATA, separators=(",", ":")).encode("utf-8")
+    ).decode("ascii")
 )
 
 PWA_META_TAGS: tuple[dict[str, str], ...] = (
@@ -35,7 +88,7 @@ PWA_META_TAGS: tuple[dict[str, str], ...] = (
 PWA_LINK_TAGS: tuple[dict[str, str], ...] = (
     {"rel": "manifest", "href": MANIFEST_URL},
     {"rel": "apple-touch-icon", "href": APPLE_TOUCH_ICON_URL},
-    {"rel": "icon", "type": "image/png", "href": FAVICON_URL},
+    {"rel": "icon", "type": DATA_URI_IMAGE_TYPE, "href": FAVICON_URL},
 )
 
 
