@@ -37,7 +37,13 @@ translations = {
             "Projekt",
 
         "project_menu_button":
-            "☰ Projekt",
+            "☰ Projektmenu",
+
+        "project_menu_button_collapsed":
+            "☰ Projektmenu",
+
+        "project_menu_button_expanded":
+            "✕ Projektmenu",
 
         "calculations":
             "Beregninger",
@@ -359,7 +365,13 @@ translations = {
             "Project",
 
         "project_menu_button":
-            "☰ Project",
+            "☰ Project menu",
+
+        "project_menu_button_collapsed":
+            "☰ Project menu",
+
+        "project_menu_button_expanded":
+            "✕ Project menu",
 
         "calculations":
             "Calculations",

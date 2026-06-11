@@ -1,4 +1,5 @@
 from io import BytesIO
+import html
 import json
 from datetime import datetime
 from pathlib import Path
@@ -1312,9 +1313,14 @@ Responsive layout for constrained viewport widths
 # CUSTOM HEADER BRANDING
 # ---------------------------------------------------
 
-project_menu_button_label = translations[
-    st.session_state.get("language", "DA")
-]["project_menu_button"]
+project_menu_labels = translations[st.session_state.get("language", "DA")]
+project_menu_button_collapsed_label = project_menu_labels.get(
+    "project_menu_button_collapsed",
+    project_menu_labels["project_menu_button"],
+)
+project_menu_button_expanded_label = project_menu_labels[
+    "project_menu_button_expanded"
+]
 
 header_html = """
 <style>
@@ -1349,11 +1355,11 @@ header_html = """
 
     flex: 0 0 auto;
 
-    min-width: 5.7rem;
+    min-width: 7.25rem;
 
     min-height: 34px;
 
-    padding: 0.34rem 0.62rem;
+    padding: 0.34rem 0.5rem;
 
     border: 1px solid #b8c2cc;
 
@@ -1363,7 +1369,7 @@ header_html = """
 
     color: #003b7a;
 
-    font-size: 13px;
+    font-size: 12.5px;
 
     font-weight: 700;
 
@@ -1476,10 +1482,10 @@ button[aria-label="Close sidebar"] {
     }
 
     .fireboard-project-menu-button {
-        min-width: 5.15rem;
+        min-width: 6.6rem;
         min-height: 32px;
-        padding: 0.32rem 0.45rem;
-        font-size: 12px;
+        padding: 0.32rem 0.36rem;
+        font-size: 11.5px;
     }
 }
 </style>
@@ -1491,7 +1497,7 @@ button[aria-label="Close sidebar"] {
 </div>
 """.replace(
     "__PROJECT_MENU_BUTTON_LABEL__",
-    project_menu_button_label,
+    html.escape(project_menu_button_collapsed_label, quote=True),
 )
 
 st.markdown(header_html, unsafe_allow_html=True)
@@ -1504,8 +1510,10 @@ components.html(
         const button = doc.querySelector('.fireboard-project-menu-button');
         if (!button) return;
 
-        button.textContent = {json.dumps(project_menu_button_label)};
-        button.setAttribute('aria-label', {json.dumps(project_menu_button_label)});
+        const labels = {{
+            collapsed: {json.dumps(project_menu_button_collapsed_label)},
+            expanded: {json.dumps(project_menu_button_expanded_label)}
+        }};
 
         const toggleSelectors = [
             'button[data-testid="stSidebarCollapseButton"]',
@@ -1518,22 +1526,79 @@ components.html(
             'button[title="Close sidebar"]'
         ];
 
+        const isRendered = (candidate) => {{
+            if (!candidate) return false;
+            const style = window.getComputedStyle(candidate);
+            return style.display !== 'none' && style.visibility !== 'hidden';
+        }};
+
+        const accessibleLabel = (candidate) => (
+            `${{candidate.getAttribute('aria-label') || ''}} ${{candidate.getAttribute('title') || ''}}`.toLowerCase()
+        );
+
         const findStreamlitSidebarToggle = () => {{
             for (const selector of toggleSelectors) {{
                 const toggle = doc.querySelector(selector);
                 if (toggle) return toggle;
             }}
             return Array.from(doc.querySelectorAll('button[aria-label], button[title]')).find((candidate) => {{
-                const label = `${{candidate.getAttribute('aria-label') || ''}} ${{candidate.getAttribute('title') || ''}}`.toLowerCase();
+                const label = accessibleLabel(candidate);
                 return label.includes('sidebar');
             }});
+        }};
+
+        const isSidebarExpanded = () => {{
+            const collapsedControl = doc.querySelector('[data-testid="stSidebarCollapsedControl"]');
+            if (isRendered(collapsedControl)) return false;
+
+            const collapseControl = doc.querySelector('[data-testid="stSidebarCollapseButton"]');
+            if (isRendered(collapseControl)) return true;
+
+            const closeToggle = Array.from(doc.querySelectorAll('button[aria-label], button[title]')).find((candidate) => {{
+                const label = accessibleLabel(candidate);
+                return label.includes('close sidebar') || label.includes('collapse sidebar');
+            }});
+            if (isRendered(closeToggle)) return true;
+
+            const openToggle = Array.from(doc.querySelectorAll('button[aria-label], button[title]')).find((candidate) => {{
+                const label = accessibleLabel(candidate);
+                return label.includes('open sidebar') || label.includes('expand sidebar');
+            }});
+            if (isRendered(openToggle)) return false;
+
+            const sidebar = doc.querySelector('section[data-testid="stSidebar"]');
+            if (sidebar) {{
+                const rect = sidebar.getBoundingClientRect();
+                const style = window.getComputedStyle(sidebar);
+                return style.display !== 'none' && style.visibility !== 'hidden' && rect.width > 2;
+            }}
+
+            return false;
+        }};
+
+        const updateProjectMenuLabel = () => {{
+            const label = isSidebarExpanded() ? labels.expanded : labels.collapsed;
+            if (button.textContent !== label) button.textContent = label;
+            if (button.getAttribute('aria-label') !== label) {{
+                button.setAttribute('aria-label', label);
+            }}
         }};
 
         button.onclick = (event) => {{
             event.preventDefault();
             const toggle = findStreamlitSidebarToggle();
             if (toggle) toggle.click();
+            window.setTimeout(updateProjectMenuLabel, 80);
+            window.setTimeout(updateProjectMenuLabel, 250);
         }};
+
+        updateProjectMenuLabel();
+        new MutationObserver(updateProjectMenuLabel).observe(doc.body, {{
+            attributes: true,
+            childList: true,
+            subtree: true
+        }});
+        window.addEventListener('resize', updateProjectMenuLabel);
     }})();
     </script>
     """,
