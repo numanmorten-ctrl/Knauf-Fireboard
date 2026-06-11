@@ -3,10 +3,14 @@ from pathlib import Path
 
 from utils.pwa import (
     APPLE_TOUCH_ICON_URL,
+    DATA_URI_IMAGE_TYPE,
+    DATA_URI_MANIFEST_TYPE,
     FAVICON_URL,
+    ICON_192_URL,
+    ICON_512_URL,
     KNAUF_BLUE,
+    MANIFEST_METADATA,
     MANIFEST_URL,
-    STREAMLIT_STATIC_URL_PREFIX,
     build_pwa_head_tags,
 )
 
@@ -52,15 +56,39 @@ def test_streamlit_static_serving_is_enabled_for_repository_static_folder():
     assert "enableStaticServing = true" in config_content
 
 
-def test_pwa_head_links_use_streamlit_static_serving_relative_paths():
-    assert STREAMLIT_STATIC_URL_PREFIX == "app/static"
-    assert MANIFEST_URL == "app/static/manifest.webmanifest"
-    assert APPLE_TOUCH_ICON_URL == "app/static/icons/apple-touch-icon.png"
-    assert FAVICON_URL == "app/static/icons/favicon.png"
+def test_pwa_head_links_use_inline_data_uris_instead_of_streamlit_static_paths():
+    assert MANIFEST_URL.startswith(f"data:{DATA_URI_MANIFEST_TYPE};base64,")
+    assert APPLE_TOUCH_ICON_URL.startswith(f"data:{DATA_URI_IMAGE_TYPE};base64,")
+    assert FAVICON_URL.startswith(f"data:{DATA_URI_IMAGE_TYPE};base64,")
+    assert ICON_192_URL.startswith(f"data:{DATA_URI_IMAGE_TYPE};base64,")
+    assert ICON_512_URL.startswith(f"data:{DATA_URI_IMAGE_TYPE};base64,")
     assert not any(
-        url.startswith("/app/static")
-        for url in (MANIFEST_URL, APPLE_TOUCH_ICON_URL, FAVICON_URL)
+        "/app/static" in url or "/static" in url
+        for url in (
+            MANIFEST_URL,
+            APPLE_TOUCH_ICON_URL,
+            FAVICON_URL,
+            ICON_192_URL,
+            ICON_512_URL,
+        )
     )
+
+
+def test_inline_manifest_uses_data_uri_icons():
+    assert MANIFEST_METADATA["icons"] == [
+        {
+            "src": ICON_192_URL,
+            "sizes": "192x192",
+            "type": DATA_URI_IMAGE_TYPE,
+            "purpose": "any maskable",
+        },
+        {
+            "src": ICON_512_URL,
+            "sizes": "512x512",
+            "type": DATA_URI_IMAGE_TYPE,
+            "purpose": "any maskable",
+        },
+    ]
 
 
 def test_generated_pwa_head_tags_include_ipad_and_manifest_metadata():
