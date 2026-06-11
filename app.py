@@ -135,6 +135,8 @@ from reportlab.platypus import Image
 
 st.set_page_config(
     page_title="Knauf Fireboard",
+    page_icon="static/icons/favicon.png",
+    layout="wide",
     initial_sidebar_state="expanded",
 )
 
