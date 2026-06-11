@@ -1212,6 +1212,12 @@ Responsive layout for constrained viewport widths
         align-items: flex-end !important;
     }
 
+    /* DEBUG: verify language selectbox wrapper selector. */
+    .st-key-top-action-row div[data-testid="stSelectbox"]:has(#language_select),
+    .st-key-top_action_row div[data-testid="stSelectbox"]:has(#language_select) {
+        background: lime !important;
+    }
+
     /* Tablet-only fix: keep language selectbox aligned with action buttons. */
     .st-key-top-action-row div[data-testid="stSelectbox"]:has(#language_select),
     .st-key-top_action_row div[data-testid="stSelectbox"]:has(#language_select) {
