@@ -6,6 +6,7 @@ from utils.pwa import (
     FAVICON_URL,
     KNAUF_BLUE,
     MANIFEST_URL,
+    STREAMLIT_STATIC_URL_PREFIX,
     build_pwa_head_tags,
 )
 
@@ -22,25 +23,44 @@ def test_manifest_metadata_uses_knauf_fireboard_pwa_values():
     assert "_comment" not in manifest
 
 
-def test_manifest_uses_uploaded_icon_paths():
+def test_manifest_uses_static_relative_icon_paths():
     manifest = json.loads(Path("static/manifest.webmanifest").read_text())
 
     assert manifest["icons"] == [
         {
-            "src": "/app/static/icons/icon-192.png",
+            "src": "icons/icon-192.png",
             "sizes": "192x192",
             "type": "image/png",
             "purpose": "any maskable",
         },
         {
-            "src": "/app/static/icons/icon-512.png",
+            "src": "icons/icon-512.png",
             "sizes": "512x512",
             "type": "image/png",
             "purpose": "any maskable",
         },
     ]
+    assert all(not icon["src"].startswith("/") for icon in manifest["icons"])
     assert Path("static/icons/icon-192.png").exists()
     assert Path("static/icons/icon-512.png").exists()
+
+
+def test_streamlit_static_serving_is_enabled_for_repository_static_folder():
+    config_content = Path(".streamlit/config.toml").read_text()
+
+    assert "[server]" in config_content
+    assert "enableStaticServing = true" in config_content
+
+
+def test_pwa_head_links_use_streamlit_static_serving_relative_paths():
+    assert STREAMLIT_STATIC_URL_PREFIX == "app/static"
+    assert MANIFEST_URL == "app/static/manifest.webmanifest"
+    assert APPLE_TOUCH_ICON_URL == "app/static/icons/apple-touch-icon.png"
+    assert FAVICON_URL == "app/static/icons/favicon.png"
+    assert not any(
+        url.startswith("/app/static")
+        for url in (MANIFEST_URL, APPLE_TOUCH_ICON_URL, FAVICON_URL)
+    )
 
 
 def test_generated_pwa_head_tags_include_ipad_and_manifest_metadata():
