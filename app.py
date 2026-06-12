@@ -243,7 +243,7 @@ div.stButton > button:not([kind="primary"]),
 div.stDownloadButton > button,
 div.stLinkButton > a {
 
-    color: #003b7a !important;
+    color: #003778 !important;
 }
 
 /* ---------------------------------------------------
@@ -254,11 +254,11 @@ div.stButton > button:hover,
 div.stDownloadButton > button:hover,
 div.stLinkButton > a:hover {
 
-    border-color: #009fe3 !important;
+    border-color: #0099DE !important;
 
     background-color: #f5fbff !important;
 
-    color: #003b7a !important;
+    color: #003778 !important;
 }
 
 /* Keep Material Symbols neutral for general UI actions. */
@@ -278,9 +278,9 @@ PRIMARY BUTTON
 
 button[kind="primary"] {
 
-    background-color: #009fe3 !important;
+    background-color: #0099DE !important;
 
-    border-color: #009fe3 !important;
+    border-color: #0099DE !important;
 
     color: white !important;
 }
@@ -304,9 +304,9 @@ ACTIVE SIDEBAR CALCULATION
 
 section[data-testid="stSidebar"] button[kind="primary"] {
 
-    background:#003b7a !important;
+    background:#003778 !important;
 
-    border:1px solid #003b7a !important;
+    border:1px solid #003778 !important;
 
     color:white !important;
 
@@ -396,7 +396,7 @@ div[data-baseweb="select"] > div:focus-within,
 [data-baseweb="base-input"]:focus-within,
 [data-baseweb="textarea"]:focus-within {
 
-    border: 1px solid #009fe3 !important;
+    border: 1px solid #0099DE !important;
 
     box-shadow: none !important;
 
@@ -441,7 +441,7 @@ div[data-baseweb="select"] input {
 
     color: #2d343c !important;
 
-    caret-color: #003b7a !important;
+    caret-color: #003778 !important;
 
     background: transparent !important;
 }
@@ -488,7 +488,7 @@ li:hover {
 
     background: #eef7fd !important;
 
-    color: #003b7a !important;
+    color: #003778 !important;
 }
 /* ---------------------------------------------------
 INFO / SUCCESS BOXES
@@ -692,9 +692,9 @@ AKTIV SIDEBAR BEREGNING
 
 section[data-testid="stSidebar"] button[kind="primary"] {
 
-    background-color: #003b7a !important;
+    background-color: #003778 !important;
 
-    border: 1px solid #003b7a !important;
+    border: 1px solid #003778 !important;
 
     box-shadow: none !important;
 }
@@ -803,9 +803,9 @@ APV METHOD ACTIVE BUTTONS
 
 div.stButton > button[kind="primary"] {
 
-    background-color: #003b7a !important;
+    background-color: #003778 !important;
 
-    border: 1px solid #003b7a !important;
+    border: 1px solid #003778 !important;
 
     color: white !important;
 
@@ -1078,13 +1078,13 @@ table tbody tr:hover td {
 
 /* Step tabs share a class so responsive rules can scale active and inactive tabs consistently. */
 .step-tab {
-    background-color: #003b7a;
+    background-color: #003778;
     color: white;
     padding: 8px;
     border-radius: 0;
     text-align: center;
     font-weight: 700;
-    border: 1px solid #003b7a;
+    border: 1px solid #003778;
     box-sizing: border-box;
 }
 
@@ -1396,7 +1396,7 @@ header_html = """
 
     background: rgba(255, 255, 255, 0.96);
 
-    color: #003b7a;
+    color: #003778;
 
     font-size: 12.5px;
 
@@ -1416,7 +1416,7 @@ header_html = """
 .fireboard-project-menu-button:hover,
 .fireboard-project-menu-button:focus-visible {
 
-    border-color: #009fe3;
+    border-color: #0099DE;
 
     background: #f5fbff;
 
@@ -2128,7 +2128,7 @@ with st.sidebar:
 
     .sidebar-project-heading {
 
-        color: #003b7a;
+        color: #003778;
 
         font-size: 2.35rem;
 
@@ -2168,9 +2168,9 @@ with st.sidebar:
 
     div[data-testid="stSidebar"] button[kind="primary"] {
 
-        background: #003b7a !important;
+        background: #003778 !important;
 
-        border: 1px solid #003b7a !important;
+        border: 1px solid #003778 !important;
 
         color: white !important;
 
@@ -3620,8 +3620,8 @@ if current_step == 3:
 
         st.markdown(f"""
         <div style="
-            border:1px solid #003b7a;
-            background:#003b7a;
+            border:1px solid #003778;
+            background:#003778;
             border-radius:0px;
             padding:18px;
             margin-bottom:12px;
@@ -3635,8 +3635,8 @@ if current_step == 3:
 
         st.markdown(f"""
         <div style="
-            border:1px solid #003b7a;
-            background:#003b7a;
+            border:1px solid #003778;
+            background:#003778;
             border-radius:0px;
             padding:18px;
             margin-bottom:12px;
