@@ -2,10 +2,12 @@ from io import BytesIO
 from zipfile import ZipFile
 
 import pandas as pd
+from openpyxl import load_workbook
 
 from translations import translations
 from utils.project_package import (
     build_project_download_signature,
+    CUSTOM_PROFILE_MATERIAL_NOTE,
     build_project_material_exports,
     collect_project_external_files,
     create_project_package_zip,
@@ -64,6 +66,44 @@ def project_materials():
         ),
     }
 
+
+
+def workbook_values(excel_file):
+    excel_file.seek(0)
+    workbook = load_workbook(excel_file)
+    worksheet = workbook.active
+    return [
+        [cell.value for cell in row]
+        for row in worksheet.iter_rows()
+    ]
+
+
+def flattened_workbook_text(excel_file):
+    return "\n".join(
+        str(value)
+        for row in workbook_values(excel_file)
+        for value in row
+        if value is not None
+    )
+
+
+def custom_calculation(profile="Special profil"):
+    return {
+        "category": "Andre profiler",
+        "profile": profile,
+        "fire_time": 60,
+        "temperature": 350,
+        "custom_apv": 123,
+    }
+
+
+def standard_calculation(profile="HEB 100"):
+    return {
+        "category": "Bjælker",
+        "profile": profile,
+        "fire_time": 60,
+        "temperature": 350,
+    }
 
 def material_lookup_records():
     return [
@@ -376,3 +416,81 @@ def test_cached_project_download_is_returned_only_for_matching_signature():
     assert get_cached_project_download(cache, signature) is cached_zip
     assert get_cached_project_download(cache, changed_signature) is None
     assert get_cached_project_download({}, signature) is None
+
+
+def test_material_exports_support_project_with_only_standard_profiles():
+    material_exports = build_project_material_exports(
+        project_materials(),
+        "DA",
+        t_da,
+        calculations=[standard_calculation()],
+    )
+
+    assert material_exports is not None
+    text = flattened_workbook_text(material_exports.combined_excel)
+    assert "15 mm Fireboard 1250x2000" in text
+    assert CUSTOM_PROFILE_MATERIAL_NOTE not in text
+
+
+def test_material_exports_support_project_with_only_custom_profiles():
+    material_exports = build_project_material_exports(
+        {},
+        "DA",
+        t_da,
+        calculations=[custom_calculation()],
+    )
+
+    assert material_exports is not None
+    assert CUSTOM_PROFILE_MATERIAL_NOTE in flattened_workbook_text(
+        material_exports.combined_excel
+    )
+    assert CUSTOM_PROFILE_MATERIAL_NOTE in flattened_workbook_text(
+        material_exports.per_calculation_excel
+    )
+
+    package = create_project_package_zip(
+        report_pdf=BytesIO(b"report"),
+        material_exports=material_exports,
+        combined_materials={},
+        materials_lookup_records=[],
+        language="DA",
+        fetcher=lambda url, timeout=20: FakeResponse(b"external"),
+    )
+    with ZipFile(package) as archive:
+        assert "Materialelister/Samlet_materialeliste.xlsx" in archive.namelist()
+        assert "Materialelister/Materialeliste_pr_beregning.xlsx" in archive.namelist()
+
+
+def test_material_exports_support_mixed_standard_and_custom_profiles():
+    material_exports = build_project_material_exports(
+        project_materials(),
+        "DA",
+        t_da,
+        calculations=[standard_calculation(), custom_calculation()],
+    )
+
+    assert material_exports is not None
+    combined_text = flattened_workbook_text(material_exports.combined_excel)
+    per_calculation_text = flattened_workbook_text(
+        material_exports.per_calculation_excel
+    )
+    assert "15 mm Fireboard 1250x2000" in combined_text
+    assert CUSTOM_PROFILE_MATERIAL_NOTE in combined_text
+    assert CUSTOM_PROFILE_MATERIAL_NOTE in per_calculation_text
+
+
+def test_project_package_allows_missing_material_exports():
+    package = create_project_package_zip(
+        report_pdf=BytesIO(b"report"),
+        material_exports=None,
+        combined_materials={},
+        materials_lookup_records=[],
+        language="DA",
+        fetcher=lambda url, timeout=20: FakeResponse(b"external"),
+    )
+
+    with ZipFile(package) as archive:
+        assert "Rapport/Knauf_Fireboard_Rapport.pdf" in archive.namelist()
+        assert not any(
+            name.startswith("Materialelister/") for name in archive.namelist()
+        )

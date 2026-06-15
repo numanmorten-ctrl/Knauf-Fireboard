@@ -7,13 +7,14 @@ import hashlib
 from io import BytesIO
 import json
 from pathlib import PurePosixPath
-from typing import Callable, Iterable
+from typing import Any, Callable, Iterable
 from urllib.parse import unquote, urlparse
 from zipfile import ZIP_DEFLATED, ZipFile
 
 import pandas as pd
 import requests
 
+from utils.calculation_state import calculation_material_key
 from utils.documentation_urls import (
     FIREBOARD_INSTALLATION_SECTION_URL,
     FIREBOARD_MANUAL_SECTION_URL,
@@ -27,6 +28,12 @@ from utils.export_helpers import (
 )
 
 PROJECT_PACKAGE_MIME = "application/zip"
+
+CUSTOM_PROFILE_MATERIAL_NOTE = (
+    "Vejledende materialeforbrug kan ikke beregnes for "
+    "brugerdefinerede profiler / Andre profiler, da profilens geometri "
+    "ikke er kendt."
+)
 
 
 def _signature_normalize(value: object) -> object:
@@ -134,20 +141,48 @@ def _first_existing_column(
     return None
 
 
+def is_custom_profile_calculation(calculation: dict[str, Any]) -> bool:
+    """Return True when a saved calculation uses a custom/other profile."""
+
+    category = str(calculation.get("category") or "").strip().lower()
+    return category in {"andre profiler", "other profiles"}
+
+
+def _custom_profile_note_rows(
+    calculations: Iterable[dict[str, Any]] | None,
+    material_columns: dict[str, str],
+) -> list[dict[str, object]]:
+    """Build note-only export rows for custom profiles without quantities."""
+
+    rows: list[dict[str, object]] = []
+    for index, calculation in enumerate(calculations or []):
+        if not is_custom_profile_calculation(calculation):
+            continue
+
+        calculation_key = calculation_material_key(calculation, index)
+        rows.append(
+            {
+                "SYSTEM": calculation_key,
+                material_columns["artnr"]: "",
+                material_columns["dbnr"]: "",
+                material_columns["manufacturer"]: "",
+                material_columns["description"]: CUSTOM_PROFILE_MATERIAL_NOTE,
+                material_columns["consumption"]: "",
+                material_columns["unit"]: "",
+                material_columns["total"]: "",
+            }
+        )
+
+    return rows
+
+
 def build_project_material_exports(
     combined_materials: dict[str, pd.DataFrame],
     language: str,
     t: Callable[[str], str],
+    calculations: Iterable[dict[str, Any]] | None = None,
 ) -> ProjectMaterialExports | None:
     """Create the combined and per-calculation Excel exports for a project."""
-
-    if not combined_materials:
-        return None
-
-    combined_df = pd.concat(
-        combined_materials.values(),
-        ignore_index=True,
-    )
 
     material_columns = {
         "artnr": t("material_artnr"),
@@ -158,6 +193,22 @@ def build_project_material_exports(
         "unit": t("material_unit"),
         "total": t("material_total"),
     }
+    custom_note_rows = _custom_profile_note_rows(calculations, material_columns)
+
+    if not combined_materials and not custom_note_rows:
+        return None
+
+    material_frames = [df for df in combined_materials.values() if df is not None]
+    if custom_note_rows:
+        material_frames.append(pd.DataFrame(custom_note_rows))
+
+    if not material_frames:
+        return None
+
+    combined_df = pd.concat(
+        material_frames,
+        ignore_index=True,
+    )
 
     column_fallbacks = {
         "artnr": ["ART.NR.", "ART.NO."],

@@ -2469,6 +2469,7 @@ with st.sidebar:
                 st.session_state.combined_materials,
                 st.session_state.language,
                 t,
+                calculations=st.session_state.calculations,
             )
 
         if st.session_state.project_report_cache and not get_cached_project_download(
@@ -2575,37 +2576,40 @@ with st.sidebar:
                 "data": material_exports,
             }
 
-        st.download_button(
-            label=t("download_combined_material_list"),
-            icon=UI_ICONS["download_combined_material_list"],
-            data=material_exports.combined_excel,
-            file_name=get_materials_excel_filename(
-                st.session_state.language,
-                "combined"
-            ),
-            mime=(
-                "application/vnd.openxmlformats-officedocument."
-                "spreadsheetml.sheet"
-            ),
-            use_container_width=True,
-            key="download_combined_material_list",
-        )
+        if material_exports is None:
+            st.info(t("material_consumption_unavailable_text"))
+        else:
+            st.download_button(
+                label=t("download_combined_material_list"),
+                icon=UI_ICONS["download_combined_material_list"],
+                data=material_exports.combined_excel,
+                file_name=get_materials_excel_filename(
+                    st.session_state.language,
+                    "combined"
+                ),
+                mime=(
+                    "application/vnd.openxmlformats-officedocument."
+                    "spreadsheetml.sheet"
+                ),
+                use_container_width=True,
+                key="download_combined_material_list",
+            )
 
-        st.download_button(
-            label=t("download_material_list_per_calculation"),
-            icon=UI_ICONS["download_material_list_per_calculation"],
-            data=material_exports.per_calculation_excel,
-            file_name=get_materials_excel_filename(
-                st.session_state.language,
-                "per_calculation"
-            ),
-            mime=(
-                "application/vnd.openxmlformats-officedocument."
-                "spreadsheetml.sheet"
-            ),
-            use_container_width=True,
-            key="download_material_list_per_calculation",
-        )
+            st.download_button(
+                label=t("download_material_list_per_calculation"),
+                icon=UI_ICONS["download_material_list_per_calculation"],
+                data=material_exports.per_calculation_excel,
+                file_name=get_materials_excel_filename(
+                    st.session_state.language,
+                    "per_calculation"
+                ),
+                mime=(
+                    "application/vnd.openxmlformats-officedocument."
+                    "spreadsheetml.sheet"
+                ),
+                use_container_width=True,
+                key="download_material_list_per_calculation",
+            )
 
         st.divider()
 
