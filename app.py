@@ -143,7 +143,6 @@ st.set_page_config(
 st.markdown(
     """
     <style>
-    header[data-testid="stHeader"],
     [data-testid="stToolbar"],
     [data-testid="stToolbar"] [aria-label*="GitHub"],
     [data-testid="stToolbar"] [title*="GitHub"],
