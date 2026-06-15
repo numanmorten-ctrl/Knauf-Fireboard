@@ -1,7 +1,18 @@
 import json
 from pathlib import Path
 
-from utils.pwa import KNAUF_BLUE, MANIFEST_URL, build_pwa_head_tags
+from utils.pwa import (
+    APPLE_TOUCH_ICON_URL,
+    DATA_URI_IMAGE_TYPE,
+    DATA_URI_MANIFEST_TYPE,
+    FAVICON_URL,
+    ICON_192_URL,
+    ICON_512_URL,
+    KNAUF_BLUE,
+    MANIFEST_METADATA,
+    MANIFEST_URL,
+    build_pwa_head_tags,
+)
 
 
 def test_manifest_metadata_uses_knauf_fireboard_pwa_values():
@@ -13,38 +24,81 @@ def test_manifest_metadata_uses_knauf_fireboard_pwa_values():
     assert manifest["theme_color"] == KNAUF_BLUE
     assert manifest["background_color"] == "#ffffff"
     assert manifest["orientation"] == "any"
-    assert "manual" in manifest["_comment"]
+    assert "_comment" not in manifest
 
 
-def test_manifest_uses_placeholder_icon_paths_without_requiring_binary_assets():
+def test_manifest_uses_static_relative_icon_paths():
     manifest = json.loads(Path("static/manifest.webmanifest").read_text())
 
     assert manifest["icons"] == [
         {
-            "_comment": "Placeholder only: upload this PNG file manually later.",
-            "src": "/app/static/icons/icon-192.png",
+            "src": "icons/icon-192.png",
             "sizes": "192x192",
             "type": "image/png",
             "purpose": "any maskable",
         },
         {
-            "_comment": "Placeholder only: upload this PNG file manually later.",
-            "src": "/app/static/icons/icon-512.png",
+            "src": "icons/icon-512.png",
             "sizes": "512x512",
             "type": "image/png",
             "purpose": "any maskable",
         },
     ]
-    assert not Path("static/icons/icon-192.png").exists()
-    assert not Path("static/icons/icon-512.png").exists()
+    assert all(not icon["src"].startswith("/") for icon in manifest["icons"])
+    assert Path("static/icons/icon-192.png").exists()
+    assert Path("static/icons/icon-512.png").exists()
+
+
+def test_streamlit_static_serving_is_enabled_for_repository_static_folder():
+    config_content = Path(".streamlit/config.toml").read_text()
+
+    assert "[server]" in config_content
+    assert "enableStaticServing = true" in config_content
+
+
+def test_pwa_head_links_use_inline_data_uris_instead_of_streamlit_static_paths():
+    assert MANIFEST_URL.startswith(f"data:{DATA_URI_MANIFEST_TYPE};base64,")
+    assert APPLE_TOUCH_ICON_URL.startswith(f"data:{DATA_URI_IMAGE_TYPE};base64,")
+    assert FAVICON_URL.startswith(f"data:{DATA_URI_IMAGE_TYPE};base64,")
+    assert ICON_192_URL.startswith(f"data:{DATA_URI_IMAGE_TYPE};base64,")
+    assert ICON_512_URL.startswith(f"data:{DATA_URI_IMAGE_TYPE};base64,")
+    assert not any(
+        "/app/static" in url or "/static" in url
+        for url in (
+            MANIFEST_URL,
+            APPLE_TOUCH_ICON_URL,
+            FAVICON_URL,
+            ICON_192_URL,
+            ICON_512_URL,
+        )
+    )
+
+
+def test_inline_manifest_uses_data_uri_icons():
+    assert MANIFEST_METADATA["icons"] == [
+        {
+            "src": ICON_192_URL,
+            "sizes": "192x192",
+            "type": DATA_URI_IMAGE_TYPE,
+            "purpose": "any maskable",
+        },
+        {
+            "src": ICON_512_URL,
+            "sizes": "512x512",
+            "type": DATA_URI_IMAGE_TYPE,
+            "purpose": "any maskable",
+        },
+    ]
 
 
 def test_generated_pwa_head_tags_include_ipad_and_manifest_metadata():
     head_tags = build_pwa_head_tags()
 
     assert f'<link rel="manifest" href="{MANIFEST_URL}">' in head_tags
+    assert f'<link rel="apple-touch-icon" href="{APPLE_TOUCH_ICON_URL}">' in head_tags
+    assert f'<link rel="icon" type="image/png" href="{FAVICON_URL}">' in head_tags
     assert 'name="apple-mobile-web-app-capable"' not in head_tags
-    assert 'name="apple-mobile-web-app-title"' not in head_tags
+    assert '<meta name="apple-mobile-web-app-title" content="Knauf Fireboard">' in head_tags
     assert 'name="apple-mobile-web-app-status-bar-style"' not in head_tags
     assert f'<meta name="theme-color" content="{KNAUF_BLUE}">' in head_tags
     assert "viewport-fit=cover" in head_tags
@@ -55,7 +109,7 @@ def test_generated_pwa_head_tags_do_not_enable_fullscreen_standalone_mode():
     head_tags = build_pwa_head_tags()
 
     assert 'name="apple-mobile-web-app-capable"' not in head_tags
-    assert 'name="apple-mobile-web-app-title"' not in head_tags
+    assert '<meta name="apple-mobile-web-app-title" content="Knauf Fireboard">' in head_tags
     assert 'name="apple-mobile-web-app-status-bar-style"' not in head_tags
     assert '<meta name="mobile-web-app-capable" content="yes">' not in head_tags
     assert '<meta name="mobile-web-app-capable" content="no">' in head_tags
