@@ -140,6 +140,28 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
+st.markdown(
+    """
+    <style>
+    header[data-testid="stHeader"],
+    [data-testid="stToolbar"],
+    [data-testid="stToolbar"] [aria-label*="GitHub"],
+    [data-testid="stToolbar"] [title*="GitHub"],
+    [data-testid="stToolbar"] a[href*="github.com"],
+    [data-testid="stToolbar"] [aria-label*="Fork"],
+    [data-testid="stToolbar"] [title*="Fork"],
+    #MainMenu,
+    footer,
+    [data-testid="stDecoration"],
+    [data-testid="stDeployButton"] {
+        display: none !important;
+        visibility: hidden !important;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True,
+)
+
 render_pwa_head_tags()
 
 # ---------------------------------------------------
