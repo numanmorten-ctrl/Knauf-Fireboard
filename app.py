@@ -156,37 +156,6 @@ st.markdown(
         display: none !important;
         visibility: hidden !important;
     }
-
-    [data-testid="stDecoration"],
-    [data-testid="stStatusWidget"],
-    .stDeployButton,
-    div[data-testid="stDecoration"],
-    div[data-testid="stStatusWidget"],
-    div:has(> [data-testid="stDecoration"]),
-    div:has(> [data-testid="stStatusWidget"]),
-    div[style*="position: fixed"][style*="right: 0"][style*="bottom: 0"]:has(iframe),
-    div[style*="position: fixed"][style*="right: 0"][style*="bottom: 0"]:has(a[href*="github.com"]),
-    div[style*="position: fixed"][style*="right: 0px"][style*="bottom: 0px"]:has(iframe),
-    div[style*="position: fixed"][style*="right: 0px"][style*="bottom: 0px"]:has(a[href*="github.com"]),
-    div[style*="position: fixed"][style*="right: 1rem"][style*="bottom: 1rem"]:has(iframe),
-    div[style*="position: fixed"][style*="right: 1rem"][style*="bottom: 1rem"]:has(a[href*="github.com"]),
-    div[style*="position: fixed"][style*="right: 16px"][style*="bottom: 16px"]:has(iframe),
-    div[style*="position: fixed"][style*="right: 16px"][style*="bottom: 16px"]:has(a[href*="github.com"]) {
-        display: none !important;
-        visibility: hidden !important;
-        pointer-events: none !important;
-    }
-
-    [data-testid="stDecoration"] iframe,
-    [data-testid="stDecoration"] a,
-    [data-testid="stStatusWidget"] iframe,
-    [data-testid="stStatusWidget"] a,
-    .stDeployButton iframe,
-    .stDeployButton a {
-        display: none !important;
-        visibility: hidden !important;
-        pointer-events: none !important;
-    }
     </style>
     """,
     unsafe_allow_html=True,
