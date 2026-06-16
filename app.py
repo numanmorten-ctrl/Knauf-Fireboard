@@ -133,15 +133,10 @@ from reportlab.lib.styles import ParagraphStyle
 from reportlab.platypus import Image
 
 
-FIREBOARD_FAVICON_PATH = Path("static/icons/icon-192.png")
-
-if not FIREBOARD_FAVICON_PATH.is_file():
-    raise FileNotFoundError(f"Fireboard favicon not found: {FIREBOARD_FAVICON_PATH}")
-
 
 st.set_page_config(
     page_title="Knauf Fireboard",
-    page_icon=FIREBOARD_FAVICON_PATH,
+    page_icon="static/icons/favicon.png",
     layout="wide",
     initial_sidebar_state="expanded",
 )

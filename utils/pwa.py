@@ -16,7 +16,6 @@ from typing import Iterable
 
 KNAUF_BLUE = "#003b7a"
 PWA_INJECTION_MARKER_ID = "fireboard-pwa-head-tags"
-FAVICON_OVERRIDE_MARKER_ID = "fireboard-favicon-override"
 IPAD_VIEWPORT = (
     "width=device-width, initial-scale=1, viewport-fit=cover, "
     "minimum-scale=1"
@@ -43,8 +42,8 @@ def _png_data_uri(filename: str) -> str:
 
 
 APPLE_TOUCH_ICON_URL = _png_data_uri("apple-touch-icon.png")
-FAVICON_URL = _png_data_uri("icon-192.png")
-ICON_192_URL = FAVICON_URL
+FAVICON_URL = _png_data_uri("favicon.png")
+ICON_192_URL = _png_data_uri("icon-192.png")
 ICON_512_URL = _png_data_uri("icon-512.png")
 
 MANIFEST_METADATA: dict[str, object] = {
@@ -90,12 +89,7 @@ PWA_META_TAGS: tuple[dict[str, str], ...] = (
 PWA_LINK_TAGS: tuple[dict[str, str], ...] = (
     {"rel": "manifest", "href": MANIFEST_URL},
     {"rel": "apple-touch-icon", "href": APPLE_TOUCH_ICON_URL},
-    {
-        "rel": "icon",
-        "type": DATA_URI_IMAGE_TYPE,
-        "sizes": "192x192",
-        "href": FAVICON_URL,
-    },
+    {"rel": "icon", "type": DATA_URI_IMAGE_TYPE, "href": FAVICON_URL},
 )
 
 
@@ -142,54 +136,9 @@ def build_pwa_head_injection_html() -> str:
 """.strip()
 
 
-def build_favicon_override_injection_html() -> str:
-    """Return a script that re-applies the Fireboard favicon after Streamlit loads."""
-
-    favicon_url = (
-        FAVICON_URL.replace('\\', '\\\\')
-        .replace('"', '\\"')
-        .replace('</script', '<\\/script')
-    )
-    return f"""
-<div id=\"{FAVICON_OVERRIDE_MARKER_ID}\"></div>
-<script>
-(function () {{
-  const faviconHref = "{favicon_url}";
-  const markerId = "{FAVICON_OVERRIDE_MARKER_ID}";
-  const doc = window.parent && window.parent.document ? window.parent.document : document;
-
-  function applyFireboardFavicon() {{
-    doc.head.querySelectorAll('link[rel="icon"], link[rel="shortcut icon"]').forEach((node) => {{
-      node.remove();
-    }});
-
-    const icon = doc.createElement("link");
-    icon.setAttribute("rel", "icon");
-    icon.setAttribute("type", "image/png");
-    icon.setAttribute("sizes", "192x192");
-    icon.setAttribute("href", faviconHref);
-    icon.setAttribute("data-fireboard-favicon", markerId);
-    doc.head.appendChild(icon);
-
-    const shortcutIcon = doc.createElement("link");
-    shortcutIcon.setAttribute("rel", "shortcut icon");
-    shortcutIcon.setAttribute("type", "image/png");
-    shortcutIcon.setAttribute("href", faviconHref);
-    shortcutIcon.setAttribute("data-fireboard-favicon", markerId);
-    doc.head.appendChild(shortcutIcon);
-  }}
-
-  applyFireboardFavicon();
-  [250, 1000, 2500].forEach((delay) => window.setTimeout(applyFireboardFavicon, delay));
-}})();
-</script>
-""".strip()
-
-
 def render_pwa_head_tags() -> None:
     """Inject Fireboard iPad home-screen tags without fullscreen standalone launch."""
 
     import streamlit.components.v1 as components
 
     components.html(build_pwa_head_injection_html(), height=0, width=0)
-    components.html(build_favicon_override_injection_html(), height=0, width=0)
