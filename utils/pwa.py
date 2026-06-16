@@ -16,6 +16,7 @@ from typing import Iterable
 
 KNAUF_BLUE = "#003b7a"
 PWA_INJECTION_MARKER_ID = "fireboard-pwa-head-tags"
+FAVICON_OVERRIDE_MARKER_ID = "fireboard-favicon-override"
 IPAD_VIEWPORT = (
     "width=device-width, initial-scale=1, viewport-fit=cover, "
     "minimum-scale=1"
@@ -141,9 +142,54 @@ def build_pwa_head_injection_html() -> str:
 """.strip()
 
 
+def build_favicon_override_injection_html() -> str:
+    """Return a script that re-applies the Fireboard favicon after Streamlit loads."""
+
+    favicon_url = (
+        FAVICON_URL.replace('\\', '\\\\')
+        .replace('"', '\\"')
+        .replace('</script', '<\\/script')
+    )
+    return f"""
+<div id=\"{FAVICON_OVERRIDE_MARKER_ID}\"></div>
+<script>
+(function () {{
+  const faviconHref = "{favicon_url}";
+  const markerId = "{FAVICON_OVERRIDE_MARKER_ID}";
+  const doc = window.parent && window.parent.document ? window.parent.document : document;
+
+  function applyFireboardFavicon() {{
+    doc.head.querySelectorAll('link[rel="icon"], link[rel="shortcut icon"]').forEach((node) => {{
+      node.remove();
+    }});
+
+    const icon = doc.createElement("link");
+    icon.setAttribute("rel", "icon");
+    icon.setAttribute("type", "image/png");
+    icon.setAttribute("sizes", "192x192");
+    icon.setAttribute("href", faviconHref);
+    icon.setAttribute("data-fireboard-favicon", markerId);
+    doc.head.appendChild(icon);
+
+    const shortcutIcon = doc.createElement("link");
+    shortcutIcon.setAttribute("rel", "shortcut icon");
+    shortcutIcon.setAttribute("type", "image/png");
+    shortcutIcon.setAttribute("href", faviconHref);
+    shortcutIcon.setAttribute("data-fireboard-favicon", markerId);
+    doc.head.appendChild(shortcutIcon);
+  }}
+
+  applyFireboardFavicon();
+  [250, 1000, 2500].forEach((delay) => window.setTimeout(applyFireboardFavicon, delay));
+}})();
+</script>
+""".strip()
+
+
 def render_pwa_head_tags() -> None:
     """Inject Fireboard iPad home-screen tags without fullscreen standalone launch."""
 
     import streamlit.components.v1 as components
 
     components.html(build_pwa_head_injection_html(), height=0, width=0)
+    components.html(build_favicon_override_injection_html(), height=0, width=0)
