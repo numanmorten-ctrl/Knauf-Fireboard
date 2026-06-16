@@ -97,12 +97,24 @@ def test_generated_pwa_head_tags_include_ipad_and_manifest_metadata():
     assert f'<link rel="manifest" href="{MANIFEST_URL}">' in head_tags
     assert f'<link rel="apple-touch-icon" href="{APPLE_TOUCH_ICON_URL}">' in head_tags
     assert f'<link rel="icon" type="image/png" href="{FAVICON_URL}">' in head_tags
+    assert f'sizes="192x192" href="{FAVICON_URL}"' not in head_tags
     assert 'name="apple-mobile-web-app-capable"' not in head_tags
     assert '<meta name="apple-mobile-web-app-title" content="Knauf Fireboard">' in head_tags
     assert 'name="apple-mobile-web-app-status-bar-style"' not in head_tags
     assert f'<meta name="theme-color" content="{KNAUF_BLUE}">' in head_tags
     assert "viewport-fit=cover" in head_tags
     assert "width=device-width" in head_tags
+
+
+def test_pwa_favicon_uses_original_asset_without_javascript_override():
+    pwa_content = Path("utils/pwa.py").read_text()
+
+    assert 'FAVICON_URL = _png_data_uri("favicon.png")' in pwa_content
+    assert 'ICON_192_URL = _png_data_uri("icon-192.png")' in pwa_content
+    assert "build_favicon_override_injection_html" not in pwa_content
+    assert "data-fireboard-favicon" not in pwa_content
+    assert "querySelectorAll('link[rel=\"icon\"]" not in pwa_content
+    assert FAVICON_URL != ICON_192_URL
 
 
 def test_generated_pwa_head_tags_do_not_enable_fullscreen_standalone_mode():
@@ -115,10 +127,12 @@ def test_generated_pwa_head_tags_do_not_enable_fullscreen_standalone_mode():
     assert '<meta name="mobile-web-app-capable" content="no">' in head_tags
 
 
-def test_streamlit_starts_with_expanded_sidebar_on_desktop():
+def test_streamlit_starts_with_original_favicon_and_expanded_sidebar_on_desktop():
     app_content = Path("app.py").read_text()
 
     assert "st.set_page_config(" in app_content
+    assert 'page_icon="static/icons/favicon.png"' in app_content
+    assert "FIREBOARD_FAVICON_PATH" not in app_content
     assert 'initial_sidebar_state="expanded"' in app_content
 
 
