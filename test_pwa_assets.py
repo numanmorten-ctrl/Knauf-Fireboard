@@ -11,6 +11,7 @@ from utils.pwa import (
     KNAUF_BLUE,
     MANIFEST_METADATA,
     MANIFEST_URL,
+    build_favicon_override_injection_html,
     build_pwa_head_tags,
 )
 
@@ -103,6 +104,20 @@ def test_generated_pwa_head_tags_include_ipad_and_manifest_metadata():
     assert f'<meta name="theme-color" content="{KNAUF_BLUE}">' in head_tags
     assert "viewport-fit=cover" in head_tags
     assert "width=device-width" in head_tags
+
+
+def test_favicon_override_replaces_only_browser_favicons_after_streamlit_loads():
+    override_html = build_favicon_override_injection_html()
+
+    assert f'const faviconHref = "{FAVICON_URL}";' in override_html
+    assert 'link[rel="icon"], link[rel="shortcut icon"]' in override_html
+    assert 'link[rel="apple-touch-icon"]' not in override_html
+    assert 'icon.setAttribute("rel", "icon")' in override_html
+    assert 'icon.setAttribute("type", "image/png")' in override_html
+    assert 'icon.setAttribute("sizes", "192x192")' in override_html
+    assert 'shortcutIcon.setAttribute("rel", "shortcut icon")' in override_html
+    assert 'shortcutIcon.setAttribute("type", "image/png")' in override_html
+    assert '[250, 1000, 2500]' in override_html
 
 
 def test_generated_pwa_head_tags_do_not_enable_fullscreen_standalone_mode():
