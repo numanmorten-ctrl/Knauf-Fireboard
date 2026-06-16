@@ -42,8 +42,8 @@ def _png_data_uri(filename: str) -> str:
 
 
 APPLE_TOUCH_ICON_URL = _png_data_uri("apple-touch-icon.png")
-FAVICON_URL = _png_data_uri("favicon.png")
-ICON_192_URL = _png_data_uri("icon-192.png")
+FAVICON_URL = _png_data_uri("icon-192.png")
+ICON_192_URL = FAVICON_URL
 ICON_512_URL = _png_data_uri("icon-512.png")
 
 MANIFEST_METADATA: dict[str, object] = {
@@ -89,7 +89,12 @@ PWA_META_TAGS: tuple[dict[str, str], ...] = (
 PWA_LINK_TAGS: tuple[dict[str, str], ...] = (
     {"rel": "manifest", "href": MANIFEST_URL},
     {"rel": "apple-touch-icon", "href": APPLE_TOUCH_ICON_URL},
-    {"rel": "icon", "type": DATA_URI_IMAGE_TYPE, "href": FAVICON_URL},
+    {
+        "rel": "icon",
+        "type": DATA_URI_IMAGE_TYPE,
+        "sizes": "192x192",
+        "href": FAVICON_URL,
+    },
 )
 
 
