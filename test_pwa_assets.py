@@ -96,7 +96,7 @@ def test_generated_pwa_head_tags_include_ipad_and_manifest_metadata():
 
     assert f'<link rel="manifest" href="{MANIFEST_URL}">' in head_tags
     assert f'<link rel="apple-touch-icon" href="{APPLE_TOUCH_ICON_URL}">' in head_tags
-    assert f'<link rel="icon" type="image/png" href="{FAVICON_URL}">' in head_tags
+    assert f'<link rel="icon" type="image/png" sizes="192x192" href="{FAVICON_URL}">' in head_tags
     assert 'name="apple-mobile-web-app-capable"' not in head_tags
     assert '<meta name="apple-mobile-web-app-title" content="Knauf Fireboard">' in head_tags
     assert 'name="apple-mobile-web-app-status-bar-style"' not in head_tags
