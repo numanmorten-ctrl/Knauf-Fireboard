@@ -17,7 +17,8 @@
 181534;8156077;Knauf A/S;Skrue RAB35 1000 stk.;Screw RAB35 1000 pcs;;IGNORE;;https://knauf.com/api/download-center/v1/assets/256cf991-b530-432f-b5b8-b60766af3334?download=true
 181343;2831659;Knauf A/S;Skrue RA51 500 stk.;Screw RA51 500 pcs;;IGNORE;;https://knauf.com/api/download-center/v1/assets/256cf991-b530-432f-b5b8-b60766af3334?download=true
 1654;2831667;Knauf A/S;Skrue RA70 250 stk.;SKRUERA70;;IGNORE;;https://knauf.com/api/download-center/v1/assets/256cf991-b530-432f-b5b8-b60766af3334?download=true
-603402;1964917;Knauf A/S;Fireboard spartelmasse 10 kg;FIREBOARDSPARTELMASSE;0,14864;AREA;https://knauf.com/api/download-center/v1/assets/0f5b8560-6df2-43a2-8246-113abe14ebd4?download=true;https://knauf.com/api/download-center/v1/assets/4e2f75ae-c647-4aa3-bea2-015b472696ed?download=true
+603402;1964917;Knauf A/S;Fireboard spartelmasse 10 kg;FIREBOARDSPARTELMASSE;0,422798673;AREA;"
+https://www.oekobaudat.de/OEKOBAU.DAT/resource/processes/4906fae7-6013-4d08-a765-642314c0bfd2?version=20.23.050";https://knauf.com/api/download-center/v1/assets/4e2f75ae-c647-4aa3-bea2-015b472696ed?download=true
 3698;4378337;Knauf A/S;Fugestrimler glasfiber 50 mm 25 m;FUGESTRIMLER;;IGNORE;;
 90000004;;Fremmed materiale;Stålklamme (Min. 40 x 8,5 x 1 mm);Steel clamp (Min. 40 x 8,5 x 1 mm);;IGNORE;;
 90000006;;Fremmed materiale;Stålklamme (Min. 64 x 9 x 1,5 mm);Steel clamp (Min. 64 x 9 x 1,5 mm);;IGNORE;;
