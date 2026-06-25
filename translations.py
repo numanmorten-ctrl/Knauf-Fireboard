@@ -175,6 +175,15 @@ translations = {
         "enter_area":
             "Indtast stålets tværsnitsareal (mm²)",
 
+        "enter_custom_profile_a":
+            "Indtast a (mm)",
+
+        "enter_custom_profile_b":
+            "Indtast b (mm)",
+
+        "enter_custom_profile_A":
+            "Indtast A (mm²)",
+
         "calculate":
             "Beregn",
 
@@ -502,6 +511,15 @@ translations = {
 
         "enter_area":
             "Enter steel cross-sectional area (mm²)",
+
+        "enter_custom_profile_a":
+            "Enter a (mm)",
+
+        "enter_custom_profile_b":
+            "Enter b (mm)",
+
+        "enter_custom_profile_A":
+            "Enter A (mm²)",
 
         "calculate":
             "Calculate",
