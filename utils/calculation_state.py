@@ -27,8 +27,12 @@ def calculation_signature(calculation: dict[str, Any]) -> tuple[Any, ...]:
         calculation.get("thickness"),
         calculation.get("apv_method"),
         calculation.get("custom_apv"),
+        calculation.get("custom_profile_apv"),
         calculation.get("surface_area"),
         calculation.get("steel_area"),
+        calculation.get("custom_profile_a"),
+        calculation.get("custom_profile_b"),
+        calculation.get("custom_profile_A"),
     )
 
 

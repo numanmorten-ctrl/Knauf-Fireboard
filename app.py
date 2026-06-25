@@ -11,6 +11,7 @@ import streamlit.components.v1 as components
 import pandas as pd
 from translations import translations
 from utils.data_loader import clean_text, clean_numeric, load_and_clean_csv
+from utils.geometry_helpers import calculate_custom_profile_apv
 from utils.render_helpers import render_materials_table
 from utils.icons import UI_ICONS, INLINE_ICONS, action_label
 from utils.documentation import (
@@ -1690,10 +1691,14 @@ defaults = {
     "last_updated": datetime.now(),
 
     "custom_apv": None,
+    "custom_profile_apv": None,
     "custom_profile_name": "",
 
     "surface_area": "",
     "steel_area": "",
+    "custom_profile_a": "",
+    "custom_profile_b": "",
+    "custom_profile_A": "",
     "apv_method": "Direkte",
 
     "project_package_cache": {},
@@ -1706,6 +1711,13 @@ for key, value in defaults.items():
     if key not in st.session_state:
 
         st.session_state[key] = value
+
+if (
+    st.session_state.custom_profile_apv is None
+    and st.session_state.custom_apv is not None
+):
+
+    st.session_state.custom_profile_apv = st.session_state.custom_apv
 
 rebuild_combined_materials(st.session_state)
 
@@ -2347,9 +2359,12 @@ with st.sidebar:
                         "Direkte"
                     )
 
-                    st.session_state.custom_apv = calc.get(
-                        "custom_apv"
+                    st.session_state.custom_profile_apv = calc.get(
+                        "custom_profile_apv",
+                        calc.get("custom_apv")
                     )
+
+                    st.session_state.custom_apv = st.session_state.custom_profile_apv
 
                     st.session_state.surface_area = calc.get(
                         "surface_area",
@@ -2358,6 +2373,21 @@ with st.sidebar:
 
                     st.session_state.steel_area = calc.get(
                         "steel_area",
+                        ""
+                    )
+
+                    st.session_state.custom_profile_a = calc.get(
+                        "custom_profile_a",
+                        ""
+                    )
+
+                    st.session_state.custom_profile_b = calc.get(
+                        "custom_profile_b",
+                        ""
+                    )
+
+                    st.session_state.custom_profile_A = calc.get(
+                        "custom_profile_A",
                         ""
                     )
 
@@ -3078,18 +3108,19 @@ if current_step == 0:
             custom_apv = st.text_input(
                t("enter_apv_ratio"),
                 value=(
-                    str(st.session_state.custom_apv)
-                    if st.session_state.custom_apv
+                    str(st.session_state.custom_profile_apv)
+                    if st.session_state.custom_profile_apv
                     else ""
                 )
             )
 
             numeric_apv = clean_numeric(custom_apv)
-            st.session_state.custom_apv = (
+            st.session_state.custom_profile_apv = (
                 int(numeric_apv)
                 if numeric_apv is not None
                 else None
             )
+            st.session_state.custom_apv = st.session_state.custom_profile_apv
 
         # ---------------------------------------------------
         # BEREGN AP/V
@@ -3097,38 +3128,38 @@ if current_step == 0:
 
         else:
 
-            ap_input = st.text_input(
-                t("enter_perimeter"),
-                value=st.session_state.surface_area
-            )
-
-            st.markdown(
-                t("enter_area")
-            )
-
-            col1, col2 = st.columns([5, 1], vertical_alignment="bottom")
+            col1, col2, col3 = st.columns(3)
 
             with col1:
-
-                v_input = st.text_input(
-                    label="",
-                    value=st.session_state.steel_area,
-                    label_visibility="collapsed"
+                a_input = st.text_input(
+                    t("enter_custom_profile_a"),
+                    value=st.session_state.custom_profile_a
                 )
 
             with col2:
-
-                calculate_clicked = st.button(
-                    t("calculate"),
-                    use_container_width=True
+                b_input = st.text_input(
+                    t("enter_custom_profile_b"),
+                    value=st.session_state.custom_profile_b
                 )
+
+            with col3:
+                area_input = st.text_input(
+                    t("enter_custom_profile_A"),
+                    value=st.session_state.custom_profile_A
+                )
+
+            calculate_clicked = st.button(
+                t("calculate"),
+                use_container_width=True
+            )
 
             if calculate_clicked:
 
-                ap = clean_numeric(ap_input)
-                v = clean_numeric(v_input)
+                a = clean_numeric(a_input)
+                b = clean_numeric(b_input)
+                area = clean_numeric(area_input)
 
-                if ap is None or v is None or v == 0:
+                if a is None or b is None or area is None:
 
                     st.error(
                         t("invalid_numbers")
@@ -3136,27 +3167,50 @@ if current_step == 0:
 
                 else:
 
-                    calculated_apv = round(
-                        (ap * 1000) / v
-                    )
+                    try:
+                        calculated_apv = calculate_custom_profile_apv(
+                            a,
+                            b,
+                            area
+                        )
+                    except ValueError:
+                        st.error(
+                            t("invalid_numbers")
+                        )
+                    else:
+                        st.session_state.custom_profile_a = (
+                            a_input
+                        )
 
-                    st.session_state.surface_area = (
-                        ap_input
-                    )
+                        st.session_state.custom_profile_b = (
+                            b_input
+                        )
 
-                    st.session_state.steel_area = (
-                        v_input
-                    )
+                        st.session_state.custom_profile_A = (
+                            area_input
+                        )
 
-                    st.session_state.custom_apv = (
-                        calculated_apv
-                    )
+                        st.session_state.surface_area = (
+                            str(a + b)
+                        )
 
-            if st.session_state.custom_apv:
+                        st.session_state.steel_area = (
+                            area_input
+                        )
+
+                        st.session_state.custom_profile_apv = (
+                            calculated_apv
+                        )
+
+                        st.session_state.custom_apv = (
+                            calculated_apv
+                        )
+
+            if st.session_state.custom_profile_apv:
 
                 st.info(
                     f"{t('calculated_apv')}: "
-                    f"{st.session_state.custom_apv} m²/m³"
+                    f"{st.session_state.custom_profile_apv} m²/m³"
                 )
 
     # ---------------------------------------------------
@@ -3585,7 +3639,7 @@ if (
 
     else:
 
-        if st.session_state.custom_apv is None:
+        if st.session_state.custom_profile_apv is None:
 
             st.error(
                 "Indtast gyldig Ap/V værdi"
@@ -3594,7 +3648,7 @@ if (
             st.stop()
 
         apv = int(
-            st.session_state.custom_apv
+            st.session_state.custom_profile_apv
         )
 
         selected_profile = (
@@ -3705,9 +3759,13 @@ if current_step == 3:
 
          # ANDRE PROFILER
         "apv_method": st.session_state.get("apv_method"),
-        "custom_apv": st.session_state.get("custom_apv"),
+        "custom_apv": st.session_state.get("custom_profile_apv"),
+        "custom_profile_apv": st.session_state.get("custom_profile_apv"),
         "surface_area": st.session_state.get("surface_area"),
         "steel_area": st.session_state.get("steel_area"),
+        "custom_profile_a": st.session_state.get("custom_profile_a"),
+        "custom_profile_b": st.session_state.get("custom_profile_b"),
+        "custom_profile_A": st.session_state.get("custom_profile_A"),
     }
 
     # ---------------------------------------------------
