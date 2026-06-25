@@ -197,7 +197,7 @@ translations = {
             "Ap/V beregnes automatisk, når du har valgt inddækning og antal sider.",
 
         "invalid_geometry_for_apv":
-            "Indtast gyldige positive værdier for A-mål, B-mål og ståltværsnitsareal for at beregne Ap/V.",
+            "Indtast gyldige positive værdier for a, b og A",
 
         "calculated_apv":
             "Beregnet Ap/V",
@@ -543,7 +543,7 @@ translations = {
             "Ap/V is calculated automatically after you select cladding and number of protected sides.",
 
         "invalid_geometry_for_apv":
-            "Enter valid positive values for A dimension, B dimension, and steel cross-sectional area to calculate Ap/V.",
+            "Enter valid positive values for a, b and A",
 
         "calculated_apv":
             "Calculated Ap/V",

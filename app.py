@@ -12,6 +12,12 @@ import pandas as pd
 from translations import translations
 from utils.data_loader import clean_text, clean_numeric, load_and_clean_csv
 from utils.geometry_helpers import calculate_custom_profile_apv
+from utils.custom_profile_validation import (
+    DIRECT_APV_METHOD,
+    GEOMETRY_APV_METHOD,
+    should_show_direct_apv_validation,
+    should_show_geometry_apv_validation,
+)
 from utils.render_helpers import render_materials_table
 from utils.icons import UI_ICONS, INLINE_ICONS, action_label
 from utils.documentation import (
@@ -3044,26 +3050,35 @@ if current_step == 0:
         </div>
         """, unsafe_allow_html=True)
 
-        method_options = {
-            t("enter_apv"): "Direkte",
-            t("geometry_method"): "Beregn",
-        }
+        method_button_cols = st.columns(2)
 
-        selected_method_label = st.radio(
-            t("select_method"),
-            list(method_options.keys()),
-            index=(
-                1
-                if st.session_state.apv_method == "Beregn"
-                else 0
-            ),
-            horizontal=True,
-            label_visibility="collapsed",
-        )
+        with method_button_cols[0]:
+            if st.button(
+                t("enter_apv"),
+                key="custom_profile_method_direct",
+                type=(
+                    "primary"
+                    if st.session_state.apv_method == DIRECT_APV_METHOD
+                    else "secondary"
+                ),
+                use_container_width=True,
+            ):
+                st.session_state.apv_method = DIRECT_APV_METHOD
+                st.rerun()
 
-        st.session_state.apv_method = method_options[
-            selected_method_label
-        ]
+        with method_button_cols[1]:
+            if st.button(
+                t("calculate_apv"),
+                key="custom_profile_method_geometry",
+                type=(
+                    "primary"
+                    if st.session_state.apv_method == GEOMETRY_APV_METHOD
+                    else "secondary"
+                ),
+                use_container_width=True,
+            ):
+                st.session_state.apv_method = GEOMETRY_APV_METHOD
+                st.rerun()
 
         st.divider()
 
@@ -3076,7 +3091,7 @@ if current_step == 0:
                 "apv_method",
                 "Direkte"
             )
-            == "Direkte"
+            == DIRECT_APV_METHOD
         ):
 
             custom_apv = st.text_input(
@@ -3314,7 +3329,7 @@ if current_step == 1:
 
     if (
         category == "Andre profiler"
-        and st.session_state.get("apv_method") == "Beregn"
+        and st.session_state.get("apv_method") == GEOMETRY_APV_METHOD
     ):
 
         a = clean_numeric(
@@ -3339,7 +3354,7 @@ if current_step == 1:
             st.session_state.custom_profile_apv = None
             st.session_state.custom_apv = None
 
-            st.warning(
+            st.error(
                 t("invalid_geometry_for_apv")
             )
 
@@ -3630,10 +3645,26 @@ if (
 
     else:
 
-        if st.session_state.custom_profile_apv is None:
+        if should_show_direct_apv_validation(
+            category,
+            st.session_state.get("apv_method"),
+            st.session_state.custom_profile_apv,
+        ):
 
             st.error(
-                "Indtast gyldig Ap/V værdi"
+                t("invalid_apv")
+            )
+
+            st.stop()
+
+        if should_show_geometry_apv_validation(
+            category,
+            st.session_state.get("apv_method"),
+            st.session_state.custom_profile_apv,
+        ):
+
+            st.error(
+                t("invalid_geometry_for_apv")
             )
 
             st.stop()
