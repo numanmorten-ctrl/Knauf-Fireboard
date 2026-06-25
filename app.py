@@ -3660,7 +3660,9 @@ if (
         if should_show_geometry_apv_validation(
             category,
             st.session_state.get("apv_method"),
-            st.session_state.custom_profile_apv,
+            clean_numeric(st.session_state.get("custom_profile_a")),
+            clean_numeric(st.session_state.get("custom_profile_b")),
+            clean_numeric(st.session_state.get("custom_profile_A")),
         ):
 
             st.error(
