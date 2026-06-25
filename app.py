@@ -1718,13 +1718,6 @@ for key, value in defaults.items():
 
         st.session_state[key] = value
 
-if (
-    st.session_state.custom_profile_apv is None
-    and st.session_state.custom_apv is not None
-):
-
-    st.session_state.custom_profile_apv = st.session_state.custom_apv
-
 rebuild_combined_materials(st.session_state)
 
 # ---------------------------------------------------
@@ -1736,6 +1729,108 @@ def t(key):
     return translations[
         st.session_state.language
     ][key]
+
+
+def get_valid_custom_profile_apv(session_state):
+
+    """Return a valid custom profile Ap/V as an int, or None when unavailable."""
+
+    value = session_state.get(
+        "custom_profile_apv"
+    )
+
+    numeric_value = clean_numeric(
+        value
+    )
+
+    if numeric_value is None or numeric_value <= 0:
+
+        return None
+
+    return int(
+        numeric_value
+    )
+
+
+def clear_calculated_custom_profile_apv(session_state):
+
+    """Clear calculated Ap/V aliases when geometry or protected sides are incomplete."""
+
+    session_state.custom_profile_apv = None
+    session_state.custom_apv = None
+
+
+def store_custom_profile_apv(session_state, value):
+
+    """Store a validated custom Ap/V under both current and legacy keys."""
+
+    numeric_value = clean_numeric(
+        value
+    )
+
+    if numeric_value is None or numeric_value <= 0:
+
+        clear_calculated_custom_profile_apv(
+            session_state
+        )
+
+        return None
+
+    apv_value = int(
+        numeric_value
+    )
+
+    session_state.custom_profile_apv = apv_value
+    session_state.custom_apv = apv_value
+
+    return apv_value
+
+
+def calculate_and_store_custom_profile_apv_for_sides(session_state, sides):
+
+    """Calculate geometry-based Ap/V after protected sides have been selected."""
+
+    a = clean_numeric(
+        session_state.get("custom_profile_a")
+    )
+    b = clean_numeric(
+        session_state.get("custom_profile_b")
+    )
+    area = clean_numeric(
+        session_state.get("custom_profile_A")
+    )
+
+    calculated_apv = calculate_custom_profile_apv(
+        a,
+        b,
+        area,
+        sides
+    )
+
+    if calculated_apv is None:
+
+        clear_calculated_custom_profile_apv(
+            session_state
+        )
+
+        return None
+
+    if sides in (1, 3):
+        surface_area = a + (2 * b)
+    elif sides == 2:
+        surface_area = a + b
+    else:
+        surface_area = (2 * a) + (2 * b)
+
+    session_state.surface_area = str(surface_area)
+    session_state.steel_area = session_state.get(
+        "custom_profile_A"
+    )
+
+    return store_custom_profile_apv(
+        session_state,
+        calculated_apv
+    )
 
 
 
@@ -2365,12 +2460,23 @@ with st.sidebar:
                         "Direkte"
                     )
 
-                    st.session_state.custom_profile_apv = calc.get(
+                    saved_custom_apv = calc.get(
                         "custom_profile_apv",
                         calc.get("custom_apv")
                     )
 
-                    st.session_state.custom_apv = st.session_state.custom_profile_apv
+                    if saved_custom_apv is None:
+
+                        clear_calculated_custom_profile_apv(
+                            st.session_state
+                        )
+
+                    else:
+
+                        store_custom_profile_apv(
+                            st.session_state,
+                            saved_custom_apv
+                        )
 
                     st.session_state.surface_area = calc.get(
                         "surface_area",
@@ -3097,19 +3203,15 @@ if current_step == 0:
             custom_apv = st.text_input(
                t("enter_apv_ratio"),
                 value=(
-                    str(st.session_state.custom_profile_apv)
-                    if st.session_state.custom_profile_apv
-                    else ""
+                    str(get_valid_custom_profile_apv(st.session_state) or "")
                 )
             )
 
             numeric_apv = clean_numeric(custom_apv)
-            st.session_state.custom_profile_apv = (
-                int(numeric_apv)
-                if numeric_apv is not None
-                else None
+            store_custom_profile_apv(
+                st.session_state,
+                numeric_apv
             )
-            st.session_state.custom_apv = st.session_state.custom_profile_apv
 
         # ---------------------------------------------------
         # BEREGN AP/V
@@ -3153,19 +3255,13 @@ if current_step == 0:
                 area_input
             )
 
-            st.session_state.custom_profile_apv = None
-            st.session_state.custom_apv = None
+            clear_calculated_custom_profile_apv(
+                st.session_state
+            )
 
             st.info(
                 t("custom_profile_geometry_apv_help")
             )
-
-            if st.session_state.custom_profile_apv:
-
-                st.info(
-                    f"{t('calculated_apv')}: "
-                    f"{st.session_state.custom_profile_apv} m²/m³"
-                )
 
     # ---------------------------------------------------
     # NAVIGATION
@@ -3332,52 +3428,23 @@ if current_step == 1:
         and st.session_state.get("apv_method") == GEOMETRY_APV_METHOD
     ):
 
-        a = clean_numeric(
-            st.session_state.get("custom_profile_a")
-        )
-        b = clean_numeric(
-            st.session_state.get("custom_profile_b")
-        )
-        area = clean_numeric(
-            st.session_state.get("custom_profile_A")
-        )
-
-        calculated_apv = calculate_custom_profile_apv(
-            a,
-            b,
-            area,
+        calculated_apv = calculate_and_store_custom_profile_apv_for_sides(
+            st.session_state,
             sides
         )
 
         if calculated_apv is None:
 
-            st.session_state.custom_profile_apv = None
-            st.session_state.custom_apv = None
-
             st.error(
                 t("invalid_geometry_for_apv")
             )
 
-        else:
+            st.stop()
 
-            if sides in (1, 3):
-                surface_area = a + (2 * b)
-            elif sides == 2:
-                surface_area = a + b
-            else:
-                surface_area = (2 * a) + (2 * b)
-
-            st.session_state.surface_area = str(surface_area)
-            st.session_state.steel_area = (
-                st.session_state.get("custom_profile_A")
-            )
-            st.session_state.custom_profile_apv = calculated_apv
-            st.session_state.custom_apv = calculated_apv
-
-            st.info(
-                f"{t('calculated_apv')}: "
-                f"{calculated_apv} m²/m³"
-            )
+        st.info(
+            f"{t('calculated_apv')}: "
+            f"{calculated_apv} m²/m³"
+        )
 
     # ---------------------------------------------------
     # NAVIGATION
@@ -3645,10 +3712,24 @@ if (
 
     else:
 
+        custom_profile_apv = get_valid_custom_profile_apv(
+            st.session_state
+        )
+
+        if (
+            st.session_state.get("apv_method") == GEOMETRY_APV_METHOD
+            and custom_profile_apv is None
+        ):
+
+            custom_profile_apv = calculate_and_store_custom_profile_apv_for_sides(
+                st.session_state,
+                int(sides)
+            )
+
         if should_show_direct_apv_validation(
             category,
             st.session_state.get("apv_method"),
-            st.session_state.custom_profile_apv,
+            custom_profile_apv,
         ):
 
             st.error(
@@ -3671,9 +3752,15 @@ if (
 
             st.stop()
 
-        apv = int(
-            st.session_state.custom_profile_apv
-        )
+        if custom_profile_apv is None:
+
+            st.error(
+                t("invalid_apv")
+            )
+
+            st.stop()
+
+        apv = custom_profile_apv
 
         selected_profile = (
 
