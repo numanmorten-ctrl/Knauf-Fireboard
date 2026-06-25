@@ -21,12 +21,38 @@ def test_direct_mode_with_missing_apv_shows_only_direct_validation():
 
 
 
-def test_geometry_mode_with_missing_or_invalid_geometry_shows_only_geometry_validation():
-    calculated_apv = calculate_custom_profile_apv(None, 80, 500, 2)
+def test_geometry_mode_with_valid_geometry_and_missing_apv_does_not_show_geometry_validation():
+    assert not should_show_geometry_apv_validation(
+        CUSTOM_CATEGORY,
+        GEOMETRY_APV_METHOD,
+        120,
+        80,
+        500,
+    )
+    assert not should_show_direct_apv_validation(CUSTOM_CATEGORY, GEOMETRY_APV_METHOD, None)
 
-    assert calculated_apv is None
-    assert should_show_geometry_apv_validation(CUSTOM_CATEGORY, GEOMETRY_APV_METHOD, calculated_apv)
-    assert not should_show_direct_apv_validation(CUSTOM_CATEGORY, GEOMETRY_APV_METHOD, calculated_apv)
+
+def test_geometry_mode_with_missing_a_shows_geometry_validation():
+    assert should_show_geometry_apv_validation(
+        CUSTOM_CATEGORY,
+        GEOMETRY_APV_METHOD,
+        None,
+        80,
+        500,
+    )
+    assert not should_show_direct_apv_validation(CUSTOM_CATEGORY, GEOMETRY_APV_METHOD, None)
+
+
+def test_geometry_mode_with_zero_or_negative_b_shows_geometry_validation():
+    for b in (0, -1):
+        assert should_show_geometry_apv_validation(
+            CUSTOM_CATEGORY,
+            GEOMETRY_APV_METHOD,
+            120,
+            b,
+            500,
+        )
+        assert not should_show_direct_apv_validation(CUSTOM_CATEGORY, GEOMETRY_APV_METHOD, None)
 
 
 
@@ -40,6 +66,13 @@ def test_geometry_mode_never_shows_direct_apv_validation_for_invalid_geometry_va
     for a, b, area in invalid_geometry_values:
         calculated_apv = calculate_custom_profile_apv(a, b, area, 2)
         assert calculated_apv is None
+        assert should_show_geometry_apv_validation(
+            CUSTOM_CATEGORY,
+            GEOMETRY_APV_METHOD,
+            a,
+            b,
+            area,
+        )
         assert not should_show_direct_apv_validation(
             CUSTOM_CATEGORY,
             GEOMETRY_APV_METHOD,

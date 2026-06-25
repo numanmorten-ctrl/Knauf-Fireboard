@@ -14,10 +14,22 @@ def should_show_direct_apv_validation(category, apv_method, custom_profile_apv):
     )
 
 
-def should_show_geometry_apv_validation(category, apv_method, calculated_apv):
-    """Return True only when geometry custom Ap/V calculation is selected and invalid."""
+def _is_positive_number(value):
+    """Return True when value can be interpreted as a positive number."""
+    try:
+        return float(value) > 0
+    except (TypeError, ValueError):
+        return False
+
+
+def should_show_geometry_apv_validation(category, apv_method, a, b=None, steel_area=None):
+    """Return True only when geometry mode is selected and geometry input is invalid."""
     return (
         category == CUSTOM_PROFILE_CATEGORY
         and apv_method == GEOMETRY_APV_METHOD
-        and calculated_apv is None
+        and not (
+            _is_positive_number(a)
+            and _is_positive_number(b)
+            and _is_positive_number(steel_area)
+        )
     )
