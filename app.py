@@ -30,6 +30,7 @@ from utils.ui_helpers import (
 from utils.validation_helpers import (
     validate_temperature,
     validate_fireboard_lookup,
+    should_show_invalid_custom_apv_message,
     reset_calculation_state
 )
 from utils.calculation_state import (
@@ -3044,26 +3045,39 @@ if current_step == 0:
         </div>
         """, unsafe_allow_html=True)
 
-        method_options = {
-            t("enter_apv"): "Direkte",
-            t("geometry_method"): "Beregn",
-        }
+        method_col1, method_col2 = st.columns(2)
 
-        selected_method_label = st.radio(
-            t("select_method"),
-            list(method_options.keys()),
-            index=(
-                1
-                if st.session_state.apv_method == "Beregn"
-                else 0
-            ),
-            horizontal=True,
-            label_visibility="collapsed",
-        )
+        with method_col1:
+            if st.button(
+                t("enter_apv"),
+                key="custom_profile_method_direct",
+                use_container_width=True,
+                type=(
+                    "primary"
+                    if st.session_state.apv_method == "Direkte"
+                    else "secondary"
+                )
+            ):
 
-        st.session_state.apv_method = method_options[
-            selected_method_label
-        ]
+                st.session_state.apv_method = "Direkte"
+
+                st.rerun()
+
+        with method_col2:
+            if st.button(
+                t("geometry_method"),
+                key="custom_profile_method_geometry",
+                use_container_width=True,
+                type=(
+                    "primary"
+                    if st.session_state.apv_method == "Beregn"
+                    else "secondary"
+                )
+            ):
+
+                st.session_state.apv_method = "Beregn"
+
+                st.rerun()
 
         st.divider()
 
@@ -3630,11 +3644,19 @@ if (
 
     else:
 
-        if st.session_state.custom_profile_apv is None:
+        if should_show_invalid_custom_apv_message(
+            category,
+            st.session_state.get("apv_method"),
+            st.session_state.custom_profile_apv
+        ):
 
             st.error(
                 "Indtast gyldig Ap/V værdi"
             )
+
+            st.stop()
+
+        if st.session_state.custom_profile_apv is None:
 
             st.stop()
 
@@ -4228,4 +4250,3 @@ if current_step == 3:
                 "spreadsheetml.sheet"
             )
         )
-

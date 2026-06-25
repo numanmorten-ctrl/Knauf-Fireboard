@@ -45,6 +45,20 @@ def validate_fireboard_lookup(
 
     return None
 
+
+def should_show_invalid_custom_apv_message(
+    category,
+    apv_method,
+    custom_profile_apv
+):
+
+    return (
+        category == "Andre profiler"
+        and apv_method == "Direkte"
+        and custom_profile_apv is None
+    )
+
+
 def reset_calculation_state(session_state):
 
     reset_keys = [
