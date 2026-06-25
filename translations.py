@@ -166,6 +166,9 @@ translations = {
         "calculate_apv":
             "Beregn Ap/V",
 
+        "geometry_method":
+            "Geometri",
+
         "enter_apv_ratio":
             "Indtast Ap/V forhold (m²/m³)",
 
@@ -189,6 +192,12 @@ translations = {
 
         "invalid_numbers":
             "Indtast gyldige tal",
+
+        "custom_profile_geometry_apv_help":
+            "Ap/V beregnes automatisk, når du har valgt inddækning og antal sider.",
+
+        "invalid_geometry_for_apv":
+            "Indtast gyldige positive værdier for A-mål, B-mål og ståltværsnitsareal for at beregne Ap/V.",
 
         "calculated_apv":
             "Beregnet Ap/V",
@@ -503,6 +512,9 @@ translations = {
         "calculate_apv":
             "Calculate Ap/V",
 
+        "geometry_method":
+            "Geometry",
+
         "enter_apv_ratio":
             "Enter Ap/V ratio (m²/m³)",
 
@@ -526,6 +538,12 @@ translations = {
 
         "invalid_numbers":
             "Enter valid numbers",
+
+        "custom_profile_geometry_apv_help":
+            "Ap/V is calculated automatically after you select cladding and number of protected sides.",
+
+        "invalid_geometry_for_apv":
+            "Enter valid positive values for A dimension, B dimension, and steel cross-sectional area to calculate Ap/V.",
 
         "calculated_apv":
             "Calculated Ap/V",

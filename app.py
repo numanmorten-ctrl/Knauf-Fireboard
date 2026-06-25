@@ -3044,52 +3044,26 @@ if current_step == 0:
         </div>
         """, unsafe_allow_html=True)
 
-        col1, col2 = st.columns(2)
+        method_options = {
+            t("enter_apv"): "Direkte",
+            t("geometry_method"): "Beregn",
+        }
 
-        with col1:
-            direkte_selected = (
-                st.session_state.apv_method
-                == "Direkte"
-            )
+        selected_method_label = st.radio(
+            t("select_method"),
+            list(method_options.keys()),
+            index=(
+                1
+                if st.session_state.apv_method == "Beregn"
+                else 0
+            ),
+            horizontal=True,
+            label_visibility="collapsed",
+        )
 
-            if st.button(
-                t("enter_apv"),
-                use_container_width=True,
-                type=(
-                    "primary"
-                    if direkte_selected
-                    else "secondary"
-                )
-            ):
-
-                st.session_state.apv_method = (
-                    "Direkte"
-                )
-
-                st.rerun()
-
-        with col2:
-
-            beregn_selected = (
-                st.session_state.apv_method
-                == "Beregn"
-            )
-
-            if st.button(
-                t("calculate_apv"),
-                use_container_width=True,
-                type=(
-                    "primary"
-                    if beregn_selected
-                    else "secondary"
-                )
-            ):
-
-                st.session_state.apv_method = (
-                    "Beregn"
-                )
-
-                st.rerun()
+        st.session_state.apv_method = method_options[
+            selected_method_label
+        ]
 
         st.divider()
 
@@ -3148,63 +3122,28 @@ if current_step == 0:
                     value=st.session_state.custom_profile_A
                 )
 
-            calculate_clicked = st.button(
-                t("calculate"),
-                use_container_width=True
+            st.session_state.custom_profile_a = (
+                a_input
             )
 
-            if calculate_clicked:
+            st.session_state.custom_profile_b = (
+                b_input
+            )
 
-                a = clean_numeric(a_input)
-                b = clean_numeric(b_input)
-                area = clean_numeric(area_input)
+            st.session_state.custom_profile_A = (
+                area_input
+            )
 
-                if a is None or b is None or area is None:
+            st.session_state.steel_area = (
+                area_input
+            )
 
-                    st.error(
-                        t("invalid_numbers")
-                    )
+            st.session_state.custom_profile_apv = None
+            st.session_state.custom_apv = None
 
-                else:
-
-                    try:
-                        calculated_apv = calculate_custom_profile_apv(
-                            a,
-                            b,
-                            area
-                        )
-                    except ValueError:
-                        st.error(
-                            t("invalid_numbers")
-                        )
-                    else:
-                        st.session_state.custom_profile_a = (
-                            a_input
-                        )
-
-                        st.session_state.custom_profile_b = (
-                            b_input
-                        )
-
-                        st.session_state.custom_profile_A = (
-                            area_input
-                        )
-
-                        st.session_state.surface_area = (
-                            str(a + b)
-                        )
-
-                        st.session_state.steel_area = (
-                            area_input
-                        )
-
-                        st.session_state.custom_profile_apv = (
-                            calculated_apv
-                        )
-
-                        st.session_state.custom_apv = (
-                            calculated_apv
-                        )
+            st.info(
+                t("custom_profile_geometry_apv_help")
+            )
 
             if st.session_state.custom_profile_apv:
 
@@ -3372,6 +3311,58 @@ if current_step == 1:
         st.stop()
 
     sides = int(sides)
+
+    if (
+        category == "Andre profiler"
+        and st.session_state.get("apv_method") == "Beregn"
+    ):
+
+        a = clean_numeric(
+            st.session_state.get("custom_profile_a")
+        )
+        b = clean_numeric(
+            st.session_state.get("custom_profile_b")
+        )
+        area = clean_numeric(
+            st.session_state.get("custom_profile_A")
+        )
+
+        calculated_apv = calculate_custom_profile_apv(
+            a,
+            b,
+            area,
+            sides
+        )
+
+        if calculated_apv is None:
+
+            st.session_state.custom_profile_apv = None
+            st.session_state.custom_apv = None
+
+            st.warning(
+                t("invalid_geometry_for_apv")
+            )
+
+        else:
+
+            if sides in (1, 3):
+                surface_area = a + (2 * b)
+            elif sides == 2:
+                surface_area = a + b
+            else:
+                surface_area = (2 * a) + (2 * b)
+
+            st.session_state.surface_area = str(surface_area)
+            st.session_state.steel_area = (
+                st.session_state.get("custom_profile_A")
+            )
+            st.session_state.custom_profile_apv = calculated_apv
+            st.session_state.custom_apv = calculated_apv
+
+            st.info(
+                f"{t('calculated_apv')}: "
+                f"{calculated_apv} m²/m³"
+            )
 
     # ---------------------------------------------------
     # NAVIGATION
