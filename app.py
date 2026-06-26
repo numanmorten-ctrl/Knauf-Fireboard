@@ -1760,6 +1760,32 @@ def get_apv_geometry_help_image_path():
     return Path("static") / "images" / filename
 
 
+def render_apv_geometry_help():
+
+    """Render the custom profile Ap/V geometry guide in the main content area."""
+
+    if not st.session_state.get("show_apv_geometry_help"):
+        return
+
+    st.markdown(
+        f"### {t('apv_geometry_guide_title')}"
+    )
+
+    st.image(
+        str(get_apv_geometry_help_image_path()),
+        use_container_width=True
+    )
+
+    if st.button(
+        t("close_apv_geometry_guide"),
+        key="close_apv_geometry_guide",
+        use_container_width=True
+    ):
+
+        hide_apv_geometry_help()
+
+        st.rerun()
+
 def get_valid_custom_profile_apv(session_state):
 
     """Return a valid custom profile Ap/V as an int, or None when unavailable."""
@@ -2586,28 +2612,6 @@ with st.sidebar:
 
                     st.rerun()
 
-    if st.session_state.get("show_apv_geometry_help"):
-
-        st.divider()
-
-        st.markdown(
-            f"### {t('apv_geometry_guide_title')}"
-        )
-
-        st.image(
-            str(get_apv_geometry_help_image_path())
-        )
-
-        if st.button(
-            t("close_apv_geometry_guide"),
-            key="close_apv_geometry_guide",
-            use_container_width=True
-        ):
-
-            hide_apv_geometry_help()
-
-            st.rerun()
-
     # ---------------------------------------------------
     # DOWNLOADS
     # ---------------------------------------------------
@@ -3331,6 +3335,8 @@ if current_step == 0:
             st.info(
                 t("custom_profile_geometry_apv_help")
             )
+
+            render_apv_geometry_help()
 
     # ---------------------------------------------------
     # NAVIGATION
