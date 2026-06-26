@@ -147,6 +147,13 @@ def card(
         session_state[state_key] = compare_value
 
         if (
+            state_key == "category"
+            and compare_value != "Andre profiler"
+        ):
+
+            session_state["show_apv_geometry_help"] = False
+
+        if (
             compare_value == "Cirkulære rør middelsvære"
             or
             compare_value == "Cirkulære rør svære"

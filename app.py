@@ -1706,6 +1706,7 @@ defaults = {
     "custom_profile_b": "",
     "custom_profile_A": "",
     "apv_method": "Direkte",
+    "show_apv_geometry_help": False,
 
     "project_package_cache": {},
     "project_report_cache": {},
@@ -1718,6 +1719,13 @@ for key, value in defaults.items():
 
         st.session_state[key] = value
 
+if (
+    st.session_state.get("category") != "Andre profiler"
+    or st.session_state.get("apv_method") != GEOMETRY_APV_METHOD
+):
+
+    st.session_state.show_apv_geometry_help = False
+
 rebuild_combined_materials(st.session_state)
 
 # ---------------------------------------------------
@@ -1729,6 +1737,27 @@ def t(key):
     return translations[
         st.session_state.language
     ][key]
+
+
+def hide_apv_geometry_help():
+
+    st.session_state.show_apv_geometry_help = False
+
+
+def show_apv_geometry_help():
+
+    st.session_state.show_apv_geometry_help = True
+
+
+def get_apv_geometry_help_image_path():
+
+    filename = (
+        "apv_geometry_da.png"
+        if st.session_state.language == "DA"
+        else "apv_geometry_en.png"
+    )
+
+    return Path("static") / "images" / filename
 
 
 def get_valid_custom_profile_apv(session_state):
@@ -2174,6 +2203,8 @@ with st.container(key="top_action_row"):
             use_container_width=True
         ):
 
+            hide_apv_geometry_help()
+
             reset_calculation_state(
                 st.session_state
             )
@@ -2194,6 +2225,8 @@ with st.container(key="top_action_row"):
             icon=UI_ICONS["delete_project"],
             use_container_width=True
         ):
+
+            hide_apv_geometry_help()
 
             st.session_state.clear()
 
@@ -2355,6 +2388,8 @@ with st.sidebar:
             use_container_width=True
         ):
 
+            hide_apv_geometry_help()
+
             reset_calculation_state(
                 st.session_state
             )
@@ -2400,6 +2435,8 @@ with st.sidebar:
                 ):
 
                     # RESET STREAMLIT WIDGET STATES
+
+                    hide_apv_geometry_help()
 
                     widget_keys = [
                         "profile_selectbox",
@@ -2523,6 +2560,8 @@ with st.sidebar:
                     key=f"delete_sidebar_{idx}"
                 ):
 
+                    hide_apv_geometry_help()
+
                     st.session_state.calculations.pop(
                         idx
                     )
@@ -2546,6 +2585,28 @@ with st.sidebar:
                     rebuild_combined_materials(st.session_state)
 
                     st.rerun()
+
+    if st.session_state.get("show_apv_geometry_help"):
+
+        st.divider()
+
+        st.markdown(
+            f"### {t('apv_geometry_guide_title')}"
+        )
+
+        st.image(
+            str(get_apv_geometry_help_image_path())
+        )
+
+        if st.button(
+            t("close_apv_geometry_guide"),
+            key="close_apv_geometry_guide",
+            use_container_width=True
+        ):
+
+            hide_apv_geometry_help()
+
+            st.rerun()
 
     # ---------------------------------------------------
     # DOWNLOADS
@@ -2841,6 +2902,8 @@ with st.container(key="step_tabs"):
                     key=f"step_{idx}"
                 ):
 
+                    hide_apv_geometry_help()
+
                     st.session_state.current_step = idx
 
                     st.rerun()
@@ -2908,6 +2971,8 @@ if current_step == 0:
     # ---------------------------------------------------
 
     if category != "Andre profiler":
+
+        hide_apv_geometry_help()
 
         # ---------------------------------------------------
         # PROFILTYPER
@@ -3036,6 +3101,8 @@ if current_step == 0:
                             else "secondary"
                         )
                     ):
+
+                        hide_apv_geometry_help()
 
                         st.session_state.profile_type = (
                             option
@@ -3169,6 +3236,7 @@ if current_step == 0:
                 ),
                 use_container_width=True,
             ):
+                hide_apv_geometry_help()
                 st.session_state.apv_method = DIRECT_APV_METHOD
                 st.rerun()
 
@@ -3183,6 +3251,7 @@ if current_step == 0:
                 ),
                 use_container_width=True,
             ):
+                show_apv_geometry_help()
                 st.session_state.apv_method = GEOMETRY_APV_METHOD
                 st.rerun()
 
@@ -3277,6 +3346,8 @@ if current_step == 0:
             t("next"),
             use_container_width=True
         ):
+
+            hide_apv_geometry_help()
 
             st.session_state.current_step = 1
 
@@ -3461,6 +3532,8 @@ if current_step == 1:
             use_container_width=True
         ):
 
+            hide_apv_geometry_help()
+
             st.session_state.current_step = 0
 
             st.rerun()
@@ -3471,6 +3544,8 @@ if current_step == 1:
             t("next"),
             use_container_width=True
         ):
+
+            hide_apv_geometry_help()
 
             st.session_state.current_step = 2
 
@@ -3550,6 +3625,8 @@ if current_step == 2:
             use_container_width=True
         ):
 
+            hide_apv_geometry_help()
+
             st.session_state.current_step = 1
 
             st.rerun()
@@ -3560,6 +3637,8 @@ if current_step == 2:
             t("next"),
             use_container_width=True
         ):
+
+            hide_apv_geometry_help()
 
             st.session_state.current_step = 3
 
@@ -3995,6 +4074,8 @@ if current_step == 3:
             use_container_width=True
         ):
 
+            hide_apv_geometry_help()
+
             st.session_state.current_step = 2
 
             st.rerun()
@@ -4348,4 +4429,3 @@ if current_step == 3:
                 "spreadsheetml.sheet"
             )
         )
-
