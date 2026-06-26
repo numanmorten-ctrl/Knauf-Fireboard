@@ -166,6 +166,9 @@ translations = {
         "calculate_apv":
             "Beregn Ap/V",
 
+        "geometry_method":
+            "Geometri",
+
         "enter_apv_ratio":
             "Indtast Ap/V forhold (m²/m³)",
 
@@ -175,11 +178,26 @@ translations = {
         "enter_area":
             "Indtast stålets tværsnitsareal (mm²)",
 
+        "enter_custom_profile_a":
+            "Indtast a (mm)",
+
+        "enter_custom_profile_b":
+            "Indtast b (mm)",
+
+        "enter_custom_profile_A":
+            "Indtast A (mm²)",
+
         "calculate":
             "Beregn",
 
         "invalid_numbers":
             "Indtast gyldige tal",
+
+        "custom_profile_geometry_apv_help":
+            "Ap/V beregnes automatisk, når du har valgt inddækning og antal sider.",
+
+        "invalid_geometry_for_apv":
+            "Indtast gyldige positive værdier for a, b og A",
 
         "calculated_apv":
             "Beregnet Ap/V",
@@ -494,6 +512,9 @@ translations = {
         "calculate_apv":
             "Calculate Ap/V",
 
+        "geometry_method":
+            "Geometry",
+
         "enter_apv_ratio":
             "Enter Ap/V ratio (m²/m³)",
 
@@ -503,11 +524,26 @@ translations = {
         "enter_area":
             "Enter steel cross-sectional area (mm²)",
 
+        "enter_custom_profile_a":
+            "Enter a (mm)",
+
+        "enter_custom_profile_b":
+            "Enter b (mm)",
+
+        "enter_custom_profile_A":
+            "Enter A (mm²)",
+
         "calculate":
             "Calculate",
 
         "invalid_numbers":
             "Enter valid numbers",
+
+        "custom_profile_geometry_apv_help":
+            "Ap/V is calculated automatically after you select cladding and number of protected sides.",
+
+        "invalid_geometry_for_apv":
+            "Enter valid positive values for a, b and A",
 
         "calculated_apv":
             "Calculated Ap/V",
