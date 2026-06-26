@@ -62,6 +62,8 @@ def reset_calculation_state(session_state):
 
         session_state[key] = None
 
+    session_state["show_apv_geometry_help"] = False
+
     session_state.editing = False
 
     session_state.edit_index = None
