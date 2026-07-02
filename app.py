@@ -1723,7 +1723,7 @@ defaults = {
     "profile_length": "6,0",
     "waste_percent": "10",
     "selected_material_variant": None,
-    "show_project_uploader": False,
+    "show_project_dialog": False,
 }
 
 for key, value in defaults.items():
@@ -1750,6 +1750,81 @@ def t(key):
     return translations[
         st.session_state.language
     ][key]
+
+
+def load_uploaded_project(uploaded_project_file):
+
+    if uploaded_project_file is None:
+
+        return False
+
+    uploaded_project_bytes = uploaded_project_file.getvalue()
+    uploaded_project_signature = (
+        uploaded_project_file.name,
+        len(uploaded_project_bytes),
+        uploaded_project_bytes[:64],
+    )
+
+    if st.session_state.get("loaded_project_signature") == uploaded_project_signature:
+
+        return False
+
+    try:
+
+        import_project_state(
+            st.session_state,
+            uploaded_project_bytes,
+        )
+
+    except ProjectLoadError as exc:
+
+        st.error(
+            f"{t('invalid_project_file')}: {exc}"
+        )
+        return False
+
+    st.session_state.loaded_project_signature = uploaded_project_signature
+    st.success(
+        t("project_loaded_successfully")
+    )
+    st.session_state.show_project_dialog = False
+    st.rerun()
+    return True
+
+
+def render_open_project_uploader():
+
+    st.write(t("choose_fireboard_project_file"))
+
+    uploaded_project_file = st.file_uploader(
+        t("select_fireboard_file"),
+        type=["fireboard"],
+        accept_multiple_files=False,
+        key="open_fireboard_project",
+    )
+
+    load_uploaded_project(uploaded_project_file)
+
+
+def render_open_project_dialog():
+
+    dialog = getattr(st, "dialog", None)
+
+    if dialog is None:
+
+        with st.container(key="open_project_inline_fallback"):
+
+            st.subheader(t("open_fireboard_project"))
+            render_open_project_uploader()
+
+        return
+
+    @dialog(t("open_fireboard_project"))
+    def open_project_dialog():
+
+        render_open_project_uploader()
+
+    open_project_dialog()
 
 
 def hide_apv_geometry_help():
@@ -2446,84 +2521,6 @@ with st.sidebar:
         color: #003b7a !important;
     }
 
-    .st-key-project-uploader-panel {
-
-        background: #ffffff !important;
-        border: 1px solid #d9dde3 !important;
-        border-left: 4px solid #00A0E6 !important;
-        padding: 0.6rem !important;
-        margin: 0 0 0.75rem 0 !important;
-        box-shadow: none !important;
-    }
-
-    .project-upload-heading {
-
-        color: #1f2a35 !important;
-        font-size: 13px !important;
-        font-weight: 700 !important;
-        line-height: 1.2 !important;
-        margin: 0 0 0.45rem 0 !important;
-    }
-
-
-    .st-key-project-uploader-panel [data-testid="stFileUploader"] {
-
-        margin: 0 !important;
-    }
-
-    .st-key-project-uploader-panel [data-testid="stFileUploader"] label,
-    .st-key-project-uploader-panel [data-testid="stFileUploaderDropzoneInstructions"],
-    .st-key-project-uploader-panel [data-testid="stFileUploaderDropzoneInstructions"] *,
-    .st-key-project-uploader-panel [data-testid="stFileUploader"] small,
-    .st-key-project-uploader-panel [data-testid="stFileUploader"] svg {
-
-        display: none !important;
-    }
-
-    .st-key-project-uploader-panel [data-testid="stFileUploader"] section,
-    .st-key-project-uploader-panel [data-testid="stFileUploaderDropzone"] {
-
-        align-items: flex-start !important;
-        background: transparent !important;
-        border: 0 !important;
-        border-radius: 0 !important;
-        box-shadow: none !important;
-        color: #1f2a35 !important;
-        display: flex !important;
-        justify-content: flex-start !important;
-        min-height: 0 !important;
-        padding: 0 !important;
-    }
-
-    .st-key-project-uploader-panel [data-testid="stFileUploader"] section > div,
-    .st-key-project-uploader-panel [data-testid="stFileUploaderDropzone"] > div {
-
-        margin: 0 !important;
-        padding: 0 !important;
-    }
-
-    .st-key-project-uploader-panel [data-testid="stFileUploader"] button {
-
-        background: #ffffff !important;
-        border: 1px solid #00A0E6 !important;
-        border-radius: 0.25rem !important;
-        color: #003b7a !important;
-        -webkit-text-fill-color: #003b7a !important;
-        font-size: 12.5px !important;
-        font-weight: 700 !important;
-        min-height: 34px !important;
-        padding: 0.25rem 0.7rem !important;
-    }
-
-    .st-key-project-uploader-panel [data-testid="stFileUploader"] button:hover,
-    .st-key-project-uploader-panel [data-testid="stFileUploader"] button:focus-visible {
-
-        background: #f5fbff !important;
-        border-color: #00A0E6 !important;
-        color: #003b7a !important;
-        -webkit-text-fill-color: #003b7a !important;
-    }
-
     /* ---------------------------------------------------
     AKTIV SIDEBAR BEREGNING
     --------------------------------------------------- */
@@ -2577,8 +2574,6 @@ with st.sidebar:
     # PROJECT SAVE / LOAD
     # ---------------------------------------------------
 
-    uploaded_project_file = None
-
     with st.container(key="sidebar_project_actions"):
 
         save_col, open_col = st.columns(2, gap="small")
@@ -2599,122 +2594,14 @@ with st.sidebar:
             if st.button(
                 t("open_project"),
                 use_container_width=True,
-                key="toggle_project_uploader",
+                key="open_project_dialog_button",
             ):
 
-                st.session_state.show_project_uploader = (
-                    not st.session_state.show_project_uploader
-                )
+                st.session_state.show_project_dialog = True
 
-    if st.session_state.show_project_uploader:
+    if st.session_state.show_project_dialog:
 
-        with st.container(key="project_uploader_panel"):
-
-            st.markdown(
-                f"""
-                <div class="project-upload-heading">{html.escape(t("open_project_file"))}</div>
-                """,
-                unsafe_allow_html=True,
-            )
-
-            uploaded_project_file = st.file_uploader(
-                t("select_fireboard_file"),
-                type=["fireboard"],
-                accept_multiple_files=False,
-                key="open_fireboard_project",
-                label_visibility="collapsed",
-            )
-
-            # Keep the native Streamlit uploader for file selection/state, but
-            # collapse its dark drag/drop presentation into a compact button row.
-            # The custom panel above provides the visible Knauf-styled upload UI.
-            st.markdown(
-                f"""
-                <style>
-                section[data-testid="stSidebar"] .st-key-sidebar-project-actions [data-testid="stHorizontalBlock"] {{
-                    display: flex !important;
-                    align-items: stretch !important;
-                    gap: 0.45rem !important;
-                }}
-
-                section[data-testid="stSidebar"] .st-key-sidebar-project-actions [data-testid="column"] {{
-                    flex: 1 1 0 !important;
-                    min-width: 0 !important;
-                    width: 50% !important;
-                }}
-
-                section[data-testid="stSidebar"] .st-key-project-uploader-panel [data-testid="stFileUploaderDropzoneInstructions"],
-                section[data-testid="stSidebar"] .st-key-project-uploader-panel [data-testid="stFileUploaderDropzoneInstructions"] *,
-                section[data-testid="stSidebar"] .st-key-project-uploader-panel [data-testid="stFileUploader"] svg,
-                section[data-testid="stSidebar"] .st-key-project-uploader-panel [data-testid="stFileUploader"] small {{
-                    display: none !important;
-                }}
-
-                section[data-testid="stSidebar"] .st-key-project-uploader-panel [data-testid="stFileUploader"] section,
-                section[data-testid="stSidebar"] .st-key-project-uploader-panel [data-testid="stFileUploaderDropzone"] {{
-                    background: transparent !important;
-                    border: 0 !important;
-                    box-shadow: none !important;
-                    min-height: 0 !important;
-                    padding: 0 !important;
-                }}
-
-                section[data-testid="stSidebar"] .st-key-project-uploader-panel [data-testid="stFileUploader"] button {{
-                    background: #ffffff !important;
-                    border: 1px solid #00A0E6 !important;
-                    border-radius: 0.25rem !important;
-                    color: #003b7a !important;
-                    -webkit-text-fill-color: #003b7a !important;
-                    font-size: 12.5px !important;
-                    font-weight: 700 !important;
-                    min-height: 34px !important;
-                    padding: 0.25rem 0.7rem !important;
-                }}
-                </style>
-                <script>
-                (function() {{
-                    const label = {json.dumps(t("select_fireboard_file"))};
-                    const doc = window.parent.document;
-                    const panel = doc.querySelector('section[data-testid="stSidebar"] .st-key-project-uploader-panel');
-                    const buttons = panel ? panel.querySelectorAll('[data-testid="stFileUploader"] button') : [];
-                    buttons.forEach((button) => {{ button.textContent = label; }});
-                }})();
-                </script>
-                """,
-                unsafe_allow_html=True,
-            )
-
-    if uploaded_project_file is not None:
-
-        uploaded_project_bytes = uploaded_project_file.getvalue()
-        uploaded_project_signature = (
-            uploaded_project_file.name,
-            len(uploaded_project_bytes),
-            uploaded_project_bytes[:64],
-        )
-
-        if st.session_state.get("loaded_project_signature") != uploaded_project_signature:
-
-            try:
-
-                import_project_state(
-                    st.session_state,
-                    uploaded_project_bytes,
-                )
-
-            except ProjectLoadError as exc:
-
-                st.error(
-                    f"{t('open_project_error')}: {exc}"
-                )
-
-            else:
-
-                st.session_state.loaded_project_signature = uploaded_project_signature
-                st.success(
-                    t("open_project_success")
-                )
-                st.rerun()
+        render_open_project_dialog()
 
     st.divider()
 
