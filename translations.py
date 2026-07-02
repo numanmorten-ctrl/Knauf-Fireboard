@@ -57,17 +57,20 @@ translations = {
         "open_project":
             "Åbn projekt",
 
-        "open_project_file":
-            "Åbn projektfil",
+        "open_fireboard_project":
+            "Åbn Fireboard-projekt",
 
         "select_fireboard_file":
             "Vælg .fireboard-fil",
 
-        "open_project_success":
-            "Projektet er åbnet.",
+        "choose_fireboard_project_file":
+            "Vælg en gemt Fireboard-projektfil for at gendanne dit projekt.",
 
-        "open_project_error":
-            "Projektfilen kunne ikke åbnes",
+        "project_loaded_successfully":
+            "Projektet er indlæst.",
+
+        "invalid_project_file":
+            "Ugyldig projektfil",
 
         "generate_project_package":
             "Generer projektpakke",
@@ -427,17 +430,20 @@ translations = {
         "open_project":
             "Open project",
 
-        "open_project_file":
-            "Open project file",
+        "open_fireboard_project":
+            "Open Fireboard project",
 
         "select_fireboard_file":
             "Select .fireboard file",
 
-        "open_project_success":
-            "Project opened.",
+        "choose_fireboard_project_file":
+            "Choose a saved Fireboard project file to restore your project.",
 
-        "open_project_error":
-            "The project file could not be opened",
+        "project_loaded_successfully":
+            "Project loaded successfully.",
+
+        "invalid_project_file":
+            "Invalid project file",
 
         "generate_project_package":
             "Generate project package",
