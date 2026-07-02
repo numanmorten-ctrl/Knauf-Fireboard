@@ -60,6 +60,18 @@ translations = {
         "open_fireboard_project":
             "Åbn Fireboard-projekt",
 
+        "save_fireboard_project":
+            "Gem Fireboard-projekt",
+
+        "suggested_fireboard_filename":
+            "Foreslået filnavn",
+
+        "download_fireboard_project":
+            "Download Fireboard-projekt",
+
+        "cancel":
+            "Annuller",
+
         "select_fireboard_file":
             "Vælg .fireboard-fil",
 
@@ -432,6 +444,18 @@ translations = {
 
         "open_fireboard_project":
             "Open Fireboard project",
+
+        "save_fireboard_project":
+            "Save Fireboard project",
+
+        "suggested_fireboard_filename":
+            "Suggested filename",
+
+        "download_fireboard_project":
+            "Download Fireboard project",
+
+        "cancel":
+            "Cancel",
 
         "select_fireboard_file":
             "Select .fireboard file",
