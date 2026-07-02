@@ -2390,6 +2390,8 @@ with st.sidebar:
     }
 
     .st-key-sidebar-project-actions div[data-testid="column"] > div,
+    .st-key-sidebar-project-actions [data-testid="stButton"],
+    .st-key-sidebar-project-actions [data-testid="stDownloadButton"],
     .st-key-sidebar-project-actions div.stButton,
     .st-key-sidebar-project-actions div.stDownloadButton {
 
@@ -2397,14 +2399,17 @@ with st.sidebar:
         width: 100% !important;
     }
 
+    .st-key-sidebar-project-actions [data-testid="stButton"] > button,
+    .st-key-sidebar-project-actions [data-testid="stDownloadButton"] > button,
     .st-key-sidebar-project-actions div.stButton > button,
     .st-key-sidebar-project-actions div.stDownloadButton > button {
 
         align-items: center !important;
         display: flex !important;
         justify-content: center !important;
-        min-height: 36px !important;
-        height: 36px !important;
+        min-height: 38px !important;
+        height: 38px !important;
+        max-height: 38px !important;
         width: 100% !important;
         padding: 0.3rem 0.35rem !important;
         border: 1px solid #b8c2cc !important;
@@ -2417,6 +2422,8 @@ with st.sidebar:
         white-space: nowrap !important;
     }
 
+    .st-key-sidebar-project-actions [data-testid="stButton"] > button *,
+    .st-key-sidebar-project-actions [data-testid="stDownloadButton"] > button *,
     .st-key-sidebar-project-actions div.stButton > button *,
     .st-key-sidebar-project-actions div.stDownloadButton > button * {
 
@@ -2425,6 +2432,10 @@ with st.sidebar:
         white-space: nowrap !important;
     }
 
+    .st-key-sidebar-project-actions [data-testid="stButton"] > button:hover,
+    .st-key-sidebar-project-actions [data-testid="stButton"] > button:focus-visible,
+    .st-key-sidebar-project-actions [data-testid="stDownloadButton"] > button:hover,
+    .st-key-sidebar-project-actions [data-testid="stDownloadButton"] > button:focus-visible,
     .st-key-sidebar-project-actions div.stButton > button:hover,
     .st-key-sidebar-project-actions div.stButton > button:focus-visible,
     .st-key-sidebar-project-actions div.stDownloadButton > button:hover,
@@ -2533,6 +2544,7 @@ with st.sidebar:
     AKTIV SIDEBAR BEREGNING
     --------------------------------------------------- */
 
+    section[data-testid="stSidebar"] button[kind="primary"],
     div[data-testid="stSidebar"] button[kind="primary"] {
 
         background: #003b7a !important;
@@ -2546,6 +2558,9 @@ with st.sidebar:
         box-shadow: none !important;
     }
 
+    section[data-testid="stSidebar"] button[kind="primary"] p,
+    section[data-testid="stSidebar"] button[kind="primary"] span,
+    section[data-testid="stSidebar"] button[kind="primary"] div,
     div[data-testid="stSidebar"] button[kind="primary"] p,
     div[data-testid="stSidebar"] button[kind="primary"] span,
     div[data-testid="stSidebar"] button[kind="primary"] div {
@@ -2561,6 +2576,7 @@ with st.sidebar:
 
     /* HOVER */
 
+    section[data-testid="stSidebar"] button[kind="primary"]:hover,
     div[data-testid="stSidebar"] button[kind="primary"]:hover {
 
         background: #002e5f !important;
@@ -2615,6 +2631,120 @@ with st.sidebar:
                 type=["fireboard"],
                 accept_multiple_files=False,
                 key="open_fireboard_project",
+            )
+
+            # Streamlit renders the uploader's visible dropzone after the keyed
+            # container has been created, and the concrete elements use
+            # data-testid attributes (not the old `.stFileUploader*` class
+            # names).  Keep this late, sidebar-scoped override next to the
+            # widget so it wins over Streamlit's generated Emotion CSS and any
+            # earlier app-wide button/uploader rules.
+            st.markdown(
+                """
+                <style>
+                section[data-testid="stSidebar"] .st-key-sidebar-project-actions [data-testid="stHorizontalBlock"] {
+                    display: flex !important;
+                    align-items: stretch !important;
+                    gap: 0.45rem !important;
+                }
+
+                section[data-testid="stSidebar"] .st-key-sidebar-project-actions [data-testid="column"] {
+                    flex: 1 1 0 !important;
+                    min-width: 0 !important;
+                    width: 50% !important;
+                }
+
+                section[data-testid="stSidebar"] .st-key-sidebar-project-actions [data-testid="column"] > div,
+                section[data-testid="stSidebar"] .st-key-sidebar-project-actions [data-testid="stDownloadButton"],
+                section[data-testid="stSidebar"] .st-key-sidebar-project-actions [data-testid="stButton"] {
+                    display: flex !important;
+                    height: 38px !important;
+                    width: 100% !important;
+                }
+
+                section[data-testid="stSidebar"] .st-key-sidebar-project-actions [data-testid="stDownloadButton"] > button,
+                section[data-testid="stSidebar"] .st-key-sidebar-project-actions [data-testid="stButton"] > button {
+                    align-items: center !important;
+                    background: #ffffff !important;
+                    border: 1px solid #b8c2cc !important;
+                    border-radius: 0.25rem !important;
+                    color: #003b7a !important;
+                    display: flex !important;
+                    font-size: 12.5px !important;
+                    font-weight: 700 !important;
+                    height: 38px !important;
+                    justify-content: center !important;
+                    line-height: 1.1 !important;
+                    max-height: 38px !important;
+                    min-height: 38px !important;
+                    padding: 0.3rem 0.35rem !important;
+                    text-align: center !important;
+                    white-space: nowrap !important;
+                    width: 100% !important;
+                }
+
+                section[data-testid="stSidebar"] .st-key-sidebar-project-actions [data-testid="stDownloadButton"] > button *,
+                section[data-testid="stSidebar"] .st-key-sidebar-project-actions [data-testid="stButton"] > button * {
+                    color: #003b7a !important;
+                    line-height: 1.1 !important;
+                    white-space: nowrap !important;
+                }
+
+                section[data-testid="stSidebar"] .st-key-project-uploader-panel {
+                    background: #ffffff !important;
+                    border: 1px solid #d9dde3 !important;
+                    border-left: 4px solid #00A0E6 !important;
+                    box-shadow: none !important;
+                    margin: 0 0 0.75rem 0 !important;
+                    padding: 0.55rem 0.6rem 0.45rem 0.6rem !important;
+                }
+
+                section[data-testid="stSidebar"] .st-key-project-uploader-panel [data-testid="stFileUploader"],
+                section[data-testid="stSidebar"] .st-key-project-uploader-panel [data-testid="stFileUploader"] *,
+                section[data-testid="stSidebar"] .st-key-project-uploader-panel [data-testid="stFileUploaderDropzone"],
+                section[data-testid="stSidebar"] .st-key-project-uploader-panel [data-testid="stFileUploaderDropzone"] *,
+                section[data-testid="stSidebar"] .st-key-project-uploader-panel [data-testid="stFileUploaderDropzoneInstructions"],
+                section[data-testid="stSidebar"] .st-key-project-uploader-panel [data-testid="stFileUploaderDropzoneInstructions"] * {
+                    color: #1f2a35 !important;
+                    -webkit-text-fill-color: #1f2a35 !important;
+                    text-shadow: none !important;
+                }
+
+                section[data-testid="stSidebar"] .st-key-project-uploader-panel [data-testid="stFileUploader"] section,
+                section[data-testid="stSidebar"] .st-key-project-uploader-panel [data-testid="stFileUploaderDropzone"] {
+                    background: #ffffff !important;
+                    border: 1px dashed #b8c2cc !important;
+                    border-radius: 0.25rem !important;
+                    box-shadow: none !important;
+                    min-height: 52px !important;
+                }
+
+                section[data-testid="stSidebar"] .st-key-project-uploader-panel [data-testid="stFileUploader"] section:hover,
+                section[data-testid="stSidebar"] .st-key-project-uploader-panel [data-testid="stFileUploader"] section:focus-within,
+                section[data-testid="stSidebar"] .st-key-project-uploader-panel [data-testid="stFileUploaderDropzone"]:hover,
+                section[data-testid="stSidebar"] .st-key-project-uploader-panel [data-testid="stFileUploaderDropzone"]:focus-within {
+                    background: #f5fbff !important;
+                    border-color: #00A0E6 !important;
+                }
+
+                section[data-testid="stSidebar"] .st-key-project-uploader-panel [data-testid="stFileUploader"] svg,
+                section[data-testid="stSidebar"] .st-key-project-uploader-panel [data-testid="stFileUploaderDropzone"] svg {
+                    color: #00A0E6 !important;
+                    fill: #00A0E6 !important;
+                    -webkit-text-fill-color: #00A0E6 !important;
+                }
+
+                section[data-testid="stSidebar"] .st-key-project-uploader-panel [data-testid="stFileUploader"] button,
+                section[data-testid="stSidebar"] .st-key-project-uploader-panel [data-testid="stFileUploaderDropzone"] button {
+                    background: #ffffff !important;
+                    border: 1px solid #00A0E6 !important;
+                    color: #003b7a !important;
+                    -webkit-text-fill-color: #003b7a !important;
+                    font-weight: 700 !important;
+                }
+                </style>
+                """,
+                unsafe_allow_html=True,
             )
 
     if uploaded_project_file is not None:
