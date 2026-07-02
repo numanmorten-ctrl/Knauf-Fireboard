@@ -1952,8 +1952,7 @@ def render_save_project_contents():
     filename = st.session_state.get("save_project_filename") or project_filename()
     st.session_state.save_project_filename = filename
 
-    st.write(t("suggested_fireboard_filename"))
-    st.code(filename)
+    st.write(t("save_fireboard_project_description"))
 
     st.download_button(
         label=t("download_fireboard_project"),

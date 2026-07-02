@@ -63,8 +63,8 @@ translations = {
         "save_fireboard_project":
             "Gem Fireboard-projekt",
 
-        "suggested_fireboard_filename":
-            "Foreslået filnavn",
+        "save_fireboard_project_description":
+            "Gem projektet som en lokal .fireboard-fil. Filen kan senere åbnes igen eller deles med andre.",
 
         "download_fireboard_project":
             "Download Fireboard-projekt",
@@ -448,8 +448,8 @@ translations = {
         "save_fireboard_project":
             "Save Fireboard project",
 
-        "suggested_fireboard_filename":
-            "Suggested filename",
+        "save_fireboard_project_description":
+            "Save the project as a local .fireboard file. The file can later be reopened or shared with others.",
 
         "download_fireboard_project":
             "Download Fireboard project",
