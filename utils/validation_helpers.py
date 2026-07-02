@@ -1,3 +1,7 @@
+import pandas as pd
+
+from utils.calculation_state import apply_default_material_settings
+
 def validate_temperature(temperature, t):
 
     try:
@@ -11,7 +15,6 @@ def validate_temperature(temperature, t):
 
     return None
 
-import pandas as pd
 
 
 def validate_fireboard_lookup(
@@ -67,5 +70,7 @@ def reset_calculation_state(session_state):
     session_state.editing = False
 
     session_state.edit_index = None
+
+    apply_default_material_settings(session_state)
 
     session_state.current_step = 0

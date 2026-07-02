@@ -47,12 +47,38 @@ def restore_calculation_material_settings(
     session_state: Any,
     calculation: dict[str, Any],
 ) -> None:
-    """Restore saved material-list inputs for the selected calculation."""
+    """Restore saved material-list inputs for the selected calculation.
+
+    Defaults are only used for older calculations that do not yet carry saved
+    material settings. Streamlit widgets with these keys read from
+    ``session_state`` during reruns, so this must happen before the widgets are
+    rendered.
+    """
 
     for key in MATERIAL_SETTING_KEYS:
         session_state[key] = deepcopy(
             calculation.get(key, MATERIAL_SETTING_DEFAULTS[key])
         )
+
+
+def apply_default_material_settings(session_state: Any) -> None:
+    """Apply material-list defaults for a brand-new calculation draft."""
+
+    for key in MATERIAL_SETTING_KEYS:
+        session_state[key] = deepcopy(MATERIAL_SETTING_DEFAULTS[key])
+
+
+def update_selected_calculation_material_settings(session_state: Any) -> bool:
+    """Persist current material-list widget values to the active calculation."""
+
+    edit_index = session_state.get("edit_index")
+    calculations = session_state.get("calculations", [])
+
+    if edit_index is None or not 0 <= edit_index < len(calculations):
+        return False
+
+    calculations[edit_index].update(material_settings_from_session(session_state))
+    return True
 
 
 
