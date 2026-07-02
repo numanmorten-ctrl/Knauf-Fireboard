@@ -11,6 +11,49 @@ import pandas as pd
 MATERIALS_KEY = "materials_table"
 PENDING_MATERIALS_KEY = "current_materials_table"
 PENDING_SIGNATURE_KEY = "current_materials_signature"
+MATERIAL_SETTING_KEYS = (
+    "profile_length",
+    "waste_percent",
+    "selected_material_variant",
+)
+MATERIAL_SETTING_DEFAULTS = {
+    "profile_length": "6,0",
+    "waste_percent": "10",
+    "selected_material_variant": None,
+}
+
+
+def material_settings_from_session(session_state: Any) -> dict[str, Any]:
+    """Return material-list inputs from session state with UI defaults."""
+
+    return {
+        key: deepcopy(session_state.get(key, MATERIAL_SETTING_DEFAULTS[key]))
+        for key in MATERIAL_SETTING_KEYS
+    }
+
+
+def attach_material_settings(
+    session_state: Any,
+    calculation: dict[str, Any],
+) -> dict[str, Any]:
+    """Return a calculation copy with current material-list input settings."""
+
+    saved_calculation = deepcopy(calculation)
+    saved_calculation.update(material_settings_from_session(session_state))
+    return saved_calculation
+
+
+def restore_calculation_material_settings(
+    session_state: Any,
+    calculation: dict[str, Any],
+) -> None:
+    """Restore saved material-list inputs for the selected calculation."""
+
+    for key in MATERIAL_SETTING_KEYS:
+        session_state[key] = deepcopy(
+            calculation.get(key, MATERIAL_SETTING_DEFAULTS[key])
+        )
+
 
 
 def calculation_signature(calculation: dict[str, Any]) -> tuple[Any, ...]:
@@ -63,7 +106,7 @@ def attach_pending_materials(
 ) -> dict[str, Any]:
     """Return a calculation copy with the matching pending material list attached."""
 
-    saved_calculation = deepcopy(calculation)
+    saved_calculation = attach_material_settings(session_state, calculation)
 
     if (
         session_state.get(PENDING_SIGNATURE_KEY)

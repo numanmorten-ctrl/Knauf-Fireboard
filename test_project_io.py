@@ -144,3 +144,55 @@ def test_import_project_state_rejects_missing_marker_without_overwriting_existin
 
     assert target.project_name == "Keep me"
     assert target.calculations == [{"profile": "existing"}]
+
+
+def test_project_save_load_roundtrip_preserves_per_calculation_material_settings():
+    source = SessionState(
+        project_name="Material settings project",
+        company="Knauf",
+        prepared_by="Tester",
+        description="Multiple calculations",
+        calculations=[
+            {
+                "category": "H-profiler",
+                "profile": "HEB 100",
+                "montage": "Klammeløsning",
+                "sides": 4,
+                "fire_time": 30,
+                "temperature": 450,
+                "apv": 123,
+                "thickness": 40,
+                "profile_length": "5,0",
+                "waste_percent": "5",
+                "selected_material_variant": "2x20",
+                MATERIALS_KEY: pd.DataFrame([{"Beskrivelse": "A", "Total": 5.0}]),
+            },
+            {
+                "category": "H-profiler",
+                "profile": "HEB 100",
+                "montage": "Klammeløsning",
+                "sides": 4,
+                "fire_time": 60,
+                "temperature": 450,
+                "apv": 123,
+                "thickness": 40,
+                "profile_length": "8,0",
+                "waste_percent": "15",
+                "selected_material_variant": "15+25",
+                MATERIALS_KEY: pd.DataFrame([{"Beskrivelse": "B", "Total": 8.0}]),
+            },
+        ],
+    )
+
+    exported = export_project_state(source)
+    target = SessionState(language="DA")
+    import_project_state(target, exported)
+
+    assert target.calculations[0]["profile_length"] == "5,0"
+    assert target.calculations[1]["profile_length"] == "8,0"
+    assert target.calculations[0]["waste_percent"] == "5"
+    assert target.calculations[1]["waste_percent"] == "15"
+    assert target.calculations[0]["selected_material_variant"] == "2x20"
+    assert target.calculations[1]["selected_material_variant"] == "15+25"
+    assert target.calculations[0][MATERIALS_KEY].iloc[0]["Total"] == 5.0
+    assert target.calculations[1][MATERIALS_KEY].iloc[0]["Total"] == 8.0
