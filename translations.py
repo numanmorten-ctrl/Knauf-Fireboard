@@ -60,6 +60,9 @@ translations = {
         "open_project_file":
             "Åbn projektfil",
 
+        "select_fireboard_file":
+            "Vælg .fireboard-fil",
+
         "open_project_success":
             "Projektet er åbnet.",
 
@@ -426,6 +429,9 @@ translations = {
 
         "open_project_file":
             "Open project file",
+
+        "select_fireboard_file":
+            "Select .fireboard file",
 
         "open_project_success":
             "Project opened.",

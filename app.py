@@ -2451,10 +2451,20 @@ with st.sidebar:
         background: #ffffff !important;
         border: 1px solid #d9dde3 !important;
         border-left: 4px solid #00A0E6 !important;
-        padding: 0.55rem 0.6rem 0.45rem 0.6rem !important;
+        padding: 0.6rem !important;
         margin: 0 0 0.75rem 0 !important;
         box-shadow: none !important;
     }
+
+    .project-upload-heading {
+
+        color: #1f2a35 !important;
+        font-size: 13px !important;
+        font-weight: 700 !important;
+        line-height: 1.2 !important;
+        margin: 0 0 0.45rem 0 !important;
+    }
+
 
     .st-key-project-uploader-panel [data-testid="stFileUploader"] {
 
@@ -2462,80 +2472,54 @@ with st.sidebar:
     }
 
     .st-key-project-uploader-panel [data-testid="stFileUploader"] label,
-    .st-key-project-uploader-panel [data-testid="stFileUploader"] label *,
-    .st-key-project-uploader-panel [data-testid="stFileUploader"] p,
+    .st-key-project-uploader-panel [data-testid="stFileUploaderDropzoneInstructions"],
+    .st-key-project-uploader-panel [data-testid="stFileUploaderDropzoneInstructions"] *,
     .st-key-project-uploader-panel [data-testid="stFileUploader"] small,
-    .st-key-project-uploader-panel [data-testid="stFileUploader"] span {
+    .st-key-project-uploader-panel [data-testid="stFileUploader"] svg {
 
-        color: #1f2a35 !important;
-        -webkit-text-fill-color: #1f2a35 !important;
+        display: none !important;
     }
 
-    .st-key-project-uploader-panel [data-testid="stFileUploader"] label,
-    .st-key-project-uploader-panel [data-testid="stFileUploader"] p {
-
-        font-size: 13px !important;
-        font-weight: 600 !important;
-        margin-bottom: 0.25rem !important;
-    }
-
-    .st-key-project-uploader-panel [data-testid="stFileUploaderDropzone"],
-    .st-key-project-uploader-panel [data-testid="stFileUploaderDropzone"] > div {
-
-        background: #ffffff !important;
-        border-color: #b8c2cc !important;
-        color: #1f2a35 !important;
-        box-shadow: none !important;
-    }
-
+    .st-key-project-uploader-panel [data-testid="stFileUploader"] section,
     .st-key-project-uploader-panel [data-testid="stFileUploaderDropzone"] {
 
-        border: 1px dashed #b8c2cc !important;
+        align-items: flex-start !important;
+        background: transparent !important;
+        border: 0 !important;
         border-radius: 0 !important;
-        min-height: 52px !important;
-        padding: 0.35rem 0.45rem !important;
-    }
-
-    .st-key-project-uploader-panel [data-testid="stFileUploaderDropzone"]:hover,
-    .st-key-project-uploader-panel [data-testid="stFileUploaderDropzone"]:focus-within {
-
-        border-color: #00A0E6 !important;
-        background: #f5fbff !important;
-    }
-
-    .st-key-project-uploader-panel [data-testid="stFileUploaderDropzone"] *,
-    .st-key-project-uploader-panel [data-testid="stFileUploaderDropzone"] [data-testid="stMarkdownContainer"] * {
-
+        box-shadow: none !important;
         color: #1f2a35 !important;
-        -webkit-text-fill-color: #1f2a35 !important;
-        border-color: #b8c2cc !important;
+        display: flex !important;
+        justify-content: flex-start !important;
+        min-height: 0 !important;
+        padding: 0 !important;
     }
 
-    .st-key-project-uploader-panel [data-testid="stFileUploaderDropzone"] svg {
+    .st-key-project-uploader-panel [data-testid="stFileUploader"] section > div,
+    .st-key-project-uploader-panel [data-testid="stFileUploaderDropzone"] > div {
 
-        color: #00A0E6 !important;
-        fill: #00A0E6 !important;
-        -webkit-text-fill-color: #00A0E6 !important;
+        margin: 0 !important;
+        padding: 0 !important;
     }
 
-    .st-key-project-uploader-panel [data-testid="stFileUploaderDropzone"] button {
+    .st-key-project-uploader-panel [data-testid="stFileUploader"] button {
 
-        min-height: 30px !important;
-        height: 30px !important;
-        padding: 0.2rem 0.55rem !important;
-        border: 1px solid #00A0E6 !important;
         background: #ffffff !important;
+        border: 1px solid #00A0E6 !important;
+        border-radius: 0.25rem !important;
         color: #003b7a !important;
         -webkit-text-fill-color: #003b7a !important;
-        font-size: 12px !important;
+        font-size: 12.5px !important;
         font-weight: 700 !important;
+        min-height: 34px !important;
+        padding: 0.25rem 0.7rem !important;
     }
 
-    .st-key-project-uploader-panel [data-testid="stFileUploaderDropzone"] button:hover,
-    .st-key-project-uploader-panel [data-testid="stFileUploaderDropzone"] button:focus-visible {
+    .st-key-project-uploader-panel [data-testid="stFileUploader"] button:hover,
+    .st-key-project-uploader-panel [data-testid="stFileUploader"] button:focus-visible {
 
-        border-color: #00A0E6 !important;
         background: #f5fbff !important;
+        border-color: #00A0E6 !important;
         color: #003b7a !important;
         -webkit-text-fill-color: #003b7a !important;
     }
@@ -2626,123 +2610,76 @@ with st.sidebar:
 
         with st.container(key="project_uploader_panel"):
 
+            st.markdown(
+                f"""
+                <div class="project-upload-heading">{html.escape(t("open_project_file"))}</div>
+                """,
+                unsafe_allow_html=True,
+            )
+
             uploaded_project_file = st.file_uploader(
-                t("open_project_file"),
+                t("select_fireboard_file"),
                 type=["fireboard"],
                 accept_multiple_files=False,
                 key="open_fireboard_project",
+                label_visibility="collapsed",
             )
 
-            # Streamlit renders the uploader's visible dropzone after the keyed
-            # container has been created, and the concrete elements use
-            # data-testid attributes (not the old `.stFileUploader*` class
-            # names).  Keep this late, sidebar-scoped override next to the
-            # widget so it wins over Streamlit's generated Emotion CSS and any
-            # earlier app-wide button/uploader rules.
+            # Keep the native Streamlit uploader for file selection/state, but
+            # collapse its dark drag/drop presentation into a compact button row.
+            # The custom panel above provides the visible Knauf-styled upload UI.
             st.markdown(
-                """
+                f"""
                 <style>
-                section[data-testid="stSidebar"] .st-key-sidebar-project-actions [data-testid="stHorizontalBlock"] {
+                section[data-testid="stSidebar"] .st-key-sidebar-project-actions [data-testid="stHorizontalBlock"] {{
                     display: flex !important;
                     align-items: stretch !important;
                     gap: 0.45rem !important;
-                }
+                }}
 
-                section[data-testid="stSidebar"] .st-key-sidebar-project-actions [data-testid="column"] {
+                section[data-testid="stSidebar"] .st-key-sidebar-project-actions [data-testid="column"] {{
                     flex: 1 1 0 !important;
                     min-width: 0 !important;
                     width: 50% !important;
-                }
+                }}
 
-                section[data-testid="stSidebar"] .st-key-sidebar-project-actions [data-testid="column"] > div,
-                section[data-testid="stSidebar"] .st-key-sidebar-project-actions [data-testid="stDownloadButton"],
-                section[data-testid="stSidebar"] .st-key-sidebar-project-actions [data-testid="stButton"] {
-                    display: flex !important;
-                    height: 38px !important;
-                    width: 100% !important;
-                }
-
-                section[data-testid="stSidebar"] .st-key-sidebar-project-actions [data-testid="stDownloadButton"] > button,
-                section[data-testid="stSidebar"] .st-key-sidebar-project-actions [data-testid="stButton"] > button {
-                    align-items: center !important;
-                    background: #ffffff !important;
-                    border: 1px solid #b8c2cc !important;
-                    border-radius: 0.25rem !important;
-                    color: #003b7a !important;
-                    display: flex !important;
-                    font-size: 12.5px !important;
-                    font-weight: 700 !important;
-                    height: 38px !important;
-                    justify-content: center !important;
-                    line-height: 1.1 !important;
-                    max-height: 38px !important;
-                    min-height: 38px !important;
-                    padding: 0.3rem 0.35rem !important;
-                    text-align: center !important;
-                    white-space: nowrap !important;
-                    width: 100% !important;
-                }
-
-                section[data-testid="stSidebar"] .st-key-sidebar-project-actions [data-testid="stDownloadButton"] > button *,
-                section[data-testid="stSidebar"] .st-key-sidebar-project-actions [data-testid="stButton"] > button * {
-                    color: #003b7a !important;
-                    line-height: 1.1 !important;
-                    white-space: nowrap !important;
-                }
-
-                section[data-testid="stSidebar"] .st-key-project-uploader-panel {
-                    background: #ffffff !important;
-                    border: 1px solid #d9dde3 !important;
-                    border-left: 4px solid #00A0E6 !important;
-                    box-shadow: none !important;
-                    margin: 0 0 0.75rem 0 !important;
-                    padding: 0.55rem 0.6rem 0.45rem 0.6rem !important;
-                }
-
-                section[data-testid="stSidebar"] .st-key-project-uploader-panel [data-testid="stFileUploader"],
-                section[data-testid="stSidebar"] .st-key-project-uploader-panel [data-testid="stFileUploader"] *,
-                section[data-testid="stSidebar"] .st-key-project-uploader-panel [data-testid="stFileUploaderDropzone"],
-                section[data-testid="stSidebar"] .st-key-project-uploader-panel [data-testid="stFileUploaderDropzone"] *,
                 section[data-testid="stSidebar"] .st-key-project-uploader-panel [data-testid="stFileUploaderDropzoneInstructions"],
-                section[data-testid="stSidebar"] .st-key-project-uploader-panel [data-testid="stFileUploaderDropzoneInstructions"] * {
-                    color: #1f2a35 !important;
-                    -webkit-text-fill-color: #1f2a35 !important;
-                    text-shadow: none !important;
-                }
+                section[data-testid="stSidebar"] .st-key-project-uploader-panel [data-testid="stFileUploaderDropzoneInstructions"] *,
+                section[data-testid="stSidebar"] .st-key-project-uploader-panel [data-testid="stFileUploader"] svg,
+                section[data-testid="stSidebar"] .st-key-project-uploader-panel [data-testid="stFileUploader"] small {{
+                    display: none !important;
+                }}
 
                 section[data-testid="stSidebar"] .st-key-project-uploader-panel [data-testid="stFileUploader"] section,
-                section[data-testid="stSidebar"] .st-key-project-uploader-panel [data-testid="stFileUploaderDropzone"] {
-                    background: #ffffff !important;
-                    border: 1px dashed #b8c2cc !important;
-                    border-radius: 0.25rem !important;
+                section[data-testid="stSidebar"] .st-key-project-uploader-panel [data-testid="stFileUploaderDropzone"] {{
+                    background: transparent !important;
+                    border: 0 !important;
                     box-shadow: none !important;
-                    min-height: 52px !important;
-                }
+                    min-height: 0 !important;
+                    padding: 0 !important;
+                }}
 
-                section[data-testid="stSidebar"] .st-key-project-uploader-panel [data-testid="stFileUploader"] section:hover,
-                section[data-testid="stSidebar"] .st-key-project-uploader-panel [data-testid="stFileUploader"] section:focus-within,
-                section[data-testid="stSidebar"] .st-key-project-uploader-panel [data-testid="stFileUploaderDropzone"]:hover,
-                section[data-testid="stSidebar"] .st-key-project-uploader-panel [data-testid="stFileUploaderDropzone"]:focus-within {
-                    background: #f5fbff !important;
-                    border-color: #00A0E6 !important;
-                }
-
-                section[data-testid="stSidebar"] .st-key-project-uploader-panel [data-testid="stFileUploader"] svg,
-                section[data-testid="stSidebar"] .st-key-project-uploader-panel [data-testid="stFileUploaderDropzone"] svg {
-                    color: #00A0E6 !important;
-                    fill: #00A0E6 !important;
-                    -webkit-text-fill-color: #00A0E6 !important;
-                }
-
-                section[data-testid="stSidebar"] .st-key-project-uploader-panel [data-testid="stFileUploader"] button,
-                section[data-testid="stSidebar"] .st-key-project-uploader-panel [data-testid="stFileUploaderDropzone"] button {
+                section[data-testid="stSidebar"] .st-key-project-uploader-panel [data-testid="stFileUploader"] button {{
                     background: #ffffff !important;
                     border: 1px solid #00A0E6 !important;
+                    border-radius: 0.25rem !important;
                     color: #003b7a !important;
                     -webkit-text-fill-color: #003b7a !important;
+                    font-size: 12.5px !important;
                     font-weight: 700 !important;
-                }
+                    min-height: 34px !important;
+                    padding: 0.25rem 0.7rem !important;
+                }}
                 </style>
+                <script>
+                (function() {{
+                    const label = {json.dumps(t("select_fireboard_file"))};
+                    const doc = window.parent.document;
+                    const panel = doc.querySelector('section[data-testid="stSidebar"] .st-key-project-uploader-panel');
+                    const buttons = panel ? panel.querySelectorAll('[data-testid="stFileUploader"] button') : [];
+                    buttons.forEach((button) => {{ button.textContent = label; }});
+                }})();
+                </script>
                 """,
                 unsafe_allow_html=True,
             )
