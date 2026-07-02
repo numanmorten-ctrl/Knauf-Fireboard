@@ -196,6 +196,12 @@ translations = {
         "custom_profile_geometry_apv_help":
             "Ap/V beregnes automatisk, når du har valgt inddækning og antal sider.",
 
+        "apv_geometry_guide_title":
+            "Ap/V geometri vejledning",
+
+        "close_apv_geometry_guide":
+            "Luk vejledning",
+
         "invalid_geometry_for_apv":
             "Indtast gyldige positive værdier for a, b og A",
 
@@ -542,6 +548,12 @@ translations = {
         "custom_profile_geometry_apv_help":
             "Ap/V is calculated automatically after you select cladding and number of protected sides.",
 
+        "apv_geometry_guide_title":
+            "Ap/V geometry guide",
+
+        "close_apv_geometry_guide":
+            "Close guide",
+
         "invalid_geometry_for_apv":
             "Enter valid positive values for a, b and A",
 
@@ -691,4 +703,3 @@ translations = {
             "page",
     }
 }
-
