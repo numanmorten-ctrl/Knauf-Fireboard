@@ -51,6 +51,18 @@ translations = {
         "download_project_package":
             "Download projektpakke",
 
+        "save_project":
+            "Gem projekt",
+
+        "open_project":
+            "Åbn projekt",
+
+        "open_project_success":
+            "Projektet er åbnet.",
+
+        "open_project_error":
+            "Projektfilen kunne ikke åbnes",
+
         "generate_project_package":
             "Generer projektpakke",
 
@@ -402,6 +414,18 @@ translations = {
 
         "download_project_package":
             "Download project package",
+
+        "save_project":
+            "Save project",
+
+        "open_project":
+            "Open project",
+
+        "open_project_success":
+            "Project opened.",
+
+        "open_project_error":
+            "The project file could not be opened",
 
         "generate_project_package":
             "Generate project package",
