@@ -44,6 +44,7 @@ from utils.calculation_state import (
     remember_current_materials,
     replace_selected_calculation,
     restore_calculation_material_settings,
+    update_selected_calculation_material_settings,
 )
 from utils.pdf_generator import (
     PROFILE_IMAGE_MAP,
@@ -2931,6 +2932,8 @@ with st.sidebar:
 
                     hide_apv_geometry_help()
 
+                    update_selected_calculation_material_settings(st.session_state)
+
                     widget_keys = [
                         "profile_selectbox",
                         "language_select"
@@ -3083,6 +3086,8 @@ with st.sidebar:
                     rebuild_combined_materials(st.session_state)
 
                     st.rerun()
+
+    update_selected_calculation_material_settings(st.session_state)
 
     # ---------------------------------------------------
     # DOWNLOADS

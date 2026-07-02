@@ -206,3 +206,83 @@ def test_material_settings_are_saved_and_restored_per_selected_layer_build_up():
 
     restore_calculation_material_settings(state, state["calculations"][1])
     assert state["selected_material_variant"] == "15+25"
+
+
+def test_switching_calculations_restores_saved_profile_lengths_without_defaults():
+    from utils.calculation_state import (
+        restore_calculation_material_settings,
+        update_selected_calculation_material_settings,
+    )
+
+    state = {"calculations": [], "edit_index": None, "editing": False}
+
+    first_calc = calculation(20)
+    state["profile_length"] = "5"
+    remember_current_materials(state, first_calc, materials("5m list"))
+    assert append_new_calculation(state, first_calc)
+
+    state["edit_index"] = None
+    state["editing"] = False
+    second_calc = calculation(20, fire_time=60)
+    state["profile_length"] = "8"
+    remember_current_materials(state, second_calc, materials("8m list"))
+    assert append_new_calculation(state, second_calc)
+
+    restore_calculation_material_settings(state, state["calculations"][0])
+    state["edit_index"] = 0
+    assert state["profile_length"] == "5"
+    assert state["profile_length"] != "6,0"
+
+    update_selected_calculation_material_settings(state)
+    restore_calculation_material_settings(state, state["calculations"][1])
+    state["edit_index"] = 1
+    assert state["profile_length"] == "8"
+    assert state["profile_length"] != "6,0"
+
+    update_selected_calculation_material_settings(state)
+    restore_calculation_material_settings(state, state["calculations"][0])
+    state["edit_index"] = 0
+    assert state["profile_length"] == "5"
+
+
+def test_active_calculation_material_settings_update_before_switching_away():
+    from utils.calculation_state import (
+        restore_calculation_material_settings,
+        update_selected_calculation_material_settings,
+    )
+
+    state = {"calculations": [], "edit_index": None, "editing": False}
+
+    first_calc = calculation(20)
+    state["profile_length"] = "5"
+    state["waste_percent"] = "7"
+    state["selected_material_variant"] = "2x20"
+    remember_current_materials(state, first_calc, materials("A list"))
+    assert append_new_calculation(state, first_calc)
+
+    state["edit_index"] = None
+    state["editing"] = False
+    second_calc = calculation(20, fire_time=60)
+    state["profile_length"] = "8"
+    state["waste_percent"] = "12"
+    state["selected_material_variant"] = "15+25"
+    remember_current_materials(state, second_calc, materials("B list"))
+    assert append_new_calculation(state, second_calc)
+
+    restore_calculation_material_settings(state, state["calculations"][0])
+    state["edit_index"] = 0
+    state["profile_length"] = "5,5"
+    state["waste_percent"] = "9"
+    state["selected_material_variant"] = "updated-build-up"
+
+    assert update_selected_calculation_material_settings(state)
+
+    restore_calculation_material_settings(state, state["calculations"][1])
+    state["edit_index"] = 1
+    assert state["profile_length"] == "8"
+
+    restore_calculation_material_settings(state, state["calculations"][0])
+    state["edit_index"] = 0
+    assert state["profile_length"] == "5,5"
+    assert state["waste_percent"] == "9"
+    assert state["selected_material_variant"] == "updated-build-up"
