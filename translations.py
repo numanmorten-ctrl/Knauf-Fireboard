@@ -52,10 +52,10 @@ translations = {
             "Download projektpakke",
 
         "save_project":
-            "Gem",
+            "Gem projekt",
 
         "open_project":
-            "Åbn",
+            "Åbn projekt",
 
         "open_project_file":
             "Åbn projektfil",
@@ -419,10 +419,10 @@ translations = {
             "Download project package",
 
         "save_project":
-            "Save",
+            "Save project",
 
         "open_project":
-            "Open",
+            "Open project",
 
         "open_project_file":
             "Open project file",
