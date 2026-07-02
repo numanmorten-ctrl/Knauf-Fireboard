@@ -1723,6 +1723,7 @@ defaults = {
     "profile_length": "6,0",
     "waste_percent": "10",
     "selected_material_variant": None,
+    "show_project_uploader": False,
 }
 
 for key, value in defaults.items():
@@ -2370,6 +2371,103 @@ with st.sidebar:
         margin-top: -0.75rem;
     }
 
+    .st-key-sidebar-project-actions {
+
+        margin-bottom: 0.45rem;
+    }
+
+    .st-key-sidebar-project-actions div[data-testid="stHorizontalBlock"] {
+
+        gap: 0.45rem !important;
+        align-items: stretch !important;
+    }
+
+    .st-key-sidebar-project-actions div[data-testid="column"] {
+
+        flex: 1 1 0 !important;
+        min-width: 0 !important;
+    }
+
+    .st-key-sidebar-project-actions div.stButton > button,
+    .st-key-sidebar-project-actions div.stDownloadButton > button {
+
+        min-height: 36px !important;
+        height: 36px !important;
+        padding: 0.3rem 0.45rem !important;
+        border-color: #b8c2cc !important;
+        background: #ffffff !important;
+        color: #003b7a !important;
+        font-size: 13px !important;
+        font-weight: 700 !important;
+        line-height: 1.1 !important;
+    }
+
+    .st-key-sidebar-project-actions div.stButton > button:hover,
+    .st-key-sidebar-project-actions div.stDownloadButton > button:hover {
+
+        border-color: #00A0E6 !important;
+        background: #f5fbff !important;
+        color: #003b7a !important;
+    }
+
+    .st-key-project-uploader-panel {
+
+        background: #ffffff !important;
+        border: 1px solid #d9dde3 !important;
+        border-left: 4px solid #00A0E6 !important;
+        padding: 0.55rem 0.6rem 0.45rem 0.6rem !important;
+        margin: 0 0 0.75rem 0 !important;
+        box-shadow: none !important;
+    }
+
+    .st-key-project-uploader-panel [data-testid="stFileUploader"] {
+
+        margin: 0 !important;
+    }
+
+    .st-key-project-uploader-panel [data-testid="stFileUploader"] label,
+    .st-key-project-uploader-panel [data-testid="stFileUploader"] p {
+
+        color: #3e4650 !important;
+        font-size: 13px !important;
+        font-weight: 600 !important;
+        margin-bottom: 0.25rem !important;
+    }
+
+    .st-key-project-uploader-panel [data-testid="stFileUploaderDropzone"] {
+
+        background: #ffffff !important;
+        border: 1px dashed #b8c2cc !important;
+        border-radius: 0 !important;
+        min-height: 52px !important;
+        padding: 0.35rem 0.45rem !important;
+        box-shadow: none !important;
+    }
+
+    .st-key-project-uploader-panel [data-testid="stFileUploaderDropzone"]:hover {
+
+        border-color: #00A0E6 !important;
+        background: #f5fbff !important;
+    }
+
+    .st-key-project-uploader-panel [data-testid="stFileUploaderDropzone"] * {
+
+        color: #3e4650 !important;
+        -webkit-text-fill-color: #3e4650 !important;
+    }
+
+    .st-key-project-uploader-panel [data-testid="stFileUploaderDropzone"] button {
+
+        min-height: 30px !important;
+        height: 30px !important;
+        padding: 0.2rem 0.55rem !important;
+        border: 1px solid #00A0E6 !important;
+        background: #ffffff !important;
+        color: #003b7a !important;
+        font-size: 12px !important;
+        font-weight: 700 !important;
+    }
+
     /* ---------------------------------------------------
     AKTIV SIDEBAR BEREGNING
     --------------------------------------------------- */
@@ -2418,23 +2516,45 @@ with st.sidebar:
     # PROJECT SAVE / LOAD
     # ---------------------------------------------------
 
-    st.download_button(
-        label=t("save_project"),
-        data=export_project_state(st.session_state),
-        file_name=project_filename(),
-        mime=PROJECT_FILE_MIME,
-        use_container_width=True,
-        key="save_fireboard_project",
-    )
+    uploaded_project_file = None
 
-    with st.expander(t("open_project_file"), expanded=False):
-        uploaded_project_file = st.file_uploader(
-            t("open_project"),
-            type=["fireboard"],
-            accept_multiple_files=False,
-            key="open_fireboard_project",
-            label_visibility="collapsed",
-        )
+    with st.container(key="sidebar_project_actions"):
+
+        save_col, open_col = st.columns(2, gap="small")
+
+        with save_col:
+
+            st.download_button(
+                label=t("save_project"),
+                data=export_project_state(st.session_state),
+                file_name=project_filename(),
+                mime=PROJECT_FILE_MIME,
+                use_container_width=True,
+                key="save_fireboard_project",
+            )
+
+        with open_col:
+
+            if st.button(
+                t("open_project"),
+                use_container_width=True,
+                key="toggle_project_uploader",
+            ):
+
+                st.session_state.show_project_uploader = (
+                    not st.session_state.show_project_uploader
+                )
+
+    if st.session_state.show_project_uploader:
+
+        with st.container(key="project_uploader_panel"):
+
+            uploaded_project_file = st.file_uploader(
+                t("open_project_file"),
+                type=["fireboard"],
+                accept_multiple_files=False,
+                key="open_fireboard_project",
+            )
 
     if uploaded_project_file is not None:
 
