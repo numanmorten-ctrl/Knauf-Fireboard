@@ -43,6 +43,7 @@ from utils.calculation_state import (
     rebuild_combined_materials,
     remember_current_materials,
     replace_selected_calculation,
+    restore_calculation_material_settings,
 )
 from utils.pdf_generator import (
     PROFILE_IMAGE_MAP,
@@ -3030,6 +3031,11 @@ with st.sidebar:
                     st.session_state.custom_profile_A = calc.get(
                         "custom_profile_A",
                         ""
+                    )
+
+                    restore_calculation_material_settings(
+                        st.session_state,
+                        calc
                     )
 
                     st.session_state.edit_index = idx

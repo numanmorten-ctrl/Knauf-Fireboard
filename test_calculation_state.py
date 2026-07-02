@@ -142,3 +142,67 @@ def test_newly_appended_calculation_enters_update_mode_immediately():
     )
     assert state["edit_index"] == 1
     assert state["editing"] is True
+
+
+def test_material_settings_are_saved_per_calculation_profile_length():
+    state = {"calculations": [], "edit_index": None, "editing": False}
+
+    first_calc = calculation(20)
+    state["profile_length"] = "5,0"
+    remember_current_materials(state, first_calc, materials("5m list"))
+    assert append_new_calculation(state, first_calc)
+
+    state["edit_index"] = None
+    state["editing"] = False
+    second_calc = calculation(20, fire_time=60)
+    state["profile_length"] = "8,0"
+    remember_current_materials(state, second_calc, materials("8m list"))
+    assert append_new_calculation(state, second_calc)
+
+    assert state["calculations"][0]["profile_length"] == "5,0"
+    assert state["calculations"][1]["profile_length"] == "8,0"
+
+
+def test_material_settings_are_saved_per_calculation_waste_percent():
+    state = {"calculations": [], "edit_index": None, "editing": False}
+
+    first_calc = calculation(20)
+    state["waste_percent"] = "5"
+    remember_current_materials(state, first_calc, materials("5 percent waste"))
+    assert append_new_calculation(state, first_calc)
+
+    state["edit_index"] = None
+    state["editing"] = False
+    second_calc = calculation(25)
+    state["waste_percent"] = "15"
+    remember_current_materials(state, second_calc, materials("15 percent waste"))
+    assert append_new_calculation(state, second_calc)
+
+    assert state["calculations"][0]["waste_percent"] == "5"
+    assert state["calculations"][1]["waste_percent"] == "15"
+
+
+def test_material_settings_are_saved_and_restored_per_selected_layer_build_up():
+    from utils.calculation_state import restore_calculation_material_settings
+
+    state = {"calculations": [], "edit_index": None, "editing": False}
+
+    first_calc = calculation(40)
+    state["selected_material_variant"] = "2x20"
+    remember_current_materials(state, first_calc, materials("2x20 list"))
+    assert append_new_calculation(state, first_calc)
+
+    state["edit_index"] = None
+    state["editing"] = False
+    second_calc = calculation(40, fire_time=60)
+    state["selected_material_variant"] = "15+25"
+    remember_current_materials(state, second_calc, materials("15+25 list"))
+    assert append_new_calculation(state, second_calc)
+
+    restore_calculation_material_settings(state, state["calculations"][0])
+    assert state["selected_material_variant"] == "2x20"
+    assert state["profile_length"] == "6,0"
+    assert state["waste_percent"] == "10"
+
+    restore_calculation_material_settings(state, state["calculations"][1])
+    assert state["selected_material_variant"] == "15+25"
