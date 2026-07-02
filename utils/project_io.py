@@ -4,9 +4,11 @@ from __future__ import annotations
 
 import json
 from copy import deepcopy
-from datetime import datetime
+from datetime import date, datetime
+from pathlib import Path
 from typing import Any
 
+import numpy as np
 import pandas as pd
 
 from utils.calculation_state import MATERIALS_KEY, rebuild_combined_materials
@@ -45,6 +47,41 @@ class ProjectLoadError(ValueError):
     """Raised when a Fireboard project file cannot be imported safely."""
 
 
+def make_json_safe(value: Any) -> Any:
+    """Return a JSON-serializable copy of common project/session values."""
+
+    if value is None or isinstance(value, (str, bool, int)):
+        return value
+    if isinstance(value, float):
+        return None if pd.isna(value) else value
+    if isinstance(value, pd.DataFrame):
+        return [
+            make_json_safe(record)
+            for record in value.where(pd.notna(value), None).to_dict("records")
+        ]
+    if isinstance(value, pd.Series):
+        series = value.where(pd.notna(value), None)
+        if isinstance(series.index, pd.RangeIndex):
+            return make_json_safe(series.tolist())
+        return {str(key): make_json_safe(item) for key, item in series.to_dict().items()}
+    if isinstance(value, np.bool_):
+        return bool(value)
+    if isinstance(value, np.integer):
+        return int(value)
+    if isinstance(value, np.floating):
+        return None if pd.isna(value) else float(value)
+    if isinstance(value, (datetime, date)):
+        return value.isoformat()
+    if isinstance(value, Path):
+        return str(value)
+    if isinstance(value, dict):
+        return {str(key): make_json_safe(item) for key, item in value.items()}
+    if isinstance(value, (list, tuple, set)):
+        return [make_json_safe(item) for item in value]
+
+    return str(value)
+
+
 def _dataframe_to_payload(value: Any) -> dict[str, Any] | None:
     if value is None:
         return None
@@ -52,7 +89,7 @@ def _dataframe_to_payload(value: Any) -> dict[str, Any] | None:
         raise ProjectLoadError("Saved material data is incompatible.")
     return {
         "columns": [str(column) for column in value.columns],
-        "records": value.where(pd.notna(value), None).to_dict("records"),
+        "records": make_json_safe(value),
     }
 
 
@@ -72,7 +109,7 @@ def _serialize_calculation(calculation: dict[str, Any]) -> dict[str, Any]:
     serialized = deepcopy(calculation)
     if MATERIALS_KEY in serialized:
         serialized[MATERIALS_KEY] = _dataframe_to_payload(serialized[MATERIALS_KEY])
-    return serialized
+    return make_json_safe(serialized)
 
 
 def _deserialize_calculation(calculation: Any) -> dict[str, Any]:
@@ -98,11 +135,11 @@ def export_project_state(session_state: Any) -> bytes:
         "file_type": FILE_TYPE,
         "version": PROJECT_FILE_VERSION,
         "project": {
-            key: session_state.get(key, "")
+            key: make_json_safe(session_state.get(key, ""))
             for key in PROJECT_DETAIL_KEYS
         },
         "current_workflow": {
-            key: session_state.get(key)
+            key: make_json_safe(session_state.get(key))
             for key in CURRENT_WORKFLOW_KEYS
             if key in session_state
         },
