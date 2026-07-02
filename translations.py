@@ -57,6 +57,9 @@ translations = {
         "open_project":
             "Åbn projekt",
 
+        "open_project_file":
+            "Åbn gemt projektfil",
+
         "open_project_success":
             "Projektet er åbnet.",
 
@@ -420,6 +423,9 @@ translations = {
 
         "open_project":
             "Open project",
+
+        "open_project_file":
+            "Open saved project file",
 
         "open_project_success":
             "Project opened.",

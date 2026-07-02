@@ -2427,12 +2427,14 @@ with st.sidebar:
         key="save_fireboard_project",
     )
 
-    uploaded_project_file = st.file_uploader(
-        t("open_project"),
-        type=["fireboard"],
-        accept_multiple_files=False,
-        key="open_fireboard_project",
-    )
+    with st.expander(t("open_project_file"), expanded=False):
+        uploaded_project_file = st.file_uploader(
+            t("open_project"),
+            type=["fireboard"],
+            accept_multiple_files=False,
+            key="open_fireboard_project",
+            label_visibility="collapsed",
+        )
 
     if uploaded_project_file is not None:
 
