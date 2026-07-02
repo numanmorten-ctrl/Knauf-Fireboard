@@ -59,6 +59,14 @@ from utils.project_package import (
     project_package_filename,
 )
 
+from utils.project_io import (
+    PROJECT_FILE_MIME,
+    ProjectLoadError,
+    export_project_state,
+    import_project_state,
+    project_filename,
+)
+
 from utils.constants import (
     PROJECT_X,
     PROJECT_Y,
@@ -1711,6 +1719,10 @@ defaults = {
     "project_package_cache": {},
     "project_report_cache": {},
     "project_material_exports_cache": {},
+
+    "profile_length": "6,0",
+    "waste_percent": "10",
+    "selected_material_variant": None,
 }
 
 for key, value in defaults.items():
@@ -2401,6 +2413,60 @@ with st.sidebar:
 
     </style>
     """, unsafe_allow_html=True)
+
+    # ---------------------------------------------------
+    # PROJECT SAVE / LOAD
+    # ---------------------------------------------------
+
+    st.download_button(
+        label=t("save_project"),
+        data=export_project_state(st.session_state),
+        file_name=project_filename(),
+        mime=PROJECT_FILE_MIME,
+        use_container_width=True,
+        key="save_fireboard_project",
+    )
+
+    uploaded_project_file = st.file_uploader(
+        t("open_project"),
+        type=["fireboard"],
+        accept_multiple_files=False,
+        key="open_fireboard_project",
+    )
+
+    if uploaded_project_file is not None:
+
+        uploaded_project_bytes = uploaded_project_file.getvalue()
+        uploaded_project_signature = (
+            uploaded_project_file.name,
+            len(uploaded_project_bytes),
+            uploaded_project_bytes[:64],
+        )
+
+        if st.session_state.get("loaded_project_signature") != uploaded_project_signature:
+
+            try:
+
+                import_project_state(
+                    st.session_state,
+                    uploaded_project_bytes,
+                )
+
+            except ProjectLoadError as exc:
+
+                st.error(
+                    f"{t('open_project_error')}: {exc}"
+                )
+
+            else:
+
+                st.session_state.loaded_project_signature = uploaded_project_signature
+                st.success(
+                    t("open_project_success")
+                )
+                st.rerun()
+
+    st.divider()
 
     # ---------------------------------------------------
     # NY BEREGNING
@@ -3962,6 +4028,11 @@ if current_step == 3:
         "custom_profile_a": st.session_state.get("custom_profile_a"),
         "custom_profile_b": st.session_state.get("custom_profile_b"),
         "custom_profile_A": st.session_state.get("custom_profile_A"),
+
+        # MATERIAL LIST SETTINGS
+        "profile_length": st.session_state.get("profile_length", "6,0"),
+        "waste_percent": st.session_state.get("waste_percent", "10"),
+        "selected_material_variant": st.session_state.get("selected_material_variant"),
     }
 
     # ---------------------------------------------------
@@ -4145,7 +4216,8 @@ if current_step == 3:
 
         profile_length = st.text_input(
             t("profile_length"),
-            value="6,0"
+            value=st.session_state.get("profile_length", "6,0"),
+            key="profile_length",
         )
 
         profile_length = clean_numeric(profile_length)
@@ -4157,7 +4229,8 @@ if current_step == 3:
 
         waste_percent = st.text_input(
             t("waste_percent"),
-            value="10"
+            value=st.session_state.get("waste_percent", "10"),
+            key="waste_percent",
         )
 
         waste_percent = clean_numeric(waste_percent)
@@ -4261,13 +4334,21 @@ if current_step == 3:
                     )
                     for variant in available_variants
                 }
+                saved_variant = st.session_state.get("selected_material_variant")
                 selected_variant = st.selectbox(
                     t("select_layer_build_up"),
                     available_variants,
+                    index=(
+                        available_variants.index(saved_variant)
+                        if saved_variant in available_variants
+                        else 0
+                    ),
                     format_func=lambda variant: variant_labels.get(variant, variant),
+                    key="selected_material_variant",
                 )
                 layer_rows = layer_rows[layer_rows["variant"] == selected_variant]
             elif len(available_variants) == 1:
+                st.session_state.selected_material_variant = available_variants[0]
                 layer_rows = layer_rows[layer_rows["variant"] == available_variants[0]]
 
         angle_lookup = angle_profile_logic_df[
