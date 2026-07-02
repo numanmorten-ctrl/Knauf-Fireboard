@@ -2378,6 +2378,7 @@ with st.sidebar:
 
     .st-key-sidebar-project-actions div[data-testid="stHorizontalBlock"] {
 
+        display: flex !important;
         gap: 0.45rem !important;
         align-items: stretch !important;
     }
@@ -2388,22 +2389,46 @@ with st.sidebar:
         min-width: 0 !important;
     }
 
+    .st-key-sidebar-project-actions div[data-testid="column"] > div,
+    .st-key-sidebar-project-actions div.stButton,
+    .st-key-sidebar-project-actions div.stDownloadButton {
+
+        height: 100% !important;
+        width: 100% !important;
+    }
+
     .st-key-sidebar-project-actions div.stButton > button,
     .st-key-sidebar-project-actions div.stDownloadButton > button {
 
+        align-items: center !important;
+        display: flex !important;
+        justify-content: center !important;
         min-height: 36px !important;
         height: 36px !important;
-        padding: 0.3rem 0.45rem !important;
-        border-color: #b8c2cc !important;
+        width: 100% !important;
+        padding: 0.3rem 0.35rem !important;
+        border: 1px solid #b8c2cc !important;
         background: #ffffff !important;
         color: #003b7a !important;
-        font-size: 13px !important;
+        font-size: 12.5px !important;
         font-weight: 700 !important;
         line-height: 1.1 !important;
+        text-align: center !important;
+        white-space: nowrap !important;
+    }
+
+    .st-key-sidebar-project-actions div.stButton > button *,
+    .st-key-sidebar-project-actions div.stDownloadButton > button * {
+
+        color: #003b7a !important;
+        line-height: 1.1 !important;
+        white-space: nowrap !important;
     }
 
     .st-key-sidebar-project-actions div.stButton > button:hover,
-    .st-key-sidebar-project-actions div.stDownloadButton > button:hover {
+    .st-key-sidebar-project-actions div.stButton > button:focus-visible,
+    .st-key-sidebar-project-actions div.stDownloadButton > button:hover,
+    .st-key-sidebar-project-actions div.stDownloadButton > button:focus-visible {
 
         border-color: #00A0E6 !important;
         background: #f5fbff !important;
@@ -2426,34 +2451,60 @@ with st.sidebar:
     }
 
     .st-key-project-uploader-panel [data-testid="stFileUploader"] label,
+    .st-key-project-uploader-panel [data-testid="stFileUploader"] label *,
+    .st-key-project-uploader-panel [data-testid="stFileUploader"] p,
+    .st-key-project-uploader-panel [data-testid="stFileUploader"] small,
+    .st-key-project-uploader-panel [data-testid="stFileUploader"] span {
+
+        color: #1f2a35 !important;
+        -webkit-text-fill-color: #1f2a35 !important;
+    }
+
+    .st-key-project-uploader-panel [data-testid="stFileUploader"] label,
     .st-key-project-uploader-panel [data-testid="stFileUploader"] p {
 
-        color: #3e4650 !important;
         font-size: 13px !important;
         font-weight: 600 !important;
         margin-bottom: 0.25rem !important;
     }
 
-    .st-key-project-uploader-panel [data-testid="stFileUploaderDropzone"] {
+    .st-key-project-uploader-panel [data-testid="stFileUploaderDropzone"],
+    .st-key-project-uploader-panel [data-testid="stFileUploaderDropzone"] > div {
 
         background: #ffffff !important;
+        border-color: #b8c2cc !important;
+        color: #1f2a35 !important;
+        box-shadow: none !important;
+    }
+
+    .st-key-project-uploader-panel [data-testid="stFileUploaderDropzone"] {
+
         border: 1px dashed #b8c2cc !important;
         border-radius: 0 !important;
         min-height: 52px !important;
         padding: 0.35rem 0.45rem !important;
-        box-shadow: none !important;
     }
 
-    .st-key-project-uploader-panel [data-testid="stFileUploaderDropzone"]:hover {
+    .st-key-project-uploader-panel [data-testid="stFileUploaderDropzone"]:hover,
+    .st-key-project-uploader-panel [data-testid="stFileUploaderDropzone"]:focus-within {
 
         border-color: #00A0E6 !important;
         background: #f5fbff !important;
     }
 
-    .st-key-project-uploader-panel [data-testid="stFileUploaderDropzone"] * {
+    .st-key-project-uploader-panel [data-testid="stFileUploaderDropzone"] *,
+    .st-key-project-uploader-panel [data-testid="stFileUploaderDropzone"] [data-testid="stMarkdownContainer"] * {
 
-        color: #3e4650 !important;
-        -webkit-text-fill-color: #3e4650 !important;
+        color: #1f2a35 !important;
+        -webkit-text-fill-color: #1f2a35 !important;
+        border-color: #b8c2cc !important;
+    }
+
+    .st-key-project-uploader-panel [data-testid="stFileUploaderDropzone"] svg {
+
+        color: #00A0E6 !important;
+        fill: #00A0E6 !important;
+        -webkit-text-fill-color: #00A0E6 !important;
     }
 
     .st-key-project-uploader-panel [data-testid="stFileUploaderDropzone"] button {
@@ -2464,8 +2515,18 @@ with st.sidebar:
         border: 1px solid #00A0E6 !important;
         background: #ffffff !important;
         color: #003b7a !important;
+        -webkit-text-fill-color: #003b7a !important;
         font-size: 12px !important;
         font-weight: 700 !important;
+    }
+
+    .st-key-project-uploader-panel [data-testid="stFileUploaderDropzone"] button:hover,
+    .st-key-project-uploader-panel [data-testid="stFileUploaderDropzone"] button:focus-visible {
+
+        border-color: #00A0E6 !important;
+        background: #f5fbff !important;
+        color: #003b7a !important;
+        -webkit-text-fill-color: #003b7a !important;
     }
 
     /* ---------------------------------------------------
