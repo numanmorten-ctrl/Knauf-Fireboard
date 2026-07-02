@@ -1872,6 +1872,8 @@ defaults = {
     "waste_percent": "10",
     "selected_material_variant": None,
     "show_project_dialog": False,
+    "show_save_project_dialog": False,
+    "save_project_filename": None,
 }
 
 for key, value in defaults.items():
@@ -1938,6 +1940,59 @@ def load_uploaded_project(uploaded_project_file):
     st.session_state.show_project_dialog = False
     st.rerun()
     return True
+
+
+def render_save_project_contents():
+
+    st.markdown(
+        '<div class="fireboard-open-project-dialog fireboard-save-project-dialog"></div>',
+        unsafe_allow_html=True,
+    )
+
+    filename = st.session_state.get("save_project_filename") or project_filename()
+    st.session_state.save_project_filename = filename
+
+    st.write(t("suggested_fireboard_filename"))
+    st.code(filename)
+
+    st.download_button(
+        label=t("download_fireboard_project"),
+        data=export_project_state(st.session_state),
+        file_name=filename,
+        mime=PROJECT_FILE_MIME,
+        use_container_width=True,
+        key="download_fireboard_project",
+    )
+
+    if st.button(
+        t("cancel"),
+        use_container_width=True,
+        key="cancel_save_project_dialog",
+    ):
+
+        st.session_state.show_save_project_dialog = False
+        st.rerun()
+
+
+def render_save_project_dialog():
+
+    dialog = getattr(st, "dialog", None)
+
+    if dialog is None:
+
+        with st.container(key="save_project_inline_fallback"):
+
+            st.subheader(t("save_fireboard_project"))
+            render_save_project_contents()
+
+        return
+
+    @dialog(t("save_fireboard_project"))
+    def save_project_dialog():
+
+        render_save_project_contents()
+
+    save_project_dialog()
 
 
 def render_open_project_uploader():
@@ -2732,14 +2787,14 @@ with st.sidebar:
 
         with save_col:
 
-            st.download_button(
-                label=t("save_project"),
-                data=export_project_state(st.session_state),
-                file_name=project_filename(),
-                mime=PROJECT_FILE_MIME,
+            if st.button(
+                t("save_project"),
                 use_container_width=True,
-                key="save_fireboard_project",
-            )
+                key="save_project_dialog_button",
+            ):
+
+                st.session_state.save_project_filename = project_filename()
+                st.session_state.show_save_project_dialog = True
 
         with open_col:
 
@@ -2750,6 +2805,10 @@ with st.sidebar:
             ):
 
                 st.session_state.show_project_dialog = True
+
+    if st.session_state.show_save_project_dialog:
+
+        render_save_project_dialog()
 
     if st.session_state.show_project_dialog:
 
