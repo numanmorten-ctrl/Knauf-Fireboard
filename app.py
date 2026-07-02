@@ -1127,6 +1127,154 @@ table tbody tr:hover td {
     box-sizing: border-box;
 }
 
+
+/* ---------------------------------------------------
+PROJECT OPEN DIALOG / FILE UPLOADER
+--------------------------------------------------- */
+
+/* Prefer scoping to the Open Fireboard Project dialog marker. Streamlit
+   renders st.dialog in a portal, so the selectors also include conservative
+   dialog fallbacks for versions that do not expose stable wrapper test IDs. */
+div[data-testid="stDialog"]:has(.fireboard-open-project-dialog),
+div[data-testid="stModal"]:has(.fireboard-open-project-dialog),
+div[role="dialog"]:has(.fireboard-open-project-dialog),
+dialog:has(.fireboard-open-project-dialog),
+dialog[open] {
+
+    background: #ffffff !important;
+
+    color: #1F2933 !important;
+
+    border: 1px solid #D9E2EC !important;
+
+    border-radius: 0 !important;
+
+    box-shadow: 0 18px 45px rgba(0, 58, 112, 0.18) !important;
+}
+
+div[data-testid="stDialog"]:has(.fireboard-open-project-dialog) > div,
+div[data-testid="stModal"]:has(.fireboard-open-project-dialog) > div,
+div[role="dialog"]:has(.fireboard-open-project-dialog) > div,
+dialog:has(.fireboard-open-project-dialog) > div,
+dialog[open] > div {
+
+    background: #ffffff !important;
+
+    color: #1F2933 !important;
+}
+
+dialog::backdrop {
+
+    background: rgba(0, 58, 112, 0.28) !important;
+}
+
+div[data-testid="stDialog"]:has(.fireboard-open-project-dialog) *,
+div[data-testid="stModal"]:has(.fireboard-open-project-dialog) *,
+div[role="dialog"]:has(.fireboard-open-project-dialog) *,
+dialog:has(.fireboard-open-project-dialog) *,
+dialog[open] * {
+
+    color: #1F2933 !important;
+
+    -webkit-text-fill-color: #1F2933 !important;
+}
+
+div[data-testid="stDialog"]:has(.fireboard-open-project-dialog) h1,
+div[data-testid="stDialog"]:has(.fireboard-open-project-dialog) h2,
+div[data-testid="stDialog"]:has(.fireboard-open-project-dialog) h3,
+div[data-testid="stDialog"]:has(.fireboard-open-project-dialog) [data-testid="stMarkdownContainer"] p,
+div[data-testid="stModal"]:has(.fireboard-open-project-dialog) h1,
+div[data-testid="stModal"]:has(.fireboard-open-project-dialog) h2,
+div[data-testid="stModal"]:has(.fireboard-open-project-dialog) h3,
+div[data-testid="stModal"]:has(.fireboard-open-project-dialog) [data-testid="stMarkdownContainer"] p,
+dialog[open] h1,
+dialog[open] h2,
+dialog[open] h3,
+dialog[open] [data-testid="stMarkdownContainer"] p {
+
+    color: #003A70 !important;
+
+    -webkit-text-fill-color: #003A70 !important;
+}
+
+div[data-testid="stDialog"]:has(.fireboard-open-project-dialog) button[aria-label="Close"],
+div[data-testid="stDialog"]:has(.fireboard-open-project-dialog) button[title="Close"],
+div[data-testid="stModal"]:has(.fireboard-open-project-dialog) button[aria-label="Close"],
+div[data-testid="stModal"]:has(.fireboard-open-project-dialog) button[title="Close"],
+div[role="dialog"]:has(.fireboard-open-project-dialog) button[aria-label="Close"],
+div[role="dialog"]:has(.fireboard-open-project-dialog) button[title="Close"],
+dialog[open] button[aria-label="Close"],
+dialog[open] button[title="Close"] {
+
+    background: #ffffff !important;
+
+    border: 1px solid #D9E2EC !important;
+
+    color: #003A70 !important;
+
+    -webkit-text-fill-color: #003A70 !important;
+
+    border-radius: 0 !important;
+}
+
+div[data-testid="stDialog"]:has(.fireboard-open-project-dialog) button[aria-label="Close"]:hover,
+div[data-testid="stModal"]:has(.fireboard-open-project-dialog) button[aria-label="Close"]:hover,
+div[role="dialog"]:has(.fireboard-open-project-dialog) button[aria-label="Close"]:hover,
+dialog[open] button[aria-label="Close"]:hover {
+
+    background: #F5FBFF !important;
+
+    border-color: #00A0E6 !important;
+
+    color: #00A0E6 !important;
+}
+
+div[data-testid="stDialog"]:has(.fireboard-open-project-dialog) [data-testid="stFileUploader"],
+div[data-testid="stModal"]:has(.fireboard-open-project-dialog) [data-testid="stFileUploader"],
+div[role="dialog"]:has(.fireboard-open-project-dialog) [data-testid="stFileUploader"],
+dialog[open] [data-testid="stFileUploader"] {
+
+    background: #ffffff !important;
+
+    color: #1F2933 !important;
+}
+
+div[data-testid="stDialog"]:has(.fireboard-open-project-dialog) [data-testid="stFileUploaderDropzone"],
+div[data-testid="stModal"]:has(.fireboard-open-project-dialog) [data-testid="stFileUploaderDropzone"],
+div[role="dialog"]:has(.fireboard-open-project-dialog) [data-testid="stFileUploaderDropzone"],
+dialog[open] [data-testid="stFileUploaderDropzone"] {
+
+    background: #F8FAFC !important;
+
+    border: 1px dashed #D9E2EC !important;
+
+    border-radius: 0 !important;
+}
+
+div[data-testid="stDialog"]:has(.fireboard-open-project-dialog) [data-testid="stFileUploaderDropzone"]:hover,
+div[data-testid="stModal"]:has(.fireboard-open-project-dialog) [data-testid="stFileUploaderDropzone"]:hover,
+div[role="dialog"]:has(.fireboard-open-project-dialog) [data-testid="stFileUploaderDropzone"]:hover,
+dialog[open] [data-testid="stFileUploaderDropzone"]:hover {
+
+    background: #F5FBFF !important;
+
+    border-color: #00A0E6 !important;
+}
+
+div[data-testid="stDialog"]:has(.fireboard-open-project-dialog) [data-testid="stFileUploaderDropzone"] button,
+div[data-testid="stModal"]:has(.fireboard-open-project-dialog) [data-testid="stFileUploaderDropzone"] button,
+div[role="dialog"]:has(.fireboard-open-project-dialog) [data-testid="stFileUploaderDropzone"] button,
+dialog[open] [data-testid="stFileUploaderDropzone"] button {
+
+    background: #ffffff !important;
+
+    border: 1px solid #00A0E6 !important;
+
+    color: #003A70 !important;
+
+    -webkit-text-fill-color: #003A70 !important;
+}
+
 /* ---------------------------------------------------
 Responsive layout for constrained viewport widths
 --------------------------------------------------- */
@@ -1794,6 +1942,10 @@ def load_uploaded_project(uploaded_project_file):
 
 def render_open_project_uploader():
 
+    st.markdown(
+        '<div class="fireboard-open-project-dialog"></div>',
+        unsafe_allow_html=True,
+    )
     st.write(t("choose_fireboard_project_file"))
 
     uploaded_project_file = st.file_uploader(
