@@ -66,6 +66,9 @@ translations = {
         "save_fireboard_project_description":
             "Gem projektet som en lokal .fireboard-fil. Filen kan senere åbnes igen eller deles med andre.",
 
+        "empty_project_no_calculations":
+            "Der er ingen beregninger i projektet endnu.",
+
         "download_fireboard_project":
             "Download Fireboard-projekt",
 
@@ -450,6 +453,9 @@ translations = {
 
         "save_fireboard_project_description":
             "Save the project as a local .fireboard file. The file can later be reopened or shared with others.",
+
+        "empty_project_no_calculations":
+            "There are no calculations in the project yet.",
 
         "download_fireboard_project":
             "Download Fireboard project",

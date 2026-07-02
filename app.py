@@ -1873,6 +1873,7 @@ defaults = {
     "selected_material_variant": None,
     "show_project_dialog": False,
     "show_save_project_dialog": False,
+    "project_dialog_action": None,
     "save_project_filename": None,
 }
 
@@ -1901,6 +1902,48 @@ def t(key):
         st.session_state.language
     ][key]
 
+
+
+
+def close_project_dialogs():
+
+    st.session_state.show_save_project_dialog = False
+    st.session_state.show_project_dialog = False
+    st.session_state.project_dialog_action = None
+
+
+def open_save_project_dialog():
+
+    st.session_state.save_project_filename = project_filename()
+    st.session_state.show_save_project_dialog = True
+    st.session_state.show_project_dialog = False
+    st.session_state.project_dialog_action = "save"
+
+
+def open_project_dialog_state():
+
+    st.session_state.show_project_dialog = True
+    st.session_state.show_save_project_dialog = False
+    st.session_state.project_dialog_action = "open"
+
+
+def resolve_project_dialog_state():
+
+    if not (
+        st.session_state.get("show_save_project_dialog")
+        and st.session_state.get("show_project_dialog")
+    ):
+
+        return
+
+    if st.session_state.get("project_dialog_action") == "open":
+
+        st.session_state.show_save_project_dialog = False
+
+    else:
+
+        st.session_state.show_project_dialog = False
+        st.session_state.project_dialog_action = "save"
 
 def load_uploaded_project(uploaded_project_file):
 
@@ -1931,13 +1974,14 @@ def load_uploaded_project(uploaded_project_file):
         st.error(
             f"{t('invalid_project_file')}: {exc}"
         )
+        close_project_dialogs()
         return False
 
     st.session_state.loaded_project_signature = uploaded_project_signature
     st.success(
         t("project_loaded_successfully")
     )
-    st.session_state.show_project_dialog = False
+    close_project_dialogs()
     st.rerun()
     return True
 
@@ -1954,14 +1998,21 @@ def render_save_project_contents():
 
     st.write(t("save_fireboard_project_description"))
 
-    st.download_button(
+    if not st.session_state.get("calculations", []):
+
+        st.info(t("empty_project_no_calculations"))
+
+    if st.download_button(
         label=t("download_fireboard_project"),
         data=export_project_state(st.session_state),
         file_name=filename,
         mime=PROJECT_FILE_MIME,
         use_container_width=True,
         key="download_fireboard_project",
-    )
+    ):
+
+        close_project_dialogs()
+        st.rerun()
 
     if st.button(
         t("cancel"),
@@ -1969,7 +2020,7 @@ def render_save_project_contents():
         key="cancel_save_project_dialog",
     ):
 
-        st.session_state.show_save_project_dialog = False
+        close_project_dialogs()
         st.rerun()
 
 
@@ -2548,6 +2599,7 @@ with st.container(key="top_action_row"):
 
             hide_apv_geometry_help()
 
+            close_project_dialogs()
             st.session_state.clear()
 
             st.rerun()
@@ -2792,8 +2844,7 @@ with st.sidebar:
                 key="save_project_dialog_button",
             ):
 
-                st.session_state.save_project_filename = project_filename()
-                st.session_state.show_save_project_dialog = True
+                open_save_project_dialog()
 
         with open_col:
 
@@ -2803,13 +2854,15 @@ with st.sidebar:
                 key="open_project_dialog_button",
             ):
 
-                st.session_state.show_project_dialog = True
+                open_project_dialog_state()
+
+    resolve_project_dialog_state()
 
     if st.session_state.show_save_project_dialog:
 
         render_save_project_dialog()
 
-    if st.session_state.show_project_dialog:
+    elif st.session_state.show_project_dialog:
 
         render_open_project_dialog()
 
