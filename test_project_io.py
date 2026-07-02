@@ -112,6 +112,25 @@ def test_export_and_import_project_state_round_trips_calculations_and_material_s
     assert target.edit_index is None
 
 
+def test_export_project_state_allows_empty_calculations():
+    source = SessionState(
+        project_name="Empty project",
+        company="Knauf",
+        prepared_by="Tester",
+        description="No calculations yet",
+        calculations=[],
+    )
+
+    exported = export_project_state(source)
+    payload = json.loads(exported.decode("utf-8"))
+
+    assert payload["file_type"] == FILE_TYPE
+    assert payload["version"] == PROJECT_FILE_VERSION
+    assert payload["project"]["project_name"] == "Empty project"
+    assert payload["calculations"] == []
+    assert parse_project_file(exported)["calculations"] == []
+
+
 def test_parse_project_file_rejects_invalid_json_without_mutation():
     with pytest.raises(ProjectLoadError, match="not valid Fireboard JSON"):
         parse_project_file(b"not-json")
