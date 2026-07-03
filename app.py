@@ -45,6 +45,7 @@ from utils.calculation_state import (
     replace_selected_calculation,
     restore_calculation_material_settings,
     update_selected_calculation_material_settings,
+    ensure_session_material_variant,
 )
 from utils.pdf_generator import (
     PROFILE_IMAGE_MAP,
@@ -4417,6 +4418,26 @@ if current_step == 3:
     # BEREGNINGSDATA
     # ---------------------------------------------------
 
+
+    if category != "Andre profiler":
+        current_thickness = clean_numeric(thickness) or 0
+        current_layer_rows = layer_logic_df[
+            layer_logic_df["total_mm"]
+            .map(clean_numeric)
+            .fillna(0)
+            ==
+            current_thickness
+        ]
+        available_material_variants = (
+            current_layer_rows["variant"].dropna().unique().tolist()
+            if "variant" in current_layer_rows.columns
+            else []
+        )
+        ensure_session_material_variant(
+            st.session_state,
+            available_material_variants,
+        )
+
     calculation_data = {
 
         "category": category,
@@ -4737,6 +4758,10 @@ if current_step == 3:
 
         if "variant" in layer_rows.columns:
             available_variants = layer_rows["variant"].dropna().unique().tolist()
+            selected_variant = ensure_session_material_variant(
+                st.session_state,
+                available_variants,
+            )
             if len(available_variants) > 1:
                 variant_labels = {
                     variant: build_variant_label(
@@ -4745,22 +4770,18 @@ if current_step == 3:
                     )
                     for variant in available_variants
                 }
-                saved_variant = st.session_state.get("selected_material_variant")
                 selected_variant = st.selectbox(
                     t("select_layer_build_up"),
                     available_variants,
-                    index=(
-                        available_variants.index(saved_variant)
-                        if saved_variant in available_variants
-                        else 0
-                    ),
+                    index=available_variants.index(selected_variant),
                     format_func=lambda variant: variant_labels.get(variant, variant),
                     key="selected_material_variant",
                 )
                 layer_rows = layer_rows[layer_rows["variant"] == selected_variant]
             elif len(available_variants) == 1:
-                st.session_state.selected_material_variant = available_variants[0]
-                layer_rows = layer_rows[layer_rows["variant"] == available_variants[0]]
+                layer_rows = layer_rows[layer_rows["variant"] == selected_variant]
+            else:
+                layer_rows = layer_rows.iloc[0:0]
 
         angle_lookup = angle_profile_logic_df[
             angle_profile_logic_df["sides"]

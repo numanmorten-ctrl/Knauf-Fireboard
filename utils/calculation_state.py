@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from copy import deepcopy
-from typing import Any
+from typing import Any, Iterable
 
 import pandas as pd
 
@@ -21,6 +21,50 @@ MATERIAL_SETTING_DEFAULTS = {
     "waste_percent": "10",
     "selected_material_variant": None,
 }
+
+
+def coerce_available_material_variants(variants: Iterable[Any]) -> list[Any]:
+    """Return non-empty material build-up variants preserving result order."""
+
+    available_variants: list[Any] = []
+    for variant in variants:
+        if variant is None:
+            continue
+        try:
+            if pd.isna(variant):
+                continue
+        except (TypeError, ValueError):
+            pass
+        if variant not in available_variants:
+            available_variants.append(variant)
+    return available_variants
+
+
+def resolve_material_variant(saved_variant: Any, available_variants: Iterable[Any]) -> Any:
+    """Return a valid saved variant, or the first valid result variant.
+
+    Material build-up selections must always come from the calculated result
+    data.  This prevents stale/default UI state from inventing a non-existing
+    build-up such as a single board matching the total thickness.
+    """
+
+    variants = coerce_available_material_variants(available_variants)
+    if not variants:
+        return None
+    if saved_variant in variants:
+        return saved_variant
+    return variants[0]
+
+
+def ensure_session_material_variant(session_state: Any, available_variants: Iterable[Any]) -> Any:
+    """Store and return the valid material variant for the current result."""
+
+    selected_variant = resolve_material_variant(
+        session_state.get("selected_material_variant"),
+        available_variants,
+    )
+    session_state["selected_material_variant"] = deepcopy(selected_variant)
+    return selected_variant
 
 
 def material_settings_from_session(session_state: Any) -> dict[str, Any]:
