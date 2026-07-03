@@ -294,3 +294,19 @@ else:
     print(f"  INFO: 20mm has {len(test_layer_rows)} configurations")
 
 print("\n" + "=" * 80)
+
+
+def test_empty_layer_rows_do_not_create_single_total_thickness_fireboard():
+    from utils.material_helpers import generate_fireboard_materials, get_material_label
+
+    generated = generate_fireboard_materials(
+        fireboard_rate=1,
+        layer_rows=layer_logic_df.iloc[0:0],
+        thickness=45,
+        materials_lookup_df=materials_lookup_df,
+        get_material_label=get_material_label,
+        clean_numeric=clean_numeric,
+    )
+
+    assert generated == []
+    assert "45 mm Fireboard" not in str(generated)

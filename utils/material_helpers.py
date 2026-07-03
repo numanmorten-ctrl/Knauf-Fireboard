@@ -850,20 +850,6 @@ def generate_fireboard_materials(
                 "Enhed": "m²"
             })
 
-    else:
-
-        fireboard_label = get_material_label(
-            materials_lookup_df,
-            [f"{int(thickness)} mm", "fireboard"],
-            fallback=f"Knauf Fireboard {int(thickness)} mm"
-        )
-
-        materials.append({
-            "Materiale": fireboard_label,
-            "Mængde": fireboard_rate,
-            "Enhed": "m²"
-        })
-
     return materials
 
 def generate_layer_fastener_materials(

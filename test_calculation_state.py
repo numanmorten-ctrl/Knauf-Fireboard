@@ -286,3 +286,28 @@ def test_active_calculation_material_settings_update_before_switching_away():
     assert state["profile_length"] == "5,5"
     assert state["waste_percent"] == "9"
     assert state["selected_material_variant"] == "updated-build-up"
+
+
+def test_multiple_build_up_options_default_to_first_valid_variant():
+    from utils.calculation_state import resolve_material_variant
+
+    assert resolve_material_variant(None, ["A", "B"]) == "A"
+    assert resolve_material_variant("missing", ["A", "B"]) == "A"
+
+
+def test_existing_valid_build_up_survives_update_resolution():
+    from utils.calculation_state import resolve_material_variant
+
+    assert resolve_material_variant("B", ["A", "B"]) == "B"
+
+
+def test_invalid_non_existing_build_up_is_not_kept_or_created():
+    from utils.calculation_state import ensure_session_material_variant
+
+    state = {"selected_material_variant": "45 mm Fireboard"}
+
+    selected = ensure_session_material_variant(state, ["A", "B"])
+
+    assert selected == "A"
+    assert state["selected_material_variant"] == "A"
+    assert state["selected_material_variant"] != "45 mm Fireboard"
