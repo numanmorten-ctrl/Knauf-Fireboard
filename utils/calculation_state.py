@@ -78,19 +78,17 @@ def material_settings_from_session(session_state: Any) -> dict[str, Any]:
 
 
 def material_settings_from_calculation(calculation: dict[str, Any]) -> dict[str, Any]:
-    """Return saved material UI state, with legacy top-level fallback."""
+    """Return saved material UI state, with legacy fallback for older saves only."""
 
     saved_ui_state = calculation.get(MATERIAL_UI_STATE_KEY)
-    if not isinstance(saved_ui_state, dict):
-        saved_ui_state = {}
+    if isinstance(saved_ui_state, dict):
+        return {
+            key: deepcopy(saved_ui_state.get(key, MATERIAL_SETTING_DEFAULTS[key]))
+            for key in MATERIAL_SETTING_KEYS
+        }
 
     return {
-        key: deepcopy(
-            saved_ui_state.get(
-                key,
-                calculation.get(key, MATERIAL_SETTING_DEFAULTS[key]),
-            )
-        )
+        key: deepcopy(calculation.get(key, MATERIAL_SETTING_DEFAULTS[key]))
         for key in MATERIAL_SETTING_KEYS
     }
 

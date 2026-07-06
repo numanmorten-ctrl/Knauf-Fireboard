@@ -424,6 +424,24 @@ def test_material_ui_state_wins_over_stale_legacy_values_when_switching_profiles
         state["selected_material_variant"],
     ) == ("4", "4", "lower-non-default-build-up")
 
+def test_material_ui_state_missing_keys_use_defaults_not_stale_legacy_values():
+    from utils.calculation_state import restore_calculation_material_settings
+
+    state = {}
+    restore_calculation_material_settings(
+        state,
+        {
+            "profile_length": "legacy-length",
+            "waste_percent": "legacy-waste",
+            "selected_material_variant": "legacy-build-up",
+            MATERIAL_UI_STATE_KEY: {"profile_length": "9"},
+        },
+    )
+
+    assert state["profile_length"] == "9"
+    assert state["waste_percent"] == "10"
+    assert state["selected_material_variant"] is None
+
 
 def test_missing_or_invalid_restored_build_up_uses_existing_first_valid_resolution():
     from utils.calculation_state import (
