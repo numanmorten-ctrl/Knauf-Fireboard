@@ -2,6 +2,7 @@ import pandas as pd
 
 from utils.calculation_state import (
     MATERIALS_KEY,
+    MATERIAL_UI_STATE_KEY,
     append_new_calculation,
     rebuild_combined_materials,
     remember_current_materials,
@@ -161,6 +162,8 @@ def test_material_settings_are_saved_per_calculation_profile_length():
 
     assert state["calculations"][0]["profile_length"] == "5,0"
     assert state["calculations"][1]["profile_length"] == "8,0"
+    assert state["calculations"][0][MATERIAL_UI_STATE_KEY]["profile_length"] == "5,0"
+    assert state["calculations"][1][MATERIAL_UI_STATE_KEY]["profile_length"] == "8,0"
 
 
 def test_material_settings_are_saved_per_calculation_waste_percent():
@@ -180,6 +183,8 @@ def test_material_settings_are_saved_per_calculation_waste_percent():
 
     assert state["calculations"][0]["waste_percent"] == "5"
     assert state["calculations"][1]["waste_percent"] == "15"
+    assert state["calculations"][0][MATERIAL_UI_STATE_KEY]["waste_percent"] == "5"
+    assert state["calculations"][1][MATERIAL_UI_STATE_KEY]["waste_percent"] == "15"
 
 
 def test_material_settings_are_saved_and_restored_per_selected_layer_build_up():
@@ -311,3 +316,63 @@ def test_invalid_non_existing_build_up_is_not_kept_or_created():
     assert selected == "A"
     assert state["selected_material_variant"] == "A"
     assert state["selected_material_variant"] != "45 mm Fireboard"
+
+
+def test_switching_a_b_a_and_b_a_b_restores_per_calculation_material_ui_state():
+    from utils.calculation_state import (
+        restore_calculation_material_settings,
+        update_selected_calculation_material_settings,
+    )
+
+    state = {"calculations": [], "edit_index": None, "editing": False}
+
+    first_calc = calculation(40, fire_time=30)
+    state["profile_length"] = "5"
+    state["waste_percent"] = "10"
+    state["selected_material_variant"] = "2x20"
+    remember_current_materials(state, first_calc, materials("A list"))
+    assert append_new_calculation(state, first_calc)
+
+    state["edit_index"] = None
+    state["editing"] = False
+    second_calc = calculation(40, fire_time=60)
+    state["profile_length"] = "8"
+    state["waste_percent"] = "15"
+    state["selected_material_variant"] = "15+25"
+    remember_current_materials(state, second_calc, materials("B list"))
+    assert append_new_calculation(state, second_calc)
+
+    restore_calculation_material_settings(state, state["calculations"][0])
+    state["edit_index"] = 0
+    assert (state["profile_length"], state["waste_percent"], state["selected_material_variant"]) == ("5", "10", "2x20")
+
+    assert update_selected_calculation_material_settings(state)
+    restore_calculation_material_settings(state, state["calculations"][1])
+    state["edit_index"] = 1
+    assert (state["profile_length"], state["waste_percent"], state["selected_material_variant"]) == ("8", "15", "15+25")
+
+    assert update_selected_calculation_material_settings(state)
+    restore_calculation_material_settings(state, state["calculations"][0])
+    state["edit_index"] = 0
+    assert (state["profile_length"], state["waste_percent"], state["selected_material_variant"]) == ("5", "10", "2x20")
+
+    assert update_selected_calculation_material_settings(state)
+    restore_calculation_material_settings(state, state["calculations"][1])
+    state["edit_index"] = 1
+    assert (state["profile_length"], state["waste_percent"], state["selected_material_variant"]) == ("8", "15", "15+25")
+
+
+def test_missing_or_invalid_restored_build_up_uses_existing_first_valid_resolution():
+    from utils.calculation_state import (
+        ensure_session_material_variant,
+        restore_calculation_material_settings,
+    )
+
+    state = {}
+    restore_calculation_material_settings(state, {"material_ui_state": {"selected_material_variant": "missing"}})
+    assert ensure_session_material_variant(state, ["A", "B"]) == "A"
+    assert state["selected_material_variant"] == "A"
+
+    restore_calculation_material_settings(state, {"material_ui_state": {}})
+    assert ensure_session_material_variant(state, ["A", "B"]) == "A"
+    assert state["selected_material_variant"] == "A"
