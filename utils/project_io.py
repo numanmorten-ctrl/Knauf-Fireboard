@@ -43,6 +43,7 @@ CURRENT_WORKFLOW_KEYS = (
     "profile_length",
     "waste_percent",
     "selected_material_variant",
+    "current_material_ui_state",
 )
 REQUIRED_KEYS = ("file_type", "version", "project", "calculations")
 
