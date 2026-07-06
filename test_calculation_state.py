@@ -388,6 +388,33 @@ def test_material_ui_state_is_restore_source_before_legacy_flat_keys():
     assert state["selected_material_variant"] == "2x20"
 
 
+def test_store_material_settings_on_calculation_syncs_nested_and_legacy_keys():
+    from utils.calculation_state import (
+        MATERIAL_UI_STATE_KEY,
+        store_material_settings_on_calculation,
+    )
+
+    saved_calculation = calculation(40)
+
+    store_material_settings_on_calculation(
+        saved_calculation,
+        {
+            "profile_length": "4",
+            "waste_percent": "4",
+            "selected_material_variant": "lower-non-default-build-up",
+        },
+    )
+
+    assert saved_calculation[MATERIAL_UI_STATE_KEY] == {
+        "profile_length": "4",
+        "waste_percent": "4",
+        "selected_material_variant": "lower-non-default-build-up",
+    }
+    assert saved_calculation["profile_length"] == "4"
+    assert saved_calculation["waste_percent"] == "4"
+    assert saved_calculation["selected_material_variant"] == "lower-non-default-build-up"
+
+
 def test_update_calculation_preserves_selected_material_ui_state_source_of_truth():
     from utils.calculation_state import MATERIAL_UI_STATE_KEY
 
