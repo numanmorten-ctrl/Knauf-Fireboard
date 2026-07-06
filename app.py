@@ -358,181 +358,6 @@ section[data-testid="stSidebar"] button[kind="primary"] {
 }
 
 /* ---------------------------------------------------
-INPUTS
---------------------------------------------------- */
-
-.stTextInput > div > div,
-.stTextArea > div > div,
-.stSelectbox > div > div,
-div[data-baseweb="select"] > div,
-[data-baseweb="input"],
-[data-baseweb="base-input"],
-[data-baseweb="textarea"] {
-
-    background: white !important;
-
-    border: 1px solid #b8c2cc !important;
-
-    border-radius: 0 !important;
-
-    box-shadow: none !important;
-
-    outline: none !important;
-
-    min-height: 44px !important;
-}
-
-/* ---------------------------------------------------
-INPUT FIELDS
---------------------------------------------------- */
-
-.stTextInput input,
-.stTextArea textarea,
-.stNumberInput input {
-
-    background: white !important;
-
-    border: 1px solid #c5cbd3 !important;
-
-    border-radius: 0px !important;
-
-    color: #364650 !important;
-
-    -webkit-text-fill-color: #364650 !important;
-
-    caret-color: #00549f !important;
-
-    padding: 0.5rem !important;
-
-    box-shadow: none !important;
-
-    outline: none !important;
-
-    appearance: none !important;
-
-    -webkit-appearance: none !important;
-
-    -moz-appearance: none !important;
-}
-
-.stTextInput input:focus,
-.stTextArea textarea:focus,
-.stNumberInput input:focus {
-
-    border-color: #00549f !important;
-
-    box-shadow: none !important;
-
-    outline: none !important;
-}
-/* ---------------------------------------------------
-INPUT FOCUS
---------------------------------------------------- */
-
-.stTextInput > div > div:focus-within,
-.stTextArea > div > div:focus-within,
-.stNumberInput > div > div:focus-within,
-.stSelectbox > div > div:focus-within,
-div[data-baseweb="select"] > div:focus-within,
-[data-baseweb="input"]:focus-within,
-[data-baseweb="base-input"]:focus-within,
-[data-baseweb="textarea"]:focus-within {
-
-    border: 1px solid #009fe3 !important;
-
-    box-shadow: none !important;
-
-    outline: none !important;
-}
-
-/* ---------------------------------------------------
-REMOVE RED INVALID STATE
---------------------------------------------------- */
-
-input:invalid,
-textarea:invalid {
-
-    box-shadow: none !important;
-}
-
-/* ---------------------------------------------------
-SELECTBOX DROPDOWN
---------------------------------------------------- */
-
-/* Main select container */
-
-div[data-baseweb="select"] > div {
-
-    background: white !important;
-
-    color: #2d343c !important;
-}
-
-/* Selected value */
-
-div[data-baseweb="select"] span {
-
-    color: #2d343c !important;
-
-    opacity: 1 !important;
-}
-
-/* Input field inside select */
-
-div[data-baseweb="select"] input {
-
-    color: #2d343c !important;
-
-    caret-color: #003b7a !important;
-
-    background: transparent !important;
-}
-
-/* Narrow fix: vertically center visible Streamlit/BaseWeb selected values. */
-div[data-testid="stSelectbox"] div[data-baseweb="select"] > div > div:first-child,
-div[data-testid="stSelectbox"] div[data-baseweb="select"] > div > div:first-child > div {
-
-    transform: translateY(1px);
-}
-
-/* Dropdown popup */
-
-div[data-baseweb="popover"] {
-
-    background: white !important;
-
-    border: 1px solid #b8c2cc !important;
-
-    border-radius: 0 !important;
-
-    box-shadow: 0 4px 12px rgba(0,0,0,0.08) !important;
-}
-
-/* Dropdown list */
-
-ul {
-
-    background: white !important;
-}
-
-/* Dropdown items */
-
-li {
-
-    background: white !important;
-
-    color: #2d343c !important;
-}
-
-/* Hover */
-
-li:hover {
-
-    background: #eef7fd !important;
-
-    color: #003b7a !important;
-}
-/* ---------------------------------------------------
 INFO / SUCCESS BOXES
 --------------------------------------------------- */
 
@@ -653,19 +478,12 @@ section[data-testid="stSidebar"] [data-testid="stSidebarHeader"] {
 }
 
 /* ---------------------------------------------------
-UNIFY ALL BORDERS
+UNIFY BUTTON BORDERS
 --------------------------------------------------- */
 
 .stButton > button,
 .stDownloadButton > button,
-.stLinkButton > a,
-.stTextInput > div > div,
-.stTextArea > div > div,
-.stSelectbox > div > div,
-div[data-baseweb="select"] > div,
-[data-baseweb="input"],
-[data-baseweb="base-input"],
-[data-baseweb="textarea"] {
+.stLinkButton > a {
 
     border: 1px solid #b8c2cc !important;
 
@@ -682,51 +500,11 @@ div[data-baseweb="select"] > div,
 
 /* FORCE SAME VISUAL THICKNESS */
 
-.stTextInput,
-.stTextArea,
-.stSelectbox,
 .stButton,
 .stDownloadButton,
 .stLinkButton {
 
     box-sizing: border-box !important;
-}
-
-/* REMOVE BASEWEB SHADOW LAYERS */
-
-[data-baseweb="input"]::before,
-[data-baseweb="base-input"]::before,
-[data-baseweb="textarea"]::before,
-[data-baseweb="select"]::before {
-
-    display: none !important;
-}
-/* ---------------------------------------------------
-FINAL BASEWEB INPUT FIX
---------------------------------------------------- */
-
-.stTextInput > div,
-.stTextArea > div {
-
-    border: none !important;
-
-    background: transparent !important;
-
-    box-shadow: none !important;
-}
-
-.stTextInput > div > div,
-.stTextArea > div > div {
-
-    margin: 0 !important;
-
-    padding: 0 !important;
-
-    border: 1px solid #b8c2cc !important;
-
-    background: white !important;
-
-    box-shadow: none !important;
 }
 /* ---------------------------------------------------
 AKTIV SIDEBAR BEREGNING
@@ -871,48 +649,6 @@ div.stButton > button {
     margin-top: 0px !important;
 }
 /* ---------------------------------------------------
-SELECTBOX DROPDOWN TRIANGLE
---------------------------------------------------- */
-
-/* skjul standard ikon */
-
-div[data-baseweb="select"] svg {
-
-    display: none !important;
-}
-
-/* select container */
-
-div[data-baseweb="select"] > div {
-
-    position: relative !important;
-}
-
-/* custom trekant */
-
-div[data-baseweb="select"] > div::after {
-
-    content: "";
-
-    position: absolute;
-
-    right: 18px;
-
-    top: 50%;
-
-    transform: translateY(-35%);
-
-    width: 0;
-    height: 0;
-
-    border-left: 6px solid transparent;
-    border-right: 6px solid transparent;
-    border-top: 6px solid #7f7f7f;
-
-    pointer-events: none;
-}
-
-/* ---------------------------------------------------
 LANGUAGE ICON COLUMN
 --------------------------------------------------- */
 
@@ -985,7 +721,7 @@ div[data-testid="stButton"] button:disabled {
 LANGUAGE SELECTBOX
 --------------------------------------------------- */
 
-div[data-testid="stSelectbox"] {
+.st-key-language_selector_wrapper div[data-testid="stSelectbox"] {
 
     margin-top: -8px !important;
 
@@ -995,16 +731,6 @@ div[data-testid="stSelectbox"] {
 
     z-index: 1 !important;
 }
-/* ---------------------------------------------------
-FJERN VENSTRE BORDER
-KUN LANGUAGE DROPDOWN
---------------------------------------------------- */
-
-div[data-testid="stSelectbox"]:has(#language_select)
-div[data-baseweb="select"] > div {
-
-    border-left: none !important;
-}
 /* DATAFRAME BG */
 
 [data-testid="stDataFrame"] {
@@ -1012,12 +738,6 @@ div[data-baseweb="select"] > div {
     background: white !important;
 }
 
-/* HIDE +/- BUTTONS */
-
-[data-testid="stNumberInput"] button {
-
-    display: none !important;
-}
 /* ---------------------------------------------------
 TABLE
 --------------------------------------------------- */
@@ -1407,11 +1127,6 @@ Responsive layout for constrained viewport widths
         margin-top: 0 !important;
     }
 
-    .st-key-language_selector_wrapper div[data-baseweb="select"] > div {
-        height: var(--top-action-control-height) !important;
-        min-height: var(--top-action-control-height) !important;
-        max-height: var(--top-action-control-height) !important;
-    }
 
     .st-key-language_icon_wrapper div[data-testid="stButton"] button {
         height: var(--top-action-control-height) !important;
