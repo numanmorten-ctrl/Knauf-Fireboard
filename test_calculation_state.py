@@ -311,3 +311,79 @@ def test_invalid_non_existing_build_up_is_not_kept_or_created():
     assert selected == "A"
     assert state["selected_material_variant"] == "A"
     assert state["selected_material_variant"] != "45 mm Fireboard"
+
+
+def test_concrete_project_switch_restores_material_ui_state_before_result_defaults():
+    from utils.calculation_state import (
+        MATERIAL_UI_STATE_KEY,
+        restore_calculation_material_settings,
+        update_selected_calculation_material_settings,
+    )
+
+    state = {"calculations": [], "edit_index": None, "editing": False}
+
+    calc_a = calculation(40)
+    calc_a["profile"] = "HEB 100"
+    state["profile_length"] = "12"
+    state["waste_percent"] = "12"
+    state["selected_material_variant"] = "default-build-up"
+    remember_current_materials(state, calc_a, materials("A 12m list"))
+    assert append_new_calculation(state, calc_a)
+
+    state["edit_index"] = None
+    state["editing"] = False
+    calc_b = calculation(40, fire_time=60)
+    calc_b["profile"] = "IPE 200"
+    state["profile_length"] = "4"
+    state["waste_percent"] = "4"
+    state["selected_material_variant"] = "lower-non-default-build-up"
+    remember_current_materials(state, calc_b, materials("B 4m list"))
+    assert append_new_calculation(state, calc_b)
+
+    restore_calculation_material_settings(state, state["calculations"][0])
+    state["edit_index"] = 0
+    assert state["profile_length"] == "12"
+    assert state["waste_percent"] == "12"
+    assert state["profile_length"] != "6,0"
+    assert state["waste_percent"] != "10"
+
+    update_selected_calculation_material_settings(state)
+    restore_calculation_material_settings(state, state["calculations"][1])
+    state["edit_index"] = 1
+    assert state["profile_length"] == "4"
+    assert state["waste_percent"] == "4"
+    assert state["selected_material_variant"] == "lower-non-default-build-up"
+    assert state["calculations"][1][MATERIAL_UI_STATE_KEY] == {
+        "profile_length": "4",
+        "waste_percent": "4",
+        "selected_material_variant": "lower-non-default-build-up",
+    }
+
+
+def test_update_calculation_preserves_selected_material_ui_state_source_of_truth():
+    from utils.calculation_state import MATERIAL_UI_STATE_KEY
+
+    state = {"calculations": [], "edit_index": None, "editing": False}
+    state["profile_length"] = "12"
+    state["waste_percent"] = "12"
+    state["selected_material_variant"] = "2x20"
+    first_calc = calculation(40)
+    remember_current_materials(state, first_calc, materials("original list"))
+    assert append_new_calculation(state, first_calc)
+
+    state["profile_length"] = "13"
+    state["waste_percent"] = "6"
+    state["selected_material_variant"] = "15+25"
+    updated_calc = calculation(40, fire_time=60)
+    remember_current_materials(state, updated_calc, materials("updated list"))
+    assert replace_selected_calculation(state, updated_calc)
+
+    assert len(state["calculations"]) == 1
+    assert state["calculations"][0][MATERIAL_UI_STATE_KEY] == {
+        "profile_length": "13",
+        "waste_percent": "6",
+        "selected_material_variant": "15+25",
+    }
+    assert state["calculations"][0]["profile_length"] == "13"
+    assert state["calculations"][0]["waste_percent"] == "6"
+    assert state["calculations"][0]["selected_material_variant"] == "15+25"

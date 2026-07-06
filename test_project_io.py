@@ -7,7 +7,7 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from utils.calculation_state import MATERIALS_KEY
+from utils.calculation_state import MATERIALS_KEY, MATERIAL_UI_STATE_KEY
 from utils.project_io import (
     FILE_TYPE,
     PROJECT_FILE_VERSION,
@@ -162,8 +162,13 @@ def test_project_save_load_roundtrip_preserves_per_calculation_material_settings
                 "temperature": 450,
                 "apv": 123,
                 "thickness": 40,
-                "profile_length": "5,0",
-                "waste_percent": "5",
+                MATERIAL_UI_STATE_KEY: {
+                    "profile_length": "12",
+                    "waste_percent": "12",
+                    "selected_material_variant": "2x20",
+                },
+                "profile_length": "12",
+                "waste_percent": "12",
                 "selected_material_variant": "2x20",
                 MATERIALS_KEY: pd.DataFrame([{"Beskrivelse": "A", "Total": 5.0}]),
             },
@@ -176,9 +181,14 @@ def test_project_save_load_roundtrip_preserves_per_calculation_material_settings
                 "temperature": 450,
                 "apv": 123,
                 "thickness": 40,
-                "profile_length": "8,0",
-                "waste_percent": "15",
-                "selected_material_variant": "15+25",
+                MATERIAL_UI_STATE_KEY: {
+                    "profile_length": "4",
+                    "waste_percent": "4",
+                    "selected_material_variant": "lower-non-default-build-up",
+                },
+                "profile_length": "4",
+                "waste_percent": "4",
+                "selected_material_variant": "lower-non-default-build-up",
                 MATERIALS_KEY: pd.DataFrame([{"Beskrivelse": "B", "Total": 8.0}]),
             },
         ],
@@ -188,11 +198,11 @@ def test_project_save_load_roundtrip_preserves_per_calculation_material_settings
     target = SessionState(language="DA")
     import_project_state(target, exported)
 
-    assert target.calculations[0]["profile_length"] == "5,0"
-    assert target.calculations[1]["profile_length"] == "8,0"
-    assert target.calculations[0]["waste_percent"] == "5"
-    assert target.calculations[1]["waste_percent"] == "15"
-    assert target.calculations[0]["selected_material_variant"] == "2x20"
-    assert target.calculations[1]["selected_material_variant"] == "15+25"
+    assert target.calculations[0][MATERIAL_UI_STATE_KEY]["profile_length"] == "12"
+    assert target.calculations[1][MATERIAL_UI_STATE_KEY]["profile_length"] == "4"
+    assert target.calculations[0][MATERIAL_UI_STATE_KEY]["waste_percent"] == "12"
+    assert target.calculations[1][MATERIAL_UI_STATE_KEY]["waste_percent"] == "4"
+    assert target.calculations[0][MATERIAL_UI_STATE_KEY]["selected_material_variant"] == "2x20"
+    assert target.calculations[1][MATERIAL_UI_STATE_KEY]["selected_material_variant"] == "lower-non-default-build-up"
     assert target.calculations[0][MATERIALS_KEY].iloc[0]["Total"] == 5.0
     assert target.calculations[1][MATERIALS_KEY].iloc[0]["Total"] == 8.0

@@ -4462,6 +4462,11 @@ if current_step == 3:
         "custom_profile_A": st.session_state.get("custom_profile_A"),
 
         # MATERIAL LIST SETTINGS
+        "material_ui_state": {
+            "profile_length": st.session_state.get("profile_length", "6,0"),
+            "waste_percent": st.session_state.get("waste_percent", "10"),
+            "selected_material_variant": st.session_state.get("selected_material_variant"),
+        },
         "profile_length": st.session_state.get("profile_length", "6,0"),
         "waste_percent": st.session_state.get("waste_percent", "10"),
         "selected_material_variant": st.session_state.get("selected_material_variant"),
