@@ -360,6 +360,34 @@ def test_concrete_project_switch_restores_material_ui_state_before_result_defaul
     }
 
 
+def test_material_ui_state_is_restore_source_before_legacy_flat_keys():
+    from utils.calculation_state import (
+        MATERIAL_UI_STATE_KEY,
+        restore_calculation_material_settings,
+    )
+
+    state = {
+        "profile_length": "6,0",
+        "waste_percent": "10",
+        "selected_material_variant": None,
+    }
+    saved_calculation = calculation(40)
+    saved_calculation[MATERIAL_UI_STATE_KEY] = {
+        "profile_length": "12",
+        "waste_percent": "12",
+        "selected_material_variant": "2x20",
+    }
+    saved_calculation["profile_length"] = "6,0"
+    saved_calculation["waste_percent"] = "10"
+    saved_calculation["selected_material_variant"] = "legacy-default"
+
+    restore_calculation_material_settings(state, saved_calculation)
+
+    assert state["profile_length"] == "12"
+    assert state["waste_percent"] == "12"
+    assert state["selected_material_variant"] == "2x20"
+
+
 def test_update_calculation_preserves_selected_material_ui_state_source_of_truth():
     from utils.calculation_state import MATERIAL_UI_STATE_KEY
 

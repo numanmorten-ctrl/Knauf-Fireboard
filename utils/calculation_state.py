@@ -97,6 +97,21 @@ def material_ui_state_from_calculation(calculation: dict[str, Any]) -> dict[str,
     }
 
 
+def store_material_settings_on_calculation(
+    calculation: dict[str, Any],
+    material_ui_state: dict[str, Any],
+) -> dict[str, Any]:
+    """Store material UI state on a calculation and sync legacy flat keys."""
+
+    normalized_material_ui_state = {
+        key: deepcopy(material_ui_state.get(key, MATERIAL_SETTING_DEFAULTS[key]))
+        for key in MATERIAL_SETTING_KEYS
+    }
+    calculation[MATERIAL_UI_STATE_KEY] = normalized_material_ui_state
+    calculation.update(deepcopy(normalized_material_ui_state))
+    return calculation
+
+
 def attach_material_settings(
     session_state: Any,
     calculation: dict[str, Any],
@@ -104,12 +119,10 @@ def attach_material_settings(
     """Return a calculation copy with current material-list input settings."""
 
     saved_calculation = deepcopy(calculation)
-    material_ui_state = material_settings_from_session(session_state)
-    saved_calculation[MATERIAL_UI_STATE_KEY] = material_ui_state
-    # Keep legacy flat keys in sync for existing exports/reports/tests that read
-    # them directly, but restore reads from material_ui_state first.
-    saved_calculation.update(deepcopy(material_ui_state))
-    return saved_calculation
+    return store_material_settings_on_calculation(
+        saved_calculation,
+        material_settings_from_session(session_state),
+    )
 
 
 def restore_calculation_material_settings(
@@ -145,9 +158,10 @@ def update_selected_calculation_material_settings(session_state: Any) -> bool:
     if edit_index is None or not 0 <= edit_index < len(calculations):
         return False
 
-    material_ui_state = material_settings_from_session(session_state)
-    calculations[edit_index][MATERIAL_UI_STATE_KEY] = material_ui_state
-    calculations[edit_index].update(deepcopy(material_ui_state))
+    store_material_settings_on_calculation(
+        calculations[edit_index],
+        material_settings_from_session(session_state),
+    )
     return True
 
 
