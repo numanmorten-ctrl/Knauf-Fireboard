@@ -362,6 +362,69 @@ def test_switching_a_b_a_and_b_a_b_restores_per_calculation_material_ui_state():
     assert (state["profile_length"], state["waste_percent"], state["selected_material_variant"]) == ("8", "15", "15+25")
 
 
+def test_material_ui_state_wins_over_stale_legacy_values_when_switching_profiles():
+    from utils.calculation_state import restore_calculation_material_settings
+
+    heb100 = calculation(40, fire_time=30)
+    heb100["profile"] = "HEB100"
+    heb100.update(
+        {
+            "profile_length": "6,0",
+            "waste_percent": "10",
+            "selected_material_variant": "stale-default-build-up",
+            MATERIAL_UI_STATE_KEY: {
+                "profile_length": "12",
+                "waste_percent": "12",
+                "selected_material_variant": "upper-build-up",
+            },
+        }
+    )
+
+    ipe200 = calculation(40, fire_time=60)
+    ipe200["profile"] = "IPE200"
+    ipe200.update(
+        {
+            "profile_length": "6,0",
+            "waste_percent": "10",
+            "selected_material_variant": "stale-default-build-up",
+            MATERIAL_UI_STATE_KEY: {
+                "profile_length": "4",
+                "waste_percent": "4",
+                "selected_material_variant": "lower-non-default-build-up",
+            },
+        }
+    )
+
+    state = {"calculations": [heb100, ipe200], "edit_index": 0, "editing": True}
+
+    restore_calculation_material_settings(state, state["calculations"][0])
+    assert (
+        state["profile_length"],
+        state["waste_percent"],
+        state["selected_material_variant"],
+    ) == ("12", "12", "upper-build-up")
+
+    state["edit_index"] = 1
+    restore_calculation_material_settings(state, state["calculations"][1])
+    assert (
+        state["profile_length"],
+        state["waste_percent"],
+        state["selected_material_variant"],
+    ) == ("4", "4", "lower-non-default-build-up")
+
+    state["edit_index"] = 0
+    restore_calculation_material_settings(state, state["calculations"][0])
+    assert (state["profile_length"], state["waste_percent"]) == ("12", "12")
+
+    state["edit_index"] = 1
+    restore_calculation_material_settings(state, state["calculations"][1])
+    assert (
+        state["profile_length"],
+        state["waste_percent"],
+        state["selected_material_variant"],
+    ) == ("4", "4", "lower-non-default-build-up")
+
+
 def test_missing_or_invalid_restored_build_up_uses_existing_first_valid_resolution():
     from utils.calculation_state import (
         ensure_session_material_variant,
