@@ -72,6 +72,5 @@ def reset_calculation_state(session_state):
     session_state.edit_index = None
 
     apply_default_material_settings(session_state)
-    session_state["current_material_ui_state"] = None
 
     session_state.current_step = 0

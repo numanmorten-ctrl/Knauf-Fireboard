@@ -17,8 +17,6 @@ MATERIAL_SETTING_KEYS = (
     "selected_material_variant",
 )
 MATERIAL_UI_STATE_KEY = "material_ui_state"
-CURRENT_MATERIAL_UI_STATE_KEY = "current_material_ui_state"
-CALCULATION_SIGNATURE_KEY = "calculation_signature"
 MATERIAL_SETTING_DEFAULTS = {
     "profile_length": "6,0",
     "waste_percent": "10",
@@ -70,88 +68,6 @@ def ensure_session_material_variant(session_state: Any, available_variants: Iter
     return selected_variant
 
 
-def default_material_ui_state(
-    calculation: dict[str, Any],
-    available_variants: Iterable[Any] = (),
-) -> dict[str, Any]:
-    """Return default material inputs for a calculated result signature."""
-
-    defaults = deepcopy(MATERIAL_SETTING_DEFAULTS)
-    defaults["selected_material_variant"] = resolve_material_variant(
-        None,
-        available_variants,
-    )
-    defaults[CALCULATION_SIGNATURE_KEY] = calculation_signature(calculation)
-    return defaults
-
-
-def material_ui_state_from_settings(
-    calculation: dict[str, Any],
-    material_settings: dict[str, Any],
-    available_variants: Iterable[Any] = (),
-) -> dict[str, Any]:
-    """Return a complete material UI state for the given calculated result."""
-
-    ui_state = {
-        key: deepcopy(material_settings.get(key, MATERIAL_SETTING_DEFAULTS[key]))
-        for key in MATERIAL_SETTING_KEYS
-    }
-    variants = coerce_available_material_variants(available_variants)
-    if variants:
-        ui_state["selected_material_variant"] = resolve_material_variant(
-            ui_state.get("selected_material_variant"),
-            variants,
-        )
-    ui_state[CALCULATION_SIGNATURE_KEY] = calculation_signature(calculation)
-    return ui_state
-
-
-def sync_current_material_ui_state(
-    session_state: Any,
-    calculation: dict[str, Any],
-    available_variants: Iterable[Any] = (),
-) -> dict[str, Any]:
-    """Apply the stable current result material state to widget session keys."""
-
-    signature = calculation_signature(calculation)
-    current_ui_state = session_state.get(CURRENT_MATERIAL_UI_STATE_KEY)
-
-    if (
-        not isinstance(current_ui_state, dict)
-        or current_ui_state.get(CALCULATION_SIGNATURE_KEY) != signature
-    ):
-        current_ui_state = default_material_ui_state(calculation, available_variants)
-    else:
-        current_ui_state = material_ui_state_from_settings(
-            calculation,
-            current_ui_state,
-            available_variants,
-        )
-
-    session_state[CURRENT_MATERIAL_UI_STATE_KEY] = deepcopy(current_ui_state)
-    for key in MATERIAL_SETTING_KEYS:
-        session_state[key] = deepcopy(current_ui_state[key])
-    return current_ui_state
-
-
-def update_current_material_ui_state(
-    session_state: Any,
-    calculation: dict[str, Any],
-    available_variants: Iterable[Any] = (),
-) -> dict[str, Any]:
-    """Write current material widget values back to the stable result state."""
-
-    current_ui_state = material_ui_state_from_settings(
-        calculation,
-        material_settings_from_session(session_state),
-        available_variants,
-    )
-    session_state[CURRENT_MATERIAL_UI_STATE_KEY] = deepcopy(current_ui_state)
-    for key in MATERIAL_SETTING_KEYS:
-        session_state[key] = deepcopy(current_ui_state[key])
-    return current_ui_state
-
-
 def material_settings_from_session(session_state: Any) -> dict[str, Any]:
     """Return material-list inputs from the exact Streamlit widget keys."""
 
@@ -191,10 +107,6 @@ def store_material_settings_on_calculation(
         key: deepcopy(material_settings.get(key, MATERIAL_SETTING_DEFAULTS[key]))
         for key in MATERIAL_SETTING_KEYS
     }
-    if CALCULATION_SIGNATURE_KEY in material_settings:
-        calculation[MATERIAL_UI_STATE_KEY][CALCULATION_SIGNATURE_KEY] = deepcopy(
-            material_settings[CALCULATION_SIGNATURE_KEY]
-        )
     for key in MATERIAL_SETTING_KEYS:
         calculation[key] = deepcopy(calculation[MATERIAL_UI_STATE_KEY][key])
 
@@ -206,16 +118,9 @@ def attach_material_settings(
     """Return a calculation copy with current material-list input settings."""
 
     saved_calculation = deepcopy(calculation)
-    current_ui_state = session_state.get(CURRENT_MATERIAL_UI_STATE_KEY)
-    if (
-        not isinstance(current_ui_state, dict)
-        or current_ui_state.get(CALCULATION_SIGNATURE_KEY)
-        != calculation_signature(calculation)
-    ):
-        current_ui_state = material_settings_from_session(session_state)
     store_material_settings_on_calculation(
         saved_calculation,
-        current_ui_state,
+        material_settings_from_session(session_state),
     )
     return saved_calculation
 
@@ -233,14 +138,8 @@ def restore_calculation_material_settings(
     """
 
     material_settings = material_settings_from_calculation(calculation)
-    ui_state = material_ui_state_from_settings(
-        calculation,
-        material_settings,
-        calculation.get("available_material_variants", ()),
-    )
-    session_state[CURRENT_MATERIAL_UI_STATE_KEY] = deepcopy(ui_state)
     for key in MATERIAL_SETTING_KEYS:
-        session_state[key] = deepcopy(ui_state[key])
+        session_state[key] = deepcopy(material_settings[key])
 
 
 def apply_default_material_settings(session_state: Any) -> None:
@@ -259,18 +158,9 @@ def update_selected_calculation_material_settings(session_state: Any) -> bool:
     if edit_index is None or not 0 <= edit_index < len(calculations):
         return False
 
-    current_ui_state = session_state.get(CURRENT_MATERIAL_UI_STATE_KEY)
-    material_settings = material_settings_from_session(session_state)
-    if (
-        isinstance(current_ui_state, dict)
-        and CALCULATION_SIGNATURE_KEY in current_ui_state
-    ):
-        material_settings[CALCULATION_SIGNATURE_KEY] = deepcopy(
-            current_ui_state[CALCULATION_SIGNATURE_KEY]
-        )
     store_material_settings_on_calculation(
         calculations[edit_index],
-        material_settings,
+        material_settings_from_session(session_state),
     )
     return True
 
@@ -296,11 +186,6 @@ def calculation_signature(calculation: dict[str, Any]) -> tuple[Any, ...]:
         calculation.get("custom_profile_a"),
         calculation.get("custom_profile_b"),
         calculation.get("custom_profile_A"),
-        tuple(
-            coerce_available_material_variants(
-                calculation.get("available_material_variants", ())
-            )
-        ),
     )
 
 
