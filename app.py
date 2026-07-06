@@ -46,8 +46,6 @@ from utils.calculation_state import (
     restore_calculation_material_settings,
     update_selected_calculation_material_settings,
     ensure_session_material_variant,
-    sync_current_material_ui_state,
-    update_current_material_ui_state,
 )
 from utils.pdf_generator import (
     PROFILE_IMAGE_MAP,
@@ -1876,7 +1874,6 @@ defaults = {
     "profile_length": "6,0",
     "waste_percent": "10",
     "selected_material_variant": None,
-    "current_material_ui_state": None,
     "show_project_dialog": False,
     "show_save_project_dialog": False,
     "project_dialog_action": None,
@@ -4436,9 +4433,10 @@ if current_step == 3:
             if "variant" in current_layer_rows.columns
             else []
         )
-
-    else:
-        available_material_variants = []
+        ensure_session_material_variant(
+            st.session_state,
+            available_material_variants,
+        )
 
     calculation_data = {
 
@@ -4467,26 +4465,7 @@ if current_step == 3:
         "profile_length": st.session_state.get("profile_length", "6,0"),
         "waste_percent": st.session_state.get("waste_percent", "10"),
         "selected_material_variant": st.session_state.get("selected_material_variant"),
-        "available_material_variants": available_material_variants,
     }
-
-    if category != "Andre profiler":
-        sync_current_material_ui_state(
-            st.session_state,
-            calculation_data,
-            available_material_variants,
-        )
-        calculation_data["profile_length"] = st.session_state.get(
-            "profile_length",
-            "6,0",
-        )
-        calculation_data["waste_percent"] = st.session_state.get(
-            "waste_percent",
-            "10",
-        )
-        calculation_data["selected_material_variant"] = st.session_state.get(
-            "selected_material_variant"
-        )
 
     # ---------------------------------------------------
     # PROJEKTOPLYSNINGER
@@ -4805,27 +4784,6 @@ if current_step == 3:
                 layer_rows = layer_rows[layer_rows["variant"] == selected_variant]
             else:
                 layer_rows = layer_rows.iloc[0:0]
-
-        update_current_material_ui_state(
-            st.session_state,
-            calculation_data,
-            (
-                available_variants
-                if "variant" in layer_rows.columns
-                else available_material_variants
-            ),
-        )
-        calculation_data["profile_length"] = st.session_state.get(
-            "profile_length",
-            "6,0",
-        )
-        calculation_data["waste_percent"] = st.session_state.get(
-            "waste_percent",
-            "10",
-        )
-        calculation_data["selected_material_variant"] = st.session_state.get(
-            "selected_material_variant"
-        )
 
         angle_lookup = angle_profile_logic_df[
             angle_profile_logic_df["sides"]
