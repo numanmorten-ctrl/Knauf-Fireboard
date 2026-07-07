@@ -4592,7 +4592,42 @@ if current_step == 3:
             st.rerun()
 
     with col2:
-        pass
+
+        button_text = (
+            t("update_calculation")
+            if st.session_state.edit_index is not None
+            else t("add_calculation")
+        )
+        button_icon = (
+            UI_ICONS["update_calculation"]
+            if st.session_state.edit_index is not None
+            else UI_ICONS["add_calculation"]
+        )
+
+        if st.button(
+            action_label(button_text),
+            icon=button_icon,
+            use_container_width=True,
+            key="save_calculation_button"
+        ):
+
+            if st.session_state.edit_index is not None:
+
+                replace_selected_calculation(
+                    st.session_state,
+                    calculation_data
+                )
+
+            else:
+
+                append_new_calculation(
+                    st.session_state,
+                    calculation_data
+                )
+
+            st.session_state.last_updated = datetime.now()
+
+            st.rerun()
 
     # ---------------------------------------------------
     # MATERIALERFORBRUG
@@ -4857,42 +4892,6 @@ if current_step == 3:
         )
 
         rebuild_combined_materials(st.session_state)
-
-        button_text = (
-            t("update_calculation")
-            if st.session_state.edit_index is not None
-            else t("add_calculation")
-        )
-        button_icon = (
-            UI_ICONS["update_calculation"]
-            if st.session_state.edit_index is not None
-            else UI_ICONS["add_calculation"]
-        )
-
-        if st.button(
-            action_label(button_text),
-            icon=button_icon,
-            use_container_width=True,
-            key="save_calculation_button"
-        ):
-
-            if st.session_state.edit_index is not None:
-
-                replace_selected_calculation(
-                    st.session_state,
-                    calculation_data
-                )
-
-            else:
-
-                append_new_calculation(
-                    st.session_state,
-                    calculation_data
-                )
-
-            st.session_state.last_updated = datetime.now()
-
-            st.rerun()
 
         st.markdown(
             f"""
