@@ -16,7 +16,6 @@ MATERIAL_SETTING_KEYS = (
     "waste_percent",
     "selected_material_variant",
 )
-MATERIAL_UI_STATE_KEY = "material_ui_state"
 MATERIAL_SETTING_DEFAULTS = {
     "profile_length": "6,0",
     "waste_percent": "10",
@@ -69,46 +68,12 @@ def ensure_session_material_variant(session_state: Any, available_variants: Iter
 
 
 def material_settings_from_session(session_state: Any) -> dict[str, Any]:
-    """Return material-list inputs from the exact Streamlit widget keys."""
+    """Return material-list inputs from session state with UI defaults."""
 
     return {
         key: deepcopy(session_state.get(key, MATERIAL_SETTING_DEFAULTS[key]))
         for key in MATERIAL_SETTING_KEYS
     }
-
-
-def material_settings_from_calculation(calculation: dict[str, Any]) -> dict[str, Any]:
-    """Return saved material UI state, with legacy fallback for older saves only."""
-
-    saved_ui_state = calculation.get(MATERIAL_UI_STATE_KEY)
-    if isinstance(saved_ui_state, dict):
-        return {
-            key: deepcopy(saved_ui_state.get(key, MATERIAL_SETTING_DEFAULTS[key]))
-            for key in MATERIAL_SETTING_KEYS
-        }
-
-    return {
-        key: deepcopy(calculation.get(key, MATERIAL_SETTING_DEFAULTS[key]))
-        for key in MATERIAL_SETTING_KEYS
-    }
-
-
-def store_material_settings_on_calculation(
-    calculation: dict[str, Any],
-    material_settings: dict[str, Any],
-) -> None:
-    """Persist material UI values under the per-calculation state key.
-
-    Legacy top-level keys are also kept in sync so older project files and
-    existing export code continue to read the same values.
-    """
-
-    calculation[MATERIAL_UI_STATE_KEY] = {
-        key: deepcopy(material_settings.get(key, MATERIAL_SETTING_DEFAULTS[key]))
-        for key in MATERIAL_SETTING_KEYS
-    }
-    for key in MATERIAL_SETTING_KEYS:
-        calculation[key] = deepcopy(calculation[MATERIAL_UI_STATE_KEY][key])
 
 
 def attach_material_settings(
@@ -118,10 +83,7 @@ def attach_material_settings(
     """Return a calculation copy with current material-list input settings."""
 
     saved_calculation = deepcopy(calculation)
-    store_material_settings_on_calculation(
-        saved_calculation,
-        material_settings_from_session(session_state),
-    )
+    saved_calculation.update(material_settings_from_session(session_state))
     return saved_calculation
 
 
@@ -137,9 +99,10 @@ def restore_calculation_material_settings(
     rendered.
     """
 
-    material_settings = material_settings_from_calculation(calculation)
     for key in MATERIAL_SETTING_KEYS:
-        session_state[key] = deepcopy(material_settings[key])
+        session_state[key] = deepcopy(
+            calculation.get(key, MATERIAL_SETTING_DEFAULTS[key])
+        )
 
 
 def apply_default_material_settings(session_state: Any) -> None:
@@ -158,10 +121,7 @@ def update_selected_calculation_material_settings(session_state: Any) -> bool:
     if edit_index is None or not 0 <= edit_index < len(calculations):
         return False
 
-    store_material_settings_on_calculation(
-        calculations[edit_index],
-        material_settings_from_session(session_state),
-    )
+    calculations[edit_index].update(material_settings_from_session(session_state))
     return True
 
 

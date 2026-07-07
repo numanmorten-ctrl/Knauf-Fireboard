@@ -11,11 +11,7 @@ from typing import Any
 import numpy as np
 import pandas as pd
 
-from utils.calculation_state import (
-    MATERIALS_KEY,
-    rebuild_combined_materials,
-    update_selected_calculation_material_settings,
-)
+from utils.calculation_state import MATERIALS_KEY, rebuild_combined_materials
 
 FILE_TYPE = "fireboard_project"
 PROJECT_FILE_VERSION = 1
@@ -134,8 +130,6 @@ def project_filename(now: datetime | None = None) -> str:
 
 def export_project_state(session_state: Any) -> bytes:
     """Serialize the current Streamlit session project state to JSON bytes."""
-
-    update_selected_calculation_material_settings(session_state)
 
     payload = {
         "file_type": FILE_TYPE,
