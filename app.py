@@ -4602,20 +4602,12 @@ if current_step == 3:
             else UI_ICONS["add_calculation"]
         )
 
-        project_save_requested = st.button(
+        if st.button(
             action_label(button_text),
             icon=button_icon,
             use_container_width=True,
             key="save_calculation_button"
-        )
-
-    # ---------------------------------------------------
-    # MATERIALERFORBRUG
-    # ---------------------------------------------------
-
-    if category == "Andre profiler":
-
-        if project_save_requested:
+        ):
 
             if st.session_state.edit_index is not None:
 
@@ -4634,6 +4626,12 @@ if current_step == 3:
             st.session_state.last_updated = datetime.now()
 
             st.rerun()
+
+    # ---------------------------------------------------
+    # MATERIALERFORBRUG
+    # ---------------------------------------------------
+
+    if category == "Andre profiler":
 
         st.info(
             f"**{t('material_consumption_unavailable_title')}**\n\n"
@@ -4885,26 +4883,6 @@ if current_step == 3:
         )
 
         rebuild_combined_materials(st.session_state)
-
-        if project_save_requested:
-
-            if st.session_state.edit_index is not None:
-
-                replace_selected_calculation(
-                    st.session_state,
-                    calculation_data
-                )
-
-            else:
-
-                append_new_calculation(
-                    st.session_state,
-                    calculation_data
-                )
-
-            st.session_state.last_updated = datetime.now()
-
-            st.rerun()
 
         st.markdown(
             f"""

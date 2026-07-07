@@ -7,7 +7,7 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from utils.calculation_state import MATERIALS_KEY, MATERIAL_UI_STATE_KEY
+from utils.calculation_state import MATERIALS_KEY
 from utils.project_io import (
     FILE_TYPE,
     PROJECT_FILE_VERSION,
@@ -70,14 +70,9 @@ def test_export_and_import_project_state_round_trips_calculations_and_material_s
                 "temperature": 500,
                 "apv": 123,
                 "thickness": 40,
-                "profile_length": "legacy-should-match",
-                "waste_percent": "legacy-should-match",
-                "selected_material_variant": "legacy-should-match",
-                MATERIAL_UI_STATE_KEY: {
-                    "profile_length": "7,5",
-                    "waste_percent": "12",
-                    "selected_material_variant": ("2x20", "compact"),
-                },
+                "profile_length": "7,5",
+                "waste_percent": "12",
+                "selected_material_variant": ("2x20", "compact"),
                 "material_build_up": pd.Series({"layer": np.int64(2), "variant": "2x20"}),
                 "created_at": datetime(2026, 7, 2, 9, 5),
                 "export_path": Path("projects/example.fireboard"),
@@ -93,8 +88,7 @@ def test_export_and_import_project_state_round_trips_calculations_and_material_s
     assert payload["version"] == PROJECT_FILE_VERSION
     assert payload["current_workflow"]["selected_material_variant"] == ["2x20", "compact"]
     calculation_payload = payload["calculations"][0]
-    assert calculation_payload[MATERIAL_UI_STATE_KEY]["selected_material_variant"] == ["2x20", "compact"]
-    assert calculation_payload["selected_material_variant"] == "legacy-should-match"
+    assert calculation_payload["selected_material_variant"] == ["2x20", "compact"]
     assert calculation_payload["material_build_up"] == {"layer": 2, "variant": "2x20"}
     assert calculation_payload["created_at"] == "2026-07-02T09:05:00"
     assert calculation_payload["export_path"] == "projects/example.fireboard"
@@ -108,7 +102,7 @@ def test_export_and_import_project_state_round_trips_calculations_and_material_s
 
     assert target.project_name == "Project A"
     assert target.calculations[0]["profile"] == "HEA 100"
-    assert target.calculations[0][MATERIAL_UI_STATE_KEY]["profile_length"] == "7,5"
+    assert target.calculations[0]["profile_length"] == "7,5"
     assert target.selected_material_variant == ["2x20", "compact"]
     assert target.calculations[0]["material_build_up"] == {"layer": 2, "variant": "2x20"}
     expected_materials = materials.copy()
@@ -168,11 +162,9 @@ def test_project_save_load_roundtrip_preserves_per_calculation_material_settings
                 "temperature": 450,
                 "apv": 123,
                 "thickness": 40,
-                MATERIAL_UI_STATE_KEY: {
-                    "profile_length": "5,0",
-                    "waste_percent": "10",
-                    "selected_material_variant": "2x20",
-                },
+                "profile_length": "5,0",
+                "waste_percent": "5",
+                "selected_material_variant": "2x20",
                 MATERIALS_KEY: pd.DataFrame([{"Beskrivelse": "A", "Total": 5.0}]),
             },
             {
@@ -184,11 +176,9 @@ def test_project_save_load_roundtrip_preserves_per_calculation_material_settings
                 "temperature": 450,
                 "apv": 123,
                 "thickness": 40,
-                MATERIAL_UI_STATE_KEY: {
-                    "profile_length": "8,0",
-                    "waste_percent": "15",
-                    "selected_material_variant": "15+25",
-                },
+                "profile_length": "8,0",
+                "waste_percent": "15",
+                "selected_material_variant": "15+25",
                 MATERIALS_KEY: pd.DataFrame([{"Beskrivelse": "B", "Total": 8.0}]),
             },
         ],
@@ -198,11 +188,11 @@ def test_project_save_load_roundtrip_preserves_per_calculation_material_settings
     target = SessionState(language="DA")
     import_project_state(target, exported)
 
-    assert target.calculations[0][MATERIAL_UI_STATE_KEY]["profile_length"] == "5,0"
-    assert target.calculations[1][MATERIAL_UI_STATE_KEY]["profile_length"] == "8,0"
-    assert target.calculations[0][MATERIAL_UI_STATE_KEY]["waste_percent"] == "10"
-    assert target.calculations[1][MATERIAL_UI_STATE_KEY]["waste_percent"] == "15"
-    assert target.calculations[0][MATERIAL_UI_STATE_KEY]["selected_material_variant"] == "2x20"
-    assert target.calculations[1][MATERIAL_UI_STATE_KEY]["selected_material_variant"] == "15+25"
+    assert target.calculations[0]["profile_length"] == "5,0"
+    assert target.calculations[1]["profile_length"] == "8,0"
+    assert target.calculations[0]["waste_percent"] == "5"
+    assert target.calculations[1]["waste_percent"] == "15"
+    assert target.calculations[0]["selected_material_variant"] == "2x20"
+    assert target.calculations[1]["selected_material_variant"] == "15+25"
     assert target.calculations[0][MATERIALS_KEY].iloc[0]["Total"] == 5.0
     assert target.calculations[1][MATERIALS_KEY].iloc[0]["Total"] == 8.0
