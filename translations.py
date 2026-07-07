@@ -51,6 +51,42 @@ translations = {
         "download_project_package":
             "Download projektpakke",
 
+        "save_project":
+            "Gem projekt",
+
+        "open_project":
+            "Åbn projekt",
+
+        "open_fireboard_project":
+            "Åbn Fireboard-projekt",
+
+        "save_fireboard_project":
+            "Gem Fireboard-projekt",
+
+        "save_fireboard_project_description":
+            "Gem projektet som en lokal .fireboard-fil. Filen kan senere åbnes igen eller deles med andre.",
+
+        "empty_project_no_calculations":
+            "Der er ingen beregninger i projektet endnu.",
+
+        "download_fireboard_project":
+            "Download Fireboard-projekt",
+
+        "cancel":
+            "Annuller",
+
+        "select_fireboard_file":
+            "Vælg .fireboard-fil",
+
+        "choose_fireboard_project_file":
+            "Vælg en gemt Fireboard-projektfil for at gendanne dit projekt.",
+
+        "project_loaded_successfully":
+            "Projektet er indlæst.",
+
+        "invalid_project_file":
+            "Ugyldig projektfil",
+
         "generate_project_package":
             "Generer projektpakke",
 
@@ -402,6 +438,42 @@ translations = {
 
         "download_project_package":
             "Download project package",
+
+        "save_project":
+            "Save project",
+
+        "open_project":
+            "Open project",
+
+        "open_fireboard_project":
+            "Open Fireboard project",
+
+        "save_fireboard_project":
+            "Save Fireboard project",
+
+        "save_fireboard_project_description":
+            "Save the project as a local .fireboard file. The file can later be reopened or shared with others.",
+
+        "empty_project_no_calculations":
+            "There are no calculations in the project yet.",
+
+        "download_fireboard_project":
+            "Download Fireboard project",
+
+        "cancel":
+            "Cancel",
+
+        "select_fireboard_file":
+            "Select .fireboard file",
+
+        "choose_fireboard_project_file":
+            "Choose a saved Fireboard project file to restore your project.",
+
+        "project_loaded_successfully":
+            "Project loaded successfully.",
+
+        "invalid_project_file":
+            "Invalid project file",
 
         "generate_project_package":
             "Generate project package",

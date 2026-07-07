@@ -43,6 +43,11 @@ from utils.calculation_state import (
     rebuild_combined_materials,
     remember_current_materials,
     replace_selected_calculation,
+    restore_calculation_material_settings,
+    update_selected_calculation_material_settings,
+    ensure_session_material_variant,
+    initialize_material_widget_state,
+    sync_material_widget_to_session,
 )
 from utils.pdf_generator import (
     PROFILE_IMAGE_MAP,
@@ -57,6 +62,14 @@ from utils.project_package import (
     create_project_package_zip,
     get_cached_project_download,
     project_package_filename,
+)
+
+from utils.project_io import (
+    PROJECT_FILE_MIME,
+    ProjectLoadError,
+    export_project_state,
+    import_project_state,
+    project_filename,
 )
 
 from utils.constants import (
@@ -1119,6 +1132,154 @@ table tbody tr:hover td {
     box-sizing: border-box;
 }
 
+
+/* ---------------------------------------------------
+PROJECT OPEN DIALOG / FILE UPLOADER
+--------------------------------------------------- */
+
+/* Prefer scoping to the Open Fireboard Project dialog marker. Streamlit
+   renders st.dialog in a portal, so the selectors also include conservative
+   dialog fallbacks for versions that do not expose stable wrapper test IDs. */
+div[data-testid="stDialog"]:has(.fireboard-open-project-dialog),
+div[data-testid="stModal"]:has(.fireboard-open-project-dialog),
+div[role="dialog"]:has(.fireboard-open-project-dialog),
+dialog:has(.fireboard-open-project-dialog),
+dialog[open] {
+
+    background: #ffffff !important;
+
+    color: #1F2933 !important;
+
+    border: 1px solid #D9E2EC !important;
+
+    border-radius: 0 !important;
+
+    box-shadow: 0 18px 45px rgba(0, 58, 112, 0.18) !important;
+}
+
+div[data-testid="stDialog"]:has(.fireboard-open-project-dialog) > div,
+div[data-testid="stModal"]:has(.fireboard-open-project-dialog) > div,
+div[role="dialog"]:has(.fireboard-open-project-dialog) > div,
+dialog:has(.fireboard-open-project-dialog) > div,
+dialog[open] > div {
+
+    background: #ffffff !important;
+
+    color: #1F2933 !important;
+}
+
+dialog::backdrop {
+
+    background: rgba(0, 58, 112, 0.28) !important;
+}
+
+div[data-testid="stDialog"]:has(.fireboard-open-project-dialog) *,
+div[data-testid="stModal"]:has(.fireboard-open-project-dialog) *,
+div[role="dialog"]:has(.fireboard-open-project-dialog) *,
+dialog:has(.fireboard-open-project-dialog) *,
+dialog[open] * {
+
+    color: #1F2933 !important;
+
+    -webkit-text-fill-color: #1F2933 !important;
+}
+
+div[data-testid="stDialog"]:has(.fireboard-open-project-dialog) h1,
+div[data-testid="stDialog"]:has(.fireboard-open-project-dialog) h2,
+div[data-testid="stDialog"]:has(.fireboard-open-project-dialog) h3,
+div[data-testid="stDialog"]:has(.fireboard-open-project-dialog) [data-testid="stMarkdownContainer"] p,
+div[data-testid="stModal"]:has(.fireboard-open-project-dialog) h1,
+div[data-testid="stModal"]:has(.fireboard-open-project-dialog) h2,
+div[data-testid="stModal"]:has(.fireboard-open-project-dialog) h3,
+div[data-testid="stModal"]:has(.fireboard-open-project-dialog) [data-testid="stMarkdownContainer"] p,
+dialog[open] h1,
+dialog[open] h2,
+dialog[open] h3,
+dialog[open] [data-testid="stMarkdownContainer"] p {
+
+    color: #003A70 !important;
+
+    -webkit-text-fill-color: #003A70 !important;
+}
+
+div[data-testid="stDialog"]:has(.fireboard-open-project-dialog) button[aria-label="Close"],
+div[data-testid="stDialog"]:has(.fireboard-open-project-dialog) button[title="Close"],
+div[data-testid="stModal"]:has(.fireboard-open-project-dialog) button[aria-label="Close"],
+div[data-testid="stModal"]:has(.fireboard-open-project-dialog) button[title="Close"],
+div[role="dialog"]:has(.fireboard-open-project-dialog) button[aria-label="Close"],
+div[role="dialog"]:has(.fireboard-open-project-dialog) button[title="Close"],
+dialog[open] button[aria-label="Close"],
+dialog[open] button[title="Close"] {
+
+    background: #ffffff !important;
+
+    border: 1px solid #D9E2EC !important;
+
+    color: #003A70 !important;
+
+    -webkit-text-fill-color: #003A70 !important;
+
+    border-radius: 0 !important;
+}
+
+div[data-testid="stDialog"]:has(.fireboard-open-project-dialog) button[aria-label="Close"]:hover,
+div[data-testid="stModal"]:has(.fireboard-open-project-dialog) button[aria-label="Close"]:hover,
+div[role="dialog"]:has(.fireboard-open-project-dialog) button[aria-label="Close"]:hover,
+dialog[open] button[aria-label="Close"]:hover {
+
+    background: #F5FBFF !important;
+
+    border-color: #00A0E6 !important;
+
+    color: #00A0E6 !important;
+}
+
+div[data-testid="stDialog"]:has(.fireboard-open-project-dialog) [data-testid="stFileUploader"],
+div[data-testid="stModal"]:has(.fireboard-open-project-dialog) [data-testid="stFileUploader"],
+div[role="dialog"]:has(.fireboard-open-project-dialog) [data-testid="stFileUploader"],
+dialog[open] [data-testid="stFileUploader"] {
+
+    background: #ffffff !important;
+
+    color: #1F2933 !important;
+}
+
+div[data-testid="stDialog"]:has(.fireboard-open-project-dialog) [data-testid="stFileUploaderDropzone"],
+div[data-testid="stModal"]:has(.fireboard-open-project-dialog) [data-testid="stFileUploaderDropzone"],
+div[role="dialog"]:has(.fireboard-open-project-dialog) [data-testid="stFileUploaderDropzone"],
+dialog[open] [data-testid="stFileUploaderDropzone"] {
+
+    background: #F8FAFC !important;
+
+    border: 1px dashed #D9E2EC !important;
+
+    border-radius: 0 !important;
+}
+
+div[data-testid="stDialog"]:has(.fireboard-open-project-dialog) [data-testid="stFileUploaderDropzone"]:hover,
+div[data-testid="stModal"]:has(.fireboard-open-project-dialog) [data-testid="stFileUploaderDropzone"]:hover,
+div[role="dialog"]:has(.fireboard-open-project-dialog) [data-testid="stFileUploaderDropzone"]:hover,
+dialog[open] [data-testid="stFileUploaderDropzone"]:hover {
+
+    background: #F5FBFF !important;
+
+    border-color: #00A0E6 !important;
+}
+
+div[data-testid="stDialog"]:has(.fireboard-open-project-dialog) [data-testid="stFileUploaderDropzone"] button,
+div[data-testid="stModal"]:has(.fireboard-open-project-dialog) [data-testid="stFileUploaderDropzone"] button,
+div[role="dialog"]:has(.fireboard-open-project-dialog) [data-testid="stFileUploaderDropzone"] button,
+dialog[open] [data-testid="stFileUploaderDropzone"] button {
+
+    background: #ffffff !important;
+
+    border: 1px solid #00A0E6 !important;
+
+    color: #003A70 !important;
+
+    -webkit-text-fill-color: #003A70 !important;
+}
+
 /* ---------------------------------------------------
 Responsive layout for constrained viewport widths
 --------------------------------------------------- */
@@ -1711,6 +1872,14 @@ defaults = {
     "project_package_cache": {},
     "project_report_cache": {},
     "project_material_exports_cache": {},
+
+    "profile_length": "6,0",
+    "waste_percent": "10",
+    "selected_material_variant": None,
+    "show_project_dialog": False,
+    "show_save_project_dialog": False,
+    "project_dialog_action": None,
+    "save_project_filename": None,
 }
 
 for key, value in defaults.items():
@@ -1737,6 +1906,187 @@ def t(key):
     return translations[
         st.session_state.language
     ][key]
+
+
+
+
+def close_project_dialogs():
+
+    st.session_state.show_save_project_dialog = False
+    st.session_state.show_project_dialog = False
+    st.session_state.project_dialog_action = None
+
+
+def open_save_project_dialog():
+
+    st.session_state.save_project_filename = project_filename()
+    st.session_state.show_save_project_dialog = True
+    st.session_state.show_project_dialog = False
+    st.session_state.project_dialog_action = "save"
+
+
+def open_project_dialog_state():
+
+    st.session_state.show_project_dialog = True
+    st.session_state.show_save_project_dialog = False
+    st.session_state.project_dialog_action = "open"
+
+
+def resolve_project_dialog_state():
+
+    if not (
+        st.session_state.get("show_save_project_dialog")
+        and st.session_state.get("show_project_dialog")
+    ):
+
+        return
+
+    if st.session_state.get("project_dialog_action") == "open":
+
+        st.session_state.show_save_project_dialog = False
+
+    else:
+
+        st.session_state.show_project_dialog = False
+        st.session_state.project_dialog_action = "save"
+
+def load_uploaded_project(uploaded_project_file):
+
+    if uploaded_project_file is None:
+
+        return False
+
+    uploaded_project_bytes = uploaded_project_file.getvalue()
+    uploaded_project_signature = (
+        uploaded_project_file.name,
+        len(uploaded_project_bytes),
+        uploaded_project_bytes[:64],
+    )
+
+    if st.session_state.get("loaded_project_signature") == uploaded_project_signature:
+
+        return False
+
+    try:
+
+        import_project_state(
+            st.session_state,
+            uploaded_project_bytes,
+        )
+
+    except ProjectLoadError as exc:
+
+        st.error(
+            f"{t('invalid_project_file')}: {exc}"
+        )
+        close_project_dialogs()
+        return False
+
+    st.session_state.loaded_project_signature = uploaded_project_signature
+    st.success(
+        t("project_loaded_successfully")
+    )
+    close_project_dialogs()
+    st.rerun()
+    return True
+
+
+def render_save_project_contents():
+
+    st.markdown(
+        '<div class="fireboard-open-project-dialog fireboard-save-project-dialog"></div>',
+        unsafe_allow_html=True,
+    )
+
+    filename = st.session_state.get("save_project_filename") or project_filename()
+    st.session_state.save_project_filename = filename
+
+    st.write(t("save_fireboard_project_description"))
+
+    if not st.session_state.get("calculations", []):
+
+        st.info(t("empty_project_no_calculations"))
+
+    if st.download_button(
+        label=t("download_fireboard_project"),
+        data=export_project_state(st.session_state),
+        file_name=filename,
+        mime=PROJECT_FILE_MIME,
+        use_container_width=True,
+        key="download_fireboard_project",
+    ):
+
+        close_project_dialogs()
+        st.rerun()
+
+    if st.button(
+        t("cancel"),
+        use_container_width=True,
+        key="cancel_save_project_dialog",
+    ):
+
+        close_project_dialogs()
+        st.rerun()
+
+
+def render_save_project_dialog():
+
+    dialog = getattr(st, "dialog", None)
+
+    if dialog is None:
+
+        with st.container(key="save_project_inline_fallback"):
+
+            st.subheader(t("save_fireboard_project"))
+            render_save_project_contents()
+
+        return
+
+    @dialog(t("save_fireboard_project"))
+    def save_project_dialog():
+
+        render_save_project_contents()
+
+    save_project_dialog()
+
+
+def render_open_project_uploader():
+
+    st.markdown(
+        '<div class="fireboard-open-project-dialog"></div>',
+        unsafe_allow_html=True,
+    )
+    st.write(t("choose_fireboard_project_file"))
+
+    uploaded_project_file = st.file_uploader(
+        t("select_fireboard_file"),
+        type=["fireboard"],
+        accept_multiple_files=False,
+        key="open_fireboard_project",
+    )
+
+    load_uploaded_project(uploaded_project_file)
+
+
+def render_open_project_dialog():
+
+    dialog = getattr(st, "dialog", None)
+
+    if dialog is None:
+
+        with st.container(key="open_project_inline_fallback"):
+
+            st.subheader(t("open_fireboard_project"))
+            render_open_project_uploader()
+
+        return
+
+    @dialog(t("open_fireboard_project"))
+    def open_project_dialog():
+
+        render_open_project_uploader()
+
+    open_project_dialog()
 
 
 def hide_apv_geometry_help():
@@ -2254,6 +2604,7 @@ with st.container(key="top_action_row"):
 
             hide_apv_geometry_help()
 
+            close_project_dialogs()
             st.session_state.clear()
 
             st.rerun()
@@ -2358,10 +2709,86 @@ with st.sidebar:
         margin-top: -0.75rem;
     }
 
+    .st-key-sidebar-project-actions {
+
+        margin-bottom: 0.45rem;
+    }
+
+    .st-key-sidebar-project-actions div[data-testid="stHorizontalBlock"] {
+
+        display: flex !important;
+        gap: 0.45rem !important;
+        align-items: stretch !important;
+    }
+
+    .st-key-sidebar-project-actions div[data-testid="column"] {
+
+        flex: 1 1 0 !important;
+        min-width: 0 !important;
+    }
+
+    .st-key-sidebar-project-actions div[data-testid="column"] > div,
+    .st-key-sidebar-project-actions [data-testid="stButton"],
+    .st-key-sidebar-project-actions [data-testid="stDownloadButton"],
+    .st-key-sidebar-project-actions div.stButton,
+    .st-key-sidebar-project-actions div.stDownloadButton {
+
+        height: 100% !important;
+        width: 100% !important;
+    }
+
+    .st-key-sidebar-project-actions [data-testid="stButton"] > button,
+    .st-key-sidebar-project-actions [data-testid="stDownloadButton"] > button,
+    .st-key-sidebar-project-actions div.stButton > button,
+    .st-key-sidebar-project-actions div.stDownloadButton > button {
+
+        align-items: center !important;
+        display: flex !important;
+        justify-content: center !important;
+        min-height: 38px !important;
+        height: 38px !important;
+        max-height: 38px !important;
+        width: 100% !important;
+        padding: 0.3rem 0.35rem !important;
+        border: 1px solid #b8c2cc !important;
+        background: #ffffff !important;
+        color: #003b7a !important;
+        font-size: 12.5px !important;
+        font-weight: 700 !important;
+        line-height: 1.1 !important;
+        text-align: center !important;
+        white-space: nowrap !important;
+    }
+
+    .st-key-sidebar-project-actions [data-testid="stButton"] > button *,
+    .st-key-sidebar-project-actions [data-testid="stDownloadButton"] > button *,
+    .st-key-sidebar-project-actions div.stButton > button *,
+    .st-key-sidebar-project-actions div.stDownloadButton > button * {
+
+        color: #003b7a !important;
+        line-height: 1.1 !important;
+        white-space: nowrap !important;
+    }
+
+    .st-key-sidebar-project-actions [data-testid="stButton"] > button:hover,
+    .st-key-sidebar-project-actions [data-testid="stButton"] > button:focus-visible,
+    .st-key-sidebar-project-actions [data-testid="stDownloadButton"] > button:hover,
+    .st-key-sidebar-project-actions [data-testid="stDownloadButton"] > button:focus-visible,
+    .st-key-sidebar-project-actions div.stButton > button:hover,
+    .st-key-sidebar-project-actions div.stButton > button:focus-visible,
+    .st-key-sidebar-project-actions div.stDownloadButton > button:hover,
+    .st-key-sidebar-project-actions div.stDownloadButton > button:focus-visible {
+
+        border-color: #00A0E6 !important;
+        background: #f5fbff !important;
+        color: #003b7a !important;
+    }
+
     /* ---------------------------------------------------
     AKTIV SIDEBAR BEREGNING
     --------------------------------------------------- */
 
+    section[data-testid="stSidebar"] button[kind="primary"],
     div[data-testid="stSidebar"] button[kind="primary"] {
 
         background: #003778 !important;
@@ -2375,6 +2802,9 @@ with st.sidebar:
         box-shadow: none !important;
     }
 
+    section[data-testid="stSidebar"] button[kind="primary"] p,
+    section[data-testid="stSidebar"] button[kind="primary"] span,
+    section[data-testid="stSidebar"] button[kind="primary"] div,
     div[data-testid="stSidebar"] button[kind="primary"] p,
     div[data-testid="stSidebar"] button[kind="primary"] span,
     div[data-testid="stSidebar"] button[kind="primary"] div {
@@ -2390,6 +2820,7 @@ with st.sidebar:
 
     /* HOVER */
 
+    section[data-testid="stSidebar"] button[kind="primary"]:hover,
     div[data-testid="stSidebar"] button[kind="primary"]:hover {
 
         background: #002e5f !important;
@@ -2401,6 +2832,46 @@ with st.sidebar:
 
     </style>
     """, unsafe_allow_html=True)
+
+    # ---------------------------------------------------
+    # PROJECT SAVE / LOAD
+    # ---------------------------------------------------
+
+    with st.container(key="sidebar_project_actions"):
+
+        save_col, open_col = st.columns(2, gap="small")
+
+        with save_col:
+
+            if st.button(
+                t("save_project"),
+                use_container_width=True,
+                key="save_project_dialog_button",
+            ):
+
+                open_save_project_dialog()
+
+        with open_col:
+
+            if st.button(
+                t("open_project"),
+                use_container_width=True,
+                key="open_project_dialog_button",
+            ):
+
+                open_project_dialog_state()
+
+    resolve_project_dialog_state()
+
+    if st.session_state.show_save_project_dialog:
+
+        render_save_project_dialog()
+
+    elif st.session_state.show_project_dialog:
+
+        render_open_project_dialog()
+
+    st.divider()
 
     # ---------------------------------------------------
     # NY BEREGNING
@@ -2463,6 +2934,8 @@ with st.sidebar:
                     # RESET STREAMLIT WIDGET STATES
 
                     hide_apv_geometry_help()
+
+                    update_selected_calculation_material_settings(st.session_state)
 
                     widget_keys = [
                         "profile_selectbox",
@@ -2566,6 +3039,11 @@ with st.sidebar:
                         ""
                     )
 
+                    restore_calculation_material_settings(
+                        st.session_state,
+                        calc
+                    )
+
                     st.session_state.edit_index = idx
 
                     st.session_state.editing = True
@@ -2611,6 +3089,8 @@ with st.sidebar:
                     rebuild_combined_materials(st.session_state)
 
                     st.rerun()
+
+    update_selected_calculation_material_settings(st.session_state)
 
     # ---------------------------------------------------
     # DOWNLOADS
@@ -3940,6 +4420,26 @@ if current_step == 3:
     # BEREGNINGSDATA
     # ---------------------------------------------------
 
+
+    if category != "Andre profiler":
+        current_thickness = clean_numeric(thickness) or 0
+        current_layer_rows = layer_logic_df[
+            layer_logic_df["total_mm"]
+            .map(clean_numeric)
+            .fillna(0)
+            ==
+            current_thickness
+        ]
+        available_material_variants = (
+            current_layer_rows["variant"].dropna().unique().tolist()
+            if "variant" in current_layer_rows.columns
+            else []
+        )
+        ensure_session_material_variant(
+            st.session_state,
+            available_material_variants,
+        )
+
     calculation_data = {
 
         "category": category,
@@ -3962,6 +4462,11 @@ if current_step == 3:
         "custom_profile_a": st.session_state.get("custom_profile_a"),
         "custom_profile_b": st.session_state.get("custom_profile_b"),
         "custom_profile_A": st.session_state.get("custom_profile_A"),
+
+        # MATERIAL LIST SETTINGS
+        "profile_length": st.session_state.get("profile_length", "6,0"),
+        "waste_percent": st.session_state.get("waste_percent", "10"),
+        "selected_material_variant": st.session_state.get("selected_material_variant"),
     }
 
     # ---------------------------------------------------
@@ -4139,13 +4644,17 @@ if current_step == 3:
 
     st.header(t("materials_header"))
 
+    initialize_material_widget_state(st.session_state)
+
     col1, col2 = st.columns(2)
 
     with col1:
 
         profile_length = st.text_input(
             t("profile_length"),
-            value="6,0"
+            key="_profile_length_widget",
+            on_change=sync_material_widget_to_session,
+            args=(st.session_state, "profile_length"),
         )
 
         profile_length = clean_numeric(profile_length)
@@ -4157,7 +4666,9 @@ if current_step == 3:
 
         waste_percent = st.text_input(
             t("waste_percent"),
-            value="10"
+            key="_waste_percent_widget",
+            on_change=sync_material_widget_to_session,
+            args=(st.session_state, "waste_percent"),
         )
 
         waste_percent = clean_numeric(waste_percent)
@@ -4253,6 +4764,10 @@ if current_step == 3:
 
         if "variant" in layer_rows.columns:
             available_variants = layer_rows["variant"].dropna().unique().tolist()
+            selected_variant = ensure_session_material_variant(
+                st.session_state,
+                available_variants,
+            )
             if len(available_variants) > 1:
                 variant_labels = {
                     variant: build_variant_label(
@@ -4261,14 +4776,21 @@ if current_step == 3:
                     )
                     for variant in available_variants
                 }
+                st.session_state["_selected_material_variant_widget"] = selected_variant
                 selected_variant = st.selectbox(
                     t("select_layer_build_up"),
                     available_variants,
+                    index=available_variants.index(selected_variant),
                     format_func=lambda variant: variant_labels.get(variant, variant),
+                    key="_selected_material_variant_widget",
+                    on_change=sync_material_widget_to_session,
+                    args=(st.session_state, "selected_material_variant"),
                 )
                 layer_rows = layer_rows[layer_rows["variant"] == selected_variant]
             elif len(available_variants) == 1:
-                layer_rows = layer_rows[layer_rows["variant"] == available_variants[0]]
+                layer_rows = layer_rows[layer_rows["variant"] == selected_variant]
+            else:
+                layer_rows = layer_rows.iloc[0:0]
 
         angle_lookup = angle_profile_logic_df[
             angle_profile_logic_df["sides"]

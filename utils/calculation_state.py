@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from copy import deepcopy
-from typing import Any
+from typing import Any, Iterable
 
 import pandas as pd
 
@@ -11,6 +11,147 @@ import pandas as pd
 MATERIALS_KEY = "materials_table"
 PENDING_MATERIALS_KEY = "current_materials_table"
 PENDING_SIGNATURE_KEY = "current_materials_signature"
+MATERIAL_SETTING_KEYS = (
+    "profile_length",
+    "waste_percent",
+    "selected_material_variant",
+)
+MATERIAL_SETTING_DEFAULTS = {
+    "profile_length": "6,0",
+    "waste_percent": "10",
+    "selected_material_variant": None,
+}
+MATERIAL_WIDGET_KEYS = {
+    "profile_length": "_profile_length_widget",
+    "waste_percent": "_waste_percent_widget",
+    "selected_material_variant": "_selected_material_variant_widget",
+}
+
+
+def coerce_available_material_variants(variants: Iterable[Any]) -> list[Any]:
+    """Return non-empty material build-up variants preserving result order."""
+
+    available_variants: list[Any] = []
+    for variant in variants:
+        if variant is None:
+            continue
+        try:
+            if pd.isna(variant):
+                continue
+        except (TypeError, ValueError):
+            pass
+        if variant not in available_variants:
+            available_variants.append(variant)
+    return available_variants
+
+
+def resolve_material_variant(saved_variant: Any, available_variants: Iterable[Any]) -> Any:
+    """Return a valid saved variant, or the first valid result variant.
+
+    Material build-up selections must always come from the calculated result
+    data.  This prevents stale/default UI state from inventing a non-existing
+    build-up such as a single board matching the total thickness.
+    """
+
+    variants = coerce_available_material_variants(available_variants)
+    if not variants:
+        return None
+    if saved_variant in variants:
+        return saved_variant
+    return variants[0]
+
+
+def ensure_session_material_variant(session_state: Any, available_variants: Iterable[Any]) -> Any:
+    """Store and return the valid material variant for the current result."""
+
+    selected_variant = resolve_material_variant(
+        session_state.get("selected_material_variant"),
+        available_variants,
+    )
+    session_state["selected_material_variant"] = deepcopy(selected_variant)
+    return selected_variant
+
+
+def initialize_material_widget_state(session_state: Any) -> None:
+    """Copy durable material settings into temporary widget keys.
+
+    Streamlit may remove widget-backed keys when widgets are not rendered.
+    Durable business state therefore lives in ``MATERIAL_SETTING_KEYS`` while
+    the UI uses temporary keys that are repopulated before widget creation.
+    """
+
+    for durable_key, widget_key in MATERIAL_WIDGET_KEYS.items():
+        session_state[widget_key] = deepcopy(
+            session_state.get(durable_key, MATERIAL_SETTING_DEFAULTS[durable_key])
+        )
+
+
+def sync_material_widget_to_session(session_state: Any, durable_key: str) -> None:
+    """Copy a temporary material widget value back to durable state."""
+
+    widget_key = MATERIAL_WIDGET_KEYS[durable_key]
+    session_state[durable_key] = deepcopy(
+        session_state.get(widget_key, MATERIAL_SETTING_DEFAULTS[durable_key])
+    )
+
+
+def material_settings_from_session(session_state: Any) -> dict[str, Any]:
+    """Return material-list inputs from session state with UI defaults."""
+
+    return {
+        key: deepcopy(session_state.get(key, MATERIAL_SETTING_DEFAULTS[key]))
+        for key in MATERIAL_SETTING_KEYS
+    }
+
+
+def attach_material_settings(
+    session_state: Any,
+    calculation: dict[str, Any],
+) -> dict[str, Any]:
+    """Return a calculation copy with current material-list input settings."""
+
+    saved_calculation = deepcopy(calculation)
+    saved_calculation.update(material_settings_from_session(session_state))
+    return saved_calculation
+
+
+def restore_calculation_material_settings(
+    session_state: Any,
+    calculation: dict[str, Any],
+) -> None:
+    """Restore saved material-list inputs for the selected calculation.
+
+    Defaults are only used for older calculations that do not yet carry saved
+    material settings. Streamlit widgets with these keys read from
+    ``session_state`` during reruns, so this must happen before the widgets are
+    rendered.
+    """
+
+    for key in MATERIAL_SETTING_KEYS:
+        session_state[key] = deepcopy(
+            calculation.get(key, MATERIAL_SETTING_DEFAULTS[key])
+        )
+
+
+def apply_default_material_settings(session_state: Any) -> None:
+    """Apply material-list defaults for a brand-new calculation draft."""
+
+    for key in MATERIAL_SETTING_KEYS:
+        session_state[key] = deepcopy(MATERIAL_SETTING_DEFAULTS[key])
+
+
+def update_selected_calculation_material_settings(session_state: Any) -> bool:
+    """Persist current material-list widget values to the active calculation."""
+
+    edit_index = session_state.get("edit_index")
+    calculations = session_state.get("calculations", [])
+
+    if edit_index is None or not 0 <= edit_index < len(calculations):
+        return False
+
+    calculations[edit_index].update(material_settings_from_session(session_state))
+    return True
+
 
 
 def calculation_signature(calculation: dict[str, Any]) -> tuple[Any, ...]:
@@ -63,7 +204,7 @@ def attach_pending_materials(
 ) -> dict[str, Any]:
     """Return a calculation copy with the matching pending material list attached."""
 
-    saved_calculation = deepcopy(calculation)
+    saved_calculation = attach_material_settings(session_state, calculation)
 
     if (
         session_state.get(PENDING_SIGNATURE_KEY)
