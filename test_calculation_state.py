@@ -311,3 +311,42 @@ def test_invalid_non_existing_build_up_is_not_kept_or_created():
     assert selected == "A"
     assert state["selected_material_variant"] == "A"
     assert state["selected_material_variant"] != "45 mm Fireboard"
+
+
+def test_regression_switching_calculations_restores_material_inputs_and_variants():
+    from utils.calculation_state import restore_calculation_material_settings
+
+    state = {"calculations": [], "edit_index": None, "editing": False}
+
+    calculation_a = calculation(40, fire_time=30)
+    state["profile_length"] = "12"
+    state["waste_percent"] = "12"
+    state["selected_material_variant"] = "2x20"
+    remember_current_materials(state, calculation_a, materials("A 12/12 2x20"))
+    assert append_new_calculation(state, calculation_a)
+
+    state["edit_index"] = None
+    state["editing"] = False
+    calculation_b = calculation(40, fire_time=60)
+    state["profile_length"] = "4"
+    state["waste_percent"] = "4"
+    state["selected_material_variant"] = "15+25"
+    remember_current_materials(state, calculation_b, materials("B 4/4 15+25"))
+    assert append_new_calculation(state, calculation_b)
+
+    restore_calculation_material_settings(state, state["calculations"][0])
+    assert state["profile_length"] == "12"
+    assert state["waste_percent"] == "12"
+    assert state["selected_material_variant"] == "2x20"
+
+    restore_calculation_material_settings(state, state["calculations"][1])
+    assert state["profile_length"] == "4"
+    assert state["waste_percent"] == "4"
+    assert state["selected_material_variant"] == "15+25"
+
+    assert state["calculations"][0]["profile_length"] == "12"
+    assert state["calculations"][0]["waste_percent"] == "12"
+    assert state["calculations"][0]["selected_material_variant"] == "2x20"
+    assert state["calculations"][1]["profile_length"] == "4"
+    assert state["calculations"][1]["waste_percent"] == "4"
+    assert state["calculations"][1]["selected_material_variant"] == "15+25"
