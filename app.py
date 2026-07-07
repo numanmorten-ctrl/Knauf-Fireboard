@@ -46,6 +46,8 @@ from utils.calculation_state import (
     restore_calculation_material_settings,
     update_selected_calculation_material_settings,
     ensure_session_material_variant,
+    initialize_material_widget_state,
+    sync_material_widget_to_session,
 )
 from utils.pdf_generator import (
     PROFILE_IMAGE_MAP,
@@ -4607,14 +4609,17 @@ if current_step == 3:
 
     st.header(t("materials_header"))
 
+    initialize_material_widget_state(st.session_state)
+
     col1, col2 = st.columns(2)
 
     with col1:
 
         profile_length = st.text_input(
             t("profile_length"),
-            value=st.session_state.get("profile_length", "6,0"),
-            key="profile_length",
+            key="_profile_length_widget",
+            on_change=sync_material_widget_to_session,
+            args=(st.session_state, "profile_length"),
         )
 
         profile_length = clean_numeric(profile_length)
@@ -4626,8 +4631,9 @@ if current_step == 3:
 
         waste_percent = st.text_input(
             t("waste_percent"),
-            value=st.session_state.get("waste_percent", "10"),
-            key="waste_percent",
+            key="_waste_percent_widget",
+            on_change=sync_material_widget_to_session,
+            args=(st.session_state, "waste_percent"),
         )
 
         waste_percent = clean_numeric(waste_percent)
@@ -4735,12 +4741,15 @@ if current_step == 3:
                     )
                     for variant in available_variants
                 }
+                st.session_state["_selected_material_variant_widget"] = selected_variant
                 selected_variant = st.selectbox(
                     t("select_layer_build_up"),
                     available_variants,
                     index=available_variants.index(selected_variant),
                     format_func=lambda variant: variant_labels.get(variant, variant),
-                    key="selected_material_variant",
+                    key="_selected_material_variant_widget",
+                    on_change=sync_material_widget_to_session,
+                    args=(st.session_state, "selected_material_variant"),
                 )
                 layer_rows = layer_rows[layer_rows["variant"] == selected_variant]
             elif len(available_variants) == 1:

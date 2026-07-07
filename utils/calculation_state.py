@@ -21,6 +21,11 @@ MATERIAL_SETTING_DEFAULTS = {
     "waste_percent": "10",
     "selected_material_variant": None,
 }
+MATERIAL_WIDGET_KEYS = {
+    "profile_length": "_profile_length_widget",
+    "waste_percent": "_waste_percent_widget",
+    "selected_material_variant": "_selected_material_variant_widget",
+}
 
 
 def coerce_available_material_variants(variants: Iterable[Any]) -> list[Any]:
@@ -65,6 +70,29 @@ def ensure_session_material_variant(session_state: Any, available_variants: Iter
     )
     session_state["selected_material_variant"] = deepcopy(selected_variant)
     return selected_variant
+
+
+def initialize_material_widget_state(session_state: Any) -> None:
+    """Copy durable material settings into temporary widget keys.
+
+    Streamlit may remove widget-backed keys when widgets are not rendered.
+    Durable business state therefore lives in ``MATERIAL_SETTING_KEYS`` while
+    the UI uses temporary keys that are repopulated before widget creation.
+    """
+
+    for durable_key, widget_key in MATERIAL_WIDGET_KEYS.items():
+        session_state[widget_key] = deepcopy(
+            session_state.get(durable_key, MATERIAL_SETTING_DEFAULTS[durable_key])
+        )
+
+
+def sync_material_widget_to_session(session_state: Any, durable_key: str) -> None:
+    """Copy a temporary material widget value back to durable state."""
+
+    widget_key = MATERIAL_WIDGET_KEYS[durable_key]
+    session_state[durable_key] = deepcopy(
+        session_state.get(widget_key, MATERIAL_SETTING_DEFAULTS[durable_key])
+    )
 
 
 def material_settings_from_session(session_state: Any) -> dict[str, Any]:
