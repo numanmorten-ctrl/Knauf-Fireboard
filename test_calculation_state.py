@@ -350,3 +350,43 @@ def test_regression_switching_calculations_restores_material_inputs_and_variants
     assert state["calculations"][1]["profile_length"] == "4"
     assert state["calculations"][1]["waste_percent"] == "4"
     assert state["calculations"][1]["selected_material_variant"] == "15+25"
+
+
+def test_material_widget_state_uses_temporary_keys_for_restored_values():
+    from utils.calculation_state import (
+        initialize_material_widget_state,
+        restore_calculation_material_settings,
+        sync_material_widget_to_session,
+    )
+
+    state = {
+        "profile_length": "6,0",
+        "waste_percent": "10",
+        "selected_material_variant": None,
+    }
+    calculation = {
+        "profile_length": "12",
+        "waste_percent": "12",
+        "selected_material_variant": "2x20",
+    }
+
+    restore_calculation_material_settings(state, calculation)
+    assert "_profile_length_widget" not in state
+    assert "_waste_percent_widget" not in state
+    assert "_selected_material_variant_widget" not in state
+
+    initialize_material_widget_state(state)
+    assert state["_profile_length_widget"] == "12"
+    assert state["_waste_percent_widget"] == "12"
+    assert state["_selected_material_variant_widget"] == "2x20"
+
+    state["_profile_length_widget"] = "4"
+    state["_waste_percent_widget"] = "4"
+    state["_selected_material_variant_widget"] = "15+25"
+    sync_material_widget_to_session(state, "profile_length")
+    sync_material_widget_to_session(state, "waste_percent")
+    sync_material_widget_to_session(state, "selected_material_variant")
+
+    assert state["profile_length"] == "4"
+    assert state["waste_percent"] == "4"
+    assert state["selected_material_variant"] == "15+25"
