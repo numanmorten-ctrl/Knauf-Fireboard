@@ -91,7 +91,7 @@ def test_export_and_import_project_state_round_trips_calculations_and_material_s
     assert calculation_payload["selected_material_variant"] == ["2x20", "compact"]
     assert calculation_payload["material_build_up"] == {"layer": 2, "variant": "2x20"}
     assert calculation_payload["created_at"] == "2026-07-02T09:05:00"
-    assert calculation_payload["export_path"] == "projects/example.fireboard"
+    assert calculation_payload["export_path"] == str(Path("projects/example.fireboard"))
     assert sorted(calculation_payload["tags"]) == ["board", "fire"]
     assert calculation_payload[MATERIALS_KEY]["records"][0]["Antal"] == 2
     assert calculation_payload[MATERIALS_KEY]["records"][0]["Valgt"] is True
