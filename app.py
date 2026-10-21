@@ -31,7 +31,8 @@ from utils.export_helpers import (
 )
 from utils.ui_helpers import (
     card,
-    disabled_card
+    disabled_card,
+    get_base64_image,
 )
 from utils.validation_helpers import (
     validate_temperature,
@@ -2122,7 +2123,7 @@ def render_apv_geometry_help():
     )
 
     st.image(
-        str(get_apv_geometry_help_image_path()),
+        f"data:image/png;base64,{get_base64_image(get_apv_geometry_help_image_path())}",
         use_container_width=True
     )
 
