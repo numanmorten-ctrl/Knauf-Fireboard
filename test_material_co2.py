@@ -111,7 +111,18 @@ def test_board_quantity_and_co2_before_rounding(
 ):
     raw, table = build_case(material_data, thickness, variant, waste)
     assert sum(row["Enhed"] == "m²" for row in raw) == (1 if thickness == 25 else 2)
-    assert table.index.is_unique
+    # Display article numbers are intentionally blank for foreign clamps.
+    # Check catalogue article + unit instead, including those hidden identities.
+    identities = [
+        (
+            str(material_data.lookup["materials_by_description"][
+                material["BESKRIVELSE"].strip().lower()
+            ]["ART.NR."]),
+            material["ENHED"],
+        )
+        for _, material in table.iterrows()
+    ]
+    assert len(identities) == len(set(identities))
     assert sum(table["ENHED"] == "m²") == (2 if variant == "B" else 1)
     row = table.loc[article]
     quantity = material_data.rate * product_layers
@@ -125,6 +136,27 @@ def test_board_quantity_and_co2_before_rounding(
     assert row["CO2"] == pytest.approx(
         co2_at_ten_percent / 1.1 * (1 + waste / 100), rel=1e-12
     )
+
+    # Different 50/64 mm clamps coexist; identical clamps from two layers
+    # must remain one row with the summed quantity, at both tested waste rates.
+    expected_clamp_layers = {
+        (25, "A"): {"90000006": 1},
+        (50, "A"): {"90000006": 2},
+        (50, "B"): {"90000005": 1, "90000006": 1},
+    }[(thickness, variant)]
+    clamps = table[table.index == ""]
+    assert len(clamps) == len(expected_clamp_layers)
+    for code, layer_count in expected_clamp_layers.items():
+        description = material_data.lookup["materials_by_artnr"][code]["BESKRIVELSE_DK"]
+        matches = clamps[clamps["BESKRIVELSE"] == description]
+        assert len(matches) == 1
+        clamp = matches.iloc[0]
+        expected_rate = material_data.generation["staple_rate"] * layer_count
+        assert clamp["ENHED"] == "stk"
+        assert clamp["FORBRUG PR. LBM"] == pytest.approx(expected_rate)
+        assert clamp["SAMLET FORBRUG"] == pytest.approx(
+            expected_rate * 6 * (1 + waste / 100)
+        )
 
 
 @pytest.mark.parametrize("waste", [0, 10])
