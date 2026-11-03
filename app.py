@@ -2972,6 +2972,9 @@ with st.sidebar:
                         calc["profile"]
                     )
 
+                    if calc["category"] == "Andre profiler":
+                        st.session_state.custom_profile_name = calc["profile"]
+
                     profile_name = str(calc["profile"])
 
                     if profile_name.startswith("HEB"):

@@ -65,6 +65,16 @@ def reset_calculation_state(session_state):
 
         session_state[key] = None
 
+    session_state["custom_profile_name"] = ""
+    session_state["custom_profile_apv"] = None
+    session_state["custom_apv"] = None
+    session_state["custom_profile_a"] = ""
+    session_state["custom_profile_b"] = ""
+    session_state["custom_profile_A"] = ""
+    session_state["surface_area"] = ""
+    session_state["steel_area"] = ""
+    session_state["apv_method"] = "Direkte"
+
     session_state["show_apv_geometry_help"] = False
 
     session_state.editing = False
