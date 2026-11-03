@@ -4193,6 +4193,14 @@ if (
 
         row = apv_df[
             (
+                apv_df["profile_category"]
+                .astype(str)
+                .str.strip()
+                ==
+                str(category).strip()
+            )
+            &
+            (
                 apv_df["profile"]
                 .astype(str)
                 .str.strip()
@@ -4678,6 +4686,13 @@ if current_step == 3:
             waste_percent = 0
 
     amount_row = apv_df[
+        (
+            apv_df["profile_category"]
+            .map(clean_text)
+            ==
+            clean_text(category)
+        )
+        &
         (
             apv_df["profile"]
             .map(clean_text)
