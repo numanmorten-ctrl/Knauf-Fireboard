@@ -390,12 +390,16 @@ def build_material_row(
         # AREA
         if co2_type == "AREA":
 
-            co2_total = (
-                fireboard_rate
-                * profile_length
-                * (1 + waste_percent / 100)
-                * co2_factor
-            )
+            if str(row.get("Enhed", "")).strip() == "m²":
+                co2_total = total * co2_factor
+            else:
+                # Preserve reference-area factors for materials measured in kg, etc.
+                co2_total = (
+                    fireboard_rate
+                    * profile_length
+                    * (1 + waste_percent / 100)
+                    * co2_factor
+                )
 
             co2_display = format_number(co2_total)
 
