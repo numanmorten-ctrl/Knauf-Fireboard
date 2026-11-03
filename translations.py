@@ -247,6 +247,9 @@ translations = {
         "invalid_apv":
             "Indtast gyldig Ap/V værdi",
 
+        "apv_exceeds_maximum":
+            "Profilforholdet (Ap/V) overstiger 380 m²/m³, vælg et andet eller større profil",
+
         "special_profile":
             "Specialprofil",
 
@@ -634,6 +637,9 @@ translations = {
 
         "invalid_apv":
             "Enter valid Ap/V value",
+
+        "apv_exceeds_maximum":
+            "The profile factor (Ap/V) exceeds 380 m²/m³. Select another or larger steel profile.",
 
         "special_profile":
             "Special profile",

@@ -1,5 +1,6 @@
 import pandas as pd
 
+from translations import translations
 from utils.calculation_state import apply_default_material_settings
 
 def validate_temperature(temperature, t):
@@ -20,15 +21,16 @@ def validate_temperature(temperature, t):
 def validate_fireboard_lookup(
     table,
     apv,
-    temperature
+    temperature,
+    t=None
 ):
 
-    if apv not in table.columns:
+    if apv > 380 or apv not in table.columns:
 
-        return (
-            "Profilforholdet (Ap/V) overstiger "
-            "380 m²/m³, vælg et andet eller større profil"
-        )
+        if t is not None:
+            return t("apv_exceeds_maximum")
+
+        return translations["DA"]["apv_exceeds_maximum"]
 
     if int(temperature) not in table.index:
 
