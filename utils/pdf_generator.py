@@ -1,11 +1,14 @@
 from io import BytesIO
 from datetime import datetime
+from itertools import islice
+from zoneinfo import ZoneInfo
 
 from translations import translations
 
 from utils.constants import *
 
 from reportlab.pdfgen import canvas
+from reportlab.pdfbase.pdfmetrics import stringWidth
 from reportlab.lib.pagesizes import A4
 from reportlab.lib import colors
 
@@ -15,6 +18,51 @@ from reportlab.lib.pagesizes import A4
 from reportlab.lib import colors
 
 from utils.documentation_urls import FIREBOARD_INSTALLATION_SECTION_URL
+
+
+def draw_project_description(can, description):
+    """Fit literal project text into the description cell shared by both templates."""
+
+    font_name, font_size = DESCRIPTION_FONT
+    max_width = 332
+
+    def width(text):
+        return stringWidth(text, font_name, font_size)
+
+    def wrapped_lines():
+        text = str(description).replace("\r\n", "\n").replace("\r", "\n")
+        for line in text.split("\n"):
+            while width(line) > max_width:
+                # Find the longest fitting prefix, including for unbroken URLs
+                # and identifiers. Prefer a word boundary when one is available.
+                low, high = 1, len(line)
+                while low < high:
+                    middle = (low + high + 1) // 2
+                    if width(line[:middle]) <= max_width:
+                        low = middle
+                    else:
+                        high = middle - 1
+                split_at = line.rfind(" ", 0, low + 1)
+                if split_at <= 0:
+                    split_at = low
+                yield line[:split_at]
+                line = line[split_at:].lstrip(" ")
+            yield line
+
+    # A third line is enough to establish overflow; do not lay out the rest.
+    lines = list(islice(wrapped_lines(), 3))
+    if len(lines) > 2:
+        last_line = lines[1].rstrip()
+        while width(last_line + "…") > max_width:
+            last_line = last_line[:-1].rstrip()
+        lines = [lines[0], last_line + "…"]
+
+    baselines = (488,) if len(lines) == 1 else (494.5, 485.5)
+    can.saveState()
+    can.setFont(font_name, font_size)
+    for line, baseline in zip(lines, baselines):
+        can.drawString(197, baseline, line)
+    can.restoreState()
 
 
 def apply_fireboard_installation_section_url(page):
@@ -93,6 +141,7 @@ def generate_single_pdf(
     PAGE_FONT
 ):
 
+    generation_date = datetime.now(ZoneInfo("Europe/Copenhagen")).strftime("%d-%m-%Y")
     output = PdfWriter()
 
     if language == "EN":
@@ -138,14 +187,10 @@ def generate_single_pdf(
     can.drawString(
         PROJECT_X,
         PROJECT_Y_LOCAL - (PROJECT_LINE_HEIGHT * 3),
-        datetime.now().strftime("%d-%m-%Y")
+        generation_date
     )
 
-    can.drawString(
-        PROJECT_X,
-        PROJECT_Y_LOCAL - (PROJECT_LINE_HEIGHT * 4),
-        str(session_state.description)
-    )
+    draw_project_description(can, session_state.description)
 
     can.setFont(*PROJECT_FONT)
 
@@ -388,6 +433,7 @@ def generate_complete_pdf(
     PAGE_FONT
 ):
 
+    generation_date = datetime.now(ZoneInfo("Europe/Copenhagen")).strftime("%d-%m-%Y")
     output = PdfWriter()
 
     if language == "EN":
@@ -440,14 +486,10 @@ def generate_complete_pdf(
         can.drawString(
             PROJECT_X,
             PROJECT_Y_LOCAL - (PROJECT_LINE_HEIGHT * 3),
-            datetime.now().strftime("%d-%m-%Y")
+            generation_date
         )
 
-        can.drawString(
-            PROJECT_X,
-            PROJECT_Y_LOCAL - (PROJECT_LINE_HEIGHT * 4),
-            str(session_state.description)
-        )
+        draw_project_description(can, session_state.description)
 
         # CALCULATION
 
