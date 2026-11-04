@@ -4356,7 +4356,8 @@ if (
     validation_message = validate_fireboard_lookup(
         table,
         apv,
-        temperature
+        temperature,
+        t
     )
 
     if validation_message:
