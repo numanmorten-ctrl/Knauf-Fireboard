@@ -68,13 +68,12 @@ Fireboard is a digital calculation tool for dimensioning fire protection of stee
 
 The solution supports:
 
-- Fire-protection dimensioning for standard and custom steel profiles.
-- Encasement methods, fire resistance periods and design steel temperatures.
-- Calculation of required Fireboard thickness and indicative material quantities where supported.
-- CO₂ information and product documentation.
-- Projects containing multiple calculations, including saving, editing and reopening projects.
-- PDF, Excel, ZIP and separate editable project-file exports.
-- Danish and English localization.
+- **Fire-protection dimensioning:** Dimensioning fire protection for standard and custom steel profiles, including selection of encasement method, fire resistance period and design steel temperature, and calculation of the required Fireboard thickness.
+- **Material calculation:** Calculation of indicative material quantities where supported.
+- **Environmental information:** CO₂ information for the relevant products.
+- **Project management:** Projects containing multiple calculations, including saving, editing and reopening projects.
+- **Documentation and exports:** Product documentation, PDF, Excel and ZIP exports, and separate editable project-file exports.
+- **Language support:** Danish and English localization.
 
 The design steel temperature is determined by the responsible designer or consultant and entered as a calculation input. Custom-profile material limitations are defined in section 4.2.
 
@@ -237,13 +236,13 @@ These files identify the current reference content. CSV storage and these filena
 
 | Reference data | Purpose and relationship |
 | --- | --- |
-| [apv.csv](https://github.com/numanmorten-ctrl/Knauf-Fireboard/blob/546a5effb3226b1beaaba82f1d640f9d1ab3f4f5/data/apv.csv) | Standard profile categories/names, cladding and sides, Ap/V, and rates for Fireboard area, beam/PHL, angles, screws and clamps. |
-| [fireboard_30.csv](https://github.com/numanmorten-ctrl/Knauf-Fireboard/blob/546a5effb3226b1beaaba82f1d640f9d1ab3f4f5/data/fireboard_30.csv), [fireboard_60.csv](https://github.com/numanmorten-ctrl/Knauf-Fireboard/blob/546a5effb3226b1beaaba82f1d640f9d1ab3f4f5/data/fireboard_60.csv), [fireboard_90.csv](https://github.com/numanmorten-ctrl/Knauf-Fireboard/blob/546a5effb3226b1beaaba82f1d640f9d1ab3f4f5/data/fireboard_90.csv), [fireboard_120.csv](https://github.com/numanmorten-ctrl/Knauf-Fireboard/blob/546a5effb3226b1beaaba82f1d640f9d1ab3f4f5/data/fireboard_120.csv) | Thickness values by design temperature and Ap/V for each duration. Underlying columns beyond 380 do not authorize their use. |
-| [layer_logic.csv](https://github.com/numanmorten-ctrl/Knauf-Fireboard/blob/546a5effb3226b1beaaba82f1d640f9d1ab3f4f5/data/layer_logic.csv) | Valid layer thicknesses/order and build-up variants for a required total thickness. |
-| [screw_clamp_logic.csv](https://github.com/numanmorten-ctrl/Knauf-Fireboard/blob/546a5effb3226b1beaaba82f1d640f9d1ab3f4f5/data/screw_clamp_logic.csv) | Layer/board-thickness rules referring to screw and clamp catalogue products. |
-| [angle_profile_logic.csv](https://github.com/numanmorten-ctrl/Knauf-Fireboard/blob/546a5effb3226b1beaaba82f1d640f9d1ab3f4f5/data/angle_profile_logic.csv) | Angle-profile consumption associated with protected sides. |
-| [beam_profile_logic.csv](https://github.com/numanmorten-ctrl/Knauf-Fireboard/blob/546a5effb3226b1beaaba82f1d640f9d1ab3f4f5/data/beam_profile_logic.csv) | Profile-related beam/PHL product selection. |
-| [materials.csv](https://github.com/numanmorten-ctrl/Knauf-Fireboard/blob/546a5effb3226b1beaaba82f1d640f9d1ab3f4f5/data/materials.csv) | Prototype local catalogue: product identity, manufacturer, Danish/English descriptions, CO₂ factors/types and document links; resolves products selected by component rules. Production descriptions and units are centrally maintained in EPIM and supplied through PRV. Environmental factors originate from Knauf’s product database and product EPDs. |
+| `data/apv.csv` | Standard profile categories/names, cladding and sides, Ap/V, and rates for Fireboard area, beam/PHL, angles, screws and clamps. |
+| `data/fireboard_30.csv`, `data/fireboard_60.csv`, `data/fireboard_90.csv`, `data/fireboard_120.csv` | Thickness values by design temperature and Ap/V for each duration. Underlying columns beyond 380 do not authorize their use. |
+| `data/layer_logic.csv` | Valid layer thicknesses/order and build-up variants for a required total thickness. |
+| `data/screw_clamp_logic.csv` | Layer/board-thickness rules referring to screw and clamp catalogue products. |
+| `data/angle_profile_logic.csv` | Angle-profile consumption associated with protected sides. |
+| `data/beam_profile_logic.csv` | Profile-related beam/PHL product selection. |
+| `data/materials.csv` | Prototype local catalogue: product identity, manufacturer, Danish/English descriptions, CO₂ factors/types and document links; resolves products selected by component rules. Production descriptions and units are centrally maintained in EPIM and supplied through PRV. Environmental factors originate from Knauf’s product database and product EPDs. |
 
 Knauf Commercial – Local Data Owner maintains, uploads and publishes calculation and product datasets. EPIM is the central source for product descriptions and units; PRV is uploaded with the related Fireboard files for each update. Environmental factors originate from Knauf’s product database and product EPDs. Knauf Digital provides the application and technical operation. Sections 9.3 and 12 define the responsibilities and publication controls.
 
@@ -326,20 +325,20 @@ The preceding implementation validation of the prototype version supplied in the
 
 ### 11.1 Baseline and traceability
 
-Knauf Digital receives the prototype source code as a ZIP copy. References below identify individual source, data, test and documentation files within that copy; source and data links are pinned to prototype commit `546a5effb3226b1beaaba82f1d640f9d1ab3f4f5`. The existing `docs/functional-specification.md` is preserved unchanged. This specification is a separate requirements document, not a revision of that earlier as-built record. The prototype source ZIP is a handover artefact, distinct from the user-generated project documentation ZIP described in EX-005.
+The references below relate to the prototype source, data, test and documentation files delivered to Knauf Digital as a ZIP package. File paths are relative to the root of that ZIP package. The existing `docs/functional-specification.md` is preserved unchanged. This specification is a separate requirements document, not a revision of that earlier as-built record. The prototype source ZIP is a handover artefact, distinct from the user-generated project documentation ZIP described in EX-005.
 
 | Reference area | Relevant sources and tests |
 | --- | --- |
-| Workflow, profile/cladding selection, metadata and download orchestration | [app.py](https://github.com/numanmorten-ctrl/Knauf-Fireboard/blob/546a5effb3226b1beaaba82f1d640f9d1ab3f4f5/app.py): step navigation around 3314; final lookup around 4195–4370; sidebar downloads around 3107–3258; metadata/current PDF around 4495–4578. |
-| Ap/V maximum and supported-result validation | [validation_helpers.py](https://github.com/numanmorten-ctrl/Knauf-Fireboard/blob/546a5effb3226b1beaaba82f1d640f9d1ab3f4f5/utils/validation_helpers.py), `validate_fireboard_lookup`; [test_apv_maximum.py](https://github.com/numanmorten-ctrl/Knauf-Fireboard/blob/546a5effb3226b1beaaba82f1d640f9d1ab3f4f5/test_apv_maximum.py). |
-| Category-specific lookups | [app.py](https://github.com/numanmorten-ctrl/Knauf-Fireboard/blob/546a5effb3226b1beaaba82f1d640f9d1ab3f4f5/app.py), final Ap/V and material-rate filters; [test_profile_category_lookup.py](https://github.com/numanmorten-ctrl/Knauf-Fireboard/blob/546a5effb3226b1beaaba82f1d640f9d1ab3f4f5/test_profile_category_lookup.py). |
-| Custom geometry and restoration | [geometry_helpers.py](https://github.com/numanmorten-ctrl/Knauf-Fireboard/blob/546a5effb3226b1beaaba82f1d640f9d1ab3f4f5/utils/geometry_helpers.py), [custom_profile_validation.py](https://github.com/numanmorten-ctrl/Knauf-Fireboard/blob/546a5effb3226b1beaaba82f1d640f9d1ab3f4f5/utils/custom_profile_validation.py); [test_geometry_helpers.py](https://github.com/numanmorten-ctrl/Knauf-Fireboard/blob/546a5effb3226b1beaaba82f1d640f9d1ab3f4f5/test_geometry_helpers.py), [test_custom_profile_state.py](https://github.com/numanmorten-ctrl/Knauf-Fireboard/blob/546a5effb3226b1beaaba82f1d640f9d1ab3f4f5/test_custom_profile_state.py). |
-| Materials, actual identity and CO₂ | [material_helpers.py](https://github.com/numanmorten-ctrl/Knauf-Fireboard/blob/546a5effb3226b1beaaba82f1d640f9d1ab3f4f5/utils/material_helpers.py), `deduplicate_materials`, `build_material_row`, `generate_materials`; [test_material_co2.py](https://github.com/numanmorten-ctrl/Knauf-Fireboard/blob/546a5effb3226b1beaaba82f1d640f9d1ab3f4f5/test_material_co2.py), [test_screw_clamp_logic.py](https://github.com/numanmorten-ctrl/Knauf-Fireboard/blob/546a5effb3226b1beaaba82f1d640f9d1ab3f4f5/test_screw_clamp_logic.py). |
-| Saved calculations, input settings and snapshots | [calculation_state.py](https://github.com/numanmorten-ctrl/Knauf-Fireboard/blob/546a5effb3226b1beaaba82f1d640f9d1ab3f4f5/utils/calculation_state.py); [test_calculation_state.py](https://github.com/numanmorten-ctrl/Knauf-Fireboard/blob/546a5effb3226b1beaaba82f1d640f9d1ab3f4f5/test_calculation_state.py). |
-| Local project files | [project_io.py](https://github.com/numanmorten-ctrl/Knauf-Fireboard/blob/546a5effb3226b1beaaba82f1d640f9d1ab3f4f5/utils/project_io.py), `export_project_state`, `parse_project_file`, `import_project_state`; [test_project_io.py](https://github.com/numanmorten-ctrl/Knauf-Fireboard/blob/546a5effb3226b1beaaba82f1d640f9d1ab3f4f5/test_project_io.py). |
-| PDF output and approved layout | [pdf_generator.py](https://github.com/numanmorten-ctrl/Knauf-Fireboard/blob/546a5effb3226b1beaaba82f1d640f9d1ab3f4f5/utils/pdf_generator.py), `draw_project_description`, `generate_single_pdf`, `generate_complete_pdf`; [Danish template](https://github.com/numanmorten-ctrl/Knauf-Fireboard/blob/546a5effb3226b1beaaba82f1d640f9d1ab3f4f5/PDF_template.pdf), [English template](https://github.com/numanmorten-ctrl/Knauf-Fireboard/blob/546a5effb3226b1beaaba82f1d640f9d1ab3f4f5/PDF_template_EN.pdf); [test_pdf_report_fields.py](https://github.com/numanmorten-ctrl/Knauf-Fireboard/blob/546a5effb3226b1beaaba82f1d640f9d1ab3f4f5/test_pdf_report_fields.py). |
-| Excel, combined materials and ZIP | [export_helpers.py](https://github.com/numanmorten-ctrl/Knauf-Fireboard/blob/546a5effb3226b1beaaba82f1d640f9d1ab3f4f5/utils/export_helpers.py), [project_package.py](https://github.com/numanmorten-ctrl/Knauf-Fireboard/blob/546a5effb3226b1beaaba82f1d640f9d1ab3f4f5/utils/project_package.py); [test_excel_export_styling.py](https://github.com/numanmorten-ctrl/Knauf-Fireboard/blob/546a5effb3226b1beaaba82f1d640f9d1ab3f4f5/test_excel_export_styling.py), [test_project_package.py](https://github.com/numanmorten-ctrl/Knauf-Fireboard/blob/546a5effb3226b1beaaba82f1d640f9d1ab3f4f5/test_project_package.py). |
-| Localization | [translations.py](https://github.com/numanmorten-ctrl/Knauf-Fireboard/blob/546a5effb3226b1beaaba82f1d640f9d1ab3f4f5/translations.py), catalogue description fields, material/export helpers and application-controlled text in [app.py](https://github.com/numanmorten-ctrl/Knauf-Fireboard/blob/546a5effb3226b1beaaba82f1d640f9d1ab3f4f5/app.py). |
+| Workflow, profile/cladding selection, metadata and download orchestration | `app.py`: step navigation around 3314; final lookup around 4195–4370; sidebar downloads around 3107–3258; metadata/current PDF around 4495–4578. |
+| Ap/V maximum and supported-result validation | `utils/validation_helpers.py`, `validate_fireboard_lookup`; `test_apv_maximum.py`. |
+| Category-specific lookups | `app.py`, final Ap/V and material-rate filters; `test_profile_category_lookup.py`. |
+| Custom geometry and restoration | `utils/geometry_helpers.py`, `utils/custom_profile_validation.py`; `test_geometry_helpers.py`, `test_custom_profile_state.py`. |
+| Materials, actual identity and CO₂ | `utils/material_helpers.py`, `deduplicate_materials`, `build_material_row`, `generate_materials`; `test_material_co2.py`, `test_screw_clamp_logic.py`. |
+| Saved calculations, input settings and snapshots | `utils/calculation_state.py`; `test_calculation_state.py`. |
+| Local project files | `utils/project_io.py`, `export_project_state`, `parse_project_file`, `import_project_state`; `test_project_io.py`. |
+| PDF output and approved layout | `utils/pdf_generator.py`, `draw_project_description`, `generate_single_pdf`, `generate_complete_pdf`; Danish template (`PDF_template.pdf`), English template (`PDF_template_EN.pdf`); `test_pdf_report_fields.py`. |
+| Excel, combined materials and ZIP | `utils/export_helpers.py`, `utils/project_package.py`; `test_excel_export_styling.py`, `test_project_package.py`. |
+| Localization | `translations.py`, catalogue description fields, material/export helpers and application-controlled text in `app.py`. |
 
 ### 11.2 Confirmed prototype gaps and boundaries
 
@@ -349,7 +348,7 @@ Knauf Digital receives the prototype source code as a ZIP copy. References below
 | Destructive actions | Deletion and New Project execute without confirmation. | Confirmation is required by FR-012, FR-014 and UX-008. |
 | Localization and product content | The prototype uses a local catalogue and description substitutions; some messages, worksheets and filenames remain Danish. | Implement UX-002–UX-006. EPIM centrally maintains Danish/English descriptions and units, supplied via PRV. Mandatory missing descriptions or units prevent publication under DR-014. |
 | Language-independent identity | Combined materials use displayed article numbers, falling back to descriptions; saved snapshots can retain earlier language text. | Stable product identity must govern aggregation. EPIM/PRV relationships use stable identifiers validated before publication; display descriptions must not determine calculation logic. |
-| Historical snapshots | Opening preserves old results; inputs and saved quantities may differ until Update Calculation. | Preservation and explicit updates are approved behavior. Clear explanation is required; automatic recalculation is not. |
+| Preservation of saved material results | Opening after dataset updates preserves saved results; inputs and saved quantities may differ until Update Calculation. | Preservation and explicit updates are approved behavior. Clear explanation is required; automatic recalculation is not. |
 | Custom quantities | No custom-profile material or CO₂ result is calculated. Some project notes have zero numeric placeholders. | Do not invent quantities or represent unavailable estimates as measured zero. Expansion of custom quantities is unapproved. |
 | Numeric input handling | Direct Ap/V is truncated, geometry Ap/V rounded to nearest; unparseable length/waste can become zero and negative inputs are not comprehensively constrained. | Production must round positive Ap/V upward, reject rounded values above 380, accept decimal length > 0 and waste ≥ 0 without a separate upper waste limit, use defaults of 6.0 m/10%, and explain invalid input without silently substituting zero. Material quantity formulas are implemented; input validation requires improvement. Accept both decimal separators and apply exactly two decimals to material/CO₂ display, with unrounded totals, under UX-004. |
 | Identical profiles | The prototype supports total profile length and suppresses an exact repeat of the last saved calculation. | One calculation may cover multiple profiles with identical engineering conditions using their combined length. A profile-count field and duplicate-calculation feature are not required. |
