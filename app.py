@@ -4513,11 +4513,6 @@ if current_step == 3:
             value=st.session_state.company
         )
 
-        report_date = st.text_input(
-            t("date"),
-            value=datetime.now().strftime("%d-%m-%Y")
-        )
-
     description = st.text_area(
         t("description"),
         value=st.session_state.description,
