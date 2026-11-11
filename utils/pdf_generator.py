@@ -324,19 +324,16 @@ def generate_single_pdf(
 
     overlay_pdf = PdfReader(packet)
 
-    template_pdf = PdfReader(
-        open(template_path, "rb")
-    )
+    template_pdf = PdfReader(template_path)
 
+    # Merge into the writer-owned copy; pypdf 7 rejects reader-owned pages.
     base_page = apply_fireboard_installation_section_url(
-        template_pdf.pages[0]
+        output.add_page(template_pdf.pages[0])
     )
 
     base_page.merge_page(
         overlay_pdf.pages[0]
     )
-
-    output.add_page(base_page)
 
     output_stream = BytesIO()
 
@@ -633,19 +630,16 @@ def generate_complete_pdf(
 
         overlay_pdf = PdfReader(packet)
 
-        template_pdf = PdfReader(
-            open(template_path, "rb")
-        )
+        template_pdf = PdfReader(template_path)
 
+        # Each report page needs its own writer-owned template before merging.
         base_page = apply_fireboard_installation_section_url(
-            template_pdf.pages[0]
+            output.add_page(template_pdf.pages[0])
         )
 
         base_page.merge_page(
             overlay_pdf.pages[0]
         )
-
-        output.add_page(base_page)
 
     output_stream = BytesIO()
 

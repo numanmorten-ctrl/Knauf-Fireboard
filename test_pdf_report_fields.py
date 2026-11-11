@@ -15,6 +15,7 @@ from reportlab.pdfbase.pdfmetrics import getAscentDescent, stringWidth
 
 from translations import translations
 from utils import constants, pdf_generator as pdf
+from utils.documentation_urls import FIREBOARD_INSTALLATION_SECTION_URL
 from utils.project_package import build_project_download_signature, get_cached_project_download
 
 
@@ -80,6 +81,60 @@ def text_positions(page):
 
     page.extract_text(visitor_text=visit)
     return positions
+
+
+def link_details(page):
+    links = []
+    for reference in page.get("/Annots", []):
+        annotation = reference.get_object()
+        if annotation.get("/Subtype") == "/Link":
+            action = annotation["/A"]
+            links.append((str(action["/URI"]), list(annotation["/Rect"]), action["/S"]))
+    return links
+
+
+@pytest.mark.filterwarnings("error::DeprecationWarning:pypdf.*")
+def test_template_merge_preserves_content_links_and_images(report):
+    """Exercise real merging: pypdf 7 rejects reader-owned destination pages."""
+    language, kind, generate = report
+    template = PdfReader(ROOT / ("PDF_template_EN.pdf" if language == "EN" else "PDF_template.pdf")).pages[0]
+    expected_links = [
+        (FIREBOARD_INSTALLATION_SECTION_URL if uri.startswith("https://knauf.com/api/download-center/v1/assets/") else uri, rect, action)
+        for uri, rect, action in link_details(template)
+    ]
+    assert expected_links
+    assert any(uri == FIREBOARD_INSTALLATION_SECTION_URL for uri, _, _ in expected_links)
+    template_images = [image.data for image in template.images]
+    template_positions = text_positions(template)
+
+    # Repeat generation to catch template mutation or overlays leaking between
+    # pages/reports. Reopen the serialized PDFs to verify their actual contents.
+    for _ in range(2):
+        reader, _, _ = generate("First line\nSecond line")
+        assert len(reader.pages) == (1 if kind == "single" else 2)
+        for number, page in enumerate(reader.pages, 1):
+            assert link_details(page) == expected_links
+            assert text_positions(page)[:len(template_positions)] == template_positions
+            assert list(page.mediabox) == list(template.mediabox)
+            assert list(page.cropbox) == list(template.cropbox)
+            assert page.rotation == template.rotation
+            images = [image.data for image in page.images]
+            assert all(image in images for image in template_images)
+            assert len(images) == len(template_images) + 1  # Profile illustration.
+            text = page.extract_text()
+            assert text.count("Project marker") == 1
+            profile, other = ("HEB100", "HEB200") if number == 1 else ("HEB200", "HEB100")
+            assert text.count(profile) == 2  # Calculation field and image caption.
+            assert other not in text
+            t = translations[language].get
+            for value in (
+                pdf.get_translated_category(CALCULATION["category"], language),
+                pdf.get_display_text(CALCULATION["montage"], t),
+                pdf.format_sides_display(CALCULATION["sides"], t),
+                f"60 {t('minutes')}",
+                f"{t('profile_must_be_clad_with')} 20 {t('mm')} {t('knauf_fireboard')}",
+            ):
+                assert value in text
 
 
 @pytest.mark.parametrize("instant,date,hour,offset", [
